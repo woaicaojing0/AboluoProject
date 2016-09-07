@@ -8,128 +8,154 @@
     android:orientation="vertical"
     tools:context="com.aboluo.com.MainActivity">
 
-    <RelativeLayout
+            <!--头部actionbar-->
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_alignParentTop="true"
+                android:background="@color/index_actionbar"
+                android:gravity="center_vertical">
+
+                <LinearLayout
+                    android:id="@+id/top_left"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_marginLeft="6dp"
+                        android:src="@mipmap/ic_launcher"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="苏州"
+                        android:textColor="@color/white"
+                        android:textSize="12sp"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="10dp"
+                    android:layout_toRightOf="@id/top_left">
+
+                    <EditText
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:focusable="false"/>
+
+                    <EditText
+                        android:id="@+id/top_editsearch"
+                        android:layout_width="240dp"
+                        android:layout_height="38dp"
+                        android:background="@drawable/edit_bg"
+                        android:drawableLeft="@mipmap/ic_launcher"
+                        android:drawableRight="@mipmap/ic_launcher"
+                        android:hint="请输入您要搜索的商品"
+                        android:paddingLeft="6dp"
+                        android:paddingRight="6dp"
+                        android:textColorHint="#909090"
+                        android:textSize="14sp"
+                        />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="6dp">
+
+                    <ImageView
+                        android:layout_width="36dp"
+                        android:layout_height="36dp"
+                        android:src="@mipmap/ic_launcher"/>
+                </LinearLayout>
+            </RelativeLayout>
+            <!--头部actionbar end-->
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:layout_alignParentTop="true"
-        android:background="@color/index_actionbar"
-        android:gravity="center_vertical">
+        android:layout_height="match_parent"
+        android:scrollbars="none">
 
         <LinearLayout
-            android:id="@+id/top_left"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:gravity="center_vertical"
-            android:orientation="horizontal">
-
-            <ImageView
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:layout_marginLeft="6dp"
-                android:src="@mipmap/ic_launcher"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="苏州"
-                android:textColor="@color/white"
-                android:textSize="12sp"/>
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="10dp"
-            android:layout_toRightOf="@id/top_left">
-
-            <EditText
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:focusable="false"/>
-
-            <EditText
-                android:id="@+id/top_editsearch"
-                android:layout_width="240dp"
-                android:layout_height="38dp"
-                android:background="@drawable/edit_bg"
-                android:drawableLeft="@mipmap/ic_launcher"
-                android:drawableRight="@mipmap/ic_launcher"
-                android:hint="请输入您要搜索的商品"
-                android:paddingLeft="6dp"
-                android:paddingRight="6dp"
-                android:textColorHint="#909090"
-                android:textSize="14sp"
-                />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="6dp">
-
-            <ImageView
-                android:layout_width="36dp"
-                android:layout_height="36dp"
-                android:src="@mipmap/ic_launcher"/>
-        </LinearLayout>
-    </RelativeLayout>
-
-    <com.jude.rollviewpager.RollPagerView
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/roll_view_pager"
-        android:layout_width="match_parent"
-        android:layout_height="120dp"
-        app:rollviewpager_hint_gravity="right"/>
-
-    <GridView
-        android:id="@+id/mid_gridview"
-        android:layout_width="match_parent"
-        android:layout_height="140dp"
-        android:gravity="center"
-        android:numColumns="5"
-        >
-    </GridView>
-
-    <View
-        android:layout_width="fill_parent"
-        android:layout_height="0.4dip"
-        android:background="#e0e0e0"/>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:layout_marginLeft="10dp"
-        android:orientation="horizontal">
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            android:src="@mipmap/ic_launcher"/>
-
-        <View
-            android:layout_width="0.4dp"
-            android:layout_height="match_parent"
-            android:layout_marginBottom="4dp"
-            android:layout_marginTop="4dp"
-            android:background="#e0e0e0"/>
-
-        <com.sunfusheng.marqueeview.MarqueeView
-            android:layout_marginTop="4dp"
-            xmlns:app="http://schemas.android.com/apk/res-auto"
-            android:id="@+id/marqueeView"
             android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:layout_marginLeft="12dp"
-            app:mvAnimDuration="1000"
-            app:mvInterval="3000"
-            app:mvSingleLine="false"
-            app:mvTextColor="@color/black"
-            app:mvTextSize="12sp"/>
-    </LinearLayout>
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+            <!--pageview 轮播效果-->
+            <com.jude.rollviewpager.RollPagerView
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/roll_view_pager"
+                android:layout_width="match_parent"
+                android:layout_height="120dp"
+                app:rollviewpager_hint_gravity="right"
+                app:rollviewpager_play_delay="3000"/>
+            <!--pageview 轮播效果 end -->
+            <GridView
+                android:id="@+id/mid_gridview"
+                android:layout_width="match_parent"
+                android:layout_height="140dp"
+                android:gravity="center"
+                android:numColumns="5"
+                >
+            </GridView>
 
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="0.4dip"
+                android:background="#e0e0e0"/>
+            <!--跑马灯效果 -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginLeft="10dp"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:src="@mipmap/ic_launcher"/>
+
+                <View
+                    android:layout_width="0.4dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginBottom="4dp"
+                    android:layout_marginTop="4dp"
+                    android:background="#e0e0e0"/>
+
+                <com.sunfusheng.marqueeview.MarqueeView
+                    xmlns:app="http://schemas.android.com/apk/res-auto"
+                    android:id="@+id/marqueeView"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_marginLeft="12dp"
+                    android:layout_marginTop="4dp"
+                    app:mvAnimDuration="1000"
+                    app:mvInterval="3000"
+                    app:mvSingleLine="false"
+                    app:mvTextColor="@color/black"
+                    app:mvTextSize="12sp"/>
+            </LinearLayout>
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="400dp"
+                android:text="QWEWQWE\NQ1WEQWE\N\n"/>
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="400dp"
+                android:text="QWEWQWE\NQ1WEQWE\N\n"/>
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="400dp"
+                android:text="QWEWQWE\NQ1WEQWE\N\n"/>
+
+        </LinearLayout>
+    </ScrollView>
 </LinearLayout>

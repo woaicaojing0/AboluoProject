@@ -1,6 +1,7 @@
 package com.aboluo.com;
 
 import android.app.Activity;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.support.v7.app.AppCompatActivity;
@@ -17,10 +18,16 @@ import android.widget.Toast;
 
 import com.aboluo.adapter.BannerAdapter;
 import com.aboluo.adapter.GridViewAdapter;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.ImageRequest;
+import com.android.volley.toolbox.Volley;
 import com.jude.rollviewpager.OnItemClickListener;
 import com.jude.rollviewpager.RollPagerView;
 import com.jude.rollviewpager.adapter.StaticPagerAdapter;
 import com.jude.rollviewpager.hintview.ColorPointHintView;
+import com.squareup.picasso.Picasso;
 import com.sunfusheng.marqueeview.MarqueeView;
 
 import java.util.ArrayList;
@@ -33,6 +40,8 @@ public class MainActivity extends Activity {
     private RollPagerView rollPagerView;
     private GridView mid_gridview;
     private MarqueeView marqueeView;
+    private String[] imgurl = {"http://img4.imgtn.bdimg.com/it/u=2408370625,380818695&fm=21&gp=0.jpg","" +
+            "http://pic24.nipic.com/20121025/10444819_041559015351_2.jpg"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,7 +64,8 @@ public class MainActivity extends Activity {
         top_editsearch.setCompoundDrawables(drawable, null, drawable, null);
         //头部滚动banner
         rollPagerView.setHintView(new ColorPointHintView(this, Color.RED, Color.WHITE));
-        rollPagerView.setAdapter(new BannerAdapter());
+        rollPagerView.setAdapter(new BannerAdapter(MainActivity.this,imgurl,rollPagerView)); // 设置适配器（请求网络图片，适配器要在网络请求完成后再设置）
+        rollPagerView.getViewPager().getAdapter().notifyDataSetChanged();// 更新banner图片
         rollPagerView.setFocusable(false);
         rollPagerView.setOnItemClickListener(new OnItemClickListener() {
             @Override
@@ -75,17 +85,17 @@ public class MainActivity extends Activity {
         marqueeView.setOnItemClickListener(new MarqueeView.OnItemClickListener() {
             @Override
             public void onItemClick(int position, TextView textView) {
-                Toast.makeText(MainActivity.this, info.get(position).toString()+textView.getText().toString(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainActivity.this, info.get(position).toString() + textView.getText().toString(), Toast.LENGTH_SHORT).show();
             }
         });
-
     }
-    private void init()
-    {
+
+    private void init() {
         linearLayout = (LinearLayout) findViewById(R.id.ALLFather);
         top_editsearch = (EditText) findViewById(R.id.top_editsearch);
         rollPagerView = (RollPagerView) findViewById(R.id.roll_view_pager);
         mid_gridview = (GridView) findViewById(R.id.mid_gridview);
         marqueeView = (MarqueeView) findViewById(R.id.marqueeView);
     }
+
 }

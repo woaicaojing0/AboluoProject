@@ -24,16 +24,16 @@ public class GridViewAdapter extends BaseAdapter {
 
     private Integer[] images = {
             //九宫格图片的设置
-            R.mipmap.ic_launcher,
-            R.mipmap.ic_launcher,
-            R.mipmap.ic_launcher,
-            R.mipmap.ic_launcher,
-            R.mipmap.ic_launcher,
-            R.mipmap.ic_launcher,
-            R.mipmap.ic_launcher,
-            R.mipmap.ic_launcher,
-            R.mipmap.ic_launcher,
-            R.mipmap.ic_launcher,
+            R.drawable.icon_01,
+            R.drawable.icon_02,
+            R.drawable.icon_03,
+            R.drawable.icon_04,
+            R.drawable.icon_05,
+            R.drawable.icon_06,
+            R.drawable.icon_07,
+            R.drawable.icon_08,
+            R.drawable.icon_09,
+            R.drawable.icon_10,
     };
 
     private String[] texts = {

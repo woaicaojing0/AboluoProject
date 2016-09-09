@@ -6,7 +6,7 @@ android {
 
     defaultConfig {
         applicationId "com.aboluo.com"
-        minSdkVersion 15
+        minSdkVersion 17
         targetSdkVersion 24
         versionCode 1
         versionName "1.0"
@@ -23,9 +23,13 @@ dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     testCompile 'junit:junit:4.12'
     compile 'com.android.support:appcompat-v7:24.1.1'
+    //新闻滚动条
     compile 'com.jude:rollviewpager:1.4.5'
+    //头条跑马灯的效果
     compile 'com.sunfusheng:marqueeview:1.1.0'
     compile project(':volley')
+    compile project(':PullToRefresh')
     compile 'com.squareup.picasso:picasso:2.5.2'
+//    compile 'com.readystatesoftware.systembartint:systembartint:1.0.3'
 //    compile 'com.youth.banner:banner:+' //最新版本
 }

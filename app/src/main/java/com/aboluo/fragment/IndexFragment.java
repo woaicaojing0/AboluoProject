@@ -9,16 +9,24 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.BaseAdapter;
 import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.aboluo.XUtils.MyApplication;
 import com.aboluo.adapter.BannerAdapter;
 import com.aboluo.adapter.GridViewAdapter;
 import com.aboluo.com.MainActivity;
 import com.aboluo.com.R;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.handmark.pulltorefresh.library.PullToRefreshBase;
+import com.handmark.pulltorefresh.library.PullToRefreshScrollView;
 import com.jude.rollviewpager.OnItemClickListener;
 import com.jude.rollviewpager.RollPagerView;
 import com.jude.rollviewpager.hintview.ColorPointHintView;
@@ -39,8 +47,8 @@ public class IndexFragment extends Fragment {
     private View view;
     private String[] imgurl = {"http://img4.imgtn.bdimg.com/it/u=2408370625,380818695&fm=21&gp=0.jpg", "" +
             "http://pic24.nipic.com/20121025/10444819_041559015351_2.jpg"};
-
-
+    private PullToRefreshScrollView pullToRefreshScrollView;
+  private BannerAdapter bannerAdapter;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         if (view != null) {
@@ -62,7 +70,8 @@ public class IndexFragment extends Fragment {
             top_editsearch.setCompoundDrawables(drawable, null, drawable, null);
             //头部滚动banner
             rollPagerView.setHintView(new ColorPointHintView(this.getActivity(), Color.RED, Color.WHITE));
-            rollPagerView.setAdapter(new BannerAdapter(this.getActivity(), imgurl, rollPagerView)); // 设置适配器（请求网络图片，适配器要在网络请求完成后再设置）
+            bannerAdapter = new BannerAdapter(this.getActivity(), imgurl, rollPagerView);
+            rollPagerView.setAdapter(bannerAdapter); // 设置适配器（请求网络图片，适配器要在网络请求完成后再设置）
             rollPagerView.getViewPager().getAdapter().notifyDataSetChanged();// 更新banner图片
             rollPagerView.setFocusable(false);
             rollPagerView.setOnItemClickListener(new OnItemClickListener() {
@@ -86,16 +95,39 @@ public class IndexFragment extends Fragment {
                     Toast.makeText(IndexFragment.this.getActivity(), info.get(position).toString() + textView.getText().toString(), Toast.LENGTH_SHORT).show();
                 }
             });
+            pullToRefreshScrollView.setOnRefreshListener(new PullToRefreshBase.OnRefreshListener<ScrollView>() {
+                @Override
+                public void onRefresh(PullToRefreshBase<ScrollView> refreshView) {
+                    bannerAdapter.notifyDataSetChanged();
+                    MyApplication.getRequestQueue().add(getInfo());
+                }
+            });
         }
         return view;
     }
-
-
     private void init(View view) {
         linearLayout = (LinearLayout) view.findViewById(R.id.ALLFather);
         top_editsearch = (EditText) view.findViewById(R.id.top_editsearch);
         rollPagerView = (RollPagerView) view.findViewById(R.id.roll_view_pager);
         mid_gridview = (GridView) view.findViewById(R.id.mid_gridview);
         marqueeView = (MarqueeView) view.findViewById(R.id.marqueeView);
+        pullToRefreshScrollView = (PullToRefreshScrollView) view.findViewById(R.id.pullToRefresh);
+    }
+    private StringRequest getInfo()
+    {
+            StringRequest stringRequest  = new StringRequest("http://www.baidu.com", new Response.Listener<String>() {
+                @Override
+                public void onResponse(String response) {
+                    Toast.makeText(IndexFragment.this.getActivity(), response, Toast.LENGTH_SHORT).show();
+                    pullToRefreshScrollView.onRefreshComplete();
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    Toast.makeText(IndexFragment.this.getActivity(), error.toString(), Toast.LENGTH_SHORT).show();
+                    pullToRefreshScrollView.onRefreshComplete();
+                }
+            });
+        return  stringRequest;
     }
 }

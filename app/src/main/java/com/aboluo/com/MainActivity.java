@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.Window;
 import android.widget.LinearLayout;
 
+import com.aboluo.XUtils.MyApplication;
 import com.aboluo.fragment.IndexFragment;
 import com.aboluo.fragment.MenuFragment;
 import com.aboluo.fragment.MyFragment;
@@ -38,6 +39,7 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
     }
 
     private void init() {
+        MyApplication.init(this);
         index_linelayout = (LinearLayout) findViewById(R.id.index_bottom_index);
         menu_linelayout = (LinearLayout) findViewById(R.id.index_bottom_menu);
         shopcar_linelayout = (LinearLayout) findViewById(R.id.index_bottom_shopcar);

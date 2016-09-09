@@ -30,7 +30,6 @@ public class BannerAdapter extends LoopPagerAdapter {
         Picasso.with(mcontext).load(imgsurl[position]).into(view);  // 加载网络图片
         view.setScaleType(ImageView.ScaleType.CENTER_CROP);
         view.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.MATCH_PARENT));
-
         return view;
     }
 

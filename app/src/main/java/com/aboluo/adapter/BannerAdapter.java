@@ -18,16 +18,19 @@ import com.squareup.picasso.Picasso;
 public class BannerAdapter extends LoopPagerAdapter {
     private Context mcontext;
     private String[] imgsurl;
+    private Picasso picasso;
     public BannerAdapter(Context context,String []imgsurl,RollPagerView viewPager)
     {
         super(viewPager);
         this.mcontext = context;
         this.imgsurl = imgsurl;
+        picasso =  Picasso.with(mcontext); // 加载网络图片
+        picasso.with(mcontext).setIndicatorsEnabled(true);
     }
     @Override
     public View getView(ViewGroup container, int position) {
         ImageView view =new ImageView(container.getContext());
-        Picasso.with(mcontext).load(imgsurl[position]).into(view);  // 加载网络图片
+        picasso.load(imgsurl[position]).into(view);
         view.setScaleType(ImageView.ScaleType.CENTER_CROP);
         view.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.MATCH_PARENT));
         return view;

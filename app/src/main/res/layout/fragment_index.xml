@@ -445,7 +445,8 @@
                     android:layout_height="400dp"
                     android:text="QWEWQWE\NQ1WEQWE\N\n"/>
 
-                <EditText
+                <ImageView
+                    android:id="@+id/ceshi_imgeview"
                     android:layout_width="match_parent"
                     android:layout_height="400dp"
                     android:text="QWEWQWE\NQ1WEQWE\N\n"/>

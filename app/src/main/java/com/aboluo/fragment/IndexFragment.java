@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.EditText;
 import android.widget.GridView;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -22,6 +23,8 @@ import com.aboluo.adapter.BannerAdapter;
 import com.aboluo.adapter.GridViewAdapter;
 import com.aboluo.com.MainActivity;
 import com.aboluo.com.R;
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
@@ -30,10 +33,13 @@ import com.handmark.pulltorefresh.library.PullToRefreshScrollView;
 import com.jude.rollviewpager.OnItemClickListener;
 import com.jude.rollviewpager.RollPagerView;
 import com.jude.rollviewpager.hintview.ColorPointHintView;
+import com.squareup.picasso.Picasso;
 import com.sunfusheng.marqueeview.MarqueeView;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by cj34920 on 2016/9/8.
@@ -49,6 +55,7 @@ public class IndexFragment extends Fragment {
             "http://pic24.nipic.com/20121025/10444819_041559015351_2.jpg"};
     private PullToRefreshScrollView pullToRefreshScrollView;
   private BannerAdapter bannerAdapter;
+    private ImageView ceshi_imgeview;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         if (view != null) {
@@ -102,6 +109,8 @@ public class IndexFragment extends Fragment {
                     MyApplication.getRequestQueue().add(getInfo());
                 }
             });
+            Picasso.with(this.getActivity()).load("http://img.pconline.com.cn/images/upload/upc/tx/wallpaper/1309/05/c5/25283777_1378352004384_800x600.jpg").into(ceshi_imgeview);
+            Picasso.with(this.getActivity()).setIndicatorsEnabled(true);
         }
         return view;
     }
@@ -112,10 +121,11 @@ public class IndexFragment extends Fragment {
         mid_gridview = (GridView) view.findViewById(R.id.mid_gridview);
         marqueeView = (MarqueeView) view.findViewById(R.id.marqueeView);
         pullToRefreshScrollView = (PullToRefreshScrollView) view.findViewById(R.id.pullToRefresh);
+        ceshi_imgeview = (ImageView) view.findViewById(R.id.ceshi_imgeview);
     }
     private StringRequest getInfo()
     {
-            StringRequest stringRequest  = new StringRequest("http://www.baidu.com", new Response.Listener<String>() {
+            StringRequest stringRequest  = new StringRequest(Request.Method.POST, "http://msoa.weidustudio.com/api/MachineManage/ReceiveProductListByCategoryId", new Response.Listener<String>() {
                 @Override
                 public void onResponse(String response) {
                     Toast.makeText(IndexFragment.this.getActivity(), response, Toast.LENGTH_SHORT).show();
@@ -127,7 +137,15 @@ public class IndexFragment extends Fragment {
                     Toast.makeText(IndexFragment.this.getActivity(), error.toString(), Toast.LENGTH_SHORT).show();
                     pullToRefreshScrollView.onRefreshComplete();
                 }
-            });
+            }){
+                @Override
+                protected Map<String, String> getParams() throws AuthFailureError {
+                    Map<String, String> map = new HashMap<String, String>();
+                    map.put("ProductCategoryId", "1");
+                    map.put("PageIndex", "1");
+                    return map;
+                }
+            };
         return  stringRequest;
     }
 }

@@ -30,6 +30,8 @@ dependencies {
     compile project(':volley')
     compile project(':PullToRefresh')
     compile 'com.squareup.picasso:picasso:2.5.2'
+    //倒计时控件
+    compile 'com.github.iwgang:countdownview:2.1.2'
 //    compile 'com.readystatesoftware.systembartint:systembartint:1.0.3'
 //    compile 'com.youth.banner:banner:+' //最新版本
 }

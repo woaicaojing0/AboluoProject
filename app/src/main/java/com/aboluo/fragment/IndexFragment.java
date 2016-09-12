@@ -41,6 +41,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import cn.iwgang.countdownview.CountdownView;
+
 /**
  * Created by cj34920 on 2016/9/8.
  */
@@ -56,6 +58,7 @@ public class IndexFragment extends Fragment {
     private PullToRefreshScrollView pullToRefreshScrollView;
   private BannerAdapter bannerAdapter;
     private ImageView ceshi_imgeview;
+    private CountdownView mCvCountdownView;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         if (view != null) {
@@ -111,6 +114,19 @@ public class IndexFragment extends Fragment {
             });
             Picasso.with(this.getActivity()).load("http://img.pconline.com.cn/images/upload/upc/tx/wallpaper/1309/05/c5/25283777_1378352004384_800x600.jpg").into(ceshi_imgeview);
             Picasso.with(this.getActivity()).setIndicatorsEnabled(true);
+            mCvCountdownView.start(24000); // 毫秒
+            mCvCountdownView.setOnCountdownEndListener(new CountdownView.OnCountdownEndListener() {
+                @Override
+                public void onEnd(CountdownView cv) {
+                    cv.setVisibility(View.GONE);
+                }
+            });
+            mCvCountdownView.setOnCountdownIntervalListener(3000, new CountdownView.OnCountdownIntervalListener() {
+                @Override
+                public void onInterval(CountdownView cv, long remainTime) {
+                    Toast.makeText(IndexFragment.this.getActivity(), "1", Toast.LENGTH_SHORT).show();
+                }
+            });
         }
         return view;
     }
@@ -122,6 +138,8 @@ public class IndexFragment extends Fragment {
         marqueeView = (MarqueeView) view.findViewById(R.id.marqueeView);
         pullToRefreshScrollView = (PullToRefreshScrollView) view.findViewById(R.id.pullToRefresh);
         ceshi_imgeview = (ImageView) view.findViewById(R.id.ceshi_imgeview);
+        mCvCountdownView = (CountdownView)view.findViewById(R.id.cv_countdownViewTest1);
+
     }
     private StringRequest getInfo()
     {

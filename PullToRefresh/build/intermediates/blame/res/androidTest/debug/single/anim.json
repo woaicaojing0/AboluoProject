@@ -8,12 +8,24 @@
         "source": "D:\\private\\AboluoProject\\PullToRefresh\\build\\intermediates\\bundles\\debug\\res\\anim\\slide_in_from_top.xml"
     },
     {
+        "merged": "G:\\AndroidWorkspace\\cjgitlab\\AboluoProject\\PullToRefresh\\build\\intermediates\\res\\merged\\androidTest\\debug\\anim\\slide_in_from_top.xml",
+        "source": "G:\\AndroidWorkspace\\cjgitlab\\AboluoProject\\PullToRefresh\\build\\intermediates\\bundles\\debug\\res\\anim\\slide_in_from_top.xml"
+    },
+    {
+        "merged": "G:\\AndroidWorkspace\\cjgitlab\\AboluoProject\\PullToRefresh\\build\\intermediates\\res\\merged\\androidTest\\debug\\anim\\slide_out_to_top.xml",
+        "source": "G:\\AndroidWorkspace\\cjgitlab\\AboluoProject\\PullToRefresh\\build\\intermediates\\bundles\\debug\\res\\anim\\slide_out_to_top.xml"
+    },
+    {
         "merged": "G:\\AndroidWorkspace\\android-studio\\AboluoProject\\PullToRefresh\\build\\intermediates\\res\\merged\\androidTest\\debug\\anim\\slide_in_from_top.xml",
         "source": "G:\\AndroidWorkspace\\android-studio\\AboluoProject\\PullToRefresh\\build\\intermediates\\bundles\\debug\\res\\anim\\slide_in_from_top.xml"
     },
     {
         "merged": "G:\\AndroidWorkspace\\android-studio\\AboluoProject\\PullToRefresh\\build\\intermediates\\res\\merged\\androidTest\\debug\\anim\\slide_in_from_bottom.xml",
         "source": "G:\\AndroidWorkspace\\android-studio\\AboluoProject\\PullToRefresh\\build\\intermediates\\bundles\\debug\\res\\anim\\slide_in_from_bottom.xml"
+    },
+    {
+        "merged": "G:\\AndroidWorkspace\\cjgitlab\\AboluoProject\\PullToRefresh\\build\\intermediates\\res\\merged\\androidTest\\debug\\anim\\slide_in_from_bottom.xml",
+        "source": "G:\\AndroidWorkspace\\cjgitlab\\AboluoProject\\PullToRefresh\\build\\intermediates\\bundles\\debug\\res\\anim\\slide_in_from_bottom.xml"
     },
     {
         "merged": "D:\\private\\AboluoProject\\PullToRefresh\\build\\intermediates\\res\\merged\\androidTest\\debug\\anim\\slide_out_to_bottom.xml",
@@ -34,6 +46,10 @@
     {
         "merged": "G:\\AndroidWorkspace\\AboluoProject\\AboluoProject\\PullToRefresh\\build\\intermediates\\res\\merged\\androidTest\\debug\\anim\\slide_in_from_bottom.xml",
         "source": "G:\\AndroidWorkspace\\AboluoProject\\AboluoProject\\PullToRefresh\\build\\intermediates\\bundles\\debug\\res\\anim\\slide_in_from_bottom.xml"
+    },
+    {
+        "merged": "G:\\AndroidWorkspace\\cjgitlab\\AboluoProject\\PullToRefresh\\build\\intermediates\\res\\merged\\androidTest\\debug\\anim\\slide_out_to_bottom.xml",
+        "source": "G:\\AndroidWorkspace\\cjgitlab\\AboluoProject\\PullToRefresh\\build\\intermediates\\bundles\\debug\\res\\anim\\slide_out_to_bottom.xml"
     },
     {
         "merged": "D:\\private\\AboluoProject\\PullToRefresh\\build\\intermediates\\res\\merged\\androidTest\\debug\\anim\\slide_out_to_top.xml",

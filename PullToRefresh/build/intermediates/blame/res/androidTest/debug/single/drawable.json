@@ -4,6 +4,10 @@
         "source": "D:\\private\\AboluoProject\\PullToRefresh\\build\\intermediates\\bundles\\debug\\res\\drawable\\indicator_bg_bottom.xml"
     },
     {
+        "merged": "G:\\AndroidWorkspace\\cjgitlab\\AboluoProject\\PullToRefresh\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable\\indicator_bg_top.xml",
+        "source": "G:\\AndroidWorkspace\\cjgitlab\\AboluoProject\\PullToRefresh\\build\\intermediates\\bundles\\debug\\res\\drawable\\indicator_bg_top.xml"
+    },
+    {
         "merged": "G:\\AndroidWorkspace\\AboluoProject\\AboluoProject\\PullToRefresh\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable\\indicator_bg_top.xml",
         "source": "G:\\AndroidWorkspace\\AboluoProject\\AboluoProject\\PullToRefresh\\build\\intermediates\\bundles\\debug\\res\\drawable\\indicator_bg_top.xml"
     },
@@ -22,5 +26,9 @@
     {
         "merged": "G:\\AndroidWorkspace\\android-studio\\AboluoProject\\PullToRefresh\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable\\indicator_bg_bottom.xml",
         "source": "G:\\AndroidWorkspace\\android-studio\\AboluoProject\\PullToRefresh\\build\\intermediates\\bundles\\debug\\res\\drawable\\indicator_bg_bottom.xml"
+    },
+    {
+        "merged": "G:\\AndroidWorkspace\\cjgitlab\\AboluoProject\\PullToRefresh\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable\\indicator_bg_bottom.xml",
+        "source": "G:\\AndroidWorkspace\\cjgitlab\\AboluoProject\\PullToRefresh\\build\\intermediates\\bundles\\debug\\res\\drawable\\indicator_bg_bottom.xml"
     }
 ]

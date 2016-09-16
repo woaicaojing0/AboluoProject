@@ -24,12 +24,24 @@
         "source": "G:\\AndroidWorkspace\\AboluoProject\\AboluoProject\\PullToRefresh\\build\\intermediates\\bundles\\debug\\res\\drawable-xhdpi-v4\\default_ptr_flip.png"
     },
     {
+        "merged": "G:\\AndroidWorkspace\\cjgitlab\\AboluoProject\\PullToRefresh\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-xhdpi-v4\\indicator_arrow.png",
+        "source": "G:\\AndroidWorkspace\\cjgitlab\\AboluoProject\\PullToRefresh\\build\\intermediates\\bundles\\debug\\res\\drawable-xhdpi-v4\\indicator_arrow.png"
+    },
+    {
         "merged": "G:\\AndroidWorkspace\\android-studio\\AboluoProject\\PullToRefresh\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-xhdpi-v4\\default_ptr_rotate.png",
         "source": "G:\\AndroidWorkspace\\android-studio\\AboluoProject\\PullToRefresh\\build\\intermediates\\bundles\\debug\\res\\drawable-xhdpi-v4\\default_ptr_rotate.png"
     },
     {
         "merged": "G:\\AndroidWorkspace\\android-studio\\AboluoProject\\PullToRefresh\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-xhdpi-v4\\indicator_arrow.png",
         "source": "G:\\AndroidWorkspace\\android-studio\\AboluoProject\\PullToRefresh\\build\\intermediates\\bundles\\debug\\res\\drawable-xhdpi-v4\\indicator_arrow.png"
+    },
+    {
+        "merged": "G:\\AndroidWorkspace\\cjgitlab\\AboluoProject\\PullToRefresh\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-xhdpi-v4\\default_ptr_flip.png",
+        "source": "G:\\AndroidWorkspace\\cjgitlab\\AboluoProject\\PullToRefresh\\build\\intermediates\\bundles\\debug\\res\\drawable-xhdpi-v4\\default_ptr_flip.png"
+    },
+    {
+        "merged": "G:\\AndroidWorkspace\\cjgitlab\\AboluoProject\\PullToRefresh\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-xhdpi-v4\\default_ptr_rotate.png",
+        "source": "G:\\AndroidWorkspace\\cjgitlab\\AboluoProject\\PullToRefresh\\build\\intermediates\\bundles\\debug\\res\\drawable-xhdpi-v4\\default_ptr_rotate.png"
     },
     {
         "merged": "G:\\AndroidWorkspace\\AboluoProject\\AboluoProject\\PullToRefresh\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-xhdpi-v4\\default_ptr_rotate.png",

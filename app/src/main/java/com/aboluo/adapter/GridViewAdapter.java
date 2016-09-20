@@ -32,22 +32,18 @@ public class GridViewAdapter extends BaseAdapter {
             R.drawable.icon_06,
             R.drawable.icon_07,
             R.drawable.icon_08,
-            R.drawable.icon_09,
-            R.drawable.icon_10,
     };
 
     private String[] texts = {
             //九宫格图片下方文字的设置
-            "卡券充值",
+            "合伙人商品",
             "夺宝",
             "拼团购",
-            "手机充值",
+            "分类",
             "秒杀",
-            "领券",
-            "商城",
-            "社区",
             "签到送积分",
-            "我的",
+            "尽请期待...",
+            "尽请期待...",
     };
 
     @Override

@@ -109,7 +109,7 @@
                     android:layout_marginBottom="10dp"
                     android:layout_marginTop="10dp"
                     android:gravity="center"
-                    android:numColumns="5"
+                    android:numColumns="4"
                     >
                 </GridView>
 
@@ -418,6 +418,18 @@
                     </LinearLayout>
                 </LinearLayout>
                 <!-- 限时抢购栏目 end-->
+                <!--活动专区 -->
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="28dp"
+                    android:layout_marginBottom="28dp"
+                    android:background="@color/huodong_view"/>
+                <include
+                    android:id="@+id/id_ly_huodong"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    layout="@layout/activtiy_main_huodong"/>
                 <EditText
                     android:layout_width="wrap_content"
                     android:layout_height="400dp"

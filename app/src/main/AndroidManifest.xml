@@ -12,6 +12,9 @@
         android:configChanges="keyboard">
         <activity android:name=".MainActivity"
                   android:windowSoftInputMode="adjustPan|stateHidden">
+
+        </activity>
+        <activity android:name=".GuideActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 

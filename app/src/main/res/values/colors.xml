@@ -21,4 +21,7 @@
     <color name="index_actionbar">#F55A8E</color>
     <color name="hint_color">#e93d68</color>
     <color name="huodong_view">#F26e96</color>
+    <color name="login_btn">#f5f5f5</color>
+    <color name="login_btn_text">#a5a5a5</color>
+    <color name="register_color">#fb5f89</color>
 </resources>

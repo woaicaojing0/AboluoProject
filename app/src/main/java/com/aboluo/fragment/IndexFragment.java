@@ -2,6 +2,7 @@ package com.aboluo.fragment;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -9,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.EditText;
 import android.widget.GridView;
@@ -91,6 +93,12 @@ public class IndexFragment extends Fragment {
                 }
             });
             mid_gridview.setAdapter(new GridViewAdapter(this.getActivity()));
+            mid_gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    Toast.makeText(IndexFragment.this.getActivity(), position+"", Toast.LENGTH_SHORT).show();
+                }
+            });
             final List<String> info = new ArrayList<>();
             info.add("1. 大家好，我是曹晶 \n 2.欢迎大家关注我哦！");
             info.add("2. 欢迎大家关注我哦！");
@@ -135,6 +143,7 @@ public class IndexFragment extends Fragment {
         top_editsearch = (EditText) view.findViewById(R.id.top_editsearch);
         rollPagerView = (RollPagerView) view.findViewById(R.id.roll_view_pager);
         mid_gridview = (GridView) view.findViewById(R.id.mid_gridview);
+        mid_gridview.setSelector(new ColorDrawable(Color.TRANSPARENT));
         marqueeView = (MarqueeView) view.findViewById(R.id.marqueeView);
         pullToRefreshScrollView = (PullToRefreshScrollView) view.findViewById(R.id.pullToRefresh);
         ceshi_imgeview = (ImageView) view.findViewById(R.id.ceshi_imgeview);

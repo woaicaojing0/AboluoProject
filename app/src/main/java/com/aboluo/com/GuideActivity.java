@@ -1,6 +1,8 @@
 package com.aboluo.com;
 
 import android.app.Activity;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.view.View;
@@ -23,6 +25,7 @@ public class GuideActivity extends Activity implements ViewPager.OnPageChangeLis
     private ViewPagerAdapter vpAdapter;
     private List<View> views;
     private Button btn_enter_main;
+    private SharedPreferences preferences;
     //引导图片资源
     private static final int[] pics = { R.drawable.guide_01,
             R.drawable.guide_02, R.drawable.guide_03};
@@ -32,6 +35,26 @@ public class GuideActivity extends Activity implements ViewPager.OnPageChangeLis
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_guide);
+preferences = getSharedPreferences("abolu",MODE_PRIVATE);
+        boolean isFristIn = preferences.getBoolean("isFristIn",false);
+        //如果是第一次进入，进入引导界面；如果不是第一次进入，直接跳到主页面
+        if(isFristIn)
+        {
+            Intent intent = new Intent(this,MainActivity.class);
+            startActivity(intent);
+        }else {
+            Init();
+            btn_enter_main.setOnClickListener(this);
+            //初始化Adapter
+            vpAdapter = new ViewPagerAdapter(views);
+            vp.setAdapter(vpAdapter);
+            vp.addOnPageChangeListener(this);
+        }
+
+    }
+
+    private void Init()
+    {
         views = new ArrayList<View>();
 
         LinearLayout.LayoutParams mParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
@@ -46,14 +69,8 @@ public class GuideActivity extends Activity implements ViewPager.OnPageChangeLis
             views.add(iv);
         }
         btn_enter_main = (Button) findViewById(R.id.btn_enter_main);
-        btn_enter_main.setOnClickListener(this);
         vp = (ViewPager) findViewById(R.id.viewpager);
-        //初始化Adapter
-        vpAdapter = new ViewPagerAdapter(views);
-        vp.setAdapter(vpAdapter);
-        vp.addOnPageChangeListener(this);
     }
-
     @Override
     public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 
@@ -72,6 +89,12 @@ public class GuideActivity extends Activity implements ViewPager.OnPageChangeLis
 
     @Override
     public void onClick(View v) {
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putBoolean("isFristIn",true);
+        editor.commit();
         Toast.makeText(this, "跳转页面了", Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent(this,MainActivity.class);
+        startActivity(intent);
+        this.finish();
     }
 }

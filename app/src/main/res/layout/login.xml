@@ -1,17 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
-<LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="64dp"
-    android:gravity="center"
-    android:orientation="vertical">
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="帐号登录"/>
-</LinearLayout>
+
+    <android.support.v7.widget.Toolbar
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        app:contentInsetLeft="0dp"
+        app:contentInsetStart="0dp"
+        android:id="@+id/toolbar">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="帐号登录"/>
+    </android.support.v7.widget.Toolbar>
+
     <View
         android:layout_width="match_parent"
         android:layout_height="0.2dp"
@@ -21,10 +26,10 @@
         android:layout_width="match_parent"
         android:layout_height="160dp"
         android:gravity="center">
-        <TextView
+        <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="LOGO"/>
+            android:src="@drawable/logo"/>
     </LinearLayout>
 
     <View
@@ -47,7 +52,7 @@
             >
             <TextView
                 android:layout_width="60dp"
-                android:gravity="center"
+                android:gravity="center_vertical"
                 android:layout_height="48dp"
                 android:text="帐号："/>
             <EditText
@@ -70,11 +75,14 @@
             android:layout_height="match_parent"
             android:orientation="horizontal"
             android:layout_marginLeft="15dp">
+
             <TextView
                 android:layout_width="60dp"
-                android:gravity="center"
+                android:gravity="center_vertical"
                 android:layout_height="match_parent"
-                android:text="密码："/>
+                android:text="密码："
+                android:id="@+id/textView" />
+
             <EditText
                 android:background="@null"
                 android:layout_width="match_parent"

@@ -18,11 +18,12 @@
             <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="100dp"
-                android:background="@color/black"/>
+                android:background="@drawable/huodong_left"/>
 
             <ImageView
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"/>
+                android:layout_height="match_parent"
+                android:background="@drawable/huodong_left2"/>
         </LinearLayout>
 
         <LinearLayout
@@ -34,15 +35,18 @@
             <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="66dp"
-                android:background="@color/colorDkgray"/>
+                android:background="@drawable/hudong_right1"/>
 
             <ImageView
                 android:layout_width="match_parent"
-                android:layout_height="73dp"/>
+                android:layout_height="73dp"
+                android:background="@drawable/hudong_right2"/>
+
             <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@color/cyan"/>
+                android:background="@drawable/hudong_right3"
+                android:id="@+id/imageView" />
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>

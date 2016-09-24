@@ -34,4 +34,8 @@ dependencies {
     compile 'com.github.iwgang:countdownview:2.1.2'
 //    compile 'com.readystatesoftware.systembartint:systembartint:1.0.3'
 //    compile 'com.youth.banner:banner:+' //最新版本
+    //下拉阻尼效果
+    compile 'me.everything:overscroll-decor-android:1.0.3'
+    //圆形图片
+    compile 'de.hdodenhof:circleimageview:2.1.0'
 }

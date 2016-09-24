@@ -26,6 +26,7 @@
         <activity android:name=".LoginActivity"></activity>
         <activity android:name=".RegisterActivity"></activity>
         <activity android:name=".RetrievepwdActivity"></activity>
+        <activity android:name=".MyInfoAcitvity"></activity>
     </application>
 
 </manifest>

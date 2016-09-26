@@ -38,4 +38,6 @@ dependencies {
     compile 'me.everything:overscroll-decor-android:1.0.3'
     //圆形图片
     compile 'de.hdodenhof:circleimageview:2.1.0'
+    //购物车计算数量
+    compile 'ren.qinc.numberbutton:numberbutton:0.0.1'
 }

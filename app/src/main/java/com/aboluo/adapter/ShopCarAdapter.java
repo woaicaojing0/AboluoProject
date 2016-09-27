@@ -12,6 +12,8 @@ import com.aboluo.com.R;
 
 import java.util.List;
 
+import ren.qinc.numberbutton.NumberButton;
+
 /**
  * Created by CJ on 2016/9/27.
  */
@@ -48,16 +50,19 @@ public class ShopCarAdapter extends BaseAdapter {
             convertView = LayoutInflater.from(mcontext).inflate(R.layout.shopcar_listview_item, null);
             holder.textName = (TextView) convertView.findViewById(R.id.shopcar_txt_buyName);
             holder.ck_buy = (CheckBox) convertView.findViewById(R.id.shopcar_ck_buy);
+            holder.numberButton = (NumberButton) convertView.findViewById(R.id.number_button);
             convertView.setTag(holder);
         } else {
             holder = (ViewHolder) convertView.getTag();
         }
         holder.textName.setText(mlist.get(position).toString());
+        holder.numberButton.setBuyMax(position).setCurrentNumber(1);
         return convertView;
     }
 
     public class ViewHolder {
         public TextView textName;
         public CheckBox ck_buy;
+        public NumberButton  numberButton;
     }
 }

@@ -70,6 +70,7 @@
                     android:layout_toEndOf="@+id/fuhao"
                     />
                 <ren.qinc.numberbutton.NumberButton
+                    android:visibility="invisible"
                     android:id="@+id/number_button"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

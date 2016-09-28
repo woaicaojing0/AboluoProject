@@ -61,8 +61,12 @@
             android:layout_height="match_parent"
             android:gravity="center_vertical"
             android:orientation="horizontal">
-
+<LinearLayout
+    android:id="@+id/cb_cart_all_linealayout"
+    android:layout_width="wrap_content"
+    android:layout_height="match_parent">
             <CheckBox
+                android:clickable="false"
                 android:id="@+id/cb_cart_all"
                 style="@style/CustomCheckboxTheme"
                 android:layout_width="wrap_content"
@@ -73,7 +77,7 @@
                 android:text="全选"
                 android:textColor="#191919"
                 android:textSize="18dp" />
-
+</LinearLayout>
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -128,23 +132,23 @@
         </LinearLayout>
     </RelativeLayout>
 
-    <ScrollView
+    <com.handmark.pulltorefresh.library.PullToRefreshScrollView
         android:overScrollMode="never"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scrollbars="none"
         android:layout_alignTop="@+id/top_view"
-        android:layout_alignParentStart="true">
+        android:layout_above="@+id/view">
 
         <RelativeLayout
             android:id="@+id/main_list_shoucang"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="match_parent">
 
             <com.aboluo.widget.MyListview
                 android:id="@+id/shopcar_listview"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="match_parent" />
         </RelativeLayout>
-    </ScrollView>
+ </com.handmark.pulltorefresh.library.PullToRefreshScrollView>
 </RelativeLayout>

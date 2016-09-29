@@ -6,6 +6,7 @@ import android.database.Observable;
 import android.graphics.SumPathEffect;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,6 +31,7 @@ import java.util.List;
  * Created by cj34920 on 2016/9/8.
  */
 public class ShopCarFragment extends Fragment implements View.OnClickListener,ShopCarAdapter.Callback{
+    private static  String TAG="UserInfoMsg";
     private View view;
     private ListView listView;
     private List<ShopCarInfo> list;
@@ -165,7 +167,8 @@ public class ShopCarFragment extends Fragment implements View.OnClickListener,Sh
 
     @Override
     public void click(View v, int Amount,int postion) {
-        Toast.makeText(context, Amount +">>>>>>>>>>>"+postion+"", Toast.LENGTH_SHORT).show();
+        Log.i(TAG,"当前数量"+Amount +">>>>>>>>>>>点击的第"+postion+"条");
+//        Toast.makeText(context, Amount +">>>>>>>>>>>"+postion+"", Toast.LENGTH_SHORT).show();
         list.get(postion).setNum(Amount);
     }
 }

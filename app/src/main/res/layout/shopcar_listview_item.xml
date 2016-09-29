@@ -79,7 +79,7 @@
                         android:textSize="8sp"/>
 
                     <TextView
-                        android:id="@+id/shopcar_txt_money"
+                        android:id="@+id/shopcar_txt_itemmoney"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
@@ -87,19 +87,26 @@
                         android:text="180.0"
                         android:textColor="@color/red"
                         />
-
-                    <com.aboluo.widget.AmountView
-                        android:layout_alignParentRight="true"
-                        android:id="@+id/number_button"
-                        app:btnTextSize="14sp"
-                        app:btnWidth="36dp"
-                        app:tvWidth="50dp"
+                    <LinearLayout
                         android:layout_width="wrap_content"
-                        android:layout_height="36dp"
-                        android:layout_gravity="right"
-                        android:layout_marginLeft="12dp"
-                        android:layout_centerVertical="true">
-                    </com.aboluo.widget.AmountView>
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true">
+                        <include layout="@layout/view_amount"
+                            ></include>
+                    </LinearLayout>
+
+                    <!--<com.aboluo.widget.AmountView-->
+                        <!--android:layout_alignParentRight="true"-->
+                        <!--android:id="@+id/number_button"-->
+                        <!--app:btnTextSize="14sp"-->
+                        <!--app:btnWidth="36dp"-->
+                        <!--app:tvWidth="50dp"-->
+                        <!--android:layout_width="wrap_content"-->
+                        <!--android:layout_height="36dp"-->
+                        <!--android:layout_gravity="right"-->
+                        <!--android:layout_marginLeft="12dp"-->
+                        <!--android:layout_centerVertical="true">-->
+                    <!--</com.aboluo.widget.AmountView>-->
 
 
                 </RelativeLayout>

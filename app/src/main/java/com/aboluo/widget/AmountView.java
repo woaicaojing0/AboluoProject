@@ -24,16 +24,15 @@ import com.aboluo.com.R;
  * Created by hiwhitley on 2016/7/4.
  */
 public class AmountView extends LinearLayout implements View.OnClickListener, TextWatcher {
-
     private static final String TAG = "AmountView";
-    public void setAmount(int amount) {
-        this.amount = amount;
-    }
-
     private int amount = 1; //购买数量
     private int goods_storage = 1; //商品库存
 
     private OnAmountChangeListener mListener;
+
+    public EditText getEtAmount() {
+        return etAmount;
+    }
 
     public EditText etAmount;
     private Button btnDecrease;
@@ -75,7 +74,6 @@ public class AmountView extends LinearLayout implements View.OnClickListener, Te
         if (tvTextSize != 0) {
             etAmount.setTextSize(tvTextSize);
         }
-        etAmount.setText(amount+"");
     }
 
     public void setOnAmountChangeListener(OnAmountChangeListener onAmountChangeListener) {

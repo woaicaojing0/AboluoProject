@@ -1,92 +1,109 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:qinc ="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
-<LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="104dp"
-    android:orientation="horizontal">
-    <LinearLayout
-        android:id="@+id/ck_by_linelayout"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent">
-    <CheckBox
-        android:clickable="false"
-        android:id="@+id/shopcar_ck_buy"
-        android:layout_marginLeft="12dp"
-        android:layout_marginRight="6dp"
-        android:layout_gravity="center_vertical"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        style="@style/CustomCheckboxTheme"/>
-    </LinearLayout>
-    <LinearLayout
-        android:layout_gravity="center_vertical"
-        android:layout_width="match_parent"
-        android:layout_height="76dp"
-        android:layout_marginRight="12dp">
-        <LinearLayout
-            android:layout_gravity="center_vertical"
-            android:layout_width="76dp"
-            android:layout_height="match_parent">
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:src="@color/darkgray"/>
-        </LinearLayout>
-        <LinearLayout
-            android:layout_marginLeft="15dp"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1">
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              xmlns:qinc="http://schemas.android.com/apk/res-auto"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical">
 
-                <TextView
-                    android:id="@+id/shopcar_txt_buyName"
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="104dp"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:id="@+id/ck_by_linelayout"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent">
+
+            <CheckBox
+                android:id="@+id/shopcar_ck_buy"
+                style="@style/CustomCheckboxTheme"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="12dp"
+                android:layout_marginRight="6dp"
+                android:clickable="false"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="76dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginRight="12dp">
+
+            <LinearLayout
+                android:layout_width="76dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_vertical">
+
+                <ImageView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:text="商品名称a撒旦撒打算实打实的ssssssssssssssssssssssssssssssssssss"
-                    android:maxLines="2"
-                    android:ellipsize="end"/>
+                    android:src="@color/darkgray"/>
             </LinearLayout>
 
-            <RelativeLayout
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1">
-                <TextView
-                    android:id="@+id/fuhao"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/red"
-                    android:text="￥"
-                    android:textSize="8sp"
-                    android:layout_centerVertical="true" />
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/red"
-                    android:text="180.0"
-                    android:layout_centerVertical="true"
-                    android:layout_toEndOf="@+id/fuhao"
-                    />
-                <ren.qinc.numberbutton.NumberButton
-                    android:visibility="invisible"
-                    android:id="@+id/number_button"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    qinc:editable="true"
-                    android:layout_centerVertical="true"
-                    android:layout_alignParentEnd="true" />
+                android:layout_height="match_parent"
+                android:layout_marginLeft="15dp"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1">
+
+                    <TextView
+                        android:id="@+id/shopcar_txt_buyName"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:ellipsize="end"
+                        android:maxLines="2"
+                        android:text="商品名称a撒旦撒打算实打实的ssssssssssssssssssssssssssssssssssss"/>
+                </LinearLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1">
+
+                    <TextView
+                        android:id="@+id/fuhao"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:text="￥"
+                        android:textColor="@color/red"
+                        android:textSize="8sp"/>
+
+                    <TextView
+                        android:id="@+id/shopcar_txt_money"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_toEndOf="@+id/fuhao"
+                        android:text="180.0"
+                        android:textColor="@color/red"
+                        />
+
+                    <com.aboluo.widget.AmountView
+                        android:layout_alignParentRight="true"
+                        android:id="@+id/number_button"
+                        app:btnTextSize="14sp"
+                        app:btnWidth="36dp"
+                        app:tvWidth="50dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="36dp"
+                        android:layout_gravity="right"
+                        android:layout_marginLeft="12dp"
+                        android:layout_centerVertical="true">
+                    </com.aboluo.widget.AmountView>
 
 
-            </RelativeLayout>
+                </RelativeLayout>
+            </LinearLayout>
         </LinearLayout>
     </LinearLayout>
-</LinearLayout>
 </LinearLayout>

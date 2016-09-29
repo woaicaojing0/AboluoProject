@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
@@ -18,19 +18,19 @@
             android:layout_height="match_parent">
 
             <TextView
-                android:layout_centerInParent="true"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
                 android:text="购物车"
-                android:textSize="18sp" />
+                android:textSize="18sp"/>
 
             <TextView
-                android:layout_alignParentEnd="true"
-                android:layout_centerVertical="true"
-                android:layout_marginRight="50dp"
                 android:id="@+id/btn_editAndok"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="50dp"
                 android:text="编辑"/>
         </RelativeLayout>
     </android.support.v7.widget.Toolbar>
@@ -40,14 +40,14 @@
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_alignBottom="@+id/toolbar"
-        android:background="@color/view_color" />
+        android:background="@color/view_color"/>
 
 
     <View
         android:id="@+id/view"
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:layout_above="@+id/bottom" />
+        android:layout_above="@+id/bottom"/>
 
     <RelativeLayout
         android:id="@+id/bottom"
@@ -61,84 +61,123 @@
             android:layout_height="match_parent"
             android:gravity="center_vertical"
             android:orientation="horizontal">
-<LinearLayout
-    android:id="@+id/cb_cart_all_linealayout"
-    android:layout_width="wrap_content"
-    android:layout_height="match_parent">
-            <CheckBox
-                android:clickable="false"
-                android:id="@+id/cb_cart_all"
-                style="@style/CustomCheckboxTheme"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_marginLeft="4dp"
-                android:gravity="center_vertical"
-                android:text="全选"
-                android:textColor="#191919"
-                android:textSize="18dp" />
-</LinearLayout>
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="18dp"
-                android:orientation="vertical">
 
-                <LinearLayout
+            <LinearLayout
+                android:id="@+id/cb_cart_all_linealayout"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent">
+
+                <CheckBox
+                    android:id="@+id/cb_cart_all"
+                    style="@style/CustomCheckboxTheme"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="合计："
-                        android:textColor="#fd5f8a"
-                        android:textSize="20sp" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="180"
-                        android:textColor="#fd5f8a"
-                        android:textSize="20sp" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="不含运费" />
-                </LinearLayout>
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="4dp"
+                    android:clickable="false"
+                    android:gravity="center_vertical"
+                    android:text="全选"
+                    android:textColor="#191919"
+                    android:textSize="18dp"/>
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/clean"
+                android:id="@+id/linelayout_ok"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:gravity="right">
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="18dp"
+                    android:orientation="vertical">
 
-                <TextView
-                    android:layout_width="100dp"
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="合计："
+                            android:textColor="#fd5f8a"
+                            android:textSize="20sp"/>
+
+                        <TextView
+                            android:id="@+id/shopcar_allmoney"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="180"
+                            android:textColor="#fd5f8a"
+                            android:textSize="20sp"/>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="不含运费"/>
+                    </LinearLayout>
+                </LinearLayout>
+                <LinearLayout
+                    android:id="@+id/clean"
+                    android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:gravity="center"
-                    android:background="#fd5f8a"
-                    android:text="结算"
-                    android:textColor="#ffffff" />
+                    android:gravity="right">
+
+                    <TextView
+                        android:layout_width="100dp"
+                        android:layout_height="match_parent"
+                        android:background="#fd5f8a"
+                        android:gravity="center"
+                        android:text="结算"
+                        android:textColor="#ffffff"/>
+                </LinearLayout>
+            </LinearLayout>
+            <LinearLayout
+                android:visibility="gone"
+                android:layout_marginLeft="18dp"
+                android:id="@+id/linelayout_edit"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:gravity="right">
+                <Button
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:text="分享宝贝"
+                    android:textSize="14sp"
+                    android:layout_weight="1"/>
+                <Button
+                    android:layout_width="0dp"
+                    android:text="移到收藏夹"
+                    android:textSize="14sp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"/>
+                <Button
+                    android:id="@+id/shopcar_btn_delete"
+                    android:text="删除"
+                    android:textSize="14sp"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"/>
             </LinearLayout>
         </LinearLayout>
     </RelativeLayout>
 
     <com.handmark.pulltorefresh.library.PullToRefreshScrollView
-        android:overScrollMode="never"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:scrollbars="none"
+        android:layout_above="@+id/view"
         android:layout_alignTop="@+id/top_view"
-        android:layout_above="@+id/view">
+        android:overScrollMode="never"
+        android:scrollbars="none">
 
         <RelativeLayout
             android:id="@+id/main_list_shoucang"
@@ -148,7 +187,7 @@
             <com.aboluo.widget.MyListview
                 android:id="@+id/shopcar_listview"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                android:layout_height="match_parent"/>
         </RelativeLayout>
- </com.handmark.pulltorefresh.library.PullToRefreshScrollView>
+    </com.handmark.pulltorefresh.library.PullToRefreshScrollView>
 </RelativeLayout>

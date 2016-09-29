@@ -12,6 +12,15 @@ public class ShopCarInfo {
     private int checkflag;
     private int editflag;
 
+    public double getMoney() {
+        return money;
+    }
+
+    public void setMoney(double money) {
+        this.money = money;
+    }
+
+    private double money;
     public String getGoodsName() {
         return goodsName;
     }

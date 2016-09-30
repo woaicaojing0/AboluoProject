@@ -26,6 +26,10 @@ import java.util.List;
  */
 
 public class ShopCarAdapter extends BaseAdapter {
+    public void setMlist(List<ShopCarInfo> mlist) {
+        this.mlist = mlist;
+    }
+
     private List<ShopCarInfo> mlist;
     private Callback mCallback;
     private Context mcontext;

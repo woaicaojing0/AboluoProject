@@ -24,6 +24,7 @@ import com.aboluo.com.R;
 import com.aboluo.model.ShopCarInfo;
 import com.aboluo.widget.AmountView;
 
+import java.nio.channels.NotYetBoundException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -129,10 +130,10 @@ public class ShopCarFragment extends Fragment implements View.OnClickListener,Sh
                         temp_info.add(j++, list.get(i));
                     }
                 }
-                list = temp_info;
+                list  =temp_info;
+                carAdapter.setMlist(temp_info);
                 carAdapter.setckisselected(temp_isSelected);
-                carAdapter.registerDataSetObserver(AdapterDataSetObserver);
-                listView.setAdapter(carAdapter);
+                carAdapter.notifyDataSetChanged();
                 break;
         }
     }

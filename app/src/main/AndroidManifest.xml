@@ -27,6 +27,7 @@
         <activity android:name=".RegisterActivity"></activity>
         <activity android:name=".RetrievepwdActivity"></activity>
         <activity android:name=".MyInfoAcitvity"></activity>
+        <activity android:name=".OrderActivity"></activity>
     </application>
 
 </manifest>

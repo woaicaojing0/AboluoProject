@@ -40,4 +40,6 @@ dependencies {
     compile 'de.hdodenhof:circleimageview:2.1.0'
     //购物车计算数量
     compile 'ren.qinc.numberbutton:numberbutton:0.0.1'
+
+   compile 'com.android.support:design:24.2.1'
 }

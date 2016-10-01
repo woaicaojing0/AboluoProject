@@ -1,0 +1,5 @@
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <!--solid 背景色 ，stroke 边框的颜色，corners 圆 -->
+    <solid android:color="@color/black" />
+    <corners android:radius="5dip"/>
+</shape>

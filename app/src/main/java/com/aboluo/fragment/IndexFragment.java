@@ -1,6 +1,7 @@
 package com.aboluo.fragment;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
@@ -23,6 +24,7 @@ import android.widget.Toast;
 import com.aboluo.XUtils.MyApplication;
 import com.aboluo.adapter.BannerAdapter;
 import com.aboluo.adapter.GridViewAdapter;
+import com.aboluo.com.GoodsDetailActivity;
 import com.aboluo.com.MainActivity;
 import com.aboluo.com.R;
 import com.android.volley.AuthFailureError;
@@ -64,7 +66,7 @@ public class IndexFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         if (view != null) {
-        } else {
+        } else {}
             view = inflater.inflate(R.layout.fragment_index, null);
             init(view);
             linearLayout.setOnTouchListener(new View.OnTouchListener() {
@@ -135,7 +137,15 @@ public class IndexFragment extends Fragment {
                     Toast.makeText(IndexFragment.this.getActivity(), "1", Toast.LENGTH_SHORT).show();
                 }
             });
-        }
+        ceshi_imgeview.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), GoodsDetailActivity.class);
+                intent.putExtra("info","这是从首页中的图片跳转的");
+                startActivity(intent);
+
+            }
+        });
         return view;
     }
     private void init(View view) {

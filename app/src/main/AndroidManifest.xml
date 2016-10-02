@@ -1,9 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.aboluo.com">
 
     <uses-permission android:name="android.permission.INTERNET"></uses-permission>
+    <!-- 发送短信-->
+    <uses-permission android:name="android.permission.SEND_SMS" />
+    <!-- 阅读消息 -->
+    <uses-permission android:name="android.permission.READ_SMS" />
+    <!-- 写入消息 -->
+    <uses-permission android:name="android.permission.WRITE_SMS" />
+    <!-- 接收消息 -->
+    <uses-permission android:name="android.prmission.RECEIVE_SMS" />
     <application
+        tools:replace="android:icon, android:theme"
         android:allowBackup="true"
         android:configChanges="keyboard"
         android:icon="@mipmap/ic_launcher"
@@ -29,6 +39,9 @@
         <activity android:name=".MyInfoAcitvity"></activity>
         <activity android:name=".OrderActivity"></activity>
         <activity android:name=".GoodsDetailActivity"></activity>
+        <activity android:name=".HeHuoRenActivity"></activity>
+        <activity android:name=".MiaoShaActivity"></activity>
+        <activity android:name=".OneYuanAcitvity"></activity>
     </application>
 
 </manifest>

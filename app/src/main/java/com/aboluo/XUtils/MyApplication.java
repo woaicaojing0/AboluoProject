@@ -12,6 +12,7 @@ import com.android.volley.toolbox.Volley;
 public class MyApplication extends Application {
     private static MyApplication instance;
     private  static  RequestQueue mRequestQueue;
+    public static  String APPToken ="E1D4EEA9782E40229CA5FC626BFCC666";
 
     public MyApplication(Context context) {
         mRequestQueue = Volley.newRequestQueue(context);

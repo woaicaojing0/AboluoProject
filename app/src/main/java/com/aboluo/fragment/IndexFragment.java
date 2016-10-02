@@ -25,7 +25,10 @@ import com.aboluo.XUtils.MyApplication;
 import com.aboluo.adapter.BannerAdapter;
 import com.aboluo.adapter.GridViewAdapter;
 import com.aboluo.com.GoodsDetailActivity;
+import com.aboluo.com.HeHuoRenActivity;
 import com.aboluo.com.MainActivity;
+import com.aboluo.com.MiaoShaActivity;
+import com.aboluo.com.OneYuanAcitvity;
 import com.aboluo.com.R;
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -99,6 +102,20 @@ public class IndexFragment extends Fragment {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                     Toast.makeText(IndexFragment.this.getActivity(), position+"", Toast.LENGTH_SHORT).show();
+                    switch ( position)
+                    {
+                        case 0:
+                            Intent intent = new Intent(getActivity(), HeHuoRenActivity.class);
+                            startActivity(intent);
+                            break;
+                        case 1:
+                            Intent intent1 = new Intent(getActivity(), OneYuanAcitvity.class);
+                            startActivity(intent1);break;
+                        case 4:
+                            Intent intent4 = new Intent(getActivity(), MiaoShaActivity.class);
+                            startActivity(intent4);
+                            break;
+                    }
                 }
             });
             final List<String> info = new ArrayList<>();

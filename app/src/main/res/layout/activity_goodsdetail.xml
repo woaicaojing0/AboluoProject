@@ -89,7 +89,7 @@
                 android:layout_marginLeft="8dp"
                 android:lines="3"
                 android:maxLines="3"
-                android:text="sssssssssssssssssssssssssassdasdasdasdasdasdasdssssssssssssssssssssssssssssssssssssssss" />
+                android:text="请选择商品类型" />
 
             <LinearLayout
                 android:layout_width="match_parent"

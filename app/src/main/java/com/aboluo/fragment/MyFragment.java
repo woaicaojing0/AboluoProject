@@ -14,6 +14,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 
+import com.aboluo.com.AddressActivity;
 import com.aboluo.com.LoginActivity;
 import com.aboluo.com.MyInfoAcitvity;
 import com.aboluo.com.OrderActivity;
@@ -30,7 +31,7 @@ public class MyFragment extends Fragment implements View.OnClickListener {
     private Button btn;
     private ScrollView my_scrollview;
     private LinearLayout linLayout_my_info, my_nopay, my_nosend, my_noreceive, my_assessment;
-    private RelativeLayout my_allorder;
+    private RelativeLayout my_allorder,my_addressinfo;
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -53,6 +54,7 @@ public class MyFragment extends Fragment implements View.OnClickListener {
         my_nosend.setOnClickListener(this);
         my_noreceive.setOnClickListener(this);
         my_assessment.setOnClickListener(this);
+        my_addressinfo.setOnClickListener(this);
         return view;
     }
 
@@ -65,6 +67,7 @@ public class MyFragment extends Fragment implements View.OnClickListener {
         my_nosend = (LinearLayout) view.findViewById(R.id.my_nosend);
         my_noreceive = (LinearLayout) view.findViewById(R.id.my_noreceive);
         my_assessment = (LinearLayout) view.findViewById(R.id.my_assessment);
+        my_addressinfo = (RelativeLayout) view.findViewById(R.id.my_addressinfo);
     }
 
     @Override
@@ -99,6 +102,10 @@ public class MyFragment extends Fragment implements View.OnClickListener {
                 intent5.putExtra("TAG", 4);
                 startActivity(intent5);
                 break;
+            case  R.id.my_addressinfo:
+                Intent intent6 = new Intent(MyFragment.this.getActivity(), AddressActivity.class);
+                intent6.putExtra("TAG", 5);
+                startActivity(intent6);
 
         }
 

@@ -42,6 +42,8 @@
         <activity android:name=".HeHuoRenActivity"></activity>
         <activity android:name=".MiaoShaActivity"></activity>
         <activity android:name=".OneYuanAcitvity"></activity>
+        <activity android:name=".AddressActivity"></activity>
+        <activity android:name=".AddAddressActivity"></activity>
     </application>
 
 </manifest>

@@ -3,22 +3,29 @@ package com.aboluo.com;
 import android.app.Activity;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.os.CountDownTimer;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import com.aboluo.XUtils.CommonUtils;
 import com.aboluo.XUtils.MyApplication;
 import com.aboluo.broadcast.SMSBroadcastReceiver;
+import com.aboluo.model.LoginInfo;
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
+import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
+import com.google.gson.Gson;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Logger;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
 
@@ -27,11 +34,13 @@ import cn.pedant.SweetAlert.SweetAlertDialog;
  */
 
 public class RegisterActivity extends Activity implements View.OnClickListener {
-    private View btn_getinfo;
-    private SMSBroadcastReceiver mSMSBroadcastReceiver;
-    private EditText register_edit_auth, register_edit_phone;
+    private Button btn_getinfo; // 获取验证码的按钮
+    private SMSBroadcastReceiver mSMSBroadcastReceiver;  //短信的广播监听
+    private EditText register_edit_auth, register_edit_phone, register_edit_pwd;
     private static final String ACTION = "android.provider.Telephony.SMS_RECEIVED";
-
+    private RequestQueue requestQueue;
+    private Button btn_register;    //注册按钮
+  private CountDownTimer time;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,12 +48,17 @@ public class RegisterActivity extends Activity implements View.OnClickListener {
         setContentView(R.layout.register);
         init();
         btn_getinfo.setOnClickListener(this);
+        btn_register.setOnClickListener(this);
     }
 
     private void init() {
-        btn_getinfo = findViewById(R.id.btn_getinfo);
+        time = new TimeCount(60000, 1000);//构造CountDownTimer对象
+        btn_getinfo = (Button) findViewById(R.id.btn_getinfo);
         register_edit_auth = (EditText) findViewById(R.id.register_edit_auth);
         register_edit_phone = (EditText) findViewById(R.id.register_edit_phone);
+        register_edit_pwd = (EditText) findViewById(R.id.register_edit_pwd);
+        btn_register = (Button) findViewById(R.id.btn_register);
+        requestQueue = MyApplication.getRequestQueue();
     }
 
     @Override
@@ -73,11 +87,19 @@ public class RegisterActivity extends Activity implements View.OnClickListener {
                 final String number = register_edit_phone.getText().toString().trim();
                 final String apptoken = MyApplication.APPToken;
                 if (CommonUtils.isMobileNO(number)) {
+                    time.start();
+                    btn_getinfo.setClickable(false);
+                    btn_getinfo.setTextSize(14);
                     StringRequest stringRequest = new StringRequest(Request.Method.POST, "http://m.abl.weidustudio.com/api/Login/SendMessage",
                             new Response.Listener<String>() {
                                 @Override
                                 public void onResponse(String response) {
-                                    Toast.makeText(RegisterActivity.this, response, Toast.LENGTH_SHORT).show();
+                                    Log.i("TAG",response);
+                                    Gson gson = new Gson();
+                                    response=response.replace("\\", "");//去掉'/'
+                                    response=response.substring(1, response.length()-1); //去掉头尾引号。
+                                   LoginInfo loginInfo =  gson.fromJson(response, LoginInfo.class);
+                                    Toast.makeText(RegisterActivity.this, loginInfo.getMessage(), Toast.LENGTH_SHORT).show();
                                 }
                             }, new Response.ErrorListener() {
                         @Override
@@ -93,11 +115,56 @@ public class RegisterActivity extends Activity implements View.OnClickListener {
                             return map;
                         }
                     };
-                    MyApplication.getRequestQueue().add(stringRequest);
+                   requestQueue.add(stringRequest);
                 } else {
                     new SweetAlertDialog(this, SweetAlertDialog.ERROR_TYPE)
                             .setTitleText("提示")
                             .setContentText("您输入的手机号有误!")
+                            .setConfirmText("确定")
+                            .show();
+                }
+                break;
+            case R.id.btn_register:
+                final String number2 = register_edit_phone.getText().toString().trim();
+                final String yanzhengma = register_edit_auth.getText().toString().trim();
+                final String pwd = register_edit_pwd.getText().toString().trim();
+                if(CommonUtils.isMiMaRight(pwd))
+                {
+                    final String Md5Pwd = CommonUtils.getMD5(pwd);
+                    StringRequest stringRequest = new StringRequest(Request.Method.POST,"http://m.abl.weidustudio.com/api/Login/UserRegister", new Response.Listener<String>() {
+                        @Override
+                        public void onResponse(String response) {
+                            Log.i("TAG",response);
+                            Gson gson = new Gson();
+                            response=response.replace("\\", "");//去掉'/'
+                            response=response.substring(1, response.length()-1); //去掉头尾引号。
+                            LoginInfo loginInfo =  gson.fromJson(response, LoginInfo.class);
+                            Toast.makeText(RegisterActivity.this, loginInfo.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                    }, new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+
+                        }
+                    }){
+                        @Override
+                        protected Map<String, String> getParams() throws AuthFailureError {
+                            Map<String,String> map = new HashMap<>();
+                            map.put("UserLoginNumber",number2);
+                            map.put("UserLoginPassword",Md5Pwd);
+                            map.put("MessageCheckNumber",yanzhengma);
+                            map.put("APPToken",MyApplication.APPToken);
+                            map.put("LoginCheckToken","");
+                            map.put("LoginPhone",number2);
+                            return map;
+                        }
+                    };
+                    requestQueue.add(stringRequest);
+                }
+                else {
+                    new SweetAlertDialog(this, SweetAlertDialog.ERROR_TYPE)
+                            .setTitleText("提示")
+                            .setContentText("请输入正确格式的密码!")
                             .setConfirmText("确定")
                             .show();
                 }
@@ -110,5 +177,21 @@ public class RegisterActivity extends Activity implements View.OnClickListener {
     protected void onDestroy() {
         super.onDestroy();
         this.unregisterReceiver(mSMSBroadcastReceiver);
+    }
+    class TimeCount extends CountDownTimer {
+        public TimeCount(long millisInFuture, long countDownInterval) {
+            super(millisInFuture, countDownInterval);//参数依次为总时长,和计时的时间间隔
+        }
+        @Override
+        public void onFinish() {//计时完毕时触发
+            btn_getinfo.setText("重新验证");
+            btn_getinfo.setClickable(true);
+            btn_getinfo.setTextSize(16);
+        }
+        @Override
+        public void onTick(long millisUntilFinished){//计时过程显示
+            btn_getinfo.setClickable(false);
+            btn_getinfo.setText(millisUntilFinished /1000+"秒重新发送");
+        }
     }
 }

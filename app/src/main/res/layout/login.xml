@@ -56,6 +56,7 @@
                 android:layout_height="48dp"
                 android:text="帐号："/>
             <EditText
+                android:id="@+id/edit_username"
                 android:background="@null"
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
@@ -84,6 +85,7 @@
                 android:id="@+id/textView" />
 
             <EditText
+                android:id="@+id/edit_userpwd"
                 android:background="@null"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -100,6 +102,7 @@
     </LinearLayout>
 
     <Button
+        android:id="@+id/btn_login"
         android:layout_marginTop="26dp"
         android:layout_width="match_parent"
         android:layout_height="43dp"

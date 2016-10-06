@@ -102,7 +102,7 @@
                 android:layout_marginLeft="16dp"
                 android:background="@null"
                 android:hint="请设置6-16位由数字和字母组成的密码"
-                android:inputType="number" />
+                android:inputType="textPassword" />
 
             <View
                 android:layout_width="match_parent"
@@ -119,6 +119,7 @@
         android:layout_marginTop="30dp">
 
         <Button
+            android:id="@+id/btn_register"
             android:layout_width="match_parent"
             android:layout_height="43dp"
             android:layout_marginLeft="15dp"

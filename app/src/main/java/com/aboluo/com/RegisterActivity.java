@@ -14,7 +14,8 @@ import android.widget.Toast;
 import com.aboluo.XUtils.CommonUtils;
 import com.aboluo.XUtils.MyApplication;
 import com.aboluo.broadcast.SMSBroadcastReceiver;
-import com.aboluo.model.LoginInfo;
+import com.aboluo.model.RegisterInfo;
+import com.aboluo.model.MessageInfo;
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -25,7 +26,6 @@ import com.google.gson.Gson;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.logging.Logger;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
 
@@ -41,6 +41,7 @@ public class RegisterActivity extends Activity implements View.OnClickListener {
     private RequestQueue requestQueue;
     private Button btn_register;    //注册按钮
   private CountDownTimer time;
+    private  MessageInfo messageInfo;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -98,8 +99,8 @@ public class RegisterActivity extends Activity implements View.OnClickListener {
                                     Gson gson = new Gson();
                                     response=response.replace("\\", "");//去掉'/'
                                     response=response.substring(1, response.length()-1); //去掉头尾引号。
-                                   LoginInfo loginInfo =  gson.fromJson(response, LoginInfo.class);
-                                    Toast.makeText(RegisterActivity.this, loginInfo.getMessage(), Toast.LENGTH_SHORT).show();
+                                    messageInfo=  gson.fromJson(response, MessageInfo.class);
+                                    Toast.makeText(RegisterActivity.this, messageInfo.getMessage(), Toast.LENGTH_SHORT).show();
                                 }
                             }, new Response.ErrorListener() {
                         @Override
@@ -130,36 +131,44 @@ public class RegisterActivity extends Activity implements View.OnClickListener {
                 final String pwd = register_edit_pwd.getText().toString().trim();
                 if(CommonUtils.isMiMaRight(pwd))
                 {
-                    final String Md5Pwd = CommonUtils.getMD5(pwd);
-                    StringRequest stringRequest = new StringRequest(Request.Method.POST,"http://m.abl.weidustudio.com/api/Login/UserRegister", new Response.Listener<String>() {
-                        @Override
-                        public void onResponse(String response) {
-                            Log.i("TAG",response);
-                            Gson gson = new Gson();
-                            response=response.replace("\\", "");//去掉'/'
-                            response=response.substring(1, response.length()-1); //去掉头尾引号。
-                            LoginInfo loginInfo =  gson.fromJson(response, LoginInfo.class);
-                            Toast.makeText(RegisterActivity.this, loginInfo.getMessage(), Toast.LENGTH_SHORT).show();
-                        }
-                    }, new Response.ErrorListener() {
-                        @Override
-                        public void onErrorResponse(VolleyError error) {
+                    if(!messageInfo.getResult().getSendPhoneNumber().equals(number2))
+                    {
+                        new SweetAlertDialog(this, SweetAlertDialog.ERROR_TYPE)
+                                .setTitleText("提示")
+                                .setContentText("请输入正确的手机号!")
+                                .setConfirmText("确定")
+                                .show();
+                    }else {
+                        StringRequest stringRequest = new StringRequest(Request.Method.POST, "http://m.abl.weidustudio.com/api/Login/UserRegister", new Response.Listener<String>() {
+                            @Override
+                            public void onResponse(String response) {
+                                Log.i("TAG", response);
+                                Gson gson = new Gson();
+                                response = response.replace("\\", "");//去掉'/'
+                                response = response.substring(1, response.length() - 1); //去掉头尾引号。
+                                RegisterInfo registerInfo = gson.fromJson(response, RegisterInfo.class);
+                                Toast.makeText(RegisterActivity.this, registerInfo.getMessage(), Toast.LENGTH_SHORT).show();
+                            }
+                        }, new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
 
-                        }
-                    }){
-                        @Override
-                        protected Map<String, String> getParams() throws AuthFailureError {
-                            Map<String,String> map = new HashMap<>();
-                            map.put("UserLoginNumber",number2);
-                            map.put("UserLoginPassword",Md5Pwd);
-                            map.put("MessageCheckNumber",yanzhengma);
-                            map.put("APPToken",MyApplication.APPToken);
-                            map.put("LoginCheckToken","");
-                            map.put("LoginPhone",number2);
-                            return map;
-                        }
-                    };
-                    requestQueue.add(stringRequest);
+                            }
+                        }) {
+                            @Override
+                            protected Map<String, String> getParams() throws AuthFailureError {
+                                Map<String, String> map = new HashMap<>();
+                                map.put("UserLoginNumber", number2);
+                                map.put("UserLoginPassword", CommonUtils.getMD5(pwd));
+                                map.put("MessageCheckNumber", yanzhengma);
+                                map.put("APPToken", MyApplication.APPToken);
+                                map.put("LoginCheckToken", "");
+                                map.put("LoginPhone", number2);
+                                return map;
+                            }
+                        };
+                        requestQueue.add(stringRequest);
+                    }
                 }
                 else {
                     new SweetAlertDialog(this, SweetAlertDialog.ERROR_TYPE)

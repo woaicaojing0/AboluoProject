@@ -14,6 +14,7 @@ import android.widget.Toast;
 import com.aboluo.XUtils.CommonUtils;
 import com.aboluo.XUtils.MyApplication;
 import com.aboluo.model.LoginInfo;
+import com.aboluo.model.RegisterInfo;
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -90,9 +91,9 @@ public class LoginActivity extends Activity  implements View.OnClickListener{
                     protected Map<String, String> getParams() throws AuthFailureError {
                         Map<String, String> map = new HashMap<>();
                         map.put("UserLoginNumber", name);
-                        map.put("UserLoginPass", pwd);
+                        map.put("UserLoginPass", CommonUtils.getMD5(pwd));
                         map.put("UserLoginIP", "192.168.0.150");
-                        map.put("LoginChannel", CommonUtils.getMD5(pwd));
+                        map.put("LoginChannel","1");
                         map.put("APPToken", MyApplication.APPToken);
                         map.put("LoginCheckToken", "");
                         map.put("LoginPhone", name);

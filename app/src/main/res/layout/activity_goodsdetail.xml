@@ -4,7 +4,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
-
+<LinearLayout
+    android:id="@+id/first_view"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
@@ -236,7 +240,7 @@
                 android:layout_height="wrap_content"></WebView>
         </LinearLayout>
     </com.aboluo.widget.VerticalScrollView>
-
+</LinearLayout>
     <include
         android:id="@+id/id_goodsdetail_bottom"
         layout="@layout/activity_goodsdetail_bootm"
@@ -244,4 +248,15 @@
         android:layout_height="50dp"
         android:layout_alignParentBottom="true" />
 
+    //弹出框，默认不显示
+    <include
+        android:id="@+id/second_view"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:background="@color/blue"
+        android:orientation="vertical"
+        layout="@layout/goods_type_popupwindow"
+        android:layout_alignParentBottom="true"
+        android:visibility="invisible">
+    </include>
 </RelativeLayout>

@@ -12,6 +12,7 @@ import android.util.DisplayMetrics;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewTreeObserver;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -46,7 +47,10 @@ public class GoodsDetailActivity extends Activity implements View.OnClickListene
     private ImageView my_info_text_back,goods_type_pop_close;
     private TextView txt_goods_type;
     private View Farther_view;
-
+    private int fHeight;
+    private int sHeight;
+    private LinearLayout firstView;
+    private LinearLayout secondView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -79,6 +83,24 @@ public class GoodsDetailActivity extends Activity implements View.OnClickListene
         WebSettings webviewsetting2 = goods_pingjia_webview.getSettings();
         webviewsetting2.setJavaScriptEnabled(true);
         webviewsetting2.setUseWideViewPort(true);//关键点
+        firstView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+
+                fHeight = firstView.getHeight();
+                firstView.getViewTreeObserver()
+                        .removeOnGlobalLayoutListener(this);
+            }
+        });
+        secondView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+
+                sHeight =secondView.getHeight();
+                secondView.getViewTreeObserver()
+                        .removeOnGlobalLayoutListener(this);
+            }
+        });
     }
 
     private void init() {
@@ -93,6 +115,21 @@ public class GoodsDetailActivity extends Activity implements View.OnClickListene
         detail_goods = (ImageView) findViewById(R.id.detail_goods);
         my_info_text_back = (ImageView) findViewById(R.id.my_info_text_back);
         txt_goods_type = (TextView) findViewById(R.id.txt_goods_type);
+        secondView = (LinearLayout) findViewById(R.id.second_view);
+        firstView = (LinearLayout) findViewById(R.id.first_view);
+        goods_type_pop_close = (ImageView) findViewById(R.id.goods_type_pop_close);
+        goods_type_pop_close.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                initHiddenAnim();
+            }
+        });
+        firstView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                initHiddenAnim();
+            }
+        });
 
     }
 
@@ -114,13 +151,13 @@ public class GoodsDetailActivity extends Activity implements View.OnClickListene
             case R.id.detail_goods:
                 break;
             case R.id.detail_more:
-                showinfopopupwindow();
+             showinfopopupwindow();
                 break;
             case R.id.my_info_text_back:
                 finish();
                 break;
             case R.id.txt_goods_type:
-                showgoodstypepopupwindow();
+                initShowAnim();
                 break;
 
         }
@@ -171,5 +208,60 @@ public class GoodsDetailActivity extends Activity implements View.OnClickListene
             }
         });
 
+    }
+    //firstView是主视图,secondView是popopWindow
+    private void initShowAnim(){
+        ObjectAnimator fViewScaleXAnim=ObjectAnimator.ofFloat(firstView,"scaleX",1.0f,0.8f);
+        fViewScaleXAnim.setDuration(350);
+        ObjectAnimator fViewScaleYAnim=ObjectAnimator.ofFloat(firstView,"scaleY",1.0f,0.8f);
+        fViewScaleYAnim.setDuration(350);
+        ObjectAnimator fViewAlphaAnim=ObjectAnimator.ofFloat(firstView,"alpha",1.0f,0.5f);
+        fViewAlphaAnim.setDuration(350);
+        ObjectAnimator fViewRotationXAnim = ObjectAnimator.ofFloat(firstView, "rotationX", 0f, 10f);
+        fViewRotationXAnim.setDuration(200);
+        ObjectAnimator fViewResumeAnim = ObjectAnimator.ofFloat(firstView, "rotationX", 10f, 0f);
+        fViewResumeAnim.setDuration(150);
+        fViewResumeAnim.setStartDelay(200);
+        ObjectAnimator fViewTransYAnim=ObjectAnimator.ofFloat(firstView,"translationY",0,-0.1f* fHeight);
+        fViewTransYAnim.setDuration(350);
+        ObjectAnimator sViewTransYAnim=ObjectAnimator.ofFloat(secondView,"translationY",sHeight,0);
+        sViewTransYAnim.setDuration(350);
+        sViewTransYAnim.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationStart(Animator animation) {
+                super.onAnimationStart(animation);
+                secondView.setVisibility(View.VISIBLE);
+            }
+        });
+        AnimatorSet showAnim=new AnimatorSet();
+        showAnim.playTogether(fViewScaleXAnim,fViewRotationXAnim,fViewResumeAnim,fViewTransYAnim,fViewAlphaAnim,fViewScaleYAnim,sViewTransYAnim);
+        showAnim.start();
+    }
+    private void initHiddenAnim(){
+        ObjectAnimator fViewScaleXAnim=ObjectAnimator.ofFloat(firstView,"scaleX",0.8f,1.0f);
+        fViewScaleXAnim.setDuration(350);
+        ObjectAnimator fViewScaleYAnim=ObjectAnimator.ofFloat(firstView,"scaleY",0.8f,1.0f);
+        fViewScaleYAnim.setDuration(350);
+        ObjectAnimator fViewAlphaAnim=ObjectAnimator.ofFloat(firstView,"alpha",0.5f,1.0f);
+        fViewAlphaAnim.setDuration(350);
+        ObjectAnimator fViewRotationXAnim = ObjectAnimator.ofFloat(firstView, "rotationX", 0f, 10f);
+        fViewRotationXAnim.setDuration(200);
+        ObjectAnimator fViewResumeAnim = ObjectAnimator.ofFloat(firstView, "rotationX", 10f, 0f);
+        fViewResumeAnim.setDuration(150);
+        fViewResumeAnim.setStartDelay(200);
+        ObjectAnimator fViewTransYAnim=ObjectAnimator.ofFloat(firstView,"translationY",-0.1f* fHeight,0);
+        fViewTransYAnim.setDuration(350);
+        ObjectAnimator sViewTransYAnim=ObjectAnimator.ofFloat(secondView,"translationY",0,sHeight);
+        sViewTransYAnim.setDuration(350);
+        sViewTransYAnim.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                super.onAnimationEnd(animation);
+                secondView.setVisibility(View.INVISIBLE);
+            }
+        });
+        AnimatorSet showAnim=new AnimatorSet();
+        showAnim.playTogether(fViewScaleXAnim,fViewRotationXAnim,fViewResumeAnim,fViewTransYAnim,fViewAlphaAnim,fViewScaleYAnim,sViewTransYAnim);
+        showAnim.start();
     }
 }

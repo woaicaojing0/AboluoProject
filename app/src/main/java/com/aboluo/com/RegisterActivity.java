@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
@@ -13,6 +15,7 @@ import android.widget.Toast;
 
 import com.aboluo.XUtils.CommonUtils;
 import com.aboluo.XUtils.MyApplication;
+import com.aboluo.XUtils.ValidateUtils;
 import com.aboluo.broadcast.SMSBroadcastReceiver;
 import com.aboluo.model.RegisterInfo;
 import com.aboluo.model.MessageInfo;
@@ -33,7 +36,7 @@ import cn.pedant.SweetAlert.SweetAlertDialog;
  * Created by CJ on 2016/9/21.
  */
 
-public class RegisterActivity extends Activity implements View.OnClickListener {
+public class RegisterActivity extends Activity implements View.OnClickListener,TextWatcher {
     private Button btn_getinfo; // 获取验证码的按钮
     private SMSBroadcastReceiver mSMSBroadcastReceiver;  //短信的广播监听
     private EditText register_edit_auth, register_edit_phone, register_edit_pwd;
@@ -50,6 +53,9 @@ public class RegisterActivity extends Activity implements View.OnClickListener {
         init();
         btn_getinfo.setOnClickListener(this);
         btn_register.setOnClickListener(this);
+        register_edit_auth.addTextChangedListener(this);
+        register_edit_phone.addTextChangedListener(this);
+        register_edit_pwd.addTextChangedListener(this);
     }
 
     private void init() {
@@ -87,10 +93,9 @@ public class RegisterActivity extends Activity implements View.OnClickListener {
             case R.id.btn_getinfo:
                 final String number = register_edit_phone.getText().toString().trim();
                 final String apptoken = MyApplication.APPToken;
-                if (CommonUtils.isMobileNO(number)) {
+                if (ValidateUtils.isMobileNO(number)) {
                     time.start();
-                    btn_getinfo.setClickable(false);
-                    btn_getinfo.setTextSize(14);
+                    btn_getinfo.setEnabled(false);
                     StringRequest stringRequest = new StringRequest(Request.Method.POST, "http://m.abl.weidustudio.com/api/Login/SendMessage",
                             new Response.Listener<String>() {
                                 @Override
@@ -129,7 +134,7 @@ public class RegisterActivity extends Activity implements View.OnClickListener {
                 final String number2 = register_edit_phone.getText().toString().trim();
                 final String yanzhengma = register_edit_auth.getText().toString().trim();
                 final String pwd = register_edit_pwd.getText().toString().trim();
-                if(CommonUtils.isMiMaRight(pwd))
+                if(ValidateUtils.isMiMaRight(pwd))
                 {
                     if(!messageInfo.getResult().getSendPhoneNumber().equals(number2))
                     {
@@ -187,6 +192,30 @@ public class RegisterActivity extends Activity implements View.OnClickListener {
         super.onDestroy();
         this.unregisterReceiver(mSMSBroadcastReceiver);
     }
+
+    @Override
+    public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+    }
+
+    @Override
+    public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+    }
+
+    @Override
+    public void afterTextChanged(Editable editable) {
+        boolean isok = false;
+        if(ValidateUtils.isMobileNO(register_edit_phone.getText().toString().trim()))
+        {
+            if(register_edit_pwd.getText().length() >5)
+            {
+                isok = true;
+            }
+        }
+        btn_register.setEnabled(isok);
+    }
+
     class TimeCount extends CountDownTimer {
         public TimeCount(long millisInFuture, long countDownInterval) {
             super(millisInFuture, countDownInterval);//参数依次为总时长,和计时的时间间隔
@@ -194,12 +223,11 @@ public class RegisterActivity extends Activity implements View.OnClickListener {
         @Override
         public void onFinish() {//计时完毕时触发
             btn_getinfo.setText("重新验证");
-            btn_getinfo.setClickable(true);
-            btn_getinfo.setTextSize(16);
+            btn_getinfo.setEnabled(true);
         }
         @Override
         public void onTick(long millisUntilFinished){//计时过程显示
-            btn_getinfo.setClickable(false);
+            btn_getinfo.setEnabled(false);
             btn_getinfo.setText(millisUntilFinished /1000+"秒重新发送");
         }
     }

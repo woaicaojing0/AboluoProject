@@ -13,7 +13,7 @@
 
         <LinearLayout
             android:id="@+id/ck_by_linelayout"
-            android:layout_width="wrap_content"
+            android:layout_width="30dp"
             android:layout_height="match_parent">
 
             <CheckBox
@@ -22,8 +22,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:layout_marginLeft="12dp"
-                android:layout_marginRight="6dp"
+                android:layout_marginLeft="6dp"
+                android:layout_marginRight="4dp"
                 android:clickable="false"/>
         </LinearLayout>
 

@@ -324,8 +324,10 @@
                 android:id="@+id/my_btn"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/login_btn"
+                android:background="@drawable/myinfo_btn_login"
                 android:layout_marginTop="20dp"
+                android:textColor="@color/white"
+                android:textSize="16sp"
                 android:text="登录" />
         </LinearLayout>
     </ScrollView>

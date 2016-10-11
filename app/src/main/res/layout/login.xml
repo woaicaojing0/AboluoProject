@@ -102,15 +102,16 @@
     </LinearLayout>
 
     <Button
+        android:enabled="false"
         android:id="@+id/btn_login"
         android:layout_marginTop="26dp"
         android:layout_width="match_parent"
         android:layout_height="43dp"
         android:textSize="18sp"
-        android:textColor="@color/login_btn_text"
+        android:textColor="@color/white"
         android:layout_marginLeft="15dp"
         android:layout_marginRight="15dp"
-        android:background="@drawable/btn_corner"
+        android:background="@drawable/register_btn_bg"
         android:text="登录"/>
     <LinearLayout
         android:layout_width="match_parent"
@@ -119,14 +120,14 @@
         android:layout_marginBottom="18dp">
         <TextView
             android:id="@+id/txt_register"
-            android:layout_width="56dp"
+            android:layout_width="58dp"
             android:layout_height="wrap_content"
             android:layout_marginRight="60dp"
             android:textColor="@color/register_color"
             android:text="免费注册"/>
         <TextView
             android:id="@+id/txt_retrivepwd"
-            android:layout_width="56dp"
+            android:layout_width="58dp"
             android:layout_height="wrap_content"
             android:textColor="@color/register_color"
             android:text="忘记密码"/>

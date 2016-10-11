@@ -76,11 +76,12 @@
             <Button
                 android:id="@+id/btn_getinfo"
                 android:layout_width="0dp"
-                android:layout_height="48dp"
+                android:layout_height="40dp"
                 android:layout_marginRight="15dp"
                 android:layout_weight="0.4"
-                android:background="@color/register_color"
+                android:background="@drawable/btn_sendyzm"
                 android:text="点击获取"
+                android:textSize="14sp"
                 android:textColor="@color/white" />
         </LinearLayout>
 
@@ -119,14 +120,15 @@
         android:layout_marginTop="30dp">
 
         <Button
+            android:enabled="false"
             android:id="@+id/btn_register"
             android:layout_width="match_parent"
             android:layout_height="43dp"
             android:layout_marginLeft="15dp"
             android:layout_marginRight="15dp"
-            android:background="@drawable/btn_corner"
+            android:background="@drawable/register_btn_bg"
             android:text="注册"
-            android:textColor="@color/login_btn_text"
+            android:textColor="@color/white"
             android:textSize="18sp" />
     </LinearLayout>
 

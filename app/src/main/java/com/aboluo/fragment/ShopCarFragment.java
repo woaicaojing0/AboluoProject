@@ -65,7 +65,7 @@ public class ShopCarFragment extends Fragment implements View.OnClickListener,Sh
             ShopCarInfo carInfo = new ShopCarInfo();
             carInfo.setGoodsName(i + "奋斗奋斗奋斗方法打发打发斯蒂芬斯蒂芬地方倒萨发送方");
             carInfo.setNum(i);
-            carInfo.setMoney(180.0);
+            carInfo.setMoney(180+i);
             list.add(carInfo);
         }
         carAdapter = new ShopCarAdapter(list, context,this);
@@ -75,12 +75,16 @@ public class ShopCarFragment extends Fragment implements View.OnClickListener,Sh
             public void onClick(View v) {
                 if (cb_cart_all.isChecked()) {
                     cb_cart_all.setChecked(false);
+                    for (int i = 0; i < carAdapter.getCount(); i++) {
+                        ck_checked.set(i, cb_cart_all.isChecked());
+                    }
                 } else {
                     cb_cart_all.setChecked(true);
+                    for (int i = 0; i < carAdapter.getCount(); i++) {
+                        ck_checked.add(i, cb_cart_all.isChecked());
+                    }
                 }
-                for (int i = 0; i < carAdapter.getCount(); i++) {
-                    ck_checked.add(i, cb_cart_all.isChecked());
-                }
+
                 carAdapter.setckisselected(ck_checked);
                 carAdapter.notifyDataSetChanged();
             }

@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.telephony.SmsMessage;
 
 import com.aboluo.XUtils.CommonUtils;
+import com.aboluo.XUtils.ValidateUtils;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -37,7 +38,7 @@ public class SMSBroadcastReceiver extends BroadcastReceiver {
 
                 //过滤不需要读取的短信的发送号码
                 if ("10690010213816481".equals(sender)) {
-                    content = CommonUtils.getyzm(content,6);
+                    content = ValidateUtils.getyzm(content,6);
                     mMessageListener.onReceived(content);
                     abortBroadcast();
                 }

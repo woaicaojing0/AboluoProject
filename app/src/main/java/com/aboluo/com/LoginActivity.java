@@ -2,7 +2,10 @@ package com.aboluo.com;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
@@ -26,16 +29,19 @@ import com.google.gson.Gson;
 import java.util.HashMap;
 import java.util.Map;
 
+import cn.pedant.SweetAlert.SweetAlertDialog;
+
 /**
  * Created by CJ on 2016/9/21.
  */
 
-public class LoginActivity extends Activity  implements View.OnClickListener{
+public class LoginActivity extends Activity  implements View.OnClickListener,TextWatcher{
    private TextView txt_register; //注册点击
     private TextView txt_retrivepwd;  //忘记密码
     private EditText edit_username,edit_userpwd;
     private Button btn_login;
     private RequestQueue requestQueue;
+    private SweetAlertDialog pDialog;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,6 +51,8 @@ public class LoginActivity extends Activity  implements View.OnClickListener{
         txt_register.setOnClickListener(this);
         txt_retrivepwd.setOnClickListener(this);
         btn_login.setOnClickListener(this);
+        edit_userpwd.addTextChangedListener(this);
+        edit_username.addTextChangedListener(this);
     }
     private  void init()
     {
@@ -54,6 +62,10 @@ public class LoginActivity extends Activity  implements View.OnClickListener{
         edit_username = (EditText) findViewById(R.id.edit_username);
         edit_userpwd = (EditText) findViewById(R.id.edit_userpwd);
         requestQueue = MyApplication.getRequestQueue();
+        pDialog = new SweetAlertDialog(this, SweetAlertDialog.PROGRESS_TYPE);
+        pDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
+        pDialog.setTitleText("登录中");
+        pDialog.setCancelable(false);
     }
 
     @Override
@@ -69,6 +81,7 @@ public class LoginActivity extends Activity  implements View.OnClickListener{
                 startActivity(intent2);
                 break;
             case  R.id.btn_login:
+                pDialog.show();
                 final String pwd = edit_userpwd.getText().toString();
                 final String name = edit_username.getText().toString();
                 StringRequest stringRequest = new StringRequest(Request.Method.POST, "http://m.abl.weidustudio.com/api/Login/UserLogin", new Response.Listener<String>() {
@@ -79,6 +92,7 @@ public class LoginActivity extends Activity  implements View.OnClickListener{
                         response=response.substring(1, response.length()-1); //去掉头尾引号。
                         Gson gson = new Gson();
                         LoginInfo loginInfo =  gson.fromJson(response, LoginInfo.class);
+                        pDialog.dismiss();
                         Toast.makeText(LoginActivity.this, loginInfo.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 }, new Response.ErrorListener() {
@@ -102,5 +116,29 @@ public class LoginActivity extends Activity  implements View.OnClickListener{
                 };
                 requestQueue.add(stringRequest);
         }
+    }
+
+    @Override
+    public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+    }
+
+    @Override
+    public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+    }
+
+    @Override
+    public void afterTextChanged(Editable editable) {
+        boolean isok = false;
+        if(edit_username.length()>0)
+        {
+            if(edit_userpwd.length()>0)
+            {isok = true;
+
+            }
+        }
+        btn_login.setEnabled(isok);
+
     }
 }

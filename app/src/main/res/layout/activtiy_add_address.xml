@@ -97,6 +97,7 @@
         android:background="@color/white"
         android:layout_marginTop="14dp">
         <LinearLayout
+            android:id="@+id/linelayout_location"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="horizontal">
@@ -107,6 +108,14 @@
                 android:gravity="center"
                 android:layout_height="match_parent"
                 android:text="所在地区" />
+            <TextView
+                android:layout_marginLeft="18dp"
+                android:id="@+id/add_address_txtview_location"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:lines="1"
+                android:ellipsize="end"
+                />
         </LinearLayout>
     </LinearLayout>
     <LinearLayout
@@ -175,4 +184,10 @@
         android:textColor="@color/white"
         android:text="保存">
     </Button>
+    <View
+        android:id="@+id/vMasker"
+        android:visibility="gone"
+        android:background="#e0000000"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"/>
 </LinearLayout>

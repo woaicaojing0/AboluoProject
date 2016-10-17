@@ -8,6 +8,7 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.aboluo.com.R;
+import com.aboluo.model.GoodsBigType;
 
 import java.util.List;
 
@@ -16,7 +17,7 @@ import java.util.List;
  */
 
 public class MenuListViewAdapter extends BaseAdapter {
-    private List<String> mlistinfo;
+    private GoodsBigType.ResultBean  mlistinfo;
     private Context mcontext;
     private int mSelectedPostion;
 
@@ -24,7 +25,7 @@ public class MenuListViewAdapter extends BaseAdapter {
         this.mSelectedPostion = selectedPostion;
     }
 
-    public MenuListViewAdapter(List<String> listinfo, Context Context,int selectedPostion) {
+    public MenuListViewAdapter(GoodsBigType.ResultBean listinfo, Context Context,int selectedPostion) {
         this.mcontext = Context;
         this.mlistinfo = listinfo;
         this.mSelectedPostion = selectedPostion;
@@ -32,12 +33,12 @@ public class MenuListViewAdapter extends BaseAdapter {
 
     @Override
     public int getCount() {
-        return mlistinfo.size();
+        return mlistinfo.getGoodsTypeList().size();
     }
 
     @Override
     public Object getItem(int position) {
-        return mlistinfo.get(position);
+        return mlistinfo.getGoodsTypeList().get(position);
     }
 
     @Override
@@ -52,6 +53,7 @@ public class MenuListViewAdapter extends BaseAdapter {
             holder = new ViewHolder();
             convertView = LayoutInflater.from(mcontext).inflate(R.layout.menu_listview_item, null);
             holder.textView = (TextView) convertView.findViewById(R.id.menu_listview_item_text);
+            holder.menu_listview_item_bigId = (TextView) convertView.findViewById(R.id.menu_listview_item_bigId);
             convertView.setTag(holder);
         } else {
             holder = (ViewHolder) convertView.getTag();
@@ -62,11 +64,12 @@ public class MenuListViewAdapter extends BaseAdapter {
         }else {
             holder.textView.setBackgroundColor(mcontext.getResources().getColor( R.color.main_bottom));
         }
-        holder.textView.setText(mlistinfo.get(position));
+        holder.textView.setText(mlistinfo.getGoodsTypeList().get(position).getGoodsTypeName());
+        holder.menu_listview_item_bigId.setText(mlistinfo.getGoodsTypeList().get(position).getGoodsTypeId()+"");
         return convertView;
     }
 
     class ViewHolder {
-        public TextView textView;
+        public TextView textView,menu_listview_item_bigId;
     }
 }

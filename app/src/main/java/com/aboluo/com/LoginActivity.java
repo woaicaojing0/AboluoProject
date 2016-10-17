@@ -65,7 +65,7 @@ public class LoginActivity extends Activity  implements View.OnClickListener,Tex
         pDialog = new SweetAlertDialog(this, SweetAlertDialog.PROGRESS_TYPE);
         pDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
         pDialog.setTitleText("登录中");
-        pDialog.setCancelable(false);
+        pDialog.setCancelable(true);
     }
 
     @Override

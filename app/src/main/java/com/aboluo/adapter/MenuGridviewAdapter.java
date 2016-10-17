@@ -9,6 +9,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.aboluo.com.R;
+import com.aboluo.model.GoodsBigType;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -17,21 +19,21 @@ import java.util.List;
  */
 
 public class MenuGridviewAdapter extends BaseAdapter {
-    private List<String> mlistinfo;
+    private GoodsBigType.ResultBean mlistinfo;
     private Context mcontext;
-    public MenuGridviewAdapter(List<String> listinfo, Context context)
+    public MenuGridviewAdapter(GoodsBigType.ResultBean listinfo, Context context)
     {
         this.mlistinfo = listinfo;
         this.mcontext = context;
     }
     @Override
     public int getCount() {
-        return mlistinfo.size();
+        return mlistinfo.getGoodsTypeList().size();
     }
 
     @Override
     public Object getItem(int position) {
-        return mlistinfo.get(position);
+        return mlistinfo.getGoodsTypeList().get(position);
     }
 
     @Override
@@ -52,7 +54,8 @@ public class MenuGridviewAdapter extends BaseAdapter {
         }else {
             holder = (ViewHolder) convertView.getTag();
         }
-        holder.txt_info.setText(mlistinfo.get(position));
+        holder.txt_info.setText(mlistinfo.getGoodsTypeList().get(position).getGoodsTypeName());
+//        Picasso.with(mcontext).load("http://img.pconline.com.cn/images/upload/upc/tx/wallpaper/1309/05/c5/25283777_1378352004384_800x600.jpg").into(holder.img_info);
         return convertView;
     }
     class  ViewHolder

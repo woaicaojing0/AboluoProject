@@ -92,6 +92,7 @@ public class LoginActivity extends Activity  implements View.OnClickListener,Tex
                         response=response.substring(1, response.length()-1); //去掉头尾引号。
                         Gson gson = new Gson();
                         LoginInfo loginInfo =  gson.fromJson(response, LoginInfo.class);
+                        Log.i("woaicoajing",response);
                         pDialog.dismiss();
                         Toast.makeText(LoginActivity.this, loginInfo.getMessage(), Toast.LENGTH_SHORT).show();
                     }
@@ -108,7 +109,7 @@ public class LoginActivity extends Activity  implements View.OnClickListener,Tex
                         map.put("UserLoginPass", CommonUtils.getMD5(pwd));
                         map.put("UserLoginIP", "192.168.0.150");
                         map.put("LoginChannel","1");
-                        map.put("APPToken", MyApplication.APPToken);
+                        map.put("APPToken", CommonUtils.GetValueByKey(LoginActivity.this,"APPToken"));
                         map.put("LoginCheckToken", "");
                         map.put("LoginPhone", name);
                         return map;

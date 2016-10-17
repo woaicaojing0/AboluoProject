@@ -12,12 +12,22 @@ import android.widget.GridView;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.aboluo.XUtils.CommonUtils;
+import com.aboluo.XUtils.MyApplication;
 import com.aboluo.adapter.MenuGridviewAdapter;
 import com.aboluo.adapter.MenuListViewAdapter;
 import com.aboluo.com.R;
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by cj34920 on 2016/9/8.
@@ -32,6 +42,8 @@ public class MenuFragment extends Fragment {
     private MenuGridviewAdapter menuGridviewTopAdapter;
     private MenuGridviewAdapter menuGridviewLoveAdapter;
     private  Context context =null;
+    private RequestQueue requestQueue;
+    private StringRequest requestByGoodsType1;
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         if (view == null) {
@@ -67,6 +79,28 @@ public class MenuFragment extends Fragment {
 
         return view;
     }
+    private void GetTypeList()
+    {
+        requestByGoodsType1 = new StringRequest(Request.Method.POST,"http://m.abl.weidustudio.com/api/GoodsType/GetGoodsTypeList", new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        }){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> map = new HashMap<>();
+                map.put("APPToken", MyApplication.APPToken);
+                return map;
+            }
+        };
+        requestQueue.add(requestByGoodsType1);
+    }
     private void init()
     {
        context = MenuFragment.this.getActivity();
@@ -75,5 +109,6 @@ public class MenuFragment extends Fragment {
         menu_listview = (ListView) view.findViewById(R.id.menu_listview);
         menu_gridview_top = (GridView) view.findViewById(R.id.menu_gridview_top);
         menu_gridview_youlove = (GridView) view.findViewById(R.id.menu_gridview_youlove);
+        requestQueue = MyApplication.getRequestQueue();
     }
 }

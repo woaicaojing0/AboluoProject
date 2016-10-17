@@ -1,10 +1,16 @@
 package com.aboluo.XUtils;
 
+import android.content.Context;
 import android.text.TextUtils;
+import android.util.Log;
 
+import com.aboluo.com.R;
+
+import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.Properties;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -31,5 +37,20 @@ public class CommonUtils {
         }
         return hex.toString();
 
+    }
+    //从resources中的raw 文件夹中获取文件并读取数据
+    public static String GetValueByKey(Context  context,String key){
+        Properties props = new Properties();
+        String result = "";
+        try {
+            InputStream in = context.getResources().openRawResource(R.raw.url);
+            props.load(in);
+            String value = props.getProperty(key);
+            Log.i("woaicoajing",key +"键的值是："+ value);
+            return  value;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return result;
     }
 }

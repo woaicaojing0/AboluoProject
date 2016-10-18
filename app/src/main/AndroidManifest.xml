@@ -44,6 +44,7 @@
         <activity android:name=".OneYuanAcitvity"></activity>
         <activity android:name=".AddressActivity"></activity>
         <activity android:name=".AddAddressActivity"></activity>
+        <activity android:name=".GoodsListActivity"></activity>
     </application>
 
 </manifest>

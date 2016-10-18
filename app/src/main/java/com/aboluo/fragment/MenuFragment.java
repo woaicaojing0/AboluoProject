@@ -37,18 +37,16 @@ import java.util.Map;
  */
 public class MenuFragment extends Fragment {
     private View view;
-    private ListView menu_listview;
-    private GridView menu_gridview_top, menu_gridview_youlove;
-    private List<String> listinfo;
-    private List<String> list_grid_info;
-    private MenuListViewAdapter menuListViewAdapter;
+    private ListView menu_listview;    //左边大类的listview
+    private GridView menu_gridview_top, menu_gridview_youlove;   //右边上边的gridiview 和右边下边的猜你喜欢
+    private MenuListViewAdapter menuListViewAdapter;   //listview 适配器
     private MenuGridviewAdapter menuGridviewTopAdapter;
     private MenuGridviewAdapter menuGridviewLoveAdapter;
     private Context context = null;
-    private RequestQueue requestQueue;
-    private StringRequest requestByGoodsType1;
-    private GoodsBigType.ResultBean resultBean;
-    private GoodsBigType.ResultBean resultBean2;
+    private RequestQueue requestQueue;  //volley调度
+    private StringRequest requestByGoodsType1; //访问大类的request
+    private GoodsBigType.ResultBean resultBean; //保存大类的信息
+    private GoodsBigType.ResultBean resultBean2; // 保存小类的信息
     private String url;
 
     @Override
@@ -60,32 +58,51 @@ public class MenuFragment extends Fragment {
         }
         init();
         GetTypeList();
-        for (int i = 0; i < 9; i++) {
-            listinfo.add(i, "分类" + i);
-            list_grid_info.add(i, "小类" + i);
-        }
 
-//        menuGridviewLoveAdapter = new MenuGridviewAdapter(list_grid_info, context);
-//        menu_gridview_youlove.setAdapter(menuGridviewLoveAdapter);
         menu_listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Toast.makeText(MenuFragment.this.getActivity(), position + "", Toast.LENGTH_SHORT).show();
-                int type_id = resultBean.getGoodsTypeList().get(position).getGoodsTypeId();
+                final int type_id = resultBean.getGoodsTypeList().get(position).getGoodsTypeId();
                 menuListViewAdapter.setSelectedPosition(position);
                 menuListViewAdapter.notifyDataSetChanged();
-                list_grid_info.clear();
-                for (int i = 0; i < (position + 10); i++) {
-                    list_grid_info.add(i, "小凤类" + i);
-                    menuGridviewLoveAdapter.notifyDataSetChanged();
-                    menuGridviewTopAdapter.notifyDataSetChanged();
-                }
+                StringRequest requestByGoodsType3 = new StringRequest(Request.Method.POST, url + "/api/GoodsType/ReceiveGoodsTypeSubList", new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        response = response.replace("\\", "");//去掉'/'
+                        response = response.substring(1, response.length() - 1); //去掉头尾引号。
+                        Log.i("woaicaojing", response);
+                        Gson gson = new Gson();
+                        GoodsBigType goodsBigType = gson.fromJson(response, GoodsBigType.class);
+                        if (goodsBigType.isIsSuccess()) {
+                            resultBean2 = goodsBigType.getResult();
+                            menuGridviewTopAdapter.setMlistinfo(resultBean2);
+                            menuGridviewTopAdapter.notifyDataSetChanged();
+                        } else {
+                        }
+                    }
+                }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(context, "请检查网络", Toast.LENGTH_SHORT).show();
+                    }
+                }) {
+                    @Override
+                    protected Map<String, String> getParams() throws AuthFailureError {
+                        Map<String, String> map = new HashMap<>();
+                        map.put("APPToken", MyApplication.APPToken);
+                        map.put("GoodsTypeId", String.valueOf(type_id));
+                        return map;
+                    }
+                };
+                requestQueue.add(requestByGoodsType3);
+
             }
         });
 
         return view;
     }
-
+    //获取初始化数据
     private void GetTypeList() {
 
         requestByGoodsType1 = new StringRequest(Request.Method.POST, url + "/api/GoodsType/ReceiveGoodsTypeList", new Response.Listener<String>() {
@@ -153,12 +170,12 @@ public class MenuFragment extends Fragment {
 
     private void init() {
         context = MenuFragment.this.getActivity();
-        list_grid_info = new ArrayList<>();
-        listinfo = new ArrayList<>();
         menu_listview = (ListView) view.findViewById(R.id.menu_listview);
         menu_gridview_top = (GridView) view.findViewById(R.id.menu_gridview_top);
         menu_gridview_youlove = (GridView) view.findViewById(R.id.menu_gridview_youlove);
         requestQueue = MyApplication.getRequestQueue();
         url = CommonUtils.GetValueByKey(context, "apiurl");
+        resultBean = new GoodsBigType.ResultBean();
+        resultBean2 = new GoodsBigType.ResultBean();
     }
 }

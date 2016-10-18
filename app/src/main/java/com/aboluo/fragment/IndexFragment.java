@@ -25,6 +25,7 @@ import com.aboluo.XUtils.MyApplication;
 import com.aboluo.adapter.BannerAdapter;
 import com.aboluo.adapter.GridViewAdapter;
 import com.aboluo.com.GoodsDetailActivity;
+import com.aboluo.com.GoodsListActivity;
 import com.aboluo.com.HeHuoRenActivity;
 import com.aboluo.com.MainActivity;
 import com.aboluo.com.MiaoShaActivity;
@@ -158,8 +159,9 @@ public class IndexFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getActivity(), GoodsDetailActivity.class);
+                Intent intent1 = new Intent(getActivity(), GoodsListActivity.class);
                 intent.putExtra("info","这是从首页中的图片跳转的");
-                startActivity(intent);
+                startActivity(intent1);
 
             }
         });

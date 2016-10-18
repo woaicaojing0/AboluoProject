@@ -19,6 +19,10 @@ import java.util.List;
  */
 
 public class MenuGridviewAdapter extends BaseAdapter {
+    public void setMlistinfo(GoodsBigType.ResultBean mlistinfo) {
+        this.mlistinfo = mlistinfo;
+    }
+
     private GoodsBigType.ResultBean mlistinfo;
     private Context mcontext;
     public MenuGridviewAdapter(GoodsBigType.ResultBean listinfo, Context context)
@@ -55,7 +59,7 @@ public class MenuGridviewAdapter extends BaseAdapter {
             holder = (ViewHolder) convertView.getTag();
         }
         holder.txt_info.setText(mlistinfo.getGoodsTypeList().get(position).getGoodsTypeName());
-//        Picasso.with(mcontext).load("http://img.pconline.com.cn/images/upload/upc/tx/wallpaper/1309/05/c5/25283777_1378352004384_800x600.jpg").into(holder.img_info);
+        Picasso.with(mcontext).load("http://img.pconline.com.cn/images/upload/upc/tx/wallpaper/1309/05/c5/25283777_1378352004384_800x600.jpg").into(holder.img_info);
         return convertView;
     }
     class  ViewHolder

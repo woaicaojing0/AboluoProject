@@ -7,6 +7,7 @@ import android.util.Log;
 
 import com.aboluo.XUtils.CommonUtils;
 import com.aboluo.XUtils.MyApplication;
+import com.aboluo.model.GoodsListInfo;
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -54,6 +55,7 @@ public class GoodsListActivity extends Activity {
                 response = response.substring(1, response.length() - 1);
                 Gson gson = new Gson();
                 Log.i("woaicaojing", response);
+                GoodsListInfo listBean = gson.fromJson(response,GoodsListInfo.class);
             }
         }, new Response.ErrorListener() {
             @Override
@@ -66,7 +68,7 @@ public class GoodsListActivity extends Activity {
                 Map<String, String> map = new HashMap<>();
                 map.put("APPToken", APPToken);
                 map.put("CurrentPage", "1");
-                map.put("PageSize", "1");
+                map.put("PageSize", "2");
                 return map;
             }
         };

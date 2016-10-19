@@ -5,10 +5,12 @@ import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,10 +25,22 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.aboluo.XUtils.CommonUtils;
+import com.aboluo.XUtils.MyApplication;
 import com.aboluo.adapter.BannerAdapter;
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.google.gson.Gson;
 import com.jude.rollviewpager.OnItemClickListener;
 import com.jude.rollviewpager.RollPagerView;
 import com.jude.rollviewpager.hintview.ColorPointHintView;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by CJ on 2016/10/1.
@@ -44,13 +58,19 @@ public class GoodsDetailActivity extends Activity implements View.OnClickListene
     private ImageView detail_more, detail_goods;
     private PopupWindow goods_popwindow, goods_type_popupwindow;
     private LinearLayout pop_01;
-    private ImageView my_info_text_back,goods_type_pop_close;
+    private ImageView my_info_text_back, goods_type_pop_close;
     private TextView txt_goods_type;
     private View Farther_view;
     private int fHeight;
     private int sHeight;
     private LinearLayout firstView;
     private LinearLayout secondView;
+    private  static int goods_id = 0; //商品的ID
+    private RequestQueue requestQueue;
+    private StringRequest stringRequest;
+    private static  String URL =null;
+    private static  String APPToken =null;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -96,7 +116,7 @@ public class GoodsDetailActivity extends Activity implements View.OnClickListene
             @Override
             public void onGlobalLayout() {
 
-                sHeight =secondView.getHeight();
+                sHeight = secondView.getHeight();
                 secondView.getViewTreeObserver()
                         .removeOnGlobalLayoutListener(this);
             }
@@ -130,7 +150,38 @@ public class GoodsDetailActivity extends Activity implements View.OnClickListene
                 initHiddenAnim();
             }
         });
-
+        Intent intent = getIntent();
+        goods_id = intent.getIntExtra("goods_id", 0);
+        requestQueue = MyApplication.getRequestQueue();
+        URL = CommonUtils.GetValueByKey(this,"apiurl");
+        APPToken = CommonUtils.GetValueByKey(this,"APPToken");
+        getgoods_detail();
+        requestQueue.add(stringRequest);
+    }
+    private  void getgoods_detail()
+    {
+        stringRequest = new StringRequest(Request.Method.POST, URL + "/api/Goods/ReceiveGoodsById", new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                response = response.replace("\\","");
+                response = response.substring(1,response.length()-1);
+                Log.i("woaicoajing",response);
+                Gson gson = new Gson();
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.i("woaicoajing",error.toString());
+            }
+        }){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String,String> map = new HashMap<>();
+                map.put("GoodsId",String.valueOf(goods_id));
+                map.put("APPToken",APPToken);
+                return  map;
+            }
+        };
     }
 
     @Override
@@ -151,7 +202,7 @@ public class GoodsDetailActivity extends Activity implements View.OnClickListene
             case R.id.detail_goods:
                 break;
             case R.id.detail_more:
-             showinfopopupwindow();
+                showinfopopupwindow();
                 break;
             case R.id.my_info_text_back:
                 finish();
@@ -209,22 +260,23 @@ public class GoodsDetailActivity extends Activity implements View.OnClickListene
         });
 
     }
+
     //firstView是主视图,secondView是popopWindow
-    private void initShowAnim(){
-        ObjectAnimator fViewScaleXAnim=ObjectAnimator.ofFloat(firstView,"scaleX",1.0f,0.8f);
+    private void initShowAnim() {
+        ObjectAnimator fViewScaleXAnim = ObjectAnimator.ofFloat(firstView, "scaleX", 1.0f, 0.8f);
         fViewScaleXAnim.setDuration(350);
-        ObjectAnimator fViewScaleYAnim=ObjectAnimator.ofFloat(firstView,"scaleY",1.0f,0.8f);
+        ObjectAnimator fViewScaleYAnim = ObjectAnimator.ofFloat(firstView, "scaleY", 1.0f, 0.8f);
         fViewScaleYAnim.setDuration(350);
-        ObjectAnimator fViewAlphaAnim=ObjectAnimator.ofFloat(firstView,"alpha",1.0f,0.5f);
+        ObjectAnimator fViewAlphaAnim = ObjectAnimator.ofFloat(firstView, "alpha", 1.0f, 0.5f);
         fViewAlphaAnim.setDuration(350);
         ObjectAnimator fViewRotationXAnim = ObjectAnimator.ofFloat(firstView, "rotationX", 0f, 10f);
         fViewRotationXAnim.setDuration(200);
         ObjectAnimator fViewResumeAnim = ObjectAnimator.ofFloat(firstView, "rotationX", 10f, 0f);
         fViewResumeAnim.setDuration(150);
         fViewResumeAnim.setStartDelay(200);
-        ObjectAnimator fViewTransYAnim=ObjectAnimator.ofFloat(firstView,"translationY",0,-0.1f* fHeight);
+        ObjectAnimator fViewTransYAnim = ObjectAnimator.ofFloat(firstView, "translationY", 0, -0.1f * fHeight);
         fViewTransYAnim.setDuration(350);
-        ObjectAnimator sViewTransYAnim=ObjectAnimator.ofFloat(secondView,"translationY",sHeight,0);
+        ObjectAnimator sViewTransYAnim = ObjectAnimator.ofFloat(secondView, "translationY", sHeight, 0);
         sViewTransYAnim.setDuration(350);
         sViewTransYAnim.addListener(new AnimatorListenerAdapter() {
             @Override
@@ -233,25 +285,26 @@ public class GoodsDetailActivity extends Activity implements View.OnClickListene
                 secondView.setVisibility(View.VISIBLE);
             }
         });
-        AnimatorSet showAnim=new AnimatorSet();
-        showAnim.playTogether(fViewScaleXAnim,fViewRotationXAnim,fViewResumeAnim,fViewTransYAnim,fViewAlphaAnim,fViewScaleYAnim,sViewTransYAnim);
+        AnimatorSet showAnim = new AnimatorSet();
+        showAnim.playTogether(fViewScaleXAnim, fViewRotationXAnim, fViewResumeAnim, fViewTransYAnim, fViewAlphaAnim, fViewScaleYAnim, sViewTransYAnim);
         showAnim.start();
     }
-    private void initHiddenAnim(){
-        ObjectAnimator fViewScaleXAnim=ObjectAnimator.ofFloat(firstView,"scaleX",0.8f,1.0f);
+
+    private void initHiddenAnim() {
+        ObjectAnimator fViewScaleXAnim = ObjectAnimator.ofFloat(firstView, "scaleX", 0.8f, 1.0f);
         fViewScaleXAnim.setDuration(350);
-        ObjectAnimator fViewScaleYAnim=ObjectAnimator.ofFloat(firstView,"scaleY",0.8f,1.0f);
+        ObjectAnimator fViewScaleYAnim = ObjectAnimator.ofFloat(firstView, "scaleY", 0.8f, 1.0f);
         fViewScaleYAnim.setDuration(350);
-        ObjectAnimator fViewAlphaAnim=ObjectAnimator.ofFloat(firstView,"alpha",0.5f,1.0f);
+        ObjectAnimator fViewAlphaAnim = ObjectAnimator.ofFloat(firstView, "alpha", 0.5f, 1.0f);
         fViewAlphaAnim.setDuration(350);
         ObjectAnimator fViewRotationXAnim = ObjectAnimator.ofFloat(firstView, "rotationX", 0f, 10f);
         fViewRotationXAnim.setDuration(200);
         ObjectAnimator fViewResumeAnim = ObjectAnimator.ofFloat(firstView, "rotationX", 10f, 0f);
         fViewResumeAnim.setDuration(150);
         fViewResumeAnim.setStartDelay(200);
-        ObjectAnimator fViewTransYAnim=ObjectAnimator.ofFloat(firstView,"translationY",-0.1f* fHeight,0);
+        ObjectAnimator fViewTransYAnim = ObjectAnimator.ofFloat(firstView, "translationY", -0.1f * fHeight, 0);
         fViewTransYAnim.setDuration(350);
-        ObjectAnimator sViewTransYAnim=ObjectAnimator.ofFloat(secondView,"translationY",0,sHeight);
+        ObjectAnimator sViewTransYAnim = ObjectAnimator.ofFloat(secondView, "translationY", 0, sHeight);
         sViewTransYAnim.setDuration(350);
         sViewTransYAnim.addListener(new AnimatorListenerAdapter() {
             @Override
@@ -260,8 +313,8 @@ public class GoodsDetailActivity extends Activity implements View.OnClickListene
                 secondView.setVisibility(View.INVISIBLE);
             }
         });
-        AnimatorSet showAnim=new AnimatorSet();
-        showAnim.playTogether(fViewScaleXAnim,fViewRotationXAnim,fViewResumeAnim,fViewTransYAnim,fViewAlphaAnim,fViewScaleYAnim,sViewTransYAnim);
+        AnimatorSet showAnim = new AnimatorSet();
+        showAnim.playTogether(fViewScaleXAnim, fViewRotationXAnim, fViewResumeAnim, fViewTransYAnim, fViewAlphaAnim, fViewScaleYAnim, sViewTransYAnim);
         showAnim.start();
     }
 }

@@ -114,15 +114,15 @@ public class GoodsListInfo {
             private int seckillId;
             private int seckillPrice;
             private int isJifen;
-            private int jifenPrice;
+            private double jifenPrice;
             private String goodsName;
             private Object goodsCode;
             private String goodsLogo;
             private String goodsPicture;
             private Object goodsSub;
             private int goodsQuantity;
-            private int goodsOriginalPrice;
-            private int goodsPrice;
+            private double goodsOriginalPrice;
+            private double goodsPrice;
             private int hyPrice;
             private int yunfei;
             private int isList;
@@ -138,7 +138,7 @@ public class GoodsListInfo {
             private int status;
             private double directly_money;
             private int directly_rate;
-            private int superior_money;
+            private double superior_money;
             private int superior_rate;
             private double three_money;
             private int three_rate;
@@ -210,11 +210,11 @@ public class GoodsListInfo {
                 this.isJifen = isJifen;
             }
 
-            public int getJifenPrice() {
+            public double getJifenPrice() {
                 return jifenPrice;
             }
 
-            public void setJifenPrice(int jifenPrice) {
+            public void setJifenPrice(double jifenPrice) {
                 this.jifenPrice = jifenPrice;
             }
 
@@ -266,19 +266,19 @@ public class GoodsListInfo {
                 this.goodsQuantity = goodsQuantity;
             }
 
-            public int getGoodsOriginalPrice() {
+            public double getGoodsOriginalPrice() {
                 return goodsOriginalPrice;
             }
 
-            public void setGoodsOriginalPrice(int goodsOriginalPrice) {
+            public void setGoodsOriginalPrice(double goodsOriginalPrice) {
                 this.goodsOriginalPrice = goodsOriginalPrice;
             }
 
-            public int getGoodsPrice() {
+            public double getGoodsPrice() {
                 return goodsPrice;
             }
 
-            public void setGoodsPrice(int goodsPrice) {
+            public void setGoodsPrice(double goodsPrice) {
                 this.goodsPrice = goodsPrice;
             }
 
@@ -402,11 +402,11 @@ public class GoodsListInfo {
                 this.directly_rate = directly_rate;
             }
 
-            public int getSuperior_money() {
+            public double getSuperior_money() {
                 return superior_money;
             }
 
-            public void setSuperior_money(int superior_money) {
+            public void setSuperior_money(double superior_money) {
                 this.superior_money = superior_money;
             }
 

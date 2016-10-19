@@ -1,13 +1,13 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 24
+    compileSdkVersion 23
     buildToolsVersion "24.0.1"
 
     defaultConfig {
         applicationId "com.aboluo.com"
         minSdkVersion 17
-        targetSdkVersion 24
+        targetSdkVersion 23
         versionCode 1
         versionName "1.0"
     }
@@ -22,7 +22,7 @@ android {
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     testCompile 'junit:junit:4.12'
-    compile 'com.android.support:appcompat-v7:24.1.1'
+    compile 'com.android.support:appcompat-v7:23.+'
     //新闻滚动条
     compile 'com.jude:rollviewpager:1.4.5'
     //头条跑马灯的效果
@@ -40,11 +40,15 @@ dependencies {
     compile 'de.hdodenhof:circleimageview:2.1.0'
     //购物车计算数量
     compile 'ren.qinc.numberbutton:numberbutton:0.0.1'
-    compile 'com.android.support:design:24.2.1'
+    compile 'com.android.support:design:23.2.1'
     //自定义dialog
     compile 'cn.pedant.sweetalert:library:1.3'
     //解析Gson
     compile 'com.google.code.gson:gson:2.7'
     //仿ios地址选择器
     compile 'com.bigkoo:pickerview:2.1.1'
+//    //5.0之后的cardview控件
+   compile 'com.android.support:cardview-v7:23.2.1'
+//    //5.0之后的RecyclerView控件
+//    compile 'com.android.support:RecyclerView-v7:23.0.1'
 }

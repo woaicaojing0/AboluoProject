@@ -6,7 +6,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.aboluo.com.R;
@@ -22,8 +21,8 @@ public class RecycleViewAdapter extends RecyclerView.Adapter<RecycleViewAdapter.
     private GoodsListInfo mgoodsListInfo;
     private List<GoodsListInfo.ResultBean.GoodsListBean> mgoodGoodsListBean;
     private OnRecyclerViewItemClickListener onRecyclerViewItemClickListener = null;
-    public RecycleViewAdapter(GoodsListInfo goodsListInfo)
-    {
+
+    public RecycleViewAdapter(GoodsListInfo goodsListInfo) {
         this.mgoodsListInfo = goodsListInfo;
         this.mgoodGoodsListBean = goodsListInfo.getResult().getGoodsList();
     }
@@ -39,13 +38,16 @@ public class RecycleViewAdapter extends RecyclerView.Adapter<RecycleViewAdapter.
     public void onBindViewHolder(MyViewHolder holder, final int position) {
         holder.goods_name.setText(mgoodGoodsListBean.get(position).getGoodsName());
         holder.old_money.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG);
-        holder.old_money.setText(mgoodGoodsListBean.get(position).getGoodsPrice()+"元");
-        holder.new_money.setText(mgoodGoodsListBean.get(position).getHyPrice()+"元");
+        holder.old_money.setText(mgoodGoodsListBean.get(position).getGoodsPrice() + "元");
+        holder.goods_quantity.setText("数量:" + mgoodGoodsListBean.get(position).getGoodsQuantity() + "件");
+
+        holder.new_money.setText(mgoodGoodsListBean.get(position).getHyPrice() + "元");
+        holder.goods_sub.setText(mgoodGoodsListBean.get(position).getGoodsSub() + "商品描述");
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (onRecyclerViewItemClickListener != null) {
-                    onRecyclerViewItemClickListener.onItemClick(v,position);
+                    onRecyclerViewItemClickListener.onItemClick(v, position);
                 }
             }
         });
@@ -58,21 +60,24 @@ public class RecycleViewAdapter extends RecyclerView.Adapter<RecycleViewAdapter.
     }
 
     public static class MyViewHolder extends RecyclerView.ViewHolder {
-        public TextView goods_name,new_money,old_money;
+        public TextView goods_name, new_money, old_money, goods_sub, goods_quantity;
         public CardView goods_list_cardview;
+
         public MyViewHolder(View itemView) {
             super(itemView);
             new_money = (TextView) itemView.findViewById(R.id.new_money);
             old_money = (TextView) itemView.findViewById(R.id.old_money);
             goods_name = (TextView) itemView.findViewById(R.id.goods_name);
+            goods_sub = (TextView) itemView.findViewById(R.id.goods_sub);
+            goods_quantity = (TextView) itemView.findViewById(R.id.goods_quantity);
             goods_list_cardview = (CardView) itemView.findViewById(R.id.goods_list_cardview);
         }
     }
 
-    public static  interface  OnRecyclerViewItemClickListener
-    {
-        void  onItemClick(View view,int position);
+    public static interface OnRecyclerViewItemClickListener {
+        void onItemClick(View view, int position);
     }
+
     public void setOnItemClickListener(OnRecyclerViewItemClickListener listener) {
         this.onRecyclerViewItemClickListener = listener;
     }

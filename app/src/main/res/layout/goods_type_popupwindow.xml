@@ -72,74 +72,77 @@
                 android:background="#b8b8b8"></View>
 
             <LinearLayout
+                android:id="@+id/all_color"
                 android:layout_width="match_parent"
-                android:layout_height="60dp"
+                android:layout_height="wrap_content"
                 android:layout_marginBottom="8dp"
                 android:layout_marginTop="8dp"
                 android:gravity="center_vertical"
                 android:orientation="vertical">
-
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="颜色分类："/>
 
                 <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
+                    android:id="@+id/goodsdetail_type_color"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
                     android:gravity="center_vertical"
-                    android:orientation="horizontal">
+                    android:orientation="vertical">
+<!--<LinearLayout-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:gravity="center_vertical"-->
+    <!--android:orientation="horizontal"-->
+    <!--android:layout_height="40dp">-->
+    <!--<RadioButton-->
+        <!--android:gravity="center"-->
+        <!--android:layout_width="0dp"-->
+        <!--android:layout_weight="1"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_marginLeft="6dp"-->
+        <!--android:background="@null"-->
+        <!--android:button="@null"-->
+        <!--android:text="红色"/>-->
 
-                    <RadioButton
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="6dp"
-                        android:background="@null"
-                        android:button="@null"
-                        android:text="红色"/>
+    <!--<RadioButton-->
+        <!--android:gravity="center"-->
+        <!--android:layout_width="0dp"-->
+        <!--android:layout_weight="1"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_marginLeft="10dp"-->
+        <!--android:button="@null"-->
+        <!--android:text="红色"/>-->
 
-                    <RadioButton
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="10dp"
-                        android:button="@null"
-                        android:text="红色"/>
-
-                    <RadioButton
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="10dp"
-                        android:button="@null"
-                        android:text="红色"/>
+    <!--<RadioButton-->
+        <!--android:gravity="center"-->
+        <!--android:layout_width="0dp"-->
+        <!--android:layout_weight="1"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_marginLeft="10dp"-->
+        <!--android:button="@null"-->
+        <!--android:text="红色"/>-->
 
 
-                    <RadioButton
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="10dp"
-                        android:button="@null"
-                        android:text="红色"/>
+    <!--<RadioButton-->
+        <!--android:gravity="center"-->
+        <!--android:layout_width="0dp"-->
+        <!--android:layout_weight="1"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_marginLeft="10dp"-->
+        <!--android:button="@null"-->
+        <!--android:text="红色"/>-->
 
-                    <RadioButton
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="10dp"
-                        android:button="@null"
-                        android:text="红色"/>
+    <!--<RadioButton-->
+        <!--android:gravity="center"-->
+        <!--android:layout_width="0dp"-->
+        <!--android:layout_weight="1"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_marginLeft="10dp"-->
+        <!--android:button="@null"-->
+        <!--android:text="红色"/>-->
+<!--</LinearLayout>-->
 
-                    <RadioButton
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="10dp"
-                        android:button="@null"
-                        android:text="红色"/>
-
-                    <RadioButton
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="10dp"
-                        android:button="@null"
-                        android:text="红色"/>
                 </LinearLayout>
             </LinearLayout>
 
@@ -149,6 +152,7 @@
                 android:background="#b8b8b8"></View>
 
             <LinearLayout
+                android:id="@+id/goodsdetail_type_standard"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
                 android:layout_marginBottom="8dp"

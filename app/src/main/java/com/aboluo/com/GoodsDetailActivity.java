@@ -14,10 +14,12 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
@@ -41,6 +43,7 @@ import com.jude.rollviewpager.RollPagerView;
 import com.jude.rollviewpager.hintview.ColorPointHintView;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -60,12 +63,11 @@ public class GoodsDetailActivity extends Activity implements View.OnClickListene
     private PopupWindow goods_popwindow, goods_type_popupwindow;
     private LinearLayout pop_01;
     private ImageView my_info_text_back, goods_type_pop_close;
-    private TextView txt_goods_type,txt_goods_name,txt_new_money,txt_old_money,txt_goods_num;
+    private TextView txt_goods_type, txt_goods_name, txt_new_money, txt_old_money, txt_goods_num;
     private View Farther_view;
     private int fHeight;
     private int sHeight;
-    private LinearLayout firstView;
-    private LinearLayout secondView;
+    private LinearLayout firstView, secondView, goodsdetail_type_color,all_color;
     private static int goods_id = 0; //商品的ID
     private RequestQueue requestQueue;
     private StringRequest stringRequest;
@@ -119,7 +121,7 @@ public class GoodsDetailActivity extends Activity implements View.OnClickListene
             public void onGlobalLayout() {
 
                 sHeight = secondView.getHeight();
-                sHeight = (sHeight/3)*2;
+                sHeight = (sHeight / 3) * 2;
                 secondView.getViewTreeObserver()
                         .removeOnGlobalLayoutListener(this);
             }
@@ -146,6 +148,8 @@ public class GoodsDetailActivity extends Activity implements View.OnClickListene
         txt_goods_num = (TextView) findViewById(R.id.txt_goods_num);
         secondView = (LinearLayout) findViewById(R.id.second_view);
         firstView = (LinearLayout) findViewById(R.id.first_view);
+        goodsdetail_type_color = (LinearLayout) findViewById(R.id.goodsdetail_type_color);
+        all_color = (LinearLayout) findViewById(R.id.all_color);
         goods_type_pop_close = (ImageView) findViewById(R.id.goods_type_pop_close);
         goods_type_pop_close.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -180,7 +184,110 @@ public class GoodsDetailActivity extends Activity implements View.OnClickListene
                 txt_new_money.setText(String.valueOf(goodsDetailInfo.getResult().getGoodsInfo().getGoodsPrice()));
                 txt_old_money.setText(String.valueOf(goodsDetailInfo.getResult().getGoodsInfo().getHyPrice()));
                 txt_goods_num.setText(String.valueOf(goodsDetailInfo.getResult().getGoodsInfo().getGoodsQuantity()));
+                List<GoodsDetailInfo.ResultBean.GoodsInfoBean.GoodsColorBean> listcolor = goodsDetailInfo.getResult().getGoodsInfo().getGoodsColor();
+                if (listcolor == null || listcolor.size() == 0) {
+                    all_color.setVisibility(View.GONE);
+                } else {
+                    int num = listcolor.size() / 5;
+                    int yushu = listcolor.size() % 5;
+                    if (num == 0) {
+                        LinearLayout linearLayout = new LinearLayout(GoodsDetailActivity.this);
+                        linearLayout.setOrientation(LinearLayout.HORIZONTAL);
+                        linearLayout.setGravity(Gravity.CENTER_VERTICAL);
+                        linearLayout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, CommonUtils.dip2px(GoodsDetailActivity.this, 60)));
+                        for (int i2 = 0; i2 < listcolor.size(); i2++) {
+                            Button button = new Button(GoodsDetailActivity.this);
+                            button.setId(i2);
+                            button.setLayoutParams(new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1.0f));
+                            button.setText(listcolor.get(i2).getColor());
+                            final int finalI = i2;
+                            button.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    Toast.makeText(GoodsDetailActivity.this, finalI + "", Toast.LENGTH_SHORT).show();
+                                }
+                            });
+                            linearLayout.addView(button);
+                        }
+                        goodsdetail_type_color.addView(linearLayout);
+                    } else {
+                        if (yushu == 0) {
 
+                            for (int i = 0; i < num; i++) {
+                                LinearLayout linearLayout = new LinearLayout(GoodsDetailActivity.this);
+                                linearLayout.setOrientation(LinearLayout.HORIZONTAL);
+                                linearLayout.setGravity(Gravity.CENTER_VERTICAL);
+                                linearLayout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, CommonUtils.dip2px(GoodsDetailActivity.this, 60)));
+                                for (int i2 = 0; i2 < 5; i2++) {
+                                    Button button = new Button(GoodsDetailActivity.this);
+                                    button.setId((5 * i) + i2);
+                                    button.setLayoutParams(new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1.0f));
+                                    button.setText(listcolor.get((5 * i )+ i2).getColor());
+                                    final int finalI = i2;
+                                    button.setOnClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+                                            Toast.makeText(GoodsDetailActivity.this, finalI + "", Toast.LENGTH_SHORT).show();
+                                        }
+                                    });
+                                    linearLayout.addView(button);
+                                }
+                                goodsdetail_type_color.addView(linearLayout);
+                            }
+
+                        } else {
+                            num = num + 1;
+                            for (int i = 0; i < num; i++) {
+                                if (i == (num - 1)) {
+                                    LinearLayout linearLayout = new LinearLayout(GoodsDetailActivity.this);
+                                    linearLayout.setOrientation(LinearLayout.HORIZONTAL);
+                                    linearLayout.setGravity(Gravity.CENTER_VERTICAL);
+                                    linearLayout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, CommonUtils.dip2px(GoodsDetailActivity.this, 60)));
+                                    for (int i2 = 0; i2 < yushu; i2++) {
+                                        Button button = new Button(GoodsDetailActivity.this);
+                                        button.setId((5 * i ) + i2);
+                                        button.setLayoutParams(new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1.0f));
+                                        button.setText(listcolor.get((5 * i )+ i2).getColor());
+                                        final int finalI = i2;
+                                        button.setOnClickListener(new View.OnClickListener() {
+                                            @Override
+                                            public void onClick(View v) {
+                                                Toast.makeText(GoodsDetailActivity.this, finalI + "", Toast.LENGTH_SHORT).show();
+                                            }
+                                        });
+                                        linearLayout.addView(button);
+                                    }
+                                    goodsdetail_type_color.addView(linearLayout);
+
+                                } else {
+                                    LinearLayout linearLayout = new LinearLayout(GoodsDetailActivity.this);
+                                    linearLayout.setOrientation(LinearLayout.HORIZONTAL);
+                                    linearLayout.setGravity(Gravity.CENTER_VERTICAL);
+                                    linearLayout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, CommonUtils.dip2px(GoodsDetailActivity.this, 60)));
+                                    for (int i2 = 0; i2 < 5; i2++) {
+                                        Button button = new Button(GoodsDetailActivity.this);
+                                        button.setId((5 * i) + i2);
+                                        button.setLayoutParams(new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1.0f));
+                                       int i22 = (5 * i)+ i2;
+                                        button.setText(listcolor.get((5 * i)+ i2).getColor());
+                                        final int finalI = i2;
+                                        button.setOnClickListener(new View.OnClickListener() {
+                                            @Override
+                                            public void onClick(View v) {
+                                                Toast.makeText(GoodsDetailActivity.this, finalI + "", Toast.LENGTH_SHORT).show();
+                                            }
+                                        });
+                                        linearLayout.addView(button);
+                                    }
+                                    goodsdetail_type_color.addView(linearLayout);
+                                }
+
+                            }
+                        }
+
+                    }
+
+                }
             }
         }, new Response.ErrorListener() {
             @Override

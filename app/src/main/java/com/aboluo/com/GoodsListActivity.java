@@ -3,6 +3,7 @@ package com.aboluo.com;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -92,6 +93,9 @@ public class GoodsListActivity extends Activity implements RecycleViewAdapter.On
         int goods_id = listBean.getResult().getGoodsList().get(position).getGoodsId();
         Intent intent = new Intent(this,GoodsDetailActivity.class);
         intent.putExtra("goods_id", goods_id);
-        startActivity(intent);
+        String  transitionName = "detail";
+        ActivityOptionsCompat   transitionActivityOptionsCompat = ActivityOptionsCompat.makeSceneTransitionAnimation(GoodsListActivity.this,view,transitionName);
+        startActivity(intent,transitionActivityOptionsCompat.toBundle());
+//        startActivity(intent);
     }
 }

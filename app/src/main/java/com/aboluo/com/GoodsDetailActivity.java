@@ -28,6 +28,7 @@ import android.widget.Toast;
 import com.aboluo.XUtils.CommonUtils;
 import com.aboluo.XUtils.MyApplication;
 import com.aboluo.adapter.BannerAdapter;
+import com.aboluo.model.GoodsDetailInfo;
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -59,17 +60,18 @@ public class GoodsDetailActivity extends Activity implements View.OnClickListene
     private PopupWindow goods_popwindow, goods_type_popupwindow;
     private LinearLayout pop_01;
     private ImageView my_info_text_back, goods_type_pop_close;
-    private TextView txt_goods_type;
+    private TextView txt_goods_type,txt_goods_name,txt_new_money,txt_old_money,txt_goods_num;
     private View Farther_view;
     private int fHeight;
     private int sHeight;
     private LinearLayout firstView;
     private LinearLayout secondView;
-    private  static int goods_id = 0; //商品的ID
+    private static int goods_id = 0; //商品的ID
     private RequestQueue requestQueue;
     private StringRequest stringRequest;
-    private static  String URL =null;
-    private static  String APPToken =null;
+    private static String URL = null;
+    private static String APPToken = null;
+    private GoodsDetailInfo goodsDetailInfo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -117,10 +119,13 @@ public class GoodsDetailActivity extends Activity implements View.OnClickListene
             public void onGlobalLayout() {
 
                 sHeight = secondView.getHeight();
+                sHeight = (sHeight/3)*2;
                 secondView.getViewTreeObserver()
                         .removeOnGlobalLayoutListener(this);
             }
         });
+        getgoods_detail();
+        requestQueue.add(stringRequest);
     }
 
     private void init() {
@@ -135,6 +140,10 @@ public class GoodsDetailActivity extends Activity implements View.OnClickListene
         detail_goods = (ImageView) findViewById(R.id.detail_goods);
         my_info_text_back = (ImageView) findViewById(R.id.my_info_text_back);
         txt_goods_type = (TextView) findViewById(R.id.txt_goods_type);
+        txt_goods_name = (TextView) findViewById(R.id.txt_goods_name);
+        txt_new_money = (TextView) findViewById(R.id.txt_new_money);
+        txt_old_money = (TextView) findViewById(R.id.txt_old_money);
+        txt_goods_num = (TextView) findViewById(R.id.txt_goods_num);
         secondView = (LinearLayout) findViewById(R.id.second_view);
         firstView = (LinearLayout) findViewById(R.id.first_view);
         goods_type_pop_close = (ImageView) findViewById(R.id.goods_type_pop_close);
@@ -153,33 +162,38 @@ public class GoodsDetailActivity extends Activity implements View.OnClickListene
         Intent intent = getIntent();
         goods_id = intent.getIntExtra("goods_id", 0);
         requestQueue = MyApplication.getRequestQueue();
-        URL = CommonUtils.GetValueByKey(this,"apiurl");
-        APPToken = CommonUtils.GetValueByKey(this,"APPToken");
-        getgoods_detail();
-        requestQueue.add(stringRequest);
+        URL = CommonUtils.GetValueByKey(this, "apiurl");
+        APPToken = CommonUtils.GetValueByKey(this, "APPToken");
+
     }
-    private  void getgoods_detail()
-    {
+
+    private void getgoods_detail() {
         stringRequest = new StringRequest(Request.Method.POST, URL + "/api/Goods/ReceiveGoodsById", new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                response = response.replace("\\","");
-                response = response.substring(1,response.length()-1);
-                Log.i("woaicoajing",response);
+                response = response.replace("\\", "");
+                response = response.substring(1, response.length() - 1);
+                Log.i("woaicoajing", response);
                 Gson gson = new Gson();
+                goodsDetailInfo = gson.fromJson(response, GoodsDetailInfo.class);
+                txt_goods_name.setText(goodsDetailInfo.getResult().getGoodsInfo().getGoodsName());
+                txt_new_money.setText(String.valueOf(goodsDetailInfo.getResult().getGoodsInfo().getGoodsPrice()));
+                txt_old_money.setText(String.valueOf(goodsDetailInfo.getResult().getGoodsInfo().getHyPrice()));
+                txt_goods_num.setText(String.valueOf(goodsDetailInfo.getResult().getGoodsInfo().getGoodsQuantity()));
+
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Log.i("woaicoajing",error.toString());
+                Log.i("woaicoajing", error.toString());
             }
-        }){
+        }) {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
-                Map<String,String> map = new HashMap<>();
-                map.put("GoodsId",String.valueOf(goods_id));
-                map.put("APPToken",APPToken);
-                return  map;
+                Map<String, String> map = new HashMap<>();
+                map.put("GoodsId", String.valueOf(goods_id));
+                map.put("APPToken", APPToken);
+                return map;
             }
         };
     }

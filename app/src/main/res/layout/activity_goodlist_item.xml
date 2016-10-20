@@ -28,13 +28,15 @@
                 android:gravity="center">
 
                 <ImageView
+                    android:id="@+id/goods_image"
                     android:layout_width="100dp"
                     android:layout_height="100dp"
                     android:scaleType="centerInside"
-                    android:src="@drawable/logo"></ImageView>
+                    android:src="@drawable/ic_launcher"></ImageView>
             </LinearLayout>
 
             <LinearLayout
+                android:layout_marginLeft="2dp"
                 android:layout_marginRight="2dp"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
@@ -48,6 +50,8 @@
                     android:orientation="vertical">
 
                     <TextView
+                        android:gravity="center_vertical"
+                        android:layout_marginTop="2dp"
                         android:id="@+id/goods_name"
                         android:layout_weight="1"
                         android:layout_width="match_parent"
@@ -56,6 +60,7 @@
                         android:lines="1" />
 
                     <TextView
+                        android:gravity="center_vertical"
                         android:layout_weight="2"
                         android:id="@+id/goods_sub"
                         android:layout_width="match_parent"

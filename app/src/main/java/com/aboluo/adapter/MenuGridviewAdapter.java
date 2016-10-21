@@ -1,6 +1,7 @@
 package com.aboluo.adapter;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,6 +9,7 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.aboluo.XUtils.CommonUtils;
 import com.aboluo.com.R;
 import com.aboluo.model.GoodsBigType;
 import com.squareup.picasso.Picasso;
@@ -59,7 +61,11 @@ public class MenuGridviewAdapter extends BaseAdapter {
             holder = (ViewHolder) convertView.getTag();
         }
         holder.txt_info.setText(mlistinfo.getGoodsTypeList().get(position).getGoodsTypeName());
-        Picasso.with(mcontext).load("http://img.pconline.com.cn/images/upload/upc/tx/wallpaper/1309/05/c5/25283777_1378352004384_800x600.jpg").into(holder.img_info);
+        String url= CommonUtils.GetValueByKey(mcontext,"ImgUrl")+mlistinfo.getGoodsTypeList().get(position).getGoodsTypeImg();
+        Log.i("woaicaojinggoodsmallurl",url);
+        Picasso.with(mcontext).load(url).placeholder(mcontext.getResources().getDrawable(R.drawable.imagviewloading))
+                .error(mcontext.getResources().getDrawable(R.drawable.imageview_error))
+                .into(holder.img_info);
         return convertView;
     }
     class  ViewHolder

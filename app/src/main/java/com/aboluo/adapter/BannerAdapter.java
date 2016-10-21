@@ -25,7 +25,7 @@ public class BannerAdapter extends LoopPagerAdapter {
         this.mcontext = context;
         this.imgsurl = imgsurl;
         picasso =  Picasso.with(mcontext); // 加载网络图片
-        picasso.with(mcontext).setIndicatorsEnabled(true);
+//        picasso.with(mcontext).setIndicatorsEnabled(true);
     }
     @Override
     public View getView(ViewGroup container, int position) {

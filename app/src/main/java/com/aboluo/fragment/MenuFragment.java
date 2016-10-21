@@ -1,9 +1,11 @@
 package com.aboluo.fragment;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,6 +19,7 @@ import com.aboluo.XUtils.CommonUtils;
 import com.aboluo.XUtils.MyApplication;
 import com.aboluo.adapter.MenuGridviewAdapter;
 import com.aboluo.adapter.MenuListViewAdapter;
+import com.aboluo.com.GoodsListActivity;
 import com.aboluo.com.R;
 import com.aboluo.model.GoodsBigType;
 import com.android.volley.AuthFailureError;
@@ -31,6 +34,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import cn.pedant.SweetAlert.SweetAlertDialog;
 
 /**
  * Created by cj34920 on 2016/9/8.
@@ -48,9 +53,10 @@ public class MenuFragment extends Fragment {
     private GoodsBigType.ResultBean resultBean; //保存大类的信息
     private GoodsBigType.ResultBean resultBean2; // 保存小类的信息
     private String url;
+   private SweetAlertDialog sweetAlertDialog;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, @Nullable final ViewGroup container, @Nullable Bundle savedInstanceState) {
         if (view == null) {
             view = inflater.inflate(R.layout.fragment_menu, null);
         } else {
@@ -62,6 +68,7 @@ public class MenuFragment extends Fragment {
         menu_listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                sweetAlertDialog.show();
                 Toast.makeText(MenuFragment.this.getActivity(), position + "", Toast.LENGTH_SHORT).show();
                 final int type_id = resultBean.getGoodsTypeList().get(position).getGoodsTypeId();
                 menuListViewAdapter.setSelectedPosition(position);
@@ -80,6 +87,7 @@ public class MenuFragment extends Fragment {
                             menuGridviewTopAdapter.notifyDataSetChanged();
                         } else {
                         }
+                        sweetAlertDialog.dismiss();
                     }
                 }, new Response.ErrorListener() {
                     @Override
@@ -99,12 +107,20 @@ public class MenuFragment extends Fragment {
 
             }
         });
-
+        menu_gridview_top.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+               int goods_type_id =  resultBean2.getGoodsTypeList().get(position).getGoodsTypeId();
+                Intent intent = new Intent(context, GoodsListActivity.class);
+                intent.putExtra("goods_type_id",goods_type_id);
+                startActivity(intent);
+            }
+        });
         return view;
     }
     //获取初始化数据
     private void GetTypeList() {
-
+        sweetAlertDialog.show();
         requestByGoodsType1 = new StringRequest(Request.Method.POST, url + "/api/GoodsType/ReceiveGoodsTypeList", new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
@@ -129,6 +145,7 @@ public class MenuFragment extends Fragment {
                                 resultBean2 = goodsBigType.getResult();
                                 menuGridviewTopAdapter = new MenuGridviewAdapter(resultBean2, context);
                                 menu_gridview_top.setAdapter(menuGridviewTopAdapter);
+                                sweetAlertDialog.dismiss();
                             } else {
                             }
                         }
@@ -177,5 +194,7 @@ public class MenuFragment extends Fragment {
         url = CommonUtils.GetValueByKey(context, "apiurl");
         resultBean = new GoodsBigType.ResultBean();
         resultBean2 = new GoodsBigType.ResultBean();
+        sweetAlertDialog = new SweetAlertDialog(context,SweetAlertDialog.PROGRESS_TYPE);
+        sweetAlertDialog.setTitleText("加载中");
     }
 }

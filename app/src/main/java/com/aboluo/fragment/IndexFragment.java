@@ -141,7 +141,7 @@ public class IndexFragment extends Fragment {
                 }
             });
             Picasso.with(this.getActivity()).load("http://img.pconline.com.cn/images/upload/upc/tx/wallpaper/1309/05/c5/25283777_1378352004384_800x600.jpg").into(ceshi_imgeview);
-            Picasso.with(this.getActivity()).setIndicatorsEnabled(true);
+//            Picasso.with(this.getActivity()).setIndicatorsEnabled(true);
             mCvCountdownView.start(24000); // 毫秒
             mCvCountdownView.setOnCountdownEndListener(new CountdownView.OnCountdownEndListener() {
                 @Override

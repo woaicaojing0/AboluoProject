@@ -41,7 +41,7 @@ public class GoodsListActivity extends Activity implements RecycleViewAdapter.On
     private RecycleViewAdapter recycleViewAdapter;
     private GoodsListInfo listBean;
     private SweetAlertDialog pdialog;
-
+    private int goods_type_id;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,6 +53,8 @@ public class GoodsListActivity extends Activity implements RecycleViewAdapter.On
     }
 
     private void init() {
+        Intent intent = getIntent();
+        goods_type_id = intent.getIntExtra("goods_type_id", -1);
         requestQueue = MyApplication.getRequestQueue();
         recyclerView = (RecyclerView) findViewById(R.id.goods_list_recycleview);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
@@ -74,9 +76,10 @@ public class GoodsListActivity extends Activity implements RecycleViewAdapter.On
                 response = response.replace("\\", "");
                 response = response.substring(1, response.length() - 1);
                 Gson gson = new Gson();
+                Log.i("woaicaojing", url + "/api/Goods/ReceiveGoodsList");
                 Log.i("woaicaojing", response);
                 listBean = gson.fromJson(response, GoodsListInfo.class);
-                recycleViewAdapter = new RecycleViewAdapter(listBean);
+                recycleViewAdapter = new RecycleViewAdapter(listBean,GoodsListActivity.this);
                 recyclerView.setAdapter(recycleViewAdapter);
                 recycleViewAdapter.setOnItemClickListener(GoodsListActivity.this);
                 pdialog.dismiss();
@@ -90,6 +93,10 @@ public class GoodsListActivity extends Activity implements RecycleViewAdapter.On
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> map = new HashMap<>();
+                if(goods_type_id == -1)
+                {}else {
+                    map.put("GoodsTypeId", String.valueOf(goods_type_id));
+                }
                 map.put("APPToken", APPToken);
                 map.put("CurrentPage", "1");
                 map.put("PageSize", "200");

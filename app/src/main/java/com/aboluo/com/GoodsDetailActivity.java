@@ -8,8 +8,10 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.res.ColorStateList;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.text.Editable;
@@ -67,8 +69,7 @@ public class GoodsDetailActivity extends Activity implements View.OnClickListene
     private Button btnDecrease, btnIncrease;
     private EditText etAmount;
     private RollPagerView rollPagerView;
-    private String[] imgurl = {"http://img4.imgtn.bdimg.com/it/u=2408370625,380818695&fm=21&gp=0.jpg", "" +
-            "http://pic24.nipic.com/20121025/10444819_041559015351_2.jpg"};
+    private String[] imgurl = null;
     private BannerAdapter bannerAdapter;
     private RelativeLayout goods_pingjia_layout_btn, goods_detail_layout_btn;
     private View id_goods_detail_view, id_goods_pingjia_view;
@@ -92,22 +93,12 @@ public class GoodsDetailActivity extends Activity implements View.OnClickListene
     private static int popwith;
     private static boolean isshowtype = false;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_goodsdetail);
         init();
-        rollPagerView.setHintView(new ColorPointHintView(this, Color.RED, Color.WHITE));
-        bannerAdapter = new BannerAdapter(this, imgurl, rollPagerView);
-        rollPagerView.setAdapter(bannerAdapter); // 设置适配器（请求网络图片，适配器要在网络请求完成后再设置）
-        rollPagerView.getViewPager().getAdapter().notifyDataSetChanged();// 更新banner图片
-        rollPagerView.setFocusable(false);
-        rollPagerView.setOnItemClickListener(new OnItemClickListener() {
-            @Override
-            public void onItemClick(int position) {
-                Toast.makeText(GoodsDetailActivity.this, "1", Toast.LENGTH_SHORT).show();
-            }
-        });
         goods_pingjia_layout_btn.setOnClickListener(this);
         goods_detail_layout_btn.setOnClickListener(this);
         detail_more.setOnClickListener(this);
@@ -116,16 +107,6 @@ public class GoodsDetailActivity extends Activity implements View.OnClickListene
         txt_goods_type.setOnClickListener(this);
         btnDecrease.setOnClickListener(this);
         btnIncrease.setOnClickListener(this);
-        WebSettings webviewsetting = goods_detail_webview.getSettings();
-        webviewsetting.setJavaScriptEnabled(true);
-        webviewsetting.setUseWideViewPort(true);//关键点
-        goods_detail_webview.loadUrl("http://www.51cto.com");
-        goods_detail_webview.setWebViewClient(new WebViewClient());
-        goods_pingjia_webview.loadUrl("http://www.baidu.com");
-        goods_pingjia_webview.setWebViewClient(new WebViewClient());
-        WebSettings webviewsetting2 = goods_pingjia_webview.getSettings();
-        webviewsetting2.setJavaScriptEnabled(true);
-        webviewsetting2.setUseWideViewPort(true);//关键点
         firstView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
             public void onGlobalLayout() {
@@ -181,7 +162,36 @@ public class GoodsDetailActivity extends Activity implements View.OnClickListene
             }
         });
     }
-
+    private void initwebview(String detailurl,String pingjia)
+    {
+        WebSettings webviewsetting = goods_detail_webview.getSettings();
+        webviewsetting.setJavaScriptEnabled(true);
+        webviewsetting.setUseWideViewPort(true);//关键点
+        goods_detail_webview.loadUrl(detailurl);
+        goods_detail_webview.setWebViewClient(new WebViewClient());
+        goods_pingjia_webview.loadUrl("http://www.baidu.com");
+        goods_pingjia_webview.setWebViewClient(new WebViewClient());
+        WebSettings webviewsetting2 = goods_pingjia_webview.getSettings();
+        webviewsetting2.setJavaScriptEnabled(true);
+        webviewsetting2.setUseWideViewPort(true);//关键点
+    }
+private void initrollPagerView(String[] imges)
+{
+    for (int i = 0; i < imges.length; i++) {
+        imges[i] = ImgUrl+imges[i].toString();
+    }
+    rollPagerView.setHintView(new ColorPointHintView(this, Color.RED, Color.WHITE));
+    bannerAdapter = new BannerAdapter(this, imges, rollPagerView);
+    rollPagerView.setAdapter(bannerAdapter); // 设置适配器（请求网络图片，适配器要在网络请求完成后再设置）
+    rollPagerView.getViewPager().getAdapter().notifyDataSetChanged();// 更新banner图片
+    rollPagerView.setFocusable(false);
+    rollPagerView.setOnItemClickListener(new OnItemClickListener() {
+        @Override
+        public void onItemClick(int position) {
+            Toast.makeText(GoodsDetailActivity.this, "1", Toast.LENGTH_SHORT).show();
+        }
+    });
+}
     private void init() {
         btnDecrease = (Button) findViewById(R.id.btnDecrease);
         btnIncrease = (Button) findViewById(R.id.btnIncrease);
@@ -239,23 +249,39 @@ public class GoodsDetailActivity extends Activity implements View.OnClickListene
                 txt_goods_num.setText(String.valueOf(goodsDetailInfo.getResult().getGoodsInfo().getGoodsQuantity()));
                 goods_detail_type_txtmoney.setText("会员价：￥" + String.valueOf(goodsDetailInfo.getResult().getGoodsInfo().getHyPrice()) + "元");
                 goods_detail_type_txtnum.setText("库存：" + String.valueOf(goodsDetailInfo.getResult().getGoodsInfo().getGoodsQuantity()) + "件");
-
+               //有些商品没有图片，但肯定有logo图片
+                if(goodsDetailInfo.getResult().getGoodsInfo().getGoodsPicture() ==null)
+               {
+                   imgurl = goodsDetailInfo.getResult().getGoodsInfo().getGoodsLogo().split(";");
+               }else {
+                   imgurl = goodsDetailInfo.getResult().getGoodsInfo().getGoodsPicture().split(";");
+               }
+                initrollPagerView(imgurl);
                 List<GoodsDetailInfo.ResultBean.GoodsInfoBean.GoodsColorBean> listcolor = goodsDetailInfo.getResult().getGoodsInfo().getGoodsColor();
                 List<GoodsDetailInfo.ResultBean.GoodsInfoBean.GoodsStandardsBean> listStandard = goodsDetailInfo.getResult().getGoodsInfo().getGoodsStandards();
-                if (listcolor == null || listcolor.size() == 0) {
+                String imageurl = goodsDetailInfo.getResult().getGoodsInfo().getGoodsLogo();
+                String[] imageurls = imageurl.split(";");
+                for (int i = 0; i < imageurls.length; i++) {
+                    imageurls[i] = ImgUrl + imageurls[i].toString();
+                }
+                Log.i("woaicaojinggoodstype",imageurls[0]);
+                Picasso.with(GoodsDetailActivity.this).load(imageurls[0])
+                        .placeholder(getResources().getDrawable(R.drawable.imagviewloading))
+                        .error(getResources().getDrawable(R.drawable.imageview_error))
+                        .into(goods_detail_type_imageview);
+                if (listcolor == null) {
                     all_color.setVisibility(View.GONE);
                 } else {
-                    Picasso.with(GoodsDetailActivity.this).load(ImgUrl + listcolor.get(0).getColorImg())
-                            .placeholder(getResources().getDrawable(R.drawable.imagviewloading))
-                            .error(getResources().getDrawable(R.drawable.imageview_error))
-                            .into(goods_detail_type_imageview);
                     CreateColor(listcolor);
                 }
-                if (listStandard == null || listcolor.size() == 0) {
+                if (listStandard == null) {
                     all_standards.setVisibility(View.GONE);
                 } else {
                     CreateStandards(listStandard);
                 }
+                String detailurl = CommonUtils.GetValueByKey(GoodsDetailActivity.this,"backUrl")+"/moblie/Index?productId="+goods_id;
+                Log.i("woaicaojing",detailurl);
+                initwebview(detailurl,null);
 
             }
         }, new Response.ErrorListener() {
@@ -282,13 +308,14 @@ public class GoodsDetailActivity extends Activity implements View.OnClickListene
             LinearLayout linearLayout = new LinearLayout(GoodsDetailActivity.this);
             linearLayout.setOrientation(LinearLayout.HORIZONTAL);
             linearLayout.setGravity(Gravity.CENTER_VERTICAL);
-            linearLayout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, CommonUtils.dip2px(GoodsDetailActivity.this, 40)));
+            linearLayout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, CommonUtils.dip2px(GoodsDetailActivity.this, 54)));
             for (int i2 = 0; i2 < listcolor.size(); i2++) {
                 RadioButton button = new RadioButton(GoodsDetailActivity.this);
-                LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(popwith / 5, CommonUtils.dip2px(GoodsDetailActivity.this, 30));
+                LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(popwith / 5, CommonUtils.dip2px(GoodsDetailActivity.this, 50));
                 layoutParams.setMargins(CommonUtils.dip2px(GoodsDetailActivity.this, 10), 0, 0, 0);
                 button.setBackground(getResources().getDrawable(R.drawable.rdobtn_selecter));
-                button.setButtonDrawable(null);
+                Bitmap a=null;
+                button.setButtonDrawable(new BitmapDrawable(a));
                 button.setGravity(Gravity.CENTER);
                 ColorStateList csl = getResources().getColorStateList(R.color.radio_text_selector);
                 button.setTextColor(csl);
@@ -336,13 +363,14 @@ public class GoodsDetailActivity extends Activity implements View.OnClickListene
             LinearLayout linearLayout = new LinearLayout(GoodsDetailActivity.this);
             linearLayout.setOrientation(LinearLayout.HORIZONTAL);
             linearLayout.setGravity(Gravity.CENTER_VERTICAL);
-            linearLayout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, CommonUtils.dip2px(GoodsDetailActivity.this, 40)));
+            linearLayout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, CommonUtils.dip2px(GoodsDetailActivity.this, 54)));
             for (int i2 = 0; i2 < liststandards.size(); i2++) {
                 RadioButton button = new RadioButton(GoodsDetailActivity.this);
-                LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(popwith / 5, CommonUtils.dip2px(GoodsDetailActivity.this, 30));
+                LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(popwith / 5, CommonUtils.dip2px(GoodsDetailActivity.this, 50));
                 layoutParams.setMargins(CommonUtils.dip2px(GoodsDetailActivity.this, 10), 0, 0, 0);
                 button.setBackground(getResources().getDrawable(R.drawable.rdobtn_selecter));
-                button.setButtonDrawable(null);
+                Bitmap a=null;
+                button.setButtonDrawable(new BitmapDrawable(a));
                 button.setGravity(Gravity.CENTER);
                 ColorStateList csl = getResources().getColorStateList(R.color.radio_text_selector);
                 button.setTextColor(csl);
@@ -384,13 +412,14 @@ public class GoodsDetailActivity extends Activity implements View.OnClickListene
         LinearLayout linearLayout = new LinearLayout(GoodsDetailActivity.this);
         linearLayout.setOrientation(LinearLayout.HORIZONTAL);
         linearLayout.setGravity(Gravity.CENTER_VERTICAL);
-        linearLayout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, CommonUtils.dip2px(GoodsDetailActivity.this, 40)));
+        linearLayout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, CommonUtils.dip2px(GoodsDetailActivity.this, 54)));
         for (int i2 = 0; i2 < num; i2++) {
             RadioButton button = new RadioButton(GoodsDetailActivity.this);
-            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(popwith / 5, CommonUtils.dip2px(GoodsDetailActivity.this, 30));
+            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(popwith / 5, CommonUtils.dip2px(GoodsDetailActivity.this, 50));
             layoutParams.setMargins(CommonUtils.dip2px(GoodsDetailActivity.this, 10), 0, 0, 0);
             button.setBackground(getResources().getDrawable(R.drawable.rdobtn_selecter));
-            button.setButtonDrawable(null);
+            Bitmap a=null;
+            button.setButtonDrawable(new BitmapDrawable(a));
             ColorStateList csl = getResources().getColorStateList(R.color.radio_text_selector);
             button.setTextColor(csl);
             button.setGravity(Gravity.CENTER);
@@ -416,13 +445,14 @@ public class GoodsDetailActivity extends Activity implements View.OnClickListene
         LinearLayout linearLayout = new LinearLayout(GoodsDetailActivity.this);
         linearLayout.setOrientation(LinearLayout.HORIZONTAL);
         linearLayout.setGravity(Gravity.CENTER_VERTICAL);
-        linearLayout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, CommonUtils.dip2px(GoodsDetailActivity.this, 40)));
+        linearLayout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, CommonUtils.dip2px(GoodsDetailActivity.this, 54)));
         for (int i2 = 0; i2 < num; i2++) {
             RadioButton button = new RadioButton(GoodsDetailActivity.this);
-            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(popwith / 5, CommonUtils.dip2px(GoodsDetailActivity.this, 30));
+            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(popwith / 5, CommonUtils.dip2px(GoodsDetailActivity.this, 50));
             layoutParams.setMargins(CommonUtils.dip2px(GoodsDetailActivity.this, 10), 0, 0, 0);
             button.setBackground(getResources().getDrawable(R.drawable.rdobtn_selecter));
-            button.setButtonDrawable(null);
+            Bitmap a=null;
+            button.setButtonDrawable(new BitmapDrawable(a));
             ColorStateList csl = getResources().getColorStateList(R.color.radio_text_selector);
             button.setTextColor(csl);
             button.setGravity(Gravity.CENTER);
@@ -502,11 +532,13 @@ public class GoodsDetailActivity extends Activity implements View.OnClickListene
         if (radioButton == null) {
         } else {
             Log.i("woaicaojing", radioButton.getText().toString());
+            txt_goods_type.setText(radioButton.getText().toString());
         }
         RadioButton radioButton2 = (RadioButton) findViewById(goodsdetail_type_standards.getCheckedRadioButtonId());
         if (radioButton2 == null) {
         } else {
             Log.i("woaicaojing", radioButton2.getText().toString());
+            txt_goods_type.setText(radioButton2.getText().toString());
         }
         if (radioButton != null && radioButton2 != null) {
             txt_goods_type.setText(radioButton.getText().toString() + "  " + radioButton2.getText().toString());

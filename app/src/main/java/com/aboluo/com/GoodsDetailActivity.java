@@ -5,13 +5,19 @@ import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Intent;
+import android.content.res.ColorStateList;
 import android.graphics.Color;
+import android.graphics.Paint;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,9 +26,11 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
+import android.widget.RadioButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -31,6 +39,7 @@ import com.aboluo.XUtils.CommonUtils;
 import com.aboluo.XUtils.MyApplication;
 import com.aboluo.adapter.BannerAdapter;
 import com.aboluo.model.GoodsDetailInfo;
+import com.aboluo.widget.MyRadioGroup;
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -41,10 +50,13 @@ import com.google.gson.Gson;
 import com.jude.rollviewpager.OnItemClickListener;
 import com.jude.rollviewpager.RollPagerView;
 import com.jude.rollviewpager.hintview.ColorPointHintView;
+import com.squareup.picasso.Picasso;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import cn.pedant.SweetAlert.SweetAlertDialog;
 
 /**
  * Created by CJ on 2016/10/1.
@@ -52,6 +64,8 @@ import java.util.Map;
 
 public class GoodsDetailActivity extends Activity implements View.OnClickListener {
 
+    private Button btnDecrease, btnIncrease;
+    private EditText etAmount;
     private RollPagerView rollPagerView;
     private String[] imgurl = {"http://img4.imgtn.bdimg.com/it/u=2408370625,380818695&fm=21&gp=0.jpg", "" +
             "http://pic24.nipic.com/20121025/10444819_041559015351_2.jpg"};
@@ -62,18 +76,21 @@ public class GoodsDetailActivity extends Activity implements View.OnClickListene
     private ImageView detail_more, detail_goods;
     private PopupWindow goods_popwindow, goods_type_popupwindow;
     private LinearLayout pop_01;
-    private ImageView my_info_text_back, goods_type_pop_close;
-    private TextView txt_goods_type, txt_goods_name, txt_new_money, txt_old_money, txt_goods_num;
+    private ImageView my_info_text_back, goods_type_pop_close, goods_detail_type_imageview;
+    private TextView txt_goods_type, txt_goods_name, txt_new_money, txt_old_money, txt_goods_num, goods_detail_type_txtmoney, goods_detail_type_txtnum;
     private View Farther_view;
     private int fHeight;
     private int sHeight;
-    private LinearLayout firstView, secondView, goodsdetail_type_color,all_color;
+    private LinearLayout firstView, secondView, all_color, all_standards;
+    private MyRadioGroup goodsdetail_type_color, goodsdetail_type_standards;
     private static int goods_id = 0; //商品的ID
     private RequestQueue requestQueue;
     private StringRequest stringRequest;
-    private static String URL = null;
+    private static String URL = null, ImgUrl = null;
     private static String APPToken = null;
     private GoodsDetailInfo goodsDetailInfo;
+    private static int popwith;
+    private static boolean isshowtype = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,6 +114,8 @@ public class GoodsDetailActivity extends Activity implements View.OnClickListene
         detail_goods.setOnClickListener(this);
         my_info_text_back.setOnClickListener(this);
         txt_goods_type.setOnClickListener(this);
+        btnDecrease.setOnClickListener(this);
+        btnIncrease.setOnClickListener(this);
         WebSettings webviewsetting = goods_detail_webview.getSettings();
         webviewsetting.setJavaScriptEnabled(true);
         webviewsetting.setUseWideViewPort(true);//关键点
@@ -121,16 +140,52 @@ public class GoodsDetailActivity extends Activity implements View.OnClickListene
             public void onGlobalLayout() {
 
                 sHeight = secondView.getHeight();
-                sHeight = (sHeight / 3) * 2;
+                popwith = secondView.getWidth();
+                popwith = popwith - CommonUtils.dip2px(GoodsDetailActivity.this, 60);
                 secondView.getViewTreeObserver()
                         .removeOnGlobalLayoutListener(this);
             }
         });
         getgoods_detail();
         requestQueue.add(stringRequest);
+        etAmount.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if(s.toString().equals(""))
+                {}else {
+                    if (Integer.valueOf(s.toString()) > goodsDetailInfo.getResult().getGoodsInfo().getGoodsQuantity()) {
+                        SweetAlertDialog sweetAlertDialog = new SweetAlertDialog(GoodsDetailActivity.this, SweetAlertDialog.WARNING_TYPE);
+                        sweetAlertDialog.setCanceledOnTouchOutside(true);
+                        sweetAlertDialog.setTitleText("购买数量超过当前库存");
+                        sweetAlertDialog.setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                            @Override
+                            public void onClick(SweetAlertDialog sweetAlertDialog) {
+                                sweetAlertDialog.dismiss();
+                                etAmount.setText(String.valueOf(goodsDetailInfo.getResult().getGoodsInfo().getGoodsQuantity()));
+                            }
+                        });
+                        sweetAlertDialog.show();
+                    } else {
+                    }
+                }
+            }
+        });
     }
 
     private void init() {
+        btnDecrease = (Button) findViewById(R.id.btnDecrease);
+        btnIncrease = (Button) findViewById(R.id.btnIncrease);
+        etAmount = (EditText) findViewById(R.id.etAmount);
         rollPagerView = (RollPagerView) findViewById(R.id.roll_view_pager);
         goods_pingjia_layout_btn = (RelativeLayout) findViewById(R.id.goods_pingjia_layout_btn);
         goods_detail_layout_btn = (RelativeLayout) findViewById(R.id.goods_detail_layout_btn);
@@ -141,32 +196,29 @@ public class GoodsDetailActivity extends Activity implements View.OnClickListene
         detail_more = (ImageView) findViewById(R.id.detail_more);
         detail_goods = (ImageView) findViewById(R.id.detail_goods);
         my_info_text_back = (ImageView) findViewById(R.id.my_info_text_back);
+        goods_detail_type_imageview = (ImageView) findViewById(R.id.goods_detail_type_imageview);
         txt_goods_type = (TextView) findViewById(R.id.txt_goods_type);
         txt_goods_name = (TextView) findViewById(R.id.txt_goods_name);
         txt_new_money = (TextView) findViewById(R.id.txt_new_money);
         txt_old_money = (TextView) findViewById(R.id.txt_old_money);
         txt_goods_num = (TextView) findViewById(R.id.txt_goods_num);
+        goods_detail_type_txtmoney = (TextView) findViewById(R.id.goods_detail_type_txtmoney);
+        goods_detail_type_txtnum = (TextView) findViewById(R.id.goods_detail_type_txtnum);
         secondView = (LinearLayout) findViewById(R.id.second_view);
         firstView = (LinearLayout) findViewById(R.id.first_view);
-        goodsdetail_type_color = (LinearLayout) findViewById(R.id.goodsdetail_type_color);
+        goodsdetail_type_color = (MyRadioGroup) findViewById(R.id.goodsdetail_type_color);
+        goodsdetail_type_standards = (MyRadioGroup) findViewById(R.id.goodsdetail_type_standards);
         all_color = (LinearLayout) findViewById(R.id.all_color);
+        all_standards = (LinearLayout) findViewById(R.id.all_standards);
         goods_type_pop_close = (ImageView) findViewById(R.id.goods_type_pop_close);
-        goods_type_pop_close.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                initHiddenAnim();
-            }
-        });
-        firstView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                initHiddenAnim();
-            }
-        });
+        goods_type_pop_close.setOnClickListener(this);
+        firstView.setOnClickListener(this);
         Intent intent = getIntent();
         goods_id = intent.getIntExtra("goods_id", 0);
         requestQueue = MyApplication.getRequestQueue();
         URL = CommonUtils.GetValueByKey(this, "apiurl");
+        ImgUrl = CommonUtils.GetValueByKey(this, "ImgUrl");
+
         APPToken = CommonUtils.GetValueByKey(this, "APPToken");
 
     }
@@ -183,111 +235,28 @@ public class GoodsDetailActivity extends Activity implements View.OnClickListene
                 txt_goods_name.setText(goodsDetailInfo.getResult().getGoodsInfo().getGoodsName());
                 txt_new_money.setText(String.valueOf(goodsDetailInfo.getResult().getGoodsInfo().getGoodsPrice()));
                 txt_old_money.setText(String.valueOf(goodsDetailInfo.getResult().getGoodsInfo().getHyPrice()));
+                txt_old_money.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG);
                 txt_goods_num.setText(String.valueOf(goodsDetailInfo.getResult().getGoodsInfo().getGoodsQuantity()));
+                goods_detail_type_txtmoney.setText("会员价：￥" + String.valueOf(goodsDetailInfo.getResult().getGoodsInfo().getHyPrice()) + "元");
+                goods_detail_type_txtnum.setText("库存：" + String.valueOf(goodsDetailInfo.getResult().getGoodsInfo().getGoodsQuantity()) + "件");
+
                 List<GoodsDetailInfo.ResultBean.GoodsInfoBean.GoodsColorBean> listcolor = goodsDetailInfo.getResult().getGoodsInfo().getGoodsColor();
+                List<GoodsDetailInfo.ResultBean.GoodsInfoBean.GoodsStandardsBean> listStandard = goodsDetailInfo.getResult().getGoodsInfo().getGoodsStandards();
                 if (listcolor == null || listcolor.size() == 0) {
                     all_color.setVisibility(View.GONE);
                 } else {
-                    int num = listcolor.size() / 5;
-                    int yushu = listcolor.size() % 5;
-                    if (num == 0) {
-                        LinearLayout linearLayout = new LinearLayout(GoodsDetailActivity.this);
-                        linearLayout.setOrientation(LinearLayout.HORIZONTAL);
-                        linearLayout.setGravity(Gravity.CENTER_VERTICAL);
-                        linearLayout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, CommonUtils.dip2px(GoodsDetailActivity.this, 60)));
-                        for (int i2 = 0; i2 < listcolor.size(); i2++) {
-                            Button button = new Button(GoodsDetailActivity.this);
-                            button.setId(i2);
-                            button.setLayoutParams(new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1.0f));
-                            button.setText(listcolor.get(i2).getColor());
-                            final int finalI = i2;
-                            button.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    Toast.makeText(GoodsDetailActivity.this, finalI + "", Toast.LENGTH_SHORT).show();
-                                }
-                            });
-                            linearLayout.addView(button);
-                        }
-                        goodsdetail_type_color.addView(linearLayout);
-                    } else {
-                        if (yushu == 0) {
-
-                            for (int i = 0; i < num; i++) {
-                                LinearLayout linearLayout = new LinearLayout(GoodsDetailActivity.this);
-                                linearLayout.setOrientation(LinearLayout.HORIZONTAL);
-                                linearLayout.setGravity(Gravity.CENTER_VERTICAL);
-                                linearLayout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, CommonUtils.dip2px(GoodsDetailActivity.this, 60)));
-                                for (int i2 = 0; i2 < 5; i2++) {
-                                    Button button = new Button(GoodsDetailActivity.this);
-                                    button.setId((5 * i) + i2);
-                                    button.setLayoutParams(new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1.0f));
-                                    button.setText(listcolor.get((5 * i )+ i2).getColor());
-                                    final int finalI = i2;
-                                    button.setOnClickListener(new View.OnClickListener() {
-                                        @Override
-                                        public void onClick(View v) {
-                                            Toast.makeText(GoodsDetailActivity.this, finalI + "", Toast.LENGTH_SHORT).show();
-                                        }
-                                    });
-                                    linearLayout.addView(button);
-                                }
-                                goodsdetail_type_color.addView(linearLayout);
-                            }
-
-                        } else {
-                            num = num + 1;
-                            for (int i = 0; i < num; i++) {
-                                if (i == (num - 1)) {
-                                    LinearLayout linearLayout = new LinearLayout(GoodsDetailActivity.this);
-                                    linearLayout.setOrientation(LinearLayout.HORIZONTAL);
-                                    linearLayout.setGravity(Gravity.CENTER_VERTICAL);
-                                    linearLayout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, CommonUtils.dip2px(GoodsDetailActivity.this, 60)));
-                                    for (int i2 = 0; i2 < yushu; i2++) {
-                                        Button button = new Button(GoodsDetailActivity.this);
-                                        button.setId((5 * i ) + i2);
-                                        button.setLayoutParams(new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1.0f));
-                                        button.setText(listcolor.get((5 * i )+ i2).getColor());
-                                        final int finalI = i2;
-                                        button.setOnClickListener(new View.OnClickListener() {
-                                            @Override
-                                            public void onClick(View v) {
-                                                Toast.makeText(GoodsDetailActivity.this, finalI + "", Toast.LENGTH_SHORT).show();
-                                            }
-                                        });
-                                        linearLayout.addView(button);
-                                    }
-                                    goodsdetail_type_color.addView(linearLayout);
-
-                                } else {
-                                    LinearLayout linearLayout = new LinearLayout(GoodsDetailActivity.this);
-                                    linearLayout.setOrientation(LinearLayout.HORIZONTAL);
-                                    linearLayout.setGravity(Gravity.CENTER_VERTICAL);
-                                    linearLayout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, CommonUtils.dip2px(GoodsDetailActivity.this, 60)));
-                                    for (int i2 = 0; i2 < 5; i2++) {
-                                        Button button = new Button(GoodsDetailActivity.this);
-                                        button.setId((5 * i) + i2);
-                                        button.setLayoutParams(new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1.0f));
-                                       int i22 = (5 * i)+ i2;
-                                        button.setText(listcolor.get((5 * i)+ i2).getColor());
-                                        final int finalI = i2;
-                                        button.setOnClickListener(new View.OnClickListener() {
-                                            @Override
-                                            public void onClick(View v) {
-                                                Toast.makeText(GoodsDetailActivity.this, finalI + "", Toast.LENGTH_SHORT).show();
-                                            }
-                                        });
-                                        linearLayout.addView(button);
-                                    }
-                                    goodsdetail_type_color.addView(linearLayout);
-                                }
-
-                            }
-                        }
-
-                    }
-
+                    Picasso.with(GoodsDetailActivity.this).load(ImgUrl + listcolor.get(0).getColorImg())
+                            .placeholder(getResources().getDrawable(R.drawable.imagviewloading))
+                            .error(getResources().getDrawable(R.drawable.imageview_error))
+                            .into(goods_detail_type_imageview);
+                    CreateColor(listcolor);
                 }
+                if (listStandard == null || listcolor.size() == 0) {
+                    all_standards.setVisibility(View.GONE);
+                } else {
+                    CreateStandards(listStandard);
+                }
+
             }
         }, new Response.ErrorListener() {
             @Override
@@ -303,6 +272,175 @@ public class GoodsDetailActivity extends Activity implements View.OnClickListene
                 return map;
             }
         };
+    }
+
+    private void CreateColor(final List<GoodsDetailInfo.ResultBean.GoodsInfoBean.GoodsColorBean> listcolor) {
+
+        int num = listcolor.size() / 5;
+        int yushu = listcolor.size() % 5;
+        if (num == 0) {
+            LinearLayout linearLayout = new LinearLayout(GoodsDetailActivity.this);
+            linearLayout.setOrientation(LinearLayout.HORIZONTAL);
+            linearLayout.setGravity(Gravity.CENTER_VERTICAL);
+            linearLayout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, CommonUtils.dip2px(GoodsDetailActivity.this, 40)));
+            for (int i2 = 0; i2 < listcolor.size(); i2++) {
+                RadioButton button = new RadioButton(GoodsDetailActivity.this);
+                LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(popwith / 5, CommonUtils.dip2px(GoodsDetailActivity.this, 30));
+                layoutParams.setMargins(CommonUtils.dip2px(GoodsDetailActivity.this, 10), 0, 0, 0);
+                button.setBackground(getResources().getDrawable(R.drawable.rdobtn_selecter));
+                button.setButtonDrawable(null);
+                button.setGravity(Gravity.CENTER);
+                ColorStateList csl = getResources().getColorStateList(R.color.radio_text_selector);
+                button.setTextColor(csl);
+                button.setLayoutParams(layoutParams);
+                button.setText(listcolor.get(i2).getColor());
+                button.setId(i2);
+                final int finalI = i2;
+                button.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Log.i("woaicaojing + picURl", ImgUrl + listcolor.get(finalI).getColorImg());
+                        Picasso.with(GoodsDetailActivity.this).load(ImgUrl + listcolor.get(finalI).getColorImg()).placeholder(getResources().getDrawable(R.drawable.imagviewloading)).into(goods_detail_type_imageview);
+                    }
+                });
+                linearLayout.addView(button);
+            }
+            goodsdetail_type_color.addView(linearLayout);
+        } else {
+            if (yushu == 0) {
+                for (int i = 0; i < num; i++) {
+                    CreateRadioButtonToColor(i, 5, listcolor);
+                }
+
+            } else {
+                num = num + 1;
+                for (int i = 0; i < num; i++) {
+                    if (i == (num - 1)) {
+                        CreateRadioButtonToColor(i, yushu, listcolor);
+
+                    } else {
+                        CreateRadioButtonToColor(i, 5, listcolor);
+                    }
+
+                }
+            }
+
+        }
+    }
+
+    private void CreateStandards(List<GoodsDetailInfo.ResultBean.GoodsInfoBean.GoodsStandardsBean> liststandards) {
+
+        int num = liststandards.size() / 5;
+        int yushu = liststandards.size() % 5;
+        if (num == 0) {
+            LinearLayout linearLayout = new LinearLayout(GoodsDetailActivity.this);
+            linearLayout.setOrientation(LinearLayout.HORIZONTAL);
+            linearLayout.setGravity(Gravity.CENTER_VERTICAL);
+            linearLayout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, CommonUtils.dip2px(GoodsDetailActivity.this, 40)));
+            for (int i2 = 0; i2 < liststandards.size(); i2++) {
+                RadioButton button = new RadioButton(GoodsDetailActivity.this);
+                LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(popwith / 5, CommonUtils.dip2px(GoodsDetailActivity.this, 30));
+                layoutParams.setMargins(CommonUtils.dip2px(GoodsDetailActivity.this, 10), 0, 0, 0);
+                button.setBackground(getResources().getDrawable(R.drawable.rdobtn_selecter));
+                button.setButtonDrawable(null);
+                button.setGravity(Gravity.CENTER);
+                ColorStateList csl = getResources().getColorStateList(R.color.radio_text_selector);
+                button.setTextColor(csl);
+                button.setLayoutParams(layoutParams);
+                button.setText(liststandards.get(i2).getStandard());
+                button.setId(100 + i2);
+                final int finalI = i2;
+                button.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                    }
+                });
+                linearLayout.addView(button);
+            }
+            goodsdetail_type_standards.addView(linearLayout);
+        } else {
+            if (yushu == 0) {
+                for (int i = 0; i < num; i++) {
+                    CreateRadioButtonToStandards(i, 5, liststandards);
+                }
+
+            } else {
+                num = num + 1;
+                for (int i = 0; i < num; i++) {
+                    if (i == (num - 1)) {
+                        CreateRadioButtonToStandards(i, yushu, liststandards);
+
+                    } else {
+                        CreateRadioButtonToStandards(i, 5, liststandards);
+                    }
+
+                }
+            }
+
+        }
+    }
+
+    private void CreateRadioButtonToColor(int i, int num, final List<GoodsDetailInfo.ResultBean.GoodsInfoBean.GoodsColorBean> listcolor) {
+        LinearLayout linearLayout = new LinearLayout(GoodsDetailActivity.this);
+        linearLayout.setOrientation(LinearLayout.HORIZONTAL);
+        linearLayout.setGravity(Gravity.CENTER_VERTICAL);
+        linearLayout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, CommonUtils.dip2px(GoodsDetailActivity.this, 40)));
+        for (int i2 = 0; i2 < num; i2++) {
+            RadioButton button = new RadioButton(GoodsDetailActivity.this);
+            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(popwith / 5, CommonUtils.dip2px(GoodsDetailActivity.this, 30));
+            layoutParams.setMargins(CommonUtils.dip2px(GoodsDetailActivity.this, 10), 0, 0, 0);
+            button.setBackground(getResources().getDrawable(R.drawable.rdobtn_selecter));
+            button.setButtonDrawable(null);
+            ColorStateList csl = getResources().getColorStateList(R.color.radio_text_selector);
+            button.setTextColor(csl);
+            button.setGravity(Gravity.CENTER);
+            button.setLayoutParams(layoutParams);
+            button.setId((5 * i) + i2);
+            int i22 = (5 * i) + i2;
+            button.setText(listcolor.get((5 * i) + i2).getColor());
+            final int finalI = i22;
+            button.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Log.i("woaicaojing + picURl", ImgUrl + listcolor.get(finalI).getColorImg());
+                    Toast.makeText(GoodsDetailActivity.this, finalI + "", Toast.LENGTH_SHORT).show();
+                    Picasso.with(GoodsDetailActivity.this).load(ImgUrl + listcolor.get(finalI).getColorImg()).placeholder(getResources().getDrawable(R.drawable.imagviewloading)).into(goods_detail_type_imageview);
+                }
+            });
+            linearLayout.addView(button);
+        }
+        goodsdetail_type_color.addView(linearLayout);
+    }
+
+    private void CreateRadioButtonToStandards(int i, int num, final List<GoodsDetailInfo.ResultBean.GoodsInfoBean.GoodsStandardsBean> liststandards) {
+        LinearLayout linearLayout = new LinearLayout(GoodsDetailActivity.this);
+        linearLayout.setOrientation(LinearLayout.HORIZONTAL);
+        linearLayout.setGravity(Gravity.CENTER_VERTICAL);
+        linearLayout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, CommonUtils.dip2px(GoodsDetailActivity.this, 40)));
+        for (int i2 = 0; i2 < num; i2++) {
+            RadioButton button = new RadioButton(GoodsDetailActivity.this);
+            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(popwith / 5, CommonUtils.dip2px(GoodsDetailActivity.this, 30));
+            layoutParams.setMargins(CommonUtils.dip2px(GoodsDetailActivity.this, 10), 0, 0, 0);
+            button.setBackground(getResources().getDrawable(R.drawable.rdobtn_selecter));
+            button.setButtonDrawable(null);
+            ColorStateList csl = getResources().getColorStateList(R.color.radio_text_selector);
+            button.setTextColor(csl);
+            button.setGravity(Gravity.CENTER);
+            button.setLayoutParams(layoutParams);
+            button.setId(100 + (5 * i) + i2);
+            int i22 = (5 * i) + i2;
+            button.setText(liststandards.get((5 * i) + i2).getStandard());
+            final int finalI = i22;
+            button.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Toast.makeText(GoodsDetailActivity.this, finalI + "", Toast.LENGTH_SHORT).show();
+                    goods_detail_type_txtmoney.setText("会员价：￥" + String.valueOf(goodsDetailInfo.getResult().getGoodsInfo().getHyPrice()) + "元");
+                }
+            });
+            linearLayout.addView(button);
+        }
+        goodsdetail_type_standards.addView(linearLayout);
     }
 
     @Override
@@ -330,9 +468,50 @@ public class GoodsDetailActivity extends Activity implements View.OnClickListene
                 break;
             case R.id.txt_goods_type:
                 initShowAnim();
+                isshowtype = true;
+                break;
+            case R.id.goods_type_pop_close:
+                initHiddenAnim();
+                setChooseType();
+                break;
+            case R.id.first_view:
+                initHiddenAnim();
+                setChooseType();
+                break;
+            case R.id.btnDecrease:
+                if (Integer.valueOf(etAmount.getText().toString()) < 1) {
+                } else {
+                    etAmount.setText(String.valueOf(Integer.valueOf(etAmount.getText().toString()) - 1));
+
+                }
+                break;
+            case R.id.btnIncrease:
+                if (Integer.valueOf(etAmount.getText().toString()) < goodsDetailInfo.getResult().getGoodsInfo().getBuyQuantity()) {
+                } else {
+                    etAmount.setText(String.valueOf(Integer.valueOf(etAmount.getText().toString())+ 1));
+
+                }
                 break;
 
         }
+    }
+
+    private void setChooseType() {
+        isshowtype = false;
+        RadioButton radioButton = (RadioButton) findViewById(goodsdetail_type_color.getCheckedRadioButtonId());
+        if (radioButton == null) {
+        } else {
+            Log.i("woaicaojing", radioButton.getText().toString());
+        }
+        RadioButton radioButton2 = (RadioButton) findViewById(goodsdetail_type_standards.getCheckedRadioButtonId());
+        if (radioButton2 == null) {
+        } else {
+            Log.i("woaicaojing", radioButton2.getText().toString());
+        }
+        if (radioButton != null && radioButton2 != null) {
+            txt_goods_type.setText(radioButton.getText().toString() + "  " + radioButton2.getText().toString());
+        }
+
     }
 
     private void showinfopopupwindow() {
@@ -438,4 +617,18 @@ public class GoodsDetailActivity extends Activity implements View.OnClickListene
         showAnim.playTogether(fViewScaleXAnim, fViewRotationXAnim, fViewResumeAnim, fViewTransYAnim, fViewAlphaAnim, fViewScaleYAnim, sViewTransYAnim);
         showAnim.start();
     }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            if (isshowtype) {
+                setChooseType();
+                initHiddenAnim();
+                return true;
+            }
+        }
+        return super.onKeyDown(keyCode, event);
+    }
+
+
 }

@@ -38,7 +38,8 @@
         <activity android:name=".RetrievepwdActivity"></activity>
         <activity android:name=".MyInfoAcitvity"></activity>
         <activity android:name=".OrderActivity"></activity>
-        <activity android:name=".GoodsDetailActivity"></activity>
+        <activity android:name=".GoodsDetailActivity"
+                  android:windowSoftInputMode="adjustPan|stateHidden"></activity>
         <activity android:name=".HeHuoRenActivity"></activity>
         <activity android:name=".MiaoShaActivity"></activity>
         <activity android:name=".OneYuanAcitvity"></activity>

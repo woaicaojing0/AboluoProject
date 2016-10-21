@@ -2,6 +2,7 @@ package com.aboluo.com;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v7.widget.LinearLayoutManager;
@@ -25,6 +26,8 @@ import com.google.gson.Gson;
 import java.util.HashMap;
 import java.util.Map;
 
+import cn.pedant.SweetAlert.SweetAlertDialog;
+
 /**
  * Created by cj34920 on 2016/10/18.
  */
@@ -37,6 +40,7 @@ public class GoodsListActivity extends Activity implements RecycleViewAdapter.On
     private static String APPToken;
     private RecycleViewAdapter recycleViewAdapter;
     private GoodsListInfo listBean;
+    private SweetAlertDialog pdialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +49,7 @@ public class GoodsListActivity extends Activity implements RecycleViewAdapter.On
         init();
 
         requestQueue.add(requestlist);
+        pdialog.show();
     }
 
     private void init() {
@@ -54,6 +59,11 @@ public class GoodsListActivity extends Activity implements RecycleViewAdapter.On
         recyclerView.setLayoutManager(linearLayoutManager);
         url = CommonUtils.GetValueByKey(this, "apiurl");
         APPToken = CommonUtils.GetValueByKey(this, "APPToken");
+        pdialog = new SweetAlertDialog(this,SweetAlertDialog.PROGRESS_TYPE);
+        pdialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
+        pdialog.setTitleText("加载中");
+        pdialog.setCanceledOnTouchOutside(true);
+        pdialog.setCancelable(true);
         initdate();
     }
 
@@ -69,6 +79,7 @@ public class GoodsListActivity extends Activity implements RecycleViewAdapter.On
                 recycleViewAdapter = new RecycleViewAdapter(listBean);
                 recyclerView.setAdapter(recycleViewAdapter);
                 recycleViewAdapter.setOnItemClickListener(GoodsListActivity.this);
+                pdialog.dismiss();
             }
         }, new Response.ErrorListener() {
             @Override
@@ -81,7 +92,7 @@ public class GoodsListActivity extends Activity implements RecycleViewAdapter.On
                 Map<String, String> map = new HashMap<>();
                 map.put("APPToken", APPToken);
                 map.put("CurrentPage", "1");
-                map.put("PageSize", "10");
+                map.put("PageSize", "200");
                 return map;
             }
         };

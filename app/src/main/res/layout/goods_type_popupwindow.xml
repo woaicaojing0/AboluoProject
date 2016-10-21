@@ -18,211 +18,208 @@
             android:layout_alignParentTop="true"
             android:layout_margin="4dp"
             android:src="@drawable/popupwindow_close"/>
+
         <LinearLayout
-            android:layout_marginLeft="4dp"
-            android:layout_marginRight="4dp"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:layout_above="@+id/bottom_goodstype">
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="80dp"
-            android:orientation="horizontal">
-<ImageView
-    android:layout_width="80dp"
-    android:layout_height="80dp"
-    android:src="@drawable/ic_launcher"/>
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:gravity="center_vertical"
-                android:layout_height="match_parent"
-                android:orientation="vertical">
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:text="价格"
-                    android:layout_height="wrap_content"/>
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:text="库存"
-                    android:layout_height="wrap_content"/>
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:text="类型"
-                    android:layout_height="wrap_content"/>
-            </LinearLayout>
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_below="@+id/goods_type_pop_close"
-            android:layout_marginTop="14dp"
+            android:layout_above="@+id/bottom_goodstype"
+            android:layout_marginLeft="4dp"
+            android:layout_marginRight="4dp"
             android:orientation="vertical">
 
-            <View
-                android:layout_width="fill_parent"
-                android:layout_height="0.2dp"
-                android:background="#b8b8b8"></View>
-
-
-            <View
-                android:layout_width="fill_parent"
-                android:layout_height="0.2dp"
-                android:background="#b8b8b8"></View>
-
             <LinearLayout
-                android:id="@+id/all_color"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
-                android:layout_marginTop="8dp"
-                android:gravity="center_vertical"
-                android:orientation="vertical">
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="颜色分类："/>
+                android:layout_width="wrap_content"
+                android:layout_height="80dp"
+                android:orientation="horizontal">
 
-                <LinearLayout
-                    android:id="@+id/goodsdetail_type_color"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_vertical"
-                    android:orientation="vertical">
-<!--<LinearLayout-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:gravity="center_vertical"-->
-    <!--android:orientation="horizontal"-->
-    <!--android:layout_height="40dp">-->
-    <!--<RadioButton-->
-        <!--android:gravity="center"-->
-        <!--android:layout_width="0dp"-->
-        <!--android:layout_weight="1"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_marginLeft="6dp"-->
-        <!--android:background="@null"-->
-        <!--android:button="@null"-->
-        <!--android:text="红色"/>-->
-
-    <!--<RadioButton-->
-        <!--android:gravity="center"-->
-        <!--android:layout_width="0dp"-->
-        <!--android:layout_weight="1"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_marginLeft="10dp"-->
-        <!--android:button="@null"-->
-        <!--android:text="红色"/>-->
-
-    <!--<RadioButton-->
-        <!--android:gravity="center"-->
-        <!--android:layout_width="0dp"-->
-        <!--android:layout_weight="1"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_marginLeft="10dp"-->
-        <!--android:button="@null"-->
-        <!--android:text="红色"/>-->
-
-
-    <!--<RadioButton-->
-        <!--android:gravity="center"-->
-        <!--android:layout_width="0dp"-->
-        <!--android:layout_weight="1"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_marginLeft="10dp"-->
-        <!--android:button="@null"-->
-        <!--android:text="红色"/>-->
-
-    <!--<RadioButton-->
-        <!--android:gravity="center"-->
-        <!--android:layout_width="0dp"-->
-        <!--android:layout_weight="1"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_marginLeft="10dp"-->
-        <!--android:button="@null"-->
-        <!--android:text="红色"/>-->
-<!--</LinearLayout>-->
-
-                </LinearLayout>
-            </LinearLayout>
-
-            <View
-                android:layout_width="fill_parent"
-                android:layout_height="0.2dp"
-                android:background="#b8b8b8"></View>
-
-            <LinearLayout
-                android:id="@+id/goodsdetail_type_standard"
-                android:layout_width="match_parent"
-                android:layout_height="60dp"
-                android:layout_marginBottom="8dp"
-                android:layout_marginTop="8dp"
-                android:gravity="center_vertical"
-                android:orientation="vertical">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="尺寸："/>
+                <ImageView
+                    android:id="@+id/goods_detail_type_imageview"
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:src="@drawable/ic_launcher"/>
 
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:gravity="center_vertical"
-                    android:orientation="horizontal">
+                    android:orientation="vertical">
 
-                    <RadioButton
+                    <TextView
+                        android:id="@+id/goods_detail_type_txtmoney"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="6dp"
-                        android:background="@null"
-                        android:button="@null"
-                        android:text="红色"/>
+                        android:text="价格"/>
 
-                    <RadioButton
+                    <TextView
+                        android:id="@+id/goods_detail_type_txtnum"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="10dp"
-                        android:button="@null"
-                        android:text="红色"/>
+                        android:text="库存"/>
 
-                    <RadioButton
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="10dp"
-                        android:button="@null"
-                        android:text="红色"/>
                 </LinearLayout>
-
-
             </LinearLayout>
-
-            <RelativeLayout
+<ScrollView
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="60dp"
-                android:layout_marginBottom="8dp"
-                android:layout_marginTop="8dp"
-                >
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_below="@+id/goods_type_pop_close"
+                android:layout_marginTop="14dp"
+                android:orientation="vertical">
 
-                <TextView
-                    android:id="@+id/textView3"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:text="购买数量："/>
+                <View
+                    android:layout_width="fill_parent"
+                    android:layout_height="0.2dp"
+                    android:background="#b8b8b8"></View>
 
                 <LinearLayout
-                    android:layout_width="wrap_content"
+                    android:id="@+id/all_color"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true">
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginTop="8dp"
+                    android:gravity="center_vertical"
+                    android:orientation="vertical">
 
-                    <include layout="@layout/view_amount"
-                        ></include>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="颜色分类："/>
+
+                    <com.aboluo.widget.MyRadioGroup
+                        android:id="@+id/goodsdetail_type_color"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:orientation="vertical">
+                    </com.aboluo.widget.MyRadioGroup>
+
                 </LinearLayout>
-            </RelativeLayout>
+
+
+
+                <LinearLayout
+                    android:id="@+id/all_standards"
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginTop="8dp"
+                    android:gravity="center_vertical"
+                    android:orientation="vertical">
+                    <View
+                        android:layout_width="fill_parent"
+                        android:layout_height="0.2dp"
+                        android:background="#b8b8b8"></View>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="尺寸："/>
+
+                    <com.aboluo.widget.MyRadioGroup
+                        android:id="@+id/goodsdetail_type_standards"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:orientation="vertical">
+
+                        <!--<LinearLayout-->
+                        <!--android:layout_width="match_parent"-->
+                        <!--android:layout_height="40dp"-->
+                        <!--android:gravity="center_vertical"-->
+                        <!--android:orientation="horizontal">-->
+
+                        <!--<RadioButton-->
+                            <!--android:textColor="@color/radio_text_selector"-->
+                            <!--android:layout_width="60dp"-->
+                            <!--android:layout_height="30dp"-->
+                            <!--android:layout_marginLeft="10dp"-->
+                            <!--android:layout_weight="1"-->
+                            <!--android:background="@drawable/rdobtn_selecter"-->
+                            <!--android:button="@null"-->
+                            <!--android:gravity="center"-->
+                            <!--android:text="红色"/>-->
+
+                        <!--<RadioButton-->
+                        <!--android:textColor="@color/white"-->
+                        <!--android:layout_width="0dp"-->
+                        <!--android:layout_height="30dp"-->
+                        <!--android:layout_marginLeft="10dp"-->
+                        <!--android:layout_weight="1"-->
+                        <!--android:background="@drawable/rdobtn_selecter"-->
+                        <!--android:button="@null"-->
+                        <!--android:gravity="center"-->
+                        <!--android:text="红色"/>-->
+
+                        <!--<RadioButton-->
+                        <!--android:textColor="@color/white"-->
+                        <!--android:layout_width="0dp"-->
+                        <!--android:layout_height="30dp"-->
+                        <!--android:layout_marginLeft="10dp"-->
+                        <!--android:layout_weight="1"-->
+                        <!--android:background="@drawable/rdobtn_selecter"-->
+                        <!--android:button="@null"-->
+                        <!--android:gravity="center"-->
+                        <!--android:text="红色"/>-->
+
+
+                        <!--<RadioButton-->
+                        <!--android:textColor="@color/white"-->
+                        <!--android:layout_width="0dp"-->
+                        <!--android:layout_height="30dp"-->
+                        <!--android:layout_marginLeft="10dp"-->
+                        <!--android:layout_weight="1"-->
+                        <!--android:background="@drawable/rdobtn_selecter"-->
+                        <!--android:button="@null"-->
+                        <!--android:gravity="center"-->
+                        <!--android:text="红色"/>-->
+
+                        <!--<RadioButton-->
+                        <!--android:textColor="@color/white"-->
+                        <!--android:layout_width="0dp"-->
+                        <!--android:layout_height="30dp"-->
+                        <!--android:layout_marginLeft="10dp"-->
+                        <!--android:layout_weight="1"-->
+                        <!--android:background="@drawable/rdobtn_selecter"-->
+                        <!--android:button="@null"-->
+                        <!--android:gravity="center"-->
+                        <!--android:text="红色"/>-->
+
+                        <!--</LinearLayout>-->
+                    </com.aboluo.widget.MyRadioGroup>
+
+
+                </LinearLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginTop="8dp"
+                    >
+
+                    <TextView
+                        android:id="@+id/textView3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:text="购买数量："/>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true">
+
+                        <include layout="@layout/view_amount"
+                            ></include>
+                    </LinearLayout>
+                </RelativeLayout>
+            </LinearLayout>
+</ScrollView>
         </LinearLayout>
-        </LinearLayout>
+
         <LinearLayout
             android:id="@+id/bottom_goodstype"
             android:layout_width="match_parent"

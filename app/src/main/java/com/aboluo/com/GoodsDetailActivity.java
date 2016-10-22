@@ -65,7 +65,7 @@ import cn.pedant.SweetAlert.SweetAlertDialog;
  */
 
 public class GoodsDetailActivity extends Activity implements View.OnClickListener {
-
+//
     private Button btnDecrease, btnIncrease;
     private EditText etAmount;
     private RollPagerView rollPagerView;
@@ -169,7 +169,7 @@ public class GoodsDetailActivity extends Activity implements View.OnClickListene
         webviewsetting.setUseWideViewPort(true);//关键点
         goods_detail_webview.loadUrl(detailurl);
         goods_detail_webview.setWebViewClient(new WebViewClient());
-        goods_pingjia_webview.loadUrl("http://www.baidu.com");
+        goods_pingjia_webview.loadUrl(null);
         goods_pingjia_webview.setWebViewClient(new WebViewClient());
         WebSettings webviewsetting2 = goods_pingjia_webview.getSettings();
         webviewsetting2.setJavaScriptEnabled(true);
@@ -243,8 +243,8 @@ private void initrollPagerView(String[] imges)
                 Gson gson = new Gson();
                 goodsDetailInfo = gson.fromJson(response, GoodsDetailInfo.class);
                 txt_goods_name.setText(goodsDetailInfo.getResult().getGoodsInfo().getGoodsName());
-                txt_new_money.setText(String.valueOf(goodsDetailInfo.getResult().getGoodsInfo().getGoodsPrice()));
-                txt_old_money.setText(String.valueOf(goodsDetailInfo.getResult().getGoodsInfo().getHyPrice()));
+                txt_new_money.setText(String.valueOf(goodsDetailInfo.getResult().getGoodsInfo().getHyPrice()));
+                txt_old_money.setText(String.valueOf(goodsDetailInfo.getResult().getGoodsInfo().getGoodsPrice()));
                 txt_old_money.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG);
                 txt_goods_num.setText(String.valueOf(goodsDetailInfo.getResult().getGoodsInfo().getGoodsQuantity()));
                 goods_detail_type_txtmoney.setText("会员价：￥" + String.valueOf(goodsDetailInfo.getResult().getGoodsInfo().getHyPrice()) + "元");

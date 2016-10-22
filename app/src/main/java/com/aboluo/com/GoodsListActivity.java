@@ -9,6 +9,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.aboluo.XUtils.CommonUtils;
@@ -42,19 +43,35 @@ public class GoodsListActivity extends Activity implements RecycleViewAdapter.On
     private GoodsListInfo listBean;
     private SweetAlertDialog pdialog;
     private int goods_type_id;
+    private String goods_type_name;
+    private TextView goods_list_typeName,goods_list_back;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_goodlist);
         init();
-
         requestQueue.add(requestlist);
+        goods_list_back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
         pdialog.show();
     }
 
     private void init() {
+        goods_list_typeName = (TextView) findViewById(R.id.goods_list_typeName);
+        goods_list_back = (TextView) findViewById(R.id.goods_list_back);
         Intent intent = getIntent();
         goods_type_id = intent.getIntExtra("goods_type_id", -1);
+        goods_type_name = intent.getStringExtra("goods_type_name");
+        if(goods_type_name == null)
+        {}else
+        {
+            goods_list_typeName.setText(goods_type_name);
+        }
+
         requestQueue = MyApplication.getRequestQueue();
         recyclerView = (RecyclerView) findViewById(R.id.goods_list_recycleview);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);

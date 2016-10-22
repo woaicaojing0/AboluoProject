@@ -111,8 +111,10 @@ public class MenuFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                int goods_type_id =  resultBean2.getGoodsTypeList().get(position).getGoodsTypeId();
+               String goods_type_name =  resultBean2.getGoodsTypeList().get(position).getGoodsTypeName();
                 Intent intent = new Intent(context, GoodsListActivity.class);
                 intent.putExtra("goods_type_id",goods_type_id);
+                intent.putExtra("goods_type_name",goods_type_name);
                 startActivity(intent);
             }
         });

@@ -42,6 +42,8 @@ public class LoginActivity extends Activity  implements View.OnClickListener,Tex
     private Button btn_login;
     private RequestQueue requestQueue;
     private SweetAlertDialog pDialog;
+    private static  String URL =null;
+    private static  String APPToken = null;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -66,6 +68,8 @@ public class LoginActivity extends Activity  implements View.OnClickListener,Tex
         pDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
         pDialog.setTitleText("登录中");
         pDialog.setCancelable(true);
+        URL =CommonUtils.GetValueByKey(this,"apiurl");
+        APPToken =CommonUtils.GetValueByKey(this,"APPToken");
     }
 
     @Override
@@ -84,7 +88,7 @@ public class LoginActivity extends Activity  implements View.OnClickListener,Tex
                 pDialog.show();
                 final String pwd = edit_userpwd.getText().toString();
                 final String name = edit_username.getText().toString();
-                StringRequest stringRequest = new StringRequest(Request.Method.POST, "http://m.abl.weidustudio.com/api/Login/UserLogin", new Response.Listener<String>() {
+                StringRequest stringRequest = new StringRequest(Request.Method.POST, URL+"/api/Login/UserLogin", new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
                         Log.i("TAG",response);
@@ -99,7 +103,8 @@ public class LoginActivity extends Activity  implements View.OnClickListener,Tex
                 }, new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-
+                        pDialog.dismiss();
+                        Toast.makeText(LoginActivity.this, error.toString(), Toast.LENGTH_SHORT).show();
                     }
                 }){
                     @Override
@@ -109,7 +114,7 @@ public class LoginActivity extends Activity  implements View.OnClickListener,Tex
                         map.put("UserLoginPass", CommonUtils.getMD5(pwd));
                         map.put("UserLoginIP", "192.168.0.150");
                         map.put("LoginChannel","1");
-                        map.put("APPToken", CommonUtils.GetValueByKey(LoginActivity.this,"APPToken"));
+                        map.put("APPToken", APPToken);
                         map.put("LoginCheckToken", "");
                         map.put("LoginPhone", name);
                         return map;

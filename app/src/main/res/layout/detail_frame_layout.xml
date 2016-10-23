@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" >
+
+    <RelativeLayout
+        android:id="@+id/detail_buy_board"
+        android:layout_width="fill_parent"
+        android:layout_height="58.0dip"
+        android:layout_alignParentBottom="true"
+       >
+
+        <TextView
+            android:id="@+id/detail_taobao_price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="15.0dip"
+            android:textColor="#ffee4566"
+            android:textSize="24.0sp"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/detail_im_celler"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="14.0dip"
+            android:drawablePadding="2.0dip"
+            android:textColor="#ff424242"
+            android:textSize="12.0sp" />
+
+        <TextView
+            android:id="@+id/detail_cart_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="18.0dip"
+            android:layout_toRightOf="@id/detail_im_celler"
+            android:drawablePadding="2.0dip"
+android:text="detail_cart_btn"
+            android:textColor="#ff424242"
+            android:textSize="12.0sp" />
+
+        <TextView
+            android:id="@+id/detail_buy_btn"
+            android:layout_width="120.0dip"
+            android:layout_height="40.0dip"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="12.0dip"
+            android:gravity="center"
+            android:paddingLeft="16.0dip"
+            android:paddingRight="16.0dip"
+            android:textSize="16.0sp" />
+
+        <LinearLayout
+            android:id="@+id/detail_taobao_btn"
+            android:layout_width="120.0dip"
+            android:layout_height="39.0dip"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="15.0dip"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:visibility="gone" >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="1.0dip"
+
+                android:textSize="17.0sp" />
+
+            <ImageView
+                android:layout_width="7.0dip"
+                android:layout_height="11.5dip"
+                android:layout_marginLeft="10.0dip"
+               />
+        </LinearLayout>
+    </RelativeLayout>
+
+    <!-- 
+    <com.mogujie.view.DetailViewPager
+        android:id="@id/detail_view_pager"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_above="@id/detail_buy_board" />
+    -->
+
+    <ImageView
+        android:src="@mipmap/ic_launcher"
+        android:id="@+id/cart_anim_icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:visibility="gone" />
+
+    <RelativeLayout
+        android:id="@+id/title"
+        android:layout_width="fill_parent"
+        android:layout_height="41.0dip"
+        android:background="#96000000"
+        android:clickable="true"
+        android:layout_alignParentTop="true"
+        android:layout_toEndOf="@+id/cart_anim_icon">
+
+        <ImageView
+            android:id="@+id/detail_backbtn"
+            android:layout_width="50.0dip"
+            android:layout_height="fill_parent"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:scaleType="center"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:textColor="#ffffffff"
+            android:textSize="19.299988sp" />
+
+        <ImageView
+            android:id="@+id/detail_home_btn"
+            android:layout_width="50.0dip"
+            android:layout_height="fill_parent"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:scaleType="center" />
+
+        <ImageView
+            android:id="@+id/detail_shopping_cart"
+            android:layout_width="50.0dip"
+            android:layout_height="fill_parent"
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@id/detail_home_btn"
+            android:scaleType="center" />
+
+        <TextView
+            android:id="@+id/detail_shopping_new"
+            android:layout_width="14.5dip"
+            android:layout_height="14.5dip"
+            android:layout_alignRight="@id/detail_shopping_cart"
+            android:layout_alignTop="@id/detail_shopping_cart"
+            android:layout_marginRight="4.0dip"
+            android:layout_marginTop="4.0dip"
+            android:gravity="top|center"
+            android:paddingTop="0.0dip"
+            android:textColor="#ffffffff"
+            android:textSize="10.0sp" />
+    </RelativeLayout>
+
+</RelativeLayout>

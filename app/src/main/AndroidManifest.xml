@@ -46,6 +46,9 @@
         <activity android:name=".AddressActivity"></activity>
         <activity android:name=".AddAddressActivity"></activity>
         <activity android:name=".GoodsListActivity"></activity>
+        <activity android:name="com.aboluo.test.AnimationActivtiy">
+
+        </activity>
     </application>
 
 </manifest>

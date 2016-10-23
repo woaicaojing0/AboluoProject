@@ -13,6 +13,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.aboluo.XUtils.CommonUtils;
 import com.aboluo.XUtils.MyApplication;
 import com.aboluo.XUtils.ValidateUtils;
 import com.aboluo.model.MessageInfo;
@@ -43,6 +44,8 @@ public class RetrievepwdActivity  extends Activity implements View.OnClickListen
     private MessageInfo messageInfo;
     private CountDownTimer time;
     private RequestQueue requestQueue;
+    private static  String URL =null;
+    private static  String APPToken = null;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -69,6 +72,8 @@ public class RetrievepwdActivity  extends Activity implements View.OnClickListen
         retrievepwd_edit_phone = (EditText) findViewById(R.id.retrievepwd_edit_phone);
         requestQueue = MyApplication.getRequestQueue();
         time = new TimeCount(60000, 1000);//构造CountDownTimer对象
+        URL = CommonUtils.GetValueByKey(this,"apiurl");
+        APPToken =CommonUtils.GetValueByKey(this,"APPToken");
     }
 
     @Override
@@ -100,11 +105,10 @@ public class RetrievepwdActivity  extends Activity implements View.OnClickListen
         {
             case R.id.retrievepwd_btn_getinfo:
                 final String number = retrievepwd_edit_phone.getText().toString().trim();
-                final String apptoken = MyApplication.APPToken;
                 if (ValidateUtils.isMobileNO(number)) {
                     time.start();
                     retrievepwd_btn_getinfo.setEnabled(false);
-                    StringRequest stringRequest = new StringRequest(Request.Method.POST, "http://m.abl.weidustudio.com/api/Login/SendMessage",
+                    StringRequest stringRequest = new StringRequest(Request.Method.POST, URL+"/api/Login/SendMessage",
                             new Response.Listener<String>() {
                                 @Override
                                 public void onResponse(String response) {
@@ -125,7 +129,7 @@ public class RetrievepwdActivity  extends Activity implements View.OnClickListen
                         protected Map<String, String> getParams() throws AuthFailureError {
                             Map<String, String> map = new HashMap<>();
                             map.put("UserLoginNumber", number);
-                            map.put("APPToken", apptoken);
+                            map.put("APPToken", APPToken);
                             return map;
                         }
                     };

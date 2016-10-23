@@ -101,7 +101,10 @@ public class GoodsDetailActivity extends Activity implements View.OnClickListene
     private GoodsDetailInfo goodsDetailInfo;
     private static int popwith; //获取当前屏幕的宽度
     private static boolean isshowtype = false;  //当前商品类型是否显示
-
+    private LinearLayout index_bottom_shopcar, goods_type_addshopcart; //1底部加入购车按钮 商品列表中的加入购物车
+    private LinearLayout goods_type_selected, goods_type_ok; // 1 有加入购物车和立即购买按钮。 2 只有确定按钮
+    private Boolean hascolor = false, hasstandards = false;
+    private SweetAlertDialog pdialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -116,6 +119,8 @@ public class GoodsDetailActivity extends Activity implements View.OnClickListene
         txt_goods_type.setOnClickListener(this);
         btnDecrease.setOnClickListener(this);
         btnIncrease.setOnClickListener(this);
+        index_bottom_shopcar.setOnClickListener(this);
+        goods_type_ok.setOnClickListener(this);
         firstView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
             public void onGlobalLayout() {
@@ -251,6 +256,12 @@ public class GoodsDetailActivity extends Activity implements View.OnClickListene
         goods_type_pop_close = (ImageView) findViewById(R.id.goods_type_pop_close);
         goods_type_pop_close.setOnClickListener(this);
         firstView.setOnClickListener(this);
+        index_bottom_shopcar = (LinearLayout) findViewById(R.id.index_bottom_shopcar);
+        goods_type_addshopcart = (LinearLayout) findViewById(R.id.goods_type_addshopcart);
+        goods_type_selected = (LinearLayout) findViewById(R.id.goods_type_selected);
+        goods_type_ok = (LinearLayout) findViewById(R.id.goods_type_ok);
+        pdialog = new SweetAlertDialog(this, SweetAlertDialog.PROGRESS_TYPE);
+        pdialog.setTitleText("请稍等");
         Intent intent = getIntent();
         goods_id = intent.getIntExtra("goods_id", 0);
         requestQueue = MyApplication.getRequestQueue();
@@ -301,11 +312,13 @@ public class GoodsDetailActivity extends Activity implements View.OnClickListene
                 if (listcolor == null) {
                     all_color.setVisibility(View.GONE);
                 } else {
+                    hascolor = true;
                     CreateColor(listcolor);
                 }
                 if (listStandard == null) {
                     all_standards.setVisibility(View.GONE);
                 } else {
+                    hasstandards = true;
                     CreateStandards(listStandard);
                 }
                 String detailurl = CommonUtils.GetValueByKey(GoodsDetailActivity.this, "backUrl") + "/moblie/Index?productId=" + goods_id;
@@ -536,6 +549,8 @@ public class GoodsDetailActivity extends Activity implements View.OnClickListene
                 finish();
                 break;
             case R.id.txt_goods_type: //选择商品类型
+                goods_type_ok.setVisibility(View.GONE);
+                goods_type_selected.setVisibility(View.VISIBLE);
                 initShowAnim();
                 isshowtype = true;
                 break;
@@ -548,7 +563,7 @@ public class GoodsDetailActivity extends Activity implements View.OnClickListene
                 setChooseType();
                 break;
             case R.id.btnDecrease: //数量减少按钮
-                if (Integer.valueOf(etAmount.getText().toString()) < 1) {
+                if (Integer.valueOf(etAmount.getText().toString()) <= 1) {
                 } else {
                     etAmount.setText(String.valueOf(Integer.valueOf(etAmount.getText().toString()) - 1));
 
@@ -561,6 +576,68 @@ public class GoodsDetailActivity extends Activity implements View.OnClickListene
 
                 }
                 break;
+            case R.id.goods_type_ok:
+
+                final RadioButton radioButton = (RadioButton) findViewById(goodsdetail_type_color.getCheckedRadioButtonId());
+                final RadioButton radioButton2 = (RadioButton) findViewById(goodsdetail_type_standards.getCheckedRadioButtonId());
+
+                if (radioButton == null || radioButton2 == null) {
+                    if (hasstandards) {
+                        if (hascolor) {
+                            Toast.makeText(GoodsDetailActivity.this, "请选择商品尺寸和颜色", Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(GoodsDetailActivity.this, "请选择商品颜色", Toast.LENGTH_SHORT).show();
+                        }
+                    } else {
+                        if (hascolor) {
+                            Toast.makeText(GoodsDetailActivity.this, "请选择商品尺寸", Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(GoodsDetailActivity.this, "请选择商品尺寸和颜色", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                } else {
+                    pdialog.show();
+                    StringRequest addrequestshopcar = new StringRequest(Request.Method.POST, URL + "/api/GoodsShoppingCart/ReceiveAddGoodsShoppingCart", new Response.Listener<String>() {
+                        @Override
+                        public void onResponse(String response) {
+                            pdialog.dismiss();
+                            response = response.replace("\\", "");
+                            response = response.substring(1, response.length() - 1);
+                            Log.i("woaicaojingAddshopcar", response);
+                        }
+                    }, new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            pdialog.dismiss();
+                            Toast.makeText(GoodsDetailActivity.this, error.toString(), Toast.LENGTH_SHORT).show();
+                            Log.i("woaicaojingAddshopcar", error.toString());
+                        }
+                    }) {
+                        @Override
+                        protected Map<String, String> getParams() throws AuthFailureError {
+                            Map<String, String> map = new HashMap<>();
+                            map.put("Id", "0");
+                            map.put("goodsId", String.valueOf(goods_id));
+                            map.put("goodsColor", radioButton.getText().toString());
+                            map.put("goodsStandard", radioButton2.getText().toString());
+                            map.put("goodsCount", etAmount.getText().toString());
+                            map.put("memberId", "6");
+                            map.put("shopId", "1");
+                            map.put("APPToken", APPToken);
+                            return map;
+
+                        }
+                    };
+                    requestQueue.add(addrequestshopcar);
+                }
+                break;
+            case R.id.goods_type_addshopcart:
+                break;
+            case R.id.index_bottom_shopcar:
+                goods_type_ok.setVisibility(View.VISIBLE);
+                goods_type_selected.setVisibility(View.GONE);
+                initShowAnim();
+
 
         }
     }

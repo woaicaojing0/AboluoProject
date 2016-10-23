@@ -45,6 +45,8 @@ public class RegisterActivity extends Activity implements View.OnClickListener,T
     private Button btn_register;    //注册按钮
   private CountDownTimer time;
     private  MessageInfo messageInfo;
+    private static  String URL =null;
+    private static  String APPToken = null;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -66,6 +68,8 @@ public class RegisterActivity extends Activity implements View.OnClickListener,T
         register_edit_pwd = (EditText) findViewById(R.id.register_edit_pwd);
         btn_register = (Button) findViewById(R.id.btn_register);
         requestQueue = MyApplication.getRequestQueue();
+        URL =CommonUtils.GetValueByKey(this,"apiurl");
+        APPToken =CommonUtils.GetValueByKey(this,"APPToken");
     }
 
     @Override
@@ -92,11 +96,10 @@ public class RegisterActivity extends Activity implements View.OnClickListener,T
         switch (v.getId()) {
             case R.id.btn_getinfo:
                 final String number = register_edit_phone.getText().toString().trim();
-                final String apptoken = MyApplication.APPToken;
                 if (ValidateUtils.isMobileNO(number)) {
                     time.start();
                     btn_getinfo.setEnabled(false);
-                    StringRequest stringRequest = new StringRequest(Request.Method.POST, "http://m.abl.weidustudio.com/api/Login/SendMessage",
+                    StringRequest stringRequest = new StringRequest(Request.Method.POST, URL+"/api/Login/SendMessage",
                             new Response.Listener<String>() {
                                 @Override
                                 public void onResponse(String response) {
@@ -117,7 +120,7 @@ public class RegisterActivity extends Activity implements View.OnClickListener,T
                         protected Map<String, String> getParams() throws AuthFailureError {
                             Map<String, String> map = new HashMap<>();
                             map.put("UserLoginNumber", number);
-                            map.put("APPToken", apptoken);
+                            map.put("APPToken", APPToken);
                             return map;
                         }
                     };
@@ -144,7 +147,7 @@ public class RegisterActivity extends Activity implements View.OnClickListener,T
                                 .setConfirmText("确定")
                                 .show();
                     }else {
-                        StringRequest stringRequest = new StringRequest(Request.Method.POST, "http://m.abl.weidustudio.com/api/Login/UserRegister", new Response.Listener<String>() {
+                        StringRequest stringRequest = new StringRequest(Request.Method.POST, URL+"/api/Login/UserRegister", new Response.Listener<String>() {
                             @Override
                             public void onResponse(String response) {
                                 Log.i("TAG", response);
@@ -157,7 +160,7 @@ public class RegisterActivity extends Activity implements View.OnClickListener,T
                         }, new Response.ErrorListener() {
                             @Override
                             public void onErrorResponse(VolleyError error) {
-
+                                Toast.makeText(RegisterActivity.this, error.toString(), Toast.LENGTH_SHORT).show();
                             }
                         }) {
                             @Override
@@ -166,7 +169,7 @@ public class RegisterActivity extends Activity implements View.OnClickListener,T
                                 map.put("UserLoginNumber", number2);
                                 map.put("UserLoginPassword", CommonUtils.getMD5(pwd));
                                 map.put("MessageCheckNumber", yanzhengma);
-                                map.put("APPToken", MyApplication.APPToken);
+                                map.put("APPToken", APPToken);
                                 map.put("LoginCheckToken", "");
                                 map.put("LoginPhone", number2);
                                 return map;

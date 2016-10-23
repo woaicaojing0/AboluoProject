@@ -5,7 +5,6 @@ import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Bitmap;
@@ -16,7 +15,6 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;
@@ -62,27 +60,38 @@ import cn.pedant.SweetAlert.SweetAlertDialog;
 
 /**
  * Created by CJ on 2016/10/1.
+ * 该页面是商品详情页对应的activitiy，包含2各部分：1 显示详情的页面 2选择商品类型的页面(默认是隐藏的)
  */
 
 public class GoodsDetailActivity extends Activity implements View.OnClickListener {
-//
+    //类型页面中的数量增加和减少
     private Button btnDecrease, btnIncrease;
+    //数量中间的编辑框
     private EditText etAmount;
-    private RollPagerView rollPagerView;
-    private String[] imgurl = null;
+    private RollPagerView rollPagerView;  //首部banner元素
+    private String[] imgurl = null;    //首部banner中绑定的图片
     private BannerAdapter bannerAdapter;
+    //商品详情和评价按钮
     private RelativeLayout goods_pingjia_layout_btn, goods_detail_layout_btn;
+    //商品详情和评价按钮下面的横线
     private View id_goods_detail_view, id_goods_pingjia_view;
+    //显示详情和评价的webview
     private WebView goods_detail_webview, goods_pingjia_webview;
+    //首页最右边显示更多操作、首页最上面的购物车
     private ImageView detail_more, detail_goods;
-    private PopupWindow goods_popwindow, goods_type_popupwindow;
+    //最右边的popwindows
+    private PopupWindow goods_popwindow;
+    //popwindows中的第一个布局
     private LinearLayout pop_01;
-    private ImageView my_info_text_back, goods_type_pop_close, goods_detail_type_imageview;
+    //详情返回、商品类型弹出xml中的关闭、商品类型中的图片
+    private ImageView goods_detail_text_back, goods_type_pop_close, goods_detail_type_imageview;
+    //商品类型、名称、会员价、原价、数量、商品列表的价格和数量
     private TextView txt_goods_type, txt_goods_name, txt_new_money, txt_old_money, txt_goods_num, goods_detail_type_txtmoney, goods_detail_type_txtnum;
-    private View Farther_view;
-    private int fHeight;
-    private int sHeight;
+    private int fHeight; //父容器的高度
+    private int sHeight;  //商品类型的高度
+    //父容器、自容器、商品列表颜色布局、尺寸布局
     private LinearLayout firstView, secondView, all_color, all_standards;
+    //颜色和尺寸的单选组
     private MyRadioGroup goodsdetail_type_color, goodsdetail_type_standards;
     private static int goods_id = 0; //商品的ID
     private RequestQueue requestQueue;
@@ -90,8 +99,8 @@ public class GoodsDetailActivity extends Activity implements View.OnClickListene
     private static String URL = null, ImgUrl = null;
     private static String APPToken = null;
     private GoodsDetailInfo goodsDetailInfo;
-    private static int popwith;
-    private static boolean isshowtype = false;
+    private static int popwith; //获取当前屏幕的宽度
+    private static boolean isshowtype = false;  //当前商品类型是否显示
 
 
     @Override
@@ -103,7 +112,7 @@ public class GoodsDetailActivity extends Activity implements View.OnClickListene
         goods_detail_layout_btn.setOnClickListener(this);
         detail_more.setOnClickListener(this);
         detail_goods.setOnClickListener(this);
-        my_info_text_back.setOnClickListener(this);
+        goods_detail_text_back.setOnClickListener(this);
         txt_goods_type.setOnClickListener(this);
         btnDecrease.setOnClickListener(this);
         btnIncrease.setOnClickListener(this);
@@ -142,8 +151,8 @@ public class GoodsDetailActivity extends Activity implements View.OnClickListene
 
             @Override
             public void afterTextChanged(Editable s) {
-                if(s.toString().equals(""))
-                {}else {
+                if (s.toString().equals("")) {
+                } else {
                     if (Integer.valueOf(s.toString()) > goodsDetailInfo.getResult().getGoodsInfo().getGoodsQuantity()) {
                         SweetAlertDialog sweetAlertDialog = new SweetAlertDialog(GoodsDetailActivity.this, SweetAlertDialog.WARNING_TYPE);
                         sweetAlertDialog.setCanceledOnTouchOutside(true);
@@ -162,36 +171,55 @@ public class GoodsDetailActivity extends Activity implements View.OnClickListene
             }
         });
     }
-    private void initwebview(String detailurl,String pingjia)
-    {
+
+    /**
+     * 初始化底部webivew（获取数据之后）
+     *
+     * @param detailurl 详情地址
+     * @param pingjia   评价地址
+     */
+    private void initwebview(String detailurl, String pingjia) {
+        //详情地址
         WebSettings webviewsetting = goods_detail_webview.getSettings();
         webviewsetting.setJavaScriptEnabled(true);
         webviewsetting.setUseWideViewPort(true);//关键点
+        webviewsetting.setLoadWithOverviewMode(true);
         goods_detail_webview.loadUrl(detailurl);
         goods_detail_webview.setWebViewClient(new WebViewClient());
-        goods_pingjia_webview.loadUrl(null);
-        goods_pingjia_webview.setWebViewClient(new WebViewClient());
+        //评价地址
         WebSettings webviewsetting2 = goods_pingjia_webview.getSettings();
         webviewsetting2.setJavaScriptEnabled(true);
         webviewsetting2.setUseWideViewPort(true);//关键点
+        webviewsetting2.setLoadWithOverviewMode(true);
+        goods_pingjia_webview.loadUrl(null);
+        goods_pingjia_webview.setWebViewClient(new WebViewClient());
     }
-private void initrollPagerView(String[] imges)
-{
-    for (int i = 0; i < imges.length; i++) {
-        imges[i] = ImgUrl+imges[i].toString();
-    }
-    rollPagerView.setHintView(new ColorPointHintView(this, Color.RED, Color.WHITE));
-    bannerAdapter = new BannerAdapter(this, imges, rollPagerView);
-    rollPagerView.setAdapter(bannerAdapter); // 设置适配器（请求网络图片，适配器要在网络请求完成后再设置）
-    rollPagerView.getViewPager().getAdapter().notifyDataSetChanged();// 更新banner图片
-    rollPagerView.setFocusable(false);
-    rollPagerView.setOnItemClickListener(new OnItemClickListener() {
-        @Override
-        public void onItemClick(int position) {
-            Toast.makeText(GoodsDetailActivity.this, "1", Toast.LENGTH_SHORT).show();
+
+    /**
+     * 加载头部banner(获取数据之后)
+     *
+     * @param imges 图片地址(多个)
+     */
+    private void initrollPagerView(String[] imges) {
+        for (int i = 0; i < imges.length; i++) {
+            imges[i] = ImgUrl + imges[i].toString();
         }
-    });
-}
+        rollPagerView.setHintView(new ColorPointHintView(this, Color.RED, Color.WHITE));
+        bannerAdapter = new BannerAdapter(this, imges, rollPagerView);
+        rollPagerView.setAdapter(bannerAdapter); // 设置适配器（请求网络图片，适配器要在网络请求完成后再设置）
+        rollPagerView.getViewPager().getAdapter().notifyDataSetChanged();// 更新banner图片
+        rollPagerView.setFocusable(false);
+        rollPagerView.setOnItemClickListener(new OnItemClickListener() {
+            @Override
+            public void onItemClick(int position) {
+                Toast.makeText(GoodsDetailActivity.this, "1", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    /**
+     * 初始化
+     */
     private void init() {
         btnDecrease = (Button) findViewById(R.id.btnDecrease);
         btnIncrease = (Button) findViewById(R.id.btnIncrease);
@@ -205,7 +233,7 @@ private void initrollPagerView(String[] imges)
         goods_pingjia_webview = (WebView) findViewById(R.id.goods_pingjia_webview);
         detail_more = (ImageView) findViewById(R.id.detail_more);
         detail_goods = (ImageView) findViewById(R.id.detail_goods);
-        my_info_text_back = (ImageView) findViewById(R.id.my_info_text_back);
+        goods_detail_text_back = (ImageView) findViewById(R.id.goods_detail_text_back);
         goods_detail_type_imageview = (ImageView) findViewById(R.id.goods_detail_type_imageview);
         txt_goods_type = (TextView) findViewById(R.id.txt_goods_type);
         txt_goods_name = (TextView) findViewById(R.id.txt_goods_name);
@@ -228,11 +256,13 @@ private void initrollPagerView(String[] imges)
         requestQueue = MyApplication.getRequestQueue();
         URL = CommonUtils.GetValueByKey(this, "apiurl");
         ImgUrl = CommonUtils.GetValueByKey(this, "ImgUrl");
-
         APPToken = CommonUtils.GetValueByKey(this, "APPToken");
 
     }
 
+    /**
+     * 获取商品详情的数据，在这个方法里加载initrollPagerView、initwebview
+     */
     private void getgoods_detail() {
         stringRequest = new StringRequest(Request.Method.POST, URL + "/api/Goods/ReceiveGoodsById", new Response.Listener<String>() {
             @Override
@@ -249,13 +279,12 @@ private void initrollPagerView(String[] imges)
                 txt_goods_num.setText(String.valueOf(goodsDetailInfo.getResult().getGoodsInfo().getGoodsQuantity()));
                 goods_detail_type_txtmoney.setText("会员价：￥" + String.valueOf(goodsDetailInfo.getResult().getGoodsInfo().getHyPrice()) + "元");
                 goods_detail_type_txtnum.setText("库存：" + String.valueOf(goodsDetailInfo.getResult().getGoodsInfo().getGoodsQuantity()) + "件");
-               //有些商品没有图片，但肯定有logo图片
-                if(goodsDetailInfo.getResult().getGoodsInfo().getGoodsPicture() ==null)
-               {
-                   imgurl = goodsDetailInfo.getResult().getGoodsInfo().getGoodsLogo().split(";");
-               }else {
-                   imgurl = goodsDetailInfo.getResult().getGoodsInfo().getGoodsPicture().split(";");
-               }
+                //有些商品没有图片，但肯定有logo图片
+                if (goodsDetailInfo.getResult().getGoodsInfo().getGoodsPicture() == null) {
+                    imgurl = goodsDetailInfo.getResult().getGoodsInfo().getGoodsLogo().split(";");
+                } else {
+                    imgurl = goodsDetailInfo.getResult().getGoodsInfo().getGoodsPicture().split(";");
+                }
                 initrollPagerView(imgurl);
                 List<GoodsDetailInfo.ResultBean.GoodsInfoBean.GoodsColorBean> listcolor = goodsDetailInfo.getResult().getGoodsInfo().getGoodsColor();
                 List<GoodsDetailInfo.ResultBean.GoodsInfoBean.GoodsStandardsBean> listStandard = goodsDetailInfo.getResult().getGoodsInfo().getGoodsStandards();
@@ -264,7 +293,7 @@ private void initrollPagerView(String[] imges)
                 for (int i = 0; i < imageurls.length; i++) {
                     imageurls[i] = ImgUrl + imageurls[i].toString();
                 }
-                Log.i("woaicaojinggoodstype",imageurls[0]);
+                Log.i("woaicaojinggoodstype", imageurls[0]);
                 Picasso.with(GoodsDetailActivity.this).load(imageurls[0])
                         .placeholder(getResources().getDrawable(R.drawable.imagviewloading))
                         .error(getResources().getDrawable(R.drawable.imageview_error))
@@ -279,9 +308,9 @@ private void initrollPagerView(String[] imges)
                 } else {
                     CreateStandards(listStandard);
                 }
-                String detailurl = CommonUtils.GetValueByKey(GoodsDetailActivity.this,"backUrl")+"/moblie/Index?productId="+goods_id;
-                Log.i("woaicaojing",detailurl);
-                initwebview(detailurl,null);
+                String detailurl = CommonUtils.GetValueByKey(GoodsDetailActivity.this, "backUrl") + "/moblie/Index?productId=" + goods_id;
+                Log.i("woaicaojing", detailurl);
+                initwebview(detailurl, null);
 
             }
         }, new Response.ErrorListener() {
@@ -300,6 +329,11 @@ private void initrollPagerView(String[] imges)
         };
     }
 
+    /**
+     * 创建color radiobutton
+     *
+     * @param listcolor List<GoodsColorBean></>
+     */
     private void CreateColor(final List<GoodsDetailInfo.ResultBean.GoodsInfoBean.GoodsColorBean> listcolor) {
 
         int num = listcolor.size() / 5;
@@ -314,7 +348,7 @@ private void initrollPagerView(String[] imges)
                 LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(popwith / 5, CommonUtils.dip2px(GoodsDetailActivity.this, 50));
                 layoutParams.setMargins(CommonUtils.dip2px(GoodsDetailActivity.this, 10), 0, 0, 0);
                 button.setBackground(getResources().getDrawable(R.drawable.rdobtn_selecter));
-                Bitmap a=null;
+                Bitmap a = null;
                 button.setButtonDrawable(new BitmapDrawable(a));
                 button.setGravity(Gravity.CENTER);
                 ColorStateList csl = getResources().getColorStateList(R.color.radio_text_selector);
@@ -355,6 +389,11 @@ private void initrollPagerView(String[] imges)
         }
     }
 
+    /**
+     * 创建尺寸 radiobutton
+     *
+     * @param liststandards List<GoodsStandardsBean></>
+     */
     private void CreateStandards(List<GoodsDetailInfo.ResultBean.GoodsInfoBean.GoodsStandardsBean> liststandards) {
 
         int num = liststandards.size() / 5;
@@ -369,7 +408,7 @@ private void initrollPagerView(String[] imges)
                 LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(popwith / 5, CommonUtils.dip2px(GoodsDetailActivity.this, 50));
                 layoutParams.setMargins(CommonUtils.dip2px(GoodsDetailActivity.this, 10), 0, 0, 0);
                 button.setBackground(getResources().getDrawable(R.drawable.rdobtn_selecter));
-                Bitmap a=null;
+                Bitmap a = null;
                 button.setButtonDrawable(new BitmapDrawable(a));
                 button.setGravity(Gravity.CENTER);
                 ColorStateList csl = getResources().getColorStateList(R.color.radio_text_selector);
@@ -418,7 +457,7 @@ private void initrollPagerView(String[] imges)
             LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(popwith / 5, CommonUtils.dip2px(GoodsDetailActivity.this, 50));
             layoutParams.setMargins(CommonUtils.dip2px(GoodsDetailActivity.this, 10), 0, 0, 0);
             button.setBackground(getResources().getDrawable(R.drawable.rdobtn_selecter));
-            Bitmap a=null;
+            Bitmap a = null;
             button.setButtonDrawable(new BitmapDrawable(a));
             ColorStateList csl = getResources().getColorStateList(R.color.radio_text_selector);
             button.setTextColor(csl);
@@ -451,7 +490,7 @@ private void initrollPagerView(String[] imges)
             LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(popwith / 5, CommonUtils.dip2px(GoodsDetailActivity.this, 50));
             layoutParams.setMargins(CommonUtils.dip2px(GoodsDetailActivity.this, 10), 0, 0, 0);
             button.setBackground(getResources().getDrawable(R.drawable.rdobtn_selecter));
-            Bitmap a=null;
+            Bitmap a = null;
             button.setButtonDrawable(new BitmapDrawable(a));
             ColorStateList csl = getResources().getColorStateList(R.color.radio_text_selector);
             button.setTextColor(csl);
@@ -476,49 +515,49 @@ private void initrollPagerView(String[] imges)
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.goods_detail_layout_btn:
+            case R.id.goods_detail_layout_btn: //商品详情按钮
                 id_goods_detail_view.setVisibility(View.VISIBLE);
                 id_goods_pingjia_view.setVisibility(View.GONE);
                 goods_detail_webview.setVisibility(View.VISIBLE);
                 goods_pingjia_webview.setVisibility(View.GONE);
                 break;
-            case R.id.goods_pingjia_layout_btn:
+            case R.id.goods_pingjia_layout_btn: //商品评价按钮
                 id_goods_detail_view.setVisibility(View.GONE);
                 id_goods_pingjia_view.setVisibility(View.VISIBLE);
                 goods_detail_webview.setVisibility(View.GONE);
                 goods_pingjia_webview.setVisibility(View.VISIBLE);
                 break;
-            case R.id.detail_goods:
+            case R.id.detail_goods: //首部购物车
                 break;
-            case R.id.detail_more:
+            case R.id.detail_more: //首部更多
                 showinfopopupwindow();
                 break;
-            case R.id.my_info_text_back:
+            case R.id.goods_detail_text_back: //返回
                 finish();
                 break;
-            case R.id.txt_goods_type:
+            case R.id.txt_goods_type: //选择商品类型
                 initShowAnim();
                 isshowtype = true;
                 break;
-            case R.id.goods_type_pop_close:
+            case R.id.goods_type_pop_close:  //关闭商品类型
                 initHiddenAnim();
                 setChooseType();
                 break;
-            case R.id.first_view:
+            case R.id.first_view: //点击外部view
                 initHiddenAnim();
                 setChooseType();
                 break;
-            case R.id.btnDecrease:
+            case R.id.btnDecrease: //数量减少按钮
                 if (Integer.valueOf(etAmount.getText().toString()) < 1) {
                 } else {
                     etAmount.setText(String.valueOf(Integer.valueOf(etAmount.getText().toString()) - 1));
 
                 }
                 break;
-            case R.id.btnIncrease:
+            case R.id.btnIncrease: //数量增加按钮
                 if (Integer.valueOf(etAmount.getText().toString()) < goodsDetailInfo.getResult().getGoodsInfo().getBuyQuantity()) {
                 } else {
-                    etAmount.setText(String.valueOf(Integer.valueOf(etAmount.getText().toString())+ 1));
+                    etAmount.setText(String.valueOf(Integer.valueOf(etAmount.getText().toString()) + 1));
 
                 }
                 break;
@@ -526,6 +565,9 @@ private void initrollPagerView(String[] imges)
         }
     }
 
+    /**
+     * 设置选择的类型
+     */
     private void setChooseType() {
         isshowtype = false;
         RadioButton radioButton = (RadioButton) findViewById(goodsdetail_type_color.getCheckedRadioButtonId());
@@ -546,6 +588,9 @@ private void initrollPagerView(String[] imges)
 
     }
 
+    /**
+     * 显示右上角的popwindows
+     */
     private void showinfopopupwindow() {
         View detail_pop = LayoutInflater.from(this).inflate(R.layout.goods_popupwindow, null);
         //测量布局的大小
@@ -569,31 +614,31 @@ private void initrollPagerView(String[] imges)
 
     }
 
-    private void showgoodstypepopupwindow() {
-        View view = LayoutInflater.from(this).inflate(R.layout.goods_type_popupwindow, null);
-        view.measure(0, 0);
-        DisplayMetrics metric = new DisplayMetrics();
-        getWindowManager().getDefaultDisplay().getMetrics(metric);
-        int height = metric.heightPixels;     // 屏幕宽度（像素）
-        int lastheight = (int) Math.ceil((height / 5) * 3);
-        goods_type_popupwindow = new PopupWindow(view, LinearLayout.LayoutParams.MATCH_PARENT, lastheight, true);
-        goods_type_popupwindow.setContentView(view);
-        goods_type_popupwindow.setAnimationStyle(R.style.goods_type_anim);
-        goods_type_popupwindow.setBackgroundDrawable(new ColorDrawable(0x00000000));
-        goods_type_popupwindow.setOutsideTouchable(true);
-        Farther_view = LayoutInflater.from(GoodsDetailActivity.this).inflate(R.layout.activity_goodsdetail, null);
-        goods_type_popupwindow.showAtLocation(Farther_view, Gravity.BOTTOM, 0, 0);
-        goods_type_pop_close = (ImageView) view.findViewById(R.id.goods_type_pop_close);
-        goods_type_pop_close.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                goods_type_popupwindow.dismiss();
-            }
-        });
+//    private void showgoodstypepopupwindow() {
+//        View view = LayoutInflater.from(this).inflate(R.layout.goods_type_popupwindow, null);
+//        view.measure(0, 0);
+//        DisplayMetrics metric = new DisplayMetrics();
+//        getWindowManager().getDefaultDisplay().getMetrics(metric);
+//        int height = metric.heightPixels;     // 屏幕宽度（像素）
+//        int lastheight = (int) Math.ceil((height / 5) * 3);
+//        goods_type_popupwindow = new PopupWindow(view, LinearLayout.LayoutParams.MATCH_PARENT, lastheight, true);
+//        goods_type_popupwindow.setContentView(view);
+//        goods_type_popupwindow.setAnimationStyle(R.style.goods_type_anim);
+//        goods_type_popupwindow.setBackgroundDrawable(new ColorDrawable(0x00000000));
+//        goods_type_popupwindow.setOutsideTouchable(true);
+//        Farther_view = LayoutInflater.from(GoodsDetailActivity.this).inflate(R.layout.activity_goodsdetail, null);
+//        goods_type_popupwindow.showAtLocation(Farther_view, Gravity.BOTTOM, 0, 0);
+//        goods_type_pop_close = (ImageView) view.findViewById(R.id.goods_type_pop_close);
+//        goods_type_pop_close.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                goods_type_popupwindow.dismiss();
+//            }
+//        });
+//
+//    }
 
-    }
-
-    //firstView是主视图,secondView是popopWindow
+    //firstView是主视图,secondView是popopWindow 显示动画
     private void initShowAnim() {
         ObjectAnimator fViewScaleXAnim = ObjectAnimator.ofFloat(firstView, "scaleX", 1.0f, 0.8f);
         fViewScaleXAnim.setDuration(350);
@@ -622,6 +667,7 @@ private void initrollPagerView(String[] imges)
         showAnim.start();
     }
 
+    //隐藏动画
     private void initHiddenAnim() {
         ObjectAnimator fViewScaleXAnim = ObjectAnimator.ofFloat(firstView, "scaleX", 0.8f, 1.0f);
         fViewScaleXAnim.setDuration(350);

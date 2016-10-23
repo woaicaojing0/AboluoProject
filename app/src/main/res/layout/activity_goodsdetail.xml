@@ -21,7 +21,7 @@
             android:layout_height="match_parent">
 
             <ImageView
-                android:id="@+id/my_info_text_back"
+                android:id="@+id/goods_detail_text_back"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
@@ -252,12 +252,14 @@
 
             <WebView
                 android:id="@+id/goods_detail_webview"
+                android:scrollbars="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"></WebView>
 
             <WebView
                 android:id="@+id/goods_pingjia_webview"
                 android:layout_width="match_parent"
+                android:scrollbars="vertical"
                 android:layout_height="wrap_content"></WebView>
         </LinearLayout>
     </com.aboluo.widget.VerticalScrollView>

@@ -1,8 +1,12 @@
 package com.aboluo.adapter;
 
 import android.content.Context;
+import android.content.Intent;
+import android.graphics.Paint;
+import android.media.Image;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,13 +14,18 @@ import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.aboluo.XUtils.CommonUtils;
+import com.aboluo.com.GoodsDetailActivity;
 import com.aboluo.com.R;
-import com.aboluo.model.ShopCarInfo;
+import com.aboluo.model.ShopCarBean.ResultBean.GoodsShoppingCartListBean;
 import com.aboluo.widget.AmountView;
+import com.android.volley.toolbox.StringRequest;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,11 +35,11 @@ import java.util.List;
  */
 
 public class ShopCarAdapter extends BaseAdapter {
-    public void setMlist(List<ShopCarInfo> mlist) {
+    public void setMlist(List<GoodsShoppingCartListBean> mlist) {
         this.mlist = mlist;
     }
 
-    private List<ShopCarInfo> mlist;
+    private List<GoodsShoppingCartListBean> mlist;
     private Callback mCallback;
     private Context mcontext;
     //表示用户是否在编辑状态
@@ -56,20 +65,21 @@ public class ShopCarAdapter extends BaseAdapter {
     //选中状态
     private ArrayList<Boolean> ckisselected;
 
-    public ShopCarAdapter(List<ShopCarInfo> list, Context context, Callback callback) {
+    public ShopCarAdapter(List<GoodsShoppingCartListBean> list, Context context, Callback callback) {
         this.mcontext = context;
         this.mlist = list;
         this.mCallback = callback;
         ckisselected = new ArrayList<>();
         initDate();
     }
-
+private String ImgeURL = null;
     // 初始化isSelected的数据
     private void initDate() {
         for (int i = 0; i < mlist.size(); i++) {
             ckisselected.add(i, false);
         }
         states = 8;
+        ImgeURL = CommonUtils.GetValueByKey(mcontext,"ImgUrl");
     }
 
     @Override
@@ -101,15 +111,40 @@ public class ShopCarAdapter extends BaseAdapter {
             holder.btnDecrease = (Button) convertView.findViewById(R.id.btnDecrease);
             holder.btnIncrease = (Button) convertView.findViewById(R.id.btnIncrease);
             holder.maxnum = (TextView) convertView.findViewById(R.id.maxnum);
+            holder.shopcar_standards = (TextView) convertView.findViewById(R.id.shopcar_standards);
+            holder.shopcar_old_price = (TextView) convertView.findViewById(R.id.shopcar_old_price);
+            holder.shopcar_image = (ImageView) convertView.findViewById(R.id.shopcar_image);
             convertView.setTag(holder);
         } else {
             holder = (ViewHolder) convertView.getTag();
         }
 
-        holder.etAmount.setText(mlist.get(position).getNum() + "");
-        holder.maxnum.setText("10");
+        holder.etAmount.setText(String.valueOf(mlist.get(position).getGoodsCount()));
+        holder.maxnum.setText("100");
         holder.textName.setText(mlist.get(position).getGoodsName().toString());
-        holder.moeny.setText(String.valueOf(mlist.get(position).getMoney()));
+        holder.moeny.setText(String.valueOf(mlist.get(position).getHyPrice()));
+        String guige = null;
+        if (mlist.get(position).getGoodsStandard() != null) {
+            guige = "尺寸：" + mlist.get(position).getGoodsStandard();
+        }
+        if (mlist.get(position).getGoodsColor() != null) {
+            guige = guige+" "+"颜色：" + mlist.get(position).getGoodsColor();
+        }
+        if (guige == null) {
+            holder.shopcar_standards.setText("无");
+        } else {
+            holder.shopcar_standards.setText(guige);
+        }
+        //   holder.old_money.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG);
+        holder.shopcar_old_price.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG);
+        holder.shopcar_old_price.setText("￥"+String.valueOf(mlist.get(position).getGoodsPrice()));
+       String [] imges= mlist.get(position).getGoodsLogo().toString().split(";");
+        if(ImgeURL == null)
+        {ImgeURL = CommonUtils.GetValueByKey(mcontext,"ImgeURL");}else {}
+        Log.i("woaicaojingshopimg",ImgeURL+imges[0]);
+        Picasso.with(mcontext).load(ImgeURL+imges[0]).placeholder(mcontext.getResources().getDrawable(R.drawable.imagviewloading))
+                .error(mcontext.getResources().getDrawable(R.drawable.imageview_error))
+                .into(holder.shopcar_image);
         final ViewHolder finalHolder = holder;
         holder.ck_buy.setChecked(ckisselected.get(position));
         holder.ck_by_linelayout.setOnClickListener(new View.OnClickListener() {
@@ -174,6 +209,15 @@ public class ShopCarAdapter extends BaseAdapter {
             }
 
         });
+        holder.shopcar_image.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+              int goods_id =  mlist.get(position).getGoodsId();
+                Intent intent = new Intent(mcontext,GoodsDetailActivity.class);
+                intent.putExtra("goods_id", goods_id);
+                mcontext.startActivity(intent);
+            }
+        });
         return convertView;
     }
 
@@ -183,10 +227,11 @@ public class ShopCarAdapter extends BaseAdapter {
         public CheckBox ck_buy;
         public AmountView numberButton;
         public LinearLayout ck_by_linelayout;
-        public TextView moeny, maxnum;
+        public TextView moeny, maxnum, shopcar_standards,shopcar_old_price;
         public EditText etAmount;
         private Button btnDecrease;
         private Button btnIncrease;
+        private ImageView shopcar_image;
     }
 
     public interface Callback {

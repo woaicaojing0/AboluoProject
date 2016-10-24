@@ -87,6 +87,8 @@
                 android:layout_height="0.2dp"
                 android:background="#b8b8b8"></View>
             <TextView
+                android:textSize="18sp"
+                android:textColor="@color/black"
                 android:gravity="center_vertical"
                 android:id="@+id/txt_goods_name"
                 android:layout_width="wrap_content"
@@ -98,21 +100,33 @@
 
             <View
                 android:layout_width="fill_parent"
-                android:layout_height="0.2dp"
+                android:layout_height="4dp"
                 android:background="#b8b8b8"></View>
-
-            <TextView
+            <RelativeLayout
+                android:layout_gravity="center_vertical"
                 android:gravity="center_vertical"
-                android:layout_marginTop="6dp"
-                android:id="@+id/txt_goods_type"
                 android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+            <TextView
+                android:layout_marginTop="6dp"
+                android:gravity="center_vertical"
+                android:id="@+id/txt_goods_type"
+                android:layout_width="wrap_content"
                 android:layout_height="30dp"
                 android:layout_marginLeft="8dp"
                 android:lines="1"
                 android:text="请选择商品类型" />
+                <ImageView
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@drawable/jiantou"/>
+            </RelativeLayout>
             <View
                 android:layout_width="fill_parent"
-                android:layout_height="0.2dp"
+                android:layout_height="4dp"
                 android:background="#b8b8b8"></View>
             <LinearLayout
                 android:layout_width="match_parent"
@@ -164,7 +178,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="已售出" />
+                        android:text="库存" />
 
                     <TextView
                         android:id="@+id/txt_goods_num"
@@ -272,6 +286,7 @@
         android:layout_alignParentBottom="true" />
 
     //弹出框，默认不显示
+
     <include
 
         android:id="@+id/second_view"
@@ -280,7 +295,8 @@
         android:background="@color/blue"
         android:orientation="vertical"
         layout="@layout/goods_type_popupwindow"
+        android:visibility="invisible"
         android:layout_alignParentBottom="true"
-        android:visibility="invisible">
+        android:layout_alignParentStart="true">
     </include>
 </RelativeLayout>

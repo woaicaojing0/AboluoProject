@@ -2,8 +2,6 @@ package com.aboluo.fragment;
 
 import android.content.Context;
 import android.database.DataSetObserver;
-import android.database.Observable;
-import android.graphics.SumPathEffect;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -12,27 +10,35 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.aboluo.XUtils.CommonUtils;
+import com.aboluo.XUtils.MyApplication;
 import com.aboluo.adapter.ShopCarAdapter;
-import com.aboluo.com.GuideActivity;
 import com.aboluo.com.R;
+import com.aboluo.model.ShopCarBean;
 import com.aboluo.model.ShopCarInfo;
-import com.aboluo.widget.AmountView;
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.google.gson.Gson;
 
-import java.nio.channels.NotYetBoundException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by cj34920 on 2016/9/8.
  */
-public class ShopCarFragment extends Fragment implements View.OnClickListener,ShopCarAdapter.Callback{
-    private static  String TAG="UserInfoMsg";
+public class ShopCarFragment extends Fragment implements View.OnClickListener, ShopCarAdapter.Callback {
+    private static String TAG = "UserInfoMsg";
     private View view;
     private ListView listView;
     private List<ShopCarInfo> list;
@@ -50,7 +56,11 @@ public class ShopCarFragment extends Fragment implements View.OnClickListener,Sh
     //删除按钮
     private Button shopcar_btn_delete;
     //合计
- private TextView shopcar_allmoney;
+    private TextView shopcar_allmoney;
+    private RequestQueue requestQueue;
+    private String APPToken =null;
+    private String URL =null;
+
     @Override
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -65,11 +75,10 @@ public class ShopCarFragment extends Fragment implements View.OnClickListener,Sh
             ShopCarInfo carInfo = new ShopCarInfo();
             carInfo.setGoodsName(i + "奋斗奋斗奋斗方法打发打发斯蒂芬斯蒂芬地方倒萨发送方");
             carInfo.setNum(i);
-            carInfo.setMoney(180+i);
+            carInfo.setMoney(180 + i);
             list.add(carInfo);
         }
-        carAdapter = new ShopCarAdapter(list, context,this);
-        listView.setAdapter(carAdapter);
+
         cb_cart_all_linealayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -91,7 +100,6 @@ public class ShopCarFragment extends Fragment implements View.OnClickListener,Sh
         });
         btn_editAndok.setOnClickListener(this);
         shopcar_btn_delete.setOnClickListener(this);
-        carAdapter.registerDataSetObserver(AdapterDataSetObserver);
         return view;
     }
 
@@ -106,6 +114,10 @@ public class ShopCarFragment extends Fragment implements View.OnClickListener,Sh
         linelayout_ok = (LinearLayout) view.findViewById(R.id.linelayout_ok);
         shopcar_btn_delete = (Button) view.findViewById(R.id.shopcar_btn_delete);
         shopcar_allmoney = (TextView) view.findViewById(R.id.shopcar_allmoney);
+        requestQueue = MyApplication.getRequestQueue();
+        URL = CommonUtils.GetValueByKey(context,"apiurl");
+        APPToken = CommonUtils.GetValueByKey(context,"APPToken");
+        initshopcar();
 
     }
 
@@ -134,8 +146,8 @@ public class ShopCarFragment extends Fragment implements View.OnClickListener,Sh
                         temp_info.add(j++, list.get(i));
                     }
                 }
-                list  =temp_info;
-                carAdapter.setMlist(temp_info);
+                list = temp_info;
+//                carAdapter.setMlist(temp_info);
                 carAdapter.setckisselected(temp_isSelected);
                 carAdapter.notifyDataSetChanged();
                 break;
@@ -171,9 +183,40 @@ public class ShopCarFragment extends Fragment implements View.OnClickListener,Sh
 
 
     @Override
-    public void click(View v, int Amount,int postion) {
-        Log.i(TAG,"当前数量"+Amount +">>>>>>>>>>>点击的第"+postion+"条");
+    public void click(View v, int Amount, int postion) {
+        Log.i(TAG, "当前数量" + Amount + ">>>>>>>>>>>点击的第" + postion + "条");
 //        Toast.makeText(context, Amount +">>>>>>>>>>>"+postion+"", Toast.LENGTH_SHORT).show();
         list.get(postion).setNum(Amount);
+    }
+
+    private void initshopcar() {
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, URL+"/api/GoodsShoppingCart/ReceiveGoodsShoppingCartList", new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                response = response.replace("\\","");
+                response = response.substring(1,response.length()-1);
+                Log.i("woaicaojingshopcar",response);
+                Gson gson = new Gson();
+                ShopCarBean shopCarBean = gson.fromJson(response,ShopCarBean.class);
+                carAdapter = new ShopCarAdapter(shopCarBean.getResult().getGoodsShoppingCartList(), context, ShopCarFragment.this);
+                listView.setAdapter(carAdapter);
+                carAdapter.registerDataSetObserver(AdapterDataSetObserver);
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.i("woaicaojingshopcar",error.toString());
+            }
+        }) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+               Map<String,String> map = new HashMap<>();
+                map.put("MemberId","6");
+                map.put("APPToken",APPToken);
+                return  map;
+            }
+        };
+       requestQueue.add(stringRequest);
+
     }
 }

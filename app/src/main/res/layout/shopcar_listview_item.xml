@@ -1,10 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:app="http://schemas.android.com/apk/res-auto"
-              xmlns:qinc="http://schemas.android.com/apk/res-auto"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:orientation="vertical">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -21,27 +19,28 @@
                 style="@style/CustomCheckboxTheme"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="4dp"
                 android:layout_gravity="center_vertical"
-                android:clickable="false"/>
+                android:layout_marginLeft="4dp"
+                android:clickable="false" />
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="76dp"
+            android:layout_height="100dp"
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="4dp"
             android:layout_marginRight="12dp">
 
             <LinearLayout
-                android:layout_width="76dp"
-                android:layout_height="match_parent"
+                android:layout_width="90dp"
+                android:layout_height="90dp"
                 android:layout_gravity="center_vertical">
 
                 <ImageView
+                    android:id="@+id/shopcar_image"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:src="@color/darkgray"/>
+                    android:src="@color/darkgray" />
             </LinearLayout>
 
             <LinearLayout
@@ -58,10 +57,23 @@
                     <TextView
                         android:id="@+id/shopcar_txt_buyName"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
+                        android:layout_height="wrap_content"
                         android:ellipsize="end"
                         android:maxLines="2"
-                        android:text="商品名称a撒旦撒打算实打实的ssssssssssssssssssssssssssssssssssss"/>
+                        android:text="商品名称a撒旦撒打算实打实的ssssssssssssssssssssssssssssssssssss" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:gravity="center_vertical"
+                    android:layout_weight="0.5">
+
+                    <TextView
+                        android:id="@+id/shopcar_standards"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="商品规格" />
                 </LinearLayout>
 
                 <RelativeLayout
@@ -69,43 +81,71 @@
                     android:layout_height="0dp"
                     android:layout_weight="1">
 
-                    <TextView
-                        android:id="@+id/fuhao"
+                    <LinearLayout
+                        android:id="@+id/shopcar_hy_price"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
-                        android:text="￥"
-                        android:textColor="@color/red"
-                        android:textSize="8sp"/>
+                        android:orientation="horizontal">
 
-                    <TextView
-                        android:id="@+id/shopcar_txt_itemmoney"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        <TextView
+                            android:id="@+id/fuhao"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:text="￥"
+                            android:textColor="@color/red"
+                            android:textSize="8sp" />
+
+                        <TextView
+                            android:id="@+id/shopcar_txt_itemmoney"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:layout_toEndOf="@+id/fuhao"
+                            android:text="180.0"
+                            android:textColor="@color/red" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/shop_car_num"
                         android:layout_centerVertical="true"
-                        android:layout_toEndOf="@+id/fuhao"
-                        android:text="180.0"
-                        android:textColor="@color/red"
-                        />
+                        android:layout_width="wrap_content"
+                        android:layout_height="30dp"
+                        android:layout_alignParentRight="true">
+
+                        <include layout="@layout/view_amount"></include>
+                    </LinearLayout>
+
                     <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true">
-                        <include layout="@layout/view_amount"
-                            ></include>
+                        android:orientation="horizontal"
+                        android:layout_alignBottom="@+id/shopcar_hy_price"
+                        android:layout_toEndOf="@+id/shopcar_hy_price">
+
+
+                        <TextView
+                            android:id="@+id/shopcar_old_price"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:text="￥180.0"
+                            android:textColor="#cccccc"
+                            android:textSize="12sp" />
                     </LinearLayout>
 
                     <!--<com.aboluo.widget.AmountView-->
-                        <!--android:layout_alignParentRight="true"-->
-                        <!--android:id="@+id/number_button"-->
-                        <!--app:btnTextSize="14sp"-->
-                        <!--app:btnWidth="36dp"-->
-                        <!--app:tvWidth="50dp"-->
-                        <!--android:layout_width="wrap_content"-->
-                        <!--android:layout_height="36dp"-->
-                        <!--android:layout_gravity="right"-->
-                        <!--android:layout_marginLeft="12dp"-->
-                        <!--android:layout_centerVertical="true">-->
+                    <!--android:layout_alignParentRight="true"-->
+                    <!--android:id="@+id/number_button"-->
+                    <!--app:btnTextSize="14sp"-->
+                    <!--app:btnWidth="36dp"-->
+                    <!--app:tvWidth="50dp"-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="36dp"-->
+                    <!--android:layout_gravity="right"-->
+                    <!--android:layout_marginLeft="12dp"-->
+                    <!--android:layout_centerVertical="true">-->
                     <!--</com.aboluo.widget.AmountView>-->
 
 

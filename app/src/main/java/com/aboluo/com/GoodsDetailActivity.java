@@ -38,6 +38,7 @@ import android.widget.Toast;
 import com.aboluo.XUtils.CommonUtils;
 import com.aboluo.XUtils.MyApplication;
 import com.aboluo.adapter.BannerAdapter;
+import com.aboluo.model.AddShopCarBean;
 import com.aboluo.model.GoodsDetailInfo;
 import com.aboluo.widget.MyRadioGroup;
 import com.android.volley.AuthFailureError;
@@ -603,7 +604,12 @@ public class GoodsDetailActivity extends Activity implements View.OnClickListene
                             pdialog.dismiss();
                             response = response.replace("\\", "");
                             response = response.substring(1, response.length() - 1);
+                            AddShopCarBean bean = new AddShopCarBean();
+                            Gson gson = new Gson();
+                            bean =  gson.fromJson(response,AddShopCarBean.class);
                             Log.i("woaicaojingAddshopcar", response);
+                            Toast.makeText(GoodsDetailActivity.this, bean.getMessage(), Toast.LENGTH_LONG).show();
+                            initHiddenAnim();
                         }
                     }, new Response.ErrorListener() {
                         @Override
@@ -611,6 +617,7 @@ public class GoodsDetailActivity extends Activity implements View.OnClickListene
                             pdialog.dismiss();
                             Toast.makeText(GoodsDetailActivity.this, error.toString(), Toast.LENGTH_SHORT).show();
                             Log.i("woaicaojingAddshopcar", error.toString());
+                            Toast.makeText(GoodsDetailActivity.this,  error.toString(), Toast.LENGTH_LONG).show();
                         }
                     }) {
                         @Override
@@ -746,6 +753,7 @@ public class GoodsDetailActivity extends Activity implements View.OnClickListene
 
     //隐藏动画
     private void initHiddenAnim() {
+        isshowtype = false;
         ObjectAnimator fViewScaleXAnim = ObjectAnimator.ofFloat(firstView, "scaleX", 0.8f, 1.0f);
         fViewScaleXAnim.setDuration(350);
         ObjectAnimator fViewScaleYAnim = ObjectAnimator.ofFloat(firstView, "scaleY", 0.8f, 1.0f);

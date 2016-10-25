@@ -2,10 +2,13 @@ package com.aboluo.adapter;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.ImageView;
 
+import com.aboluo.XUtils.ResizableImageView;
 import com.aboluo.com.R;
 import com.jude.rollviewpager.RollPagerView;
 import com.jude.rollviewpager.adapter.LoopPagerAdapter;
@@ -29,11 +32,12 @@ public class BannerAdapter extends LoopPagerAdapter {
     }
     @Override
     public View getView(ViewGroup container, int position) {
-        ImageView view =new ImageView(container.getContext());
+         ImageView view =new ImageView(container.getContext());
+        Log.i("woaiocajingimgs",imgsurl[position]);
         picasso.load(imgsurl[position])
                 .placeholder(mcontext.getResources().getDrawable(R.drawable.imagviewloading))
                 .into(view);
-        view.setScaleType(ImageView.ScaleType.CENTER_CROP);
+       view.setScaleType(ImageView.ScaleType.FIT_XY);
         view.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.MATCH_PARENT));
         return view;
     }

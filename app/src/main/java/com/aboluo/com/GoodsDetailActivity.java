@@ -13,6 +13,7 @@ import android.graphics.Paint;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -106,6 +107,7 @@ public class GoodsDetailActivity extends Activity implements View.OnClickListene
     private LinearLayout goods_type_selected, goods_type_ok; // 1 有加入购物车和立即购买按钮。 2 只有确定按钮
     private Boolean hascolor = false, hasstandards = false;
     private SweetAlertDialog pdialog;
+    private static String goods_type_imgeurl; //需要放大图片的地址
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -176,6 +178,16 @@ public class GoodsDetailActivity extends Activity implements View.OnClickListene
                 }
             }
         });
+        goods_detail_type_imageview.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(GoodsDetailActivity.this, GoodsDetailImageActivity.class);
+                intent.putExtra("imgeurl", goods_type_imgeurl);
+                String transitionName = "images";
+                ActivityOptionsCompat activityOptionsCompat = ActivityOptionsCompat.makeSceneTransitionAnimation(GoodsDetailActivity.this, v, transitionName);
+                startActivity(intent, activityOptionsCompat.toBundle());
+            }
+        });
     }
 
     /**
@@ -221,6 +233,11 @@ public class GoodsDetailActivity extends Activity implements View.OnClickListene
                 Toast.makeText(GoodsDetailActivity.this, "1", Toast.LENGTH_SHORT).show();
             }
         });
+        goods_type_imgeurl = imges[0];
+        Picasso.with(GoodsDetailActivity.this).load(imges[0])
+                .placeholder(getResources().getDrawable(R.drawable.imagviewloading))
+                .error(getResources().getDrawable(R.drawable.imageview_error))
+                .into(goods_detail_type_imageview);
     }
 
     /**
@@ -302,25 +319,27 @@ public class GoodsDetailActivity extends Activity implements View.OnClickListene
                 List<GoodsDetailInfo.ResultBean.GoodsInfoBean.GoodsStandardsBean> listStandard = goodsDetailInfo.getResult().getGoodsInfo().getGoodsStandards();
                 String imageurl = goodsDetailInfo.getResult().getGoodsInfo().getGoodsLogo();
                 String[] imageurls = imageurl.split(";");
-                for (int i = 0; i < imageurls.length; i++) {
-                    imageurls[i] = ImgUrl + imageurls[i].toString();
-                }
                 Log.i("woaicaojinggoodstype", imageurls[0]);
-                Picasso.with(GoodsDetailActivity.this).load(imageurls[0])
-                        .placeholder(getResources().getDrawable(R.drawable.imagviewloading))
-                        .error(getResources().getDrawable(R.drawable.imageview_error))
-                        .into(goods_detail_type_imageview);
+
                 if (listcolor == null) {
                     all_color.setVisibility(View.GONE);
                 } else {
-                    hascolor = true;
-                    CreateColor(listcolor);
+                    if (listcolor.size() == 0) {
+                        all_color.setVisibility(View.GONE);
+                    } else {
+                        hascolor = true;
+                        CreateColor(listcolor);
+                    }
                 }
                 if (listStandard == null) {
                     all_standards.setVisibility(View.GONE);
                 } else {
-                    hasstandards = true;
-                    CreateStandards(listStandard);
+                    if (listStandard.size() == 0) {
+                        all_standards.setVisibility(View.GONE);
+                    } else {
+                        hasstandards = true;
+                        CreateStandards(listStandard);
+                    }
                 }
                 String detailurl = CommonUtils.GetValueByKey(GoodsDetailActivity.this, "backUrl") + "/moblie/Index?productId=" + goods_id;
                 Log.i("woaicaojing", detailurl);
@@ -374,8 +393,11 @@ public class GoodsDetailActivity extends Activity implements View.OnClickListene
                 button.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        goods_type_imgeurl = ImgUrl + listcolor.get(finalI).getColorImg();
+                        Log.i("woaicaojing", goods_type_imgeurl);
                         Log.i("woaicaojing + picURl", ImgUrl + listcolor.get(finalI).getColorImg());
                         Picasso.with(GoodsDetailActivity.this).load(ImgUrl + listcolor.get(finalI).getColorImg()).placeholder(getResources().getDrawable(R.drawable.imagviewloading)).into(goods_detail_type_imageview);
+
                     }
                 });
                 linearLayout.addView(button);
@@ -484,6 +506,7 @@ public class GoodsDetailActivity extends Activity implements View.OnClickListene
             button.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    goods_type_imgeurl = ImgUrl + listcolor.get(finalI).getColorImg();
                     Log.i("woaicaojing + picURl", ImgUrl + listcolor.get(finalI).getColorImg());
                     Toast.makeText(GoodsDetailActivity.this, finalI + "", Toast.LENGTH_SHORT).show();
                     Picasso.with(GoodsDetailActivity.this).load(ImgUrl + listcolor.get(finalI).getColorImg()).placeholder(getResources().getDrawable(R.drawable.imagviewloading)).into(goods_detail_type_imageview);
@@ -581,22 +604,49 @@ public class GoodsDetailActivity extends Activity implements View.OnClickListene
 
                 final RadioButton radioButton = (RadioButton) findViewById(goodsdetail_type_color.getCheckedRadioButtonId());
                 final RadioButton radioButton2 = (RadioButton) findViewById(goodsdetail_type_standards.getCheckedRadioButtonId());
-
-                if (radioButton == null || radioButton2 == null) {
+//                if (hasstandards) {
+//                    if (radioButton2 == null) {
+//                        Toast.makeText(GoodsDetailActivity.this, "请选择商品尺寸", Toast.LENGTH_SHORT).show();
+//                    } else {
+//                    }
+//                }
+//                if (hascolor) {
+//                    if (radioButton == null) {
+//                        Toast.makeText(GoodsDetailActivity.this, "请选择商品颜色", Toast.LENGTH_SHORT).show();
+//                    }
+//                    else{}
+//                }
+                boolean isok = false;
+                if (radioButton == null && radioButton2 == null) {
                     if (hasstandards) {
                         if (hascolor) {
                             Toast.makeText(GoodsDetailActivity.this, "请选择商品尺寸和颜色", Toast.LENGTH_SHORT).show();
                         } else {
-                            Toast.makeText(GoodsDetailActivity.this, "请选择商品颜色", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(GoodsDetailActivity.this, "请选择商品尺寸", Toast.LENGTH_SHORT).show();
                         }
                     } else {
                         if (hascolor) {
-                            Toast.makeText(GoodsDetailActivity.this, "请选择商品尺寸", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(GoodsDetailActivity.this, "请选择商品颜色", Toast.LENGTH_SHORT).show();
                         } else {
-                            Toast.makeText(GoodsDetailActivity.this, "请选择商品尺寸和颜色", Toast.LENGTH_SHORT).show();
+                            isok = true;
                         }
                     }
+                } else if (radioButton == null) {
+                    if (hascolor) {
+                        Toast.makeText(GoodsDetailActivity.this, "请选择商品颜色", Toast.LENGTH_SHORT).show();
+                    } else {
+                        isok = true;
+                    }
+                } else if (radioButton2 == null) {
+                    if (hasstandards) {
+                        Toast.makeText(GoodsDetailActivity.this, "请选择商品尺寸", Toast.LENGTH_SHORT).show();
+                    } else {
+                        isok = true;
+                    }
                 } else {
+                    isok = true;
+                }
+                if (isok) {
                     pdialog.show();
                     StringRequest addrequestshopcar = new StringRequest(Request.Method.POST, URL + "/api/GoodsShoppingCart/ReceiveAddGoodsShoppingCart", new Response.Listener<String>() {
                         @Override
@@ -606,7 +656,7 @@ public class GoodsDetailActivity extends Activity implements View.OnClickListene
                             response = response.substring(1, response.length() - 1);
                             AddShopCarBean bean = new AddShopCarBean();
                             Gson gson = new Gson();
-                            bean =  gson.fromJson(response,AddShopCarBean.class);
+                            bean = gson.fromJson(response, AddShopCarBean.class);
                             Log.i("woaicaojingAddshopcar", response);
                             Toast.makeText(GoodsDetailActivity.this, bean.getMessage(), Toast.LENGTH_LONG).show();
                             initHiddenAnim();
@@ -617,7 +667,7 @@ public class GoodsDetailActivity extends Activity implements View.OnClickListene
                             pdialog.dismiss();
                             Toast.makeText(GoodsDetailActivity.this, error.toString(), Toast.LENGTH_SHORT).show();
                             Log.i("woaicaojingAddshopcar", error.toString());
-                            Toast.makeText(GoodsDetailActivity.this,  error.toString(), Toast.LENGTH_LONG).show();
+                            Toast.makeText(GoodsDetailActivity.this, error.toString(), Toast.LENGTH_LONG).show();
                         }
                     }) {
                         @Override
@@ -625,8 +675,16 @@ public class GoodsDetailActivity extends Activity implements View.OnClickListene
                             Map<String, String> map = new HashMap<>();
                             map.put("Id", "0");
                             map.put("goodsId", String.valueOf(goods_id));
-                            map.put("goodsColor", radioButton.getText().toString());
-                            map.put("goodsStandard", radioButton2.getText().toString());
+                            if (radioButton != null) {
+                                map.put("goodsColor", radioButton.getText().toString());
+                            } else {
+                                map.put("goodsColor", "无");
+                            }
+                            if (radioButton2 != null) {
+                                map.put("goodsStandard", radioButton2.getText().toString());
+                            } else {
+                                map.put("goodsStandard", "无");
+                            }
                             map.put("goodsCount", etAmount.getText().toString());
                             map.put("memberId", "6");
                             map.put("shopId", "1");
@@ -636,6 +694,7 @@ public class GoodsDetailActivity extends Activity implements View.OnClickListene
                         }
                     };
                     requestQueue.add(addrequestshopcar);
+                } else {
                 }
                 break;
             case R.id.goods_type_addshopcart:

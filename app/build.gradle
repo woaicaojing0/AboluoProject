@@ -51,5 +51,6 @@ dependencies {
     compile 'com.android.support:cardview-v7:23.2.1'
     //    //5.0之后的RecyclerView控件
     //    compile 'com.android.support:RecyclerView-v7:23.0.1'
+    //图片方法缩小的第三方
     compile 'com.commit451:PhotoView:1.2.4'
 }

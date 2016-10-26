@@ -24,22 +24,31 @@ import java.util.List;
  */
 
 public class RecycleViewAdapter extends RecyclerView.Adapter<RecycleViewAdapter.MyViewHolder> {
-    private static String ImgeURL  =null;
+    private int mwangge = 0;
+    private static String ImgeURL = null;
     private GoodsListInfo mgoodsListInfo;
     private List<GoodsListInfo.ResultBean.GoodsListBean> mgoodGoodsListBean;
     private OnRecyclerViewItemClickListener onRecyclerViewItemClickListener = null;
-private Context mcontext;
-    public RecycleViewAdapter(GoodsListInfo goodsListInfo,Context context) {
+    private Context mcontext;
+
+    public RecycleViewAdapter(GoodsListInfo goodsListInfo, Context context, int wangge) {
         this.mgoodsListInfo = goodsListInfo;
         this.mgoodGoodsListBean = goodsListInfo.getResult().getGoodsList();
         this.mcontext = context;
-        ImgeURL  = CommonUtils.GetValueByKey(mcontext,"ImgUrl");
+        this.mwangge = wangge;
+        ImgeURL = CommonUtils.GetValueByKey(mcontext, "ImgUrl");
     }
 
     @Override
     public RecycleViewAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.activity_goodlist_item, parent, false);
-        MyViewHolder myViewHolder = new MyViewHolder(view);
+        MyViewHolder myViewHolder = null;
+        if (mwangge == 0) {
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.activity_goodlist_item, parent, false);
+            myViewHolder = new MyViewHolder(view);
+        } else {
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.activity_goodlist_item2, parent, false);
+            myViewHolder = new MyViewHolder(view);
+        }
         return myViewHolder;
     }
 
@@ -49,14 +58,14 @@ private Context mcontext;
         holder.old_money.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG);
         holder.old_money.setText(mgoodGoodsListBean.get(position).getGoodsPrice() + "元");
         holder.goods_quantity.setText("数量:" + mgoodGoodsListBean.get(position).getGoodsQuantity() + "件");
-       String imageurl = mgoodGoodsListBean.get(position).getGoodsLogo();
-        if(imageurl == null)
-        {}else {
+        String imageurl = mgoodGoodsListBean.get(position).getGoodsLogo();
+        if (imageurl == null) {
+        } else {
             String[] imageurls = imageurl.split(";");
             for (int i = 0; i < imageurls.length; i++) {
                 imageurls[i] = ImgeURL + imageurls[i].toString();
             }
-            Log.i("woaicaojing",imageurls[0].toString());
+            Log.i("woaicaojing", imageurls[0].toString());
             Picasso.with(mcontext).load(imageurls[0]).placeholder(mcontext.getResources().getDrawable(R.drawable.imagviewloading))
                     .error(mcontext.getResources().getDrawable(R.drawable.imageview_error)).into(holder.goods_image);
 

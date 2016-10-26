@@ -29,16 +29,86 @@
             android:layout_centerInParent="true"
             android:text="商品列表" />
     </RelativeLayout>
+
 </android.support.v7.widget.Toolbar>
     <View
         android:id="@+id/top_view"
         android:layout_width="match_parent"
-        android:layout_height="0.2dp"
+        android:layout_height="0.5dp"
         android:background="@color/view_color" />
+<LinearLayout
+    android:layout_width="match_parent"
+    android:gravity="center"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
+    android:layout_height="64dp">
+    <EditText
+        android:imeOptions="actionSearch"
+        android:id="@+id/goods_list_search"
+        android:background="@drawable/goods_list_serach"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:gravity="center"
+        android:textColorHint="#858585"
+        android:hint="搜索您喜欢的宝贝"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"/>
+</LinearLayout>
+    <LinearLayout
+        android:background="@drawable/goods_list_type"
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:layout_height="56dp">
+        <Button
+            android:id="@+id/btn_1"
+            android:background="@color/transparent"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="默认"/>
+        <View
+            android:id="@+id/top_view1"
+            android:layout_width="0.5dp"
+            android:layout_height="match_parent"
+            android:background="@color/view_color" />
+        <Button
+            android:background="@color/transparent"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="价格"/>
+        <View
+            android:id="@+id/top_view3"
+            android:layout_width="0.5dp"
+            android:layout_height="match_parent"
+            android:background="@color/view_color" />
+        <Button
+            android:background="@color/transparent"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="销量"/>
+        <View
+            android:id="@+id/top_view2"
+            android:layout_width="0.5dp"
+            android:layout_height="match_parent"
+            android:background="@color/view_color" />
+        <Button
+            android:id="@+id/buju"
+            android:background="@color/transparent"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="布局"/>
+    </LinearLayout>
     <android.support.v7.widget.RecyclerView
         android:id="@+id/goods_list_recycleview"
-        android:divider="#ffff0000"
-        android:dividerHeight="10dp"
+
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/goods_list_recycleview2"
+        android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 

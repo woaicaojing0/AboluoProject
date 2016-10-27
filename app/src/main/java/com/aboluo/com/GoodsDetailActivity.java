@@ -83,12 +83,13 @@ public class GoodsDetailActivity extends Activity implements View.OnClickListene
     private ImageView detail_more, detail_goods;
     //最右边的popwindows
     private PopupWindow goods_popwindow;
-    //popwindows中的第一个布局
-    private LinearLayout pop_01;
+    //popwindows中的第一个布局 商品sub布局
+    private LinearLayout pop_01,layout_txt_goods_sub;
     //详情返回、商品类型弹出xml中的关闭、商品类型中的图片
     private ImageView goods_detail_text_back, goods_type_pop_close, goods_detail_type_imageview;
-    //商品类型、名称、会员价、原价、数量、商品列表的价格和数量
-    private TextView txt_goods_type, txt_goods_name, txt_new_money, txt_old_money, txt_goods_num, goods_detail_type_txtmoney, goods_detail_type_txtnum;
+    //商品类型、名称、会员价、原价、数量、商品列表的价格和数量,商品副标题,积分
+    private TextView txt_goods_type, txt_goods_name, txt_new_money, txt_old_money, txt_goods_num, goods_detail_type_txtmoney, goods_detail_type_txtnum,txt_goods_sub
+            ,goods_detail_jifen;
     private int fHeight; //父容器的高度
     private int sHeight;  //商品类型的高度
     //父容器、自容器、商品列表颜色布局、尺寸布局
@@ -263,6 +264,8 @@ public class GoodsDetailActivity extends Activity implements View.OnClickListene
         txt_new_money = (TextView) findViewById(R.id.txt_new_money);
         txt_old_money = (TextView) findViewById(R.id.txt_old_money);
         txt_goods_num = (TextView) findViewById(R.id.txt_goods_num);
+        txt_goods_sub = (TextView) findViewById(R.id.txt_goods_sub);
+        goods_detail_jifen = (TextView) findViewById(R.id.goods_detail_jifen);
         goods_detail_type_txtmoney = (TextView) findViewById(R.id.goods_detail_type_txtmoney);
         goods_detail_type_txtnum = (TextView) findViewById(R.id.goods_detail_type_txtnum);
         secondView = (LinearLayout) findViewById(R.id.second_view);
@@ -278,6 +281,7 @@ public class GoodsDetailActivity extends Activity implements View.OnClickListene
         goods_type_addshopcart = (LinearLayout) findViewById(R.id.goods_type_addshopcart);
         goods_type_selected = (LinearLayout) findViewById(R.id.goods_type_selected);
         goods_type_ok = (LinearLayout) findViewById(R.id.goods_type_ok);
+        layout_txt_goods_sub = (LinearLayout) findViewById(R.id.layout_txt_goods_sub);
         pdialog = new SweetAlertDialog(this, SweetAlertDialog.PROGRESS_TYPE);
         pdialog.setTitleText("请稍等");
         Intent intent = getIntent();
@@ -308,6 +312,12 @@ public class GoodsDetailActivity extends Activity implements View.OnClickListene
                 txt_goods_num.setText(String.valueOf(goodsDetailInfo.getResult().getGoodsInfo().getGoodsQuantity()));
                 goods_detail_type_txtmoney.setText("会员价：￥" + String.valueOf(goodsDetailInfo.getResult().getGoodsInfo().getHyPrice()) + "元");
                 goods_detail_type_txtnum.setText("库存：" + String.valueOf(goodsDetailInfo.getResult().getGoodsInfo().getGoodsQuantity()) + "件");
+                if(goodsDetailInfo.getResult().getGoodsInfo().getGoodsSub() == null)
+                {
+                    layout_txt_goods_sub.setVisibility(View.GONE);
+                }else {
+                    txt_goods_sub.setText(goodsDetailInfo.getResult().getGoodsInfo().getGoodsSub().toString());
+                }
                 //有些商品没有图片，但肯定有logo图片
                 if (goodsDetailInfo.getResult().getGoodsInfo().getGoodsPicture() == null) {
                     imgurl = goodsDetailInfo.getResult().getGoodsInfo().getGoodsLogo().split(";");

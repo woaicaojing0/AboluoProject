@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:app="http://schemas.android.com/apk/res-auto"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
     <LinearLayout
         android:id="@+id/first_view"
@@ -29,13 +29,13 @@
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="10dp"
                     android:src="@drawable/back"
-                    android:text="返回"/>
+                    android:text="返回" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
-                    android:text="商品详情"/>
+                    android:text="商品详情" />
 
                 <ImageView
                     android:id="@+id/detail_more"
@@ -44,7 +44,7 @@
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
                     android:layout_marginRight="20dp"
-                    android:src="@drawable/detail_more"/>
+                    android:src="@drawable/detail_more" />
 
                 <ImageView
                     android:id="@+id/detail_goods"
@@ -53,7 +53,7 @@
                     android:layout_centerVertical="true"
                     android:layout_marginRight="15dp"
                     android:layout_toLeftOf="@+id/detail_more"
-                    android:src="@drawable/shopcar"/>
+                    android:src="@drawable/shopcar" />
             </RelativeLayout>
         </android.support.v7.widget.Toolbar>
 
@@ -62,7 +62,7 @@
             android:layout_width="match_parent"
             android:layout_height="0.2dp"
             android:layout_alignBottom="@+id/toolbar"
-            android:background="@color/view_color"/>
+            android:background="@color/view_color" />
         <!--中间ScrollView-->
         <com.aboluo.widget.VerticalScrollView
             android:layout_width="match_parent"
@@ -81,30 +81,153 @@
                     android:layout_width="match_parent"
                     android:layout_height="240dp"
                     android:transitionName="detail"
-                    app:rollviewpager_hint_gravity="right"
-                    app:rollviewpager_play_delay="3000"/>
+                    app:rollviewpager_hint_gravity="center"
+                    app:rollviewpager_play_delay="3000" />
                 <!--pageview 轮播效果 end -->
                 <View
                     android:layout_width="fill_parent"
                     android:layout_height="0.2dp"
                     android:background="#b8b8b8"></View>
 
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="8dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/aboluoziying"
+                        android:text=" 阿波罗自营"
+                        android:textColor="#fd5e89" />
+
+                    <TextView
+                        android:id="@+id/txt_goods_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="8dp"
+                        android:ellipsize="end"
+                        android:gravity="center_vertical"
+                        android:lines="2"
+                        android:text="商品名称"
+                        android:textColor="@color/black"
+                        android:textSize="18sp" />
+                </LinearLayout>
+<LinearLayout
+    android:id="@+id/layout_txt_goods_sub"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+                <View
+                    android:layout_width="fill_parent"
+                    android:layout_height="0.5dp"
+                    android:background="#b8b8b8"></View>
+
                 <TextView
-                    android:id="@+id/txt_goods_name"
+                    android:id="@+id/txt_goods_sub"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="8dp"
                     android:ellipsize="end"
                     android:gravity="center_vertical"
-                    android:lines="2"
-                    android:text="商品名称"
-                    android:textColor="@color/black"
-                    android:textSize="18sp"/>
+                    android:lines="1"
+                    android:text=""
+                    android:textSize="18sp" />
+</LinearLayout>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.2dp"
+                    android:layout_above="@+id/id_goodsdetail_bottom"
+                    android:background="@color/view_color" />
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="42dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="8dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="￥" />
+
+                        <TextView
+                            android:id="@+id/txt_new_money"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="400.00"
+                            android:textColor="@color/red" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="6dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="￥" />
+
+                        <TextView
+                            android:id="@+id/txt_old_money"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="200.00"
+                            android:textColor="@color/gray" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="15dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="已售出" />
+
+                        <TextView
+                            android:id="@+id/txt_goods_num"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="200" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="件" />
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="20dp"
+                        android:orientation="horizontal">
+                        <TextView
+                            android:textColor="#fd5e89"
+                            android:id="@+id/goods_detail_jifen"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="送4"/>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="积分"/>
+                    </LinearLayout>
+                </LinearLayout>
 
                 <View
                     android:layout_width="fill_parent"
-                    android:layout_height="4dp"
-                    android:background="#b8b8b8"></View>
+                    android:layout_height="10dp"
+                    android:background="#efefef"></View>
 
                 <RelativeLayout
                     android:layout_width="match_parent"
@@ -121,91 +244,21 @@
                         android:layout_marginTop="6dp"
                         android:gravity="center_vertical"
                         android:lines="1"
-                        android:text="请选择商品类型"/>
+                        android:text="请选择商品类型" />
 
                     <ImageView
                         android:layout_width="20dp"
                         android:layout_height="20dp"
                         android:layout_alignParentRight="true"
                         android:layout_centerVertical="true"
-                        android:src="@drawable/jiantou"/>
+                        android:src="@drawable/jiantou" />
                 </RelativeLayout>
 
                 <View
                     android:layout_width="fill_parent"
-                    android:layout_height="4dp"
-                    android:background="#b8b8b8"></View>
+                    android:layout_height="10dp"
+                    android:background="#efefef"></View>
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="42dp"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal">
-
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="8dp">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="￥"/>
-
-                        <TextView
-                            android:id="@+id/txt_new_money"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="400.00"
-                            android:textColor="@color/red"/>
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="6dp">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="￥"/>
-
-                        <TextView
-                            android:id="@+id/txt_old_money"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="200.00"
-                            android:textColor="@color/gray"/>
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="15dp">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="库存"/>
-
-                        <TextView
-                            android:id="@+id/txt_goods_num"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="200"/>
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="件"/>
-                    </LinearLayout>
-                </LinearLayout>
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="0.2dp"
-                    android:layout_above="@+id/id_goodsdetail_bottom"
-                    android:background="@color/view_color"/>
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -292,7 +345,7 @@
         layout="@layout/activity_goodsdetail_bootm"
         android:layout_width="fill_parent"
         android:layout_height="50dp"
-        android:layout_alignParentBottom="true"/>
+        android:layout_alignParentBottom="true" />
 
     //弹出框，默认不显示
 
@@ -306,6 +359,5 @@
         android:layout_alignParentStart="true"
         android:background="@color/blue"
         android:orientation="vertical"
-        android:visibility="invisible">
-    </include>
+        android:visibility="invisible"></include>
 </RelativeLayout>

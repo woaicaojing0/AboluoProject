@@ -150,6 +150,7 @@ public class GoodsListActivity extends Activity implements RecycleViewAdapter.On
                     recyclerView.setLayoutManager(new LinearLayoutManager(GoodsListActivity.this));
                     recycleViewAdapter = new RecycleViewAdapter(listBean, GoodsListActivity.this,0);
                     recyclerView.setAdapter(recycleViewAdapter);
+                    recycleViewAdapter.setOnItemClickListener(GoodsListActivity.this);
                     v.setTag(null);
                 }
 

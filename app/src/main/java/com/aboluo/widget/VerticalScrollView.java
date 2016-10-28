@@ -12,7 +12,7 @@ import android.widget.ScrollView;
 
 public class VerticalScrollView extends ScrollView{
     private GestureDetector mGestureDetector;
-
+    private ScrollViewListener scrollViewListener = null;
     public VerticalScrollView(Context context, AttributeSet attrs) {
         super(context, attrs);
         mGestureDetector = new GestureDetector(context, new YScrollDetector());
@@ -22,6 +22,18 @@ public class VerticalScrollView extends ScrollView{
     public boolean onInterceptTouchEvent(MotionEvent ev) {
         return super.onInterceptTouchEvent(ev)
                 && mGestureDetector.onTouchEvent(ev);
+    }
+
+    //添加滑动监听，api23以上才会自带监听的效果
+    @Override
+    protected void onScrollChanged(int x, int y, int oldx, int oldy) {
+        super.onScrollChanged(x, y, oldx, oldy);
+        if (scrollViewListener != null) {
+            scrollViewListener.onScrollChanged(this, x, y, oldx, oldy);
+        }
+    }
+    public void setScrollViewListener(ScrollViewListener scrollViewListener) {
+        this.scrollViewListener = scrollViewListener;
     }
 
     class YScrollDetector extends GestureDetector.SimpleOnGestureListener {
@@ -34,5 +46,9 @@ public class VerticalScrollView extends ScrollView{
              */
             return (Math.abs(distanceY) > Math.abs(distanceX));
         }
+    }
+    public interface ScrollViewListener {
+        void onScrollChanged(VerticalScrollView scrollView, int x, int y, int oldx, int oldy);
+
     }
 }

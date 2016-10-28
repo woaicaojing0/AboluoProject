@@ -3,14 +3,16 @@ package com.aboluo.com;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.ColorStateList;
+import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;
@@ -20,6 +22,8 @@ import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.RadioButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -28,7 +32,9 @@ import com.aboluo.XUtils.CommonUtils;
 import com.aboluo.XUtils.MyApplication;
 import com.aboluo.XUtils.ScreenUtils;
 import com.aboluo.adapter.RecycleViewAdapter;
+import com.aboluo.model.BrandBean;
 import com.aboluo.model.GoodsListInfo;
+import com.aboluo.widget.MyRadioGroup;
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -38,6 +44,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.google.gson.Gson;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
@@ -50,7 +57,7 @@ import cn.pedant.SweetAlert.SweetAlertDialog;
 public class GoodsListActivity extends Activity implements RecycleViewAdapter.OnRecyclerViewItemClickListener, View.OnClickListener {
     private RequestQueue requestQueue;
     private StringRequest requestlist;
-  //显示的容器，用于替代listview
+    //显示的容器，用于替代listview
     private RecyclerView recyclerView;
     //接口地址
     private String url;
@@ -70,13 +77,15 @@ public class GoodsListActivity extends Activity implements RecycleViewAdapter.On
     //搜索框
     private EditText goods_list_search;
     //切换布局按钮，筛选按钮，筛选中的重置，筛选中的确定
-    private Button buju, btn_filtrate,btn_goodslist_rest,btn_goodslist_surefiltrate;
+    private Button buju, btn_filtrate, btn_goodslist_rest, btn_goodslist_surefiltrate;
     //筛选采用的draverlayout布局
     private DrawerLayout drawer_layout;
     //屏幕的宽度，用来设置筛选界面的宽度
-    private int screenwith;
+    private int screenwith, brandWith;
     //筛选界面的布局
     private RelativeLayout right_shaixuan;
+    private BrandBean brandBean;   //商品品牌属性
+    private MyRadioGroup goods_list_brand_radiogroup;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -102,7 +111,8 @@ public class GoodsListActivity extends Activity implements RecycleViewAdapter.On
         pdialog.show();
         screenwith = ScreenUtils.getScreenWidth(this);
         drawer_layout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED); //关闭手势滑动
-        right_shaixuan.setLayoutParams(new RelativeLayout.LayoutParams((screenwith/10)*9, ViewGroup.LayoutParams.MATCH_PARENT));
+        brandWith = (screenwith / 10) * 9;
+        right_shaixuan.setLayoutParams(new RelativeLayout.LayoutParams(brandWith, ViewGroup.LayoutParams.MATCH_PARENT));
         requestQueue.add(requestlist);
         goods_list_search.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
@@ -149,6 +159,7 @@ public class GoodsListActivity extends Activity implements RecycleViewAdapter.On
         buju.setOnClickListener(this);
         btn_goodslist_rest.setOnClickListener(this);
         btn_goodslist_surefiltrate.setOnClickListener(this);
+        initfiltrate();
     }
 
     private void init() {
@@ -162,6 +173,7 @@ public class GoodsListActivity extends Activity implements RecycleViewAdapter.On
         drawer_layout = (DrawerLayout) findViewById(R.id.drawer_layout);
         recyclerView = (RecyclerView) findViewById(R.id.goods_list_recycleview);
         right_shaixuan = (RelativeLayout) findViewById(R.id.right_shaixuan);
+        goods_list_brand_radiogroup = (MyRadioGroup) findViewById(R.id.goods_list_brand_radiogroup);
         requestQueue = MyApplication.getRequestQueue();
         url = CommonUtils.GetValueByKey(this, "apiurl");
         APPToken = CommonUtils.GetValueByKey(this, "APPToken");
@@ -216,6 +228,125 @@ public class GoodsListActivity extends Activity implements RecycleViewAdapter.On
 //        startActivity(intent);
     }
 
+    private void initfiltrate() {
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, url + "/api/GoodsType/ReceiveGoodsBrandListByGoodsTypeId", new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                response = response.replace("\\", "");
+                response = response.substring(1, response.length() - 1);
+                Log.i("woaicaojingpingpai", response);
+                Gson gson = new Gson();
+                brandBean = gson.fromJson(response, BrandBean.class);
+                if (brandBean.getResult() == null) {
+                } else if (brandBean.getResult().getGoodsBrandList() == null) {
+                } else {
+                    List<BrandBean.ResultBean.GoodsBrandListBean> listBrand = brandBean.getResult().getGoodsBrandList();
+                    int size = listBrand.size();
+                    int hang = size / 3;
+                    int yushu = size % 3;
+                    if (hang == 0) {
+                        LinearLayout linearLayout = new LinearLayout(GoodsListActivity.this);
+                        linearLayout.setOrientation(LinearLayout.HORIZONTAL);
+                        linearLayout.setGravity(Gravity.CENTER_VERTICAL);
+                        linearLayout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, CommonUtils.dip2px(GoodsListActivity.this, 44)));
+                        for (int i = 0; i < listBrand.size(); i++) {
+                            final RadioButton button = new RadioButton(GoodsListActivity.this);
+                            int buttonwith = (brandWith-CommonUtils.dip2px(GoodsListActivity.this,56));
+                            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(buttonwith / 3, CommonUtils.dip2px(GoodsListActivity.this, 40));
+                            layoutParams.setMargins(CommonUtils.dip2px(GoodsListActivity.this, 10), 0, 0, 0);
+                            button.setBackground(getResources().getDrawable(R.drawable.rdobtn_selecter));
+                            Bitmap a = null;
+                            button.setButtonDrawable(new BitmapDrawable(a));
+                            button.setGravity(Gravity.CENTER);
+                            ColorStateList csl = getResources().getColorStateList(R.color.radio_text_selector);
+                            button.setTextColor(csl);
+                            button.setLayoutParams(layoutParams);
+                            button.setText(listBrand.get(i).getBrandName());
+                            button.setId(i);
+                            final int finalI = i;
+                            button.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    Toast.makeText(GoodsListActivity.this, button.getText().toString(), Toast.LENGTH_SHORT).show();
+                                }
+                            });
+                            linearLayout.addView(button);
+                        }
+                        goods_list_brand_radiogroup.addView(linearLayout);
+                    } else {
+                        if (yushu == 0) {
+                            for (int i = 0; i < hang; i++) {
+                                creatBrandRadioButton(i, 3, listBrand);
+                            }
+                        } else {
+                            hang = hang + 1;
+                            for (int i = 0; i < hang; i++) {
+                                if(i == (hang-1))
+                                {
+                                    creatBrandRadioButton(i, yushu, listBrand);
+                                }
+                                else
+                                {
+                                    creatBrandRadioButton(i, 3, listBrand);
+                                }
+                            }
+                        }
+                    }
+
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        }) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> map = new HashMap<>();
+                if (goods_type_id == -1) {
+                    map.put("GoodsTypeId", "1");
+                } else {
+                    map.put("GoodsTypeId", String.valueOf(goods_type_id));
+                }
+                map.put("APPToken", APPToken);
+                return map;
+            }
+        };
+        requestQueue.add(stringRequest);
+    }
+
+    private void creatBrandRadioButton(int i, int num, List<BrandBean.ResultBean.GoodsBrandListBean> listBrand)
+    {
+        LinearLayout linearLayout = new LinearLayout(GoodsListActivity.this);
+        linearLayout.setOrientation(LinearLayout.HORIZONTAL);
+        linearLayout.setGravity(Gravity.CENTER_VERTICAL);
+        linearLayout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, CommonUtils.dip2px(GoodsListActivity.this, 44)));
+        for (int i2 = 0; i2 < num; i2++) {
+            final RadioButton button = new RadioButton(GoodsListActivity.this);
+            int buttonwith = (brandWith-CommonUtils.dip2px(GoodsListActivity.this,80));
+            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(buttonwith / 3, CommonUtils.dip2px(GoodsListActivity.this, 40));
+            layoutParams.setMargins(CommonUtils.dip2px(GoodsListActivity.this, 10), 0, 0, 0);
+            button.setBackground(getResources().getDrawable(R.drawable.rdobtn_selecter));
+            Bitmap a = null;
+            button.setButtonDrawable(new BitmapDrawable(a));
+            button.setGravity(Gravity.CENTER);
+            ColorStateList csl = getResources().getColorStateList(R.color.radio_text_selector);
+            button.setTextColor(csl);
+            button.setLayoutParams(layoutParams);
+            button.setText(listBrand.get(i*3+i2).getBrandName().trim());
+            button.setId(i*3+i2);
+            final int finalI = i;
+            button.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Toast.makeText(GoodsListActivity.this, button.getText().toString(), Toast.LENGTH_SHORT).show();
+                }
+            });
+            linearLayout.addView(button);
+        }
+        goods_list_brand_radiogroup.addView(linearLayout);
+    }
     @Override
     public void onClick(View v) {
         switch (v.getId()) {

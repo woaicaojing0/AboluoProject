@@ -92,7 +92,7 @@ public class GoodsDetailActivity extends Activity implements View.OnClickListene
     //详情返回、商品类型弹出xml中的关闭、商品类型中的图片
     private ImageView goods_detail_text_back, goods_type_pop_close, goods_detail_type_imageview;
     //商品类型、名称、会员价、原价、数量、商品列表的价格和数量,商品副标题,积分,商品头部的商品详情
-    private TextView txt_goods_type, txt_goods_name, txt_new_money, txt_old_money, txt_goods_num, goods_detail_type_txtmoney, goods_detail_type_txtnum, txt_goods_sub, goods_detail_jifen, goods_detail_top_txt;
+    private TextView txt_goods_type, txt_goods_name, txt_new_money, txt_old_money, txt_goods_num, goods_detail_type_txtmoney, goods_detail_type_txtnum, txt_goods_sub, goods_detail_jifen,goods_detail_top_txt;
     private int fHeight; //父容器的高度
     private int sHeight;  //商品类型的高度
     //父容器、自容器、商品列表颜色布局、尺寸布局
@@ -113,7 +113,7 @@ public class GoodsDetailActivity extends Activity implements View.OnClickListene
     private SweetAlertDialog pdialog;
     private static String goods_type_imgeurl; //需要放大图片的地址
     private VerticalScrollView contentscrollView; // 需要监听滑动的scrollview
-    private Toolbar toolbar; //渐变显示的 toolbar
+    private Toolbar toolbar; //渐变显示的toolbar
     private int height;
 
     @Override
@@ -206,11 +206,11 @@ public class GoodsDetailActivity extends Activity implements View.OnClickListene
                     @Override
                     public void onScrollChanged(VerticalScrollView scrollView, int x, int y, int oldx, int oldy) {
                         //		Log.i("TAG","y--->"+y+"    height-->"+height);
-                        if (y <= height) {
-                            float scale = (float) y / height;
-                            float alpha = (255 * scale);
-                            Log.i("TAG", "alpha--->" + alpha);
-                            goods_detail_top_txt.setTextColor(Color.argb((int) alpha, 0, 0, 0));
+                        if(y<=height){
+                            float scale =(float) y /height;
+                            float alpha =  (255 * scale);
+                            Log.i("TAG","alpha--->"+alpha);
+                            goods_detail_top_txt.setTextColor(Color.argb((int)alpha,0,0,0));
                             //只是layout背景透明(仿知乎滑动效果)
                             toolbar.setBackgroundColor(Color.argb((int) alpha, 255, 255, 255));
                         }

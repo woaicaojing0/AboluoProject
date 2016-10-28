@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.ActivityOptionsCompat;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -14,15 +15,18 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.aboluo.XUtils.CommonUtils;
 import com.aboluo.XUtils.MyApplication;
+import com.aboluo.XUtils.ScreenUtils;
 import com.aboluo.adapter.RecycleViewAdapter;
 import com.aboluo.model.GoodsListInfo;
 import com.android.volley.AuthFailureError;
@@ -40,43 +44,51 @@ import cn.pedant.SweetAlert.SweetAlertDialog;
 
 /**
  * Created by cj34920 on 2016/10/18.
+ * 这是商品列表界面
  */
 
-public class GoodsListActivity extends Activity implements RecycleViewAdapter.OnRecyclerViewItemClickListener {
+public class GoodsListActivity extends Activity implements RecycleViewAdapter.OnRecyclerViewItemClickListener, View.OnClickListener {
     private RequestQueue requestQueue;
     private StringRequest requestlist;
+  //显示的容器，用于替代listview
     private RecyclerView recyclerView;
+    //接口地址
     private String url;
     private static String APPToken;
+    //容器适配器
     private RecycleViewAdapter recycleViewAdapter;
+    //保存商品列表信息
     private GoodsListInfo listBean;
+    //显示进度条
     private SweetAlertDialog pdialog;
+    //保存从其他页面跳转过来的时候goods_type的id
     private int goods_type_id;
+    //商品类别的名称
     private String goods_type_name;
+    //商品名称和返回按钮
     private TextView goods_list_typeName, goods_list_back;
+    //搜索框
     private EditText goods_list_search;
-    private Button buju;
+    //切换布局按钮，筛选按钮，筛选中的重置，筛选中的确定
+    private Button buju, btn_filtrate,btn_goodslist_rest,btn_goodslist_surefiltrate;
+    //筛选采用的draverlayout布局
+    private DrawerLayout drawer_layout;
+    //屏幕的宽度，用来设置筛选界面的宽度
+    private int screenwith;
+    //筛选界面的布局
+    private RelativeLayout right_shaixuan;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_goodlist);
         init();
-        requestQueue.add(requestlist);
-        goods_list_back.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
-        pdialog.show();
-    }
-
-    private void init() {
-        goods_list_typeName = (TextView) findViewById(R.id.goods_list_typeName);
-        goods_list_back = (TextView) findViewById(R.id.goods_list_back);
-        goods_list_search = (EditText) findViewById(R.id.goods_list_search);
-        buju = (Button) findViewById(R.id.buju);
+        pdialog = new SweetAlertDialog(this, SweetAlertDialog.PROGRESS_TYPE);
+        pdialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
+        pdialog.setTitleText("加载中");
+        pdialog.setCanceledOnTouchOutside(true);
+        pdialog.setCancelable(true);
+        initdate();
         Intent intent = getIntent();
         goods_type_id = intent.getIntExtra("goods_type_id", -1);
         goods_type_name = intent.getStringExtra("goods_type_name");
@@ -84,19 +96,14 @@ public class GoodsListActivity extends Activity implements RecycleViewAdapter.On
         } else {
             goods_list_typeName.setText(goods_type_name);
         }
-
-        requestQueue = MyApplication.getRequestQueue();
-        recyclerView = (RecyclerView) findViewById(R.id.goods_list_recycleview);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(linearLayoutManager);
-        url = CommonUtils.GetValueByKey(this, "apiurl");
-        APPToken = CommonUtils.GetValueByKey(this, "APPToken");
-        pdialog = new SweetAlertDialog(this, SweetAlertDialog.PROGRESS_TYPE);
-        pdialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
-        pdialog.setTitleText("加载中");
-        pdialog.setCanceledOnTouchOutside(true);
-        pdialog.setCancelable(true);
-        initdate();
+        goods_list_back.setOnClickListener(this);
+        pdialog.show();
+        screenwith = ScreenUtils.getScreenWidth(this);
+        drawer_layout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED); //关闭手势滑动
+        right_shaixuan.setLayoutParams(new RelativeLayout.LayoutParams((screenwith/10)*9, ViewGroup.LayoutParams.MATCH_PARENT));
+        requestQueue.add(requestlist);
         goods_list_search.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
@@ -138,25 +145,27 @@ public class GoodsListActivity extends Activity implements RecycleViewAdapter.On
                 }
             }
         });
-        buju.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (v.getTag() == null) {
-                    recyclerView.setLayoutManager(new GridLayoutManager(GoodsListActivity.this,2));//设置RecyclerView布局管理器为2列垂直排布
-                    recycleViewAdapter = new RecycleViewAdapter(listBean, GoodsListActivity.this,1);
-                    recyclerView.setAdapter(recycleViewAdapter);
-                    recycleViewAdapter.setOnItemClickListener(GoodsListActivity.this);
-                    v.setTag("wangge");
-                } else {
-                    recyclerView.setLayoutManager(new LinearLayoutManager(GoodsListActivity.this));
-                    recycleViewAdapter = new RecycleViewAdapter(listBean, GoodsListActivity.this,0);
-                    recyclerView.setAdapter(recycleViewAdapter);
-                    recycleViewAdapter.setOnItemClickListener(GoodsListActivity.this);
-                    v.setTag(null);
-                }
+        btn_filtrate.setOnClickListener(this);
+        buju.setOnClickListener(this);
+        btn_goodslist_rest.setOnClickListener(this);
+        btn_goodslist_surefiltrate.setOnClickListener(this);
+    }
 
-            }
-        });
+    private void init() {
+        goods_list_typeName = (TextView) findViewById(R.id.goods_list_typeName);
+        goods_list_back = (TextView) findViewById(R.id.goods_list_back);
+        goods_list_search = (EditText) findViewById(R.id.goods_list_search);
+        buju = (Button) findViewById(R.id.buju);
+        btn_filtrate = (Button) findViewById(R.id.btn_filtrate);
+        btn_goodslist_rest = (Button) findViewById(R.id.btn_goodslist_rest);
+        btn_goodslist_surefiltrate = (Button) findViewById(R.id.btn_goodslist_surefiltrate);
+        drawer_layout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        recyclerView = (RecyclerView) findViewById(R.id.goods_list_recycleview);
+        right_shaixuan = (RelativeLayout) findViewById(R.id.right_shaixuan);
+        requestQueue = MyApplication.getRequestQueue();
+        url = CommonUtils.GetValueByKey(this, "apiurl");
+        APPToken = CommonUtils.GetValueByKey(this, "APPToken");
+
     }
 
     private void initdate() {
@@ -169,7 +178,7 @@ public class GoodsListActivity extends Activity implements RecycleViewAdapter.On
                 Log.i("woaicaojing", url + "/api/Goods/ReceiveGoodsList");
                 Log.i("woaicaojing", response);
                 listBean = gson.fromJson(response, GoodsListInfo.class);
-                recycleViewAdapter = new RecycleViewAdapter(listBean, GoodsListActivity.this,0);
+                recycleViewAdapter = new RecycleViewAdapter(listBean, GoodsListActivity.this, 0);
                 recyclerView.setAdapter(recycleViewAdapter);
                 recycleViewAdapter.setOnItemClickListener(GoodsListActivity.this);
                 pdialog.dismiss();
@@ -205,5 +214,38 @@ public class GoodsListActivity extends Activity implements RecycleViewAdapter.On
         ActivityOptionsCompat transitionActivityOptionsCompat = ActivityOptionsCompat.makeSceneTransitionAnimation(GoodsListActivity.this, view.findViewById(R.id.goods_image), transitionName);
         startActivity(intent, transitionActivityOptionsCompat.toBundle());
 //        startActivity(intent);
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.btn_filtrate:
+                drawer_layout.openDrawer(Gravity.RIGHT);
+                break;
+            case R.id.buju:
+                if (v.getTag() == null) {
+                    recyclerView.setLayoutManager(new GridLayoutManager(GoodsListActivity.this, 2));//设置RecyclerView布局管理器为2列垂直排布
+                    recycleViewAdapter = new RecycleViewAdapter(listBean, GoodsListActivity.this, 1);
+                    recyclerView.setAdapter(recycleViewAdapter);
+                    recycleViewAdapter.setOnItemClickListener(GoodsListActivity.this);
+                    v.setTag("wangge");
+                } else {
+                    recyclerView.setLayoutManager(new LinearLayoutManager(GoodsListActivity.this));
+                    recycleViewAdapter = new RecycleViewAdapter(listBean, GoodsListActivity.this, 0);
+                    recyclerView.setAdapter(recycleViewAdapter);
+                    recycleViewAdapter.setOnItemClickListener(GoodsListActivity.this);
+                    v.setTag(null);
+                }
+                break;
+            case R.id.goods_list_back:
+                finish();
+                break;
+            case R.id.btn_goodslist_rest:
+                drawer_layout.closeDrawers();
+                break;
+            case R.id.btn_goodslist_surefiltrate:
+                drawer_layout.closeDrawers();
+                break;
+        }
     }
 }

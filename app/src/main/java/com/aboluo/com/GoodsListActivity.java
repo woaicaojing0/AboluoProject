@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.ActivityOptionsCompat;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
@@ -141,7 +142,7 @@ public class GoodsListActivity extends Activity implements RecycleViewAdapter.On
             @Override
             public void onClick(View v) {
                 if (v.getTag() == null) {
-                    recyclerView.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));//设置RecyclerView布局管理器为2列垂直排布
+                    recyclerView.setLayoutManager(new GridLayoutManager(GoodsListActivity.this,2));//设置RecyclerView布局管理器为2列垂直排布
                     recycleViewAdapter = new RecycleViewAdapter(listBean, GoodsListActivity.this,1);
                     recyclerView.setAdapter(recycleViewAdapter);
                     recycleViewAdapter.setOnItemClickListener(GoodsListActivity.this);

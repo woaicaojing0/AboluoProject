@@ -38,6 +38,7 @@ import android.widget.Toast;
 
 import com.aboluo.XUtils.CommonUtils;
 import com.aboluo.XUtils.MyApplication;
+import com.aboluo.XUtils.ScreenUtils;
 import com.aboluo.adapter.BannerAdapter;
 import com.aboluo.model.AddShopCarBean;
 import com.aboluo.model.GoodsDetailInfo;
@@ -223,6 +224,9 @@ public class GoodsDetailActivity extends Activity implements View.OnClickListene
         for (int i = 0; i < imges.length; i++) {
             imges[i] = ImgUrl + imges[i].toString();
         }
+        //窗口的宽度
+        int screenWidth = ScreenUtils.getScreenWidth(this);
+        rollPagerView.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, screenWidth));
         rollPagerView.setHintView(new ColorPointHintView(this, Color.RED, Color.WHITE));
         bannerAdapter = new BannerAdapter(this, imges, rollPagerView);
         rollPagerView.setAdapter(bannerAdapter); // 设置适配器（请求网络图片，适配器要在网络请求完成后再设置）

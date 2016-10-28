@@ -53,4 +53,6 @@ dependencies {
     //    compile 'com.android.support:RecyclerView-v7:23.0.1'
     //图片方法缩小的第三方
     compile 'com.commit451:PhotoView:1.2.4'
+    //banner
+    compile 'com.bigkoo:convenientbanner:2.0.5'
 }

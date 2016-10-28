@@ -71,7 +71,7 @@ public class RecycleViewAdapter extends RecyclerView.Adapter<RecycleViewAdapter.
 
         }
         holder.new_money.setText(mgoodGoodsListBean.get(position).getHyPrice() + "元");
-        holder.goods_sub.setText(mgoodGoodsListBean.get(position).getGoodsSub() + "商品描述");
+        holder.goods_sub.setText(mgoodGoodsListBean.get(position).getGoodsSub() + "");
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

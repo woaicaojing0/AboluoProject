@@ -95,8 +95,8 @@ public class ShopCarBean {
             private String goodsSub;
             private int yunfei;
             private String goodsLogo;
-            private int goodsPrice;
-            private int hyPrice;
+            private double goodsPrice;
+            private double hyPrice;
 
             public int getId() {
                 return Id;
@@ -202,19 +202,19 @@ public class ShopCarBean {
                 this.goodsLogo = goodsLogo;
             }
 
-            public int getGoodsPrice() {
+            public double getGoodsPrice() {
                 return goodsPrice;
             }
 
-            public void setGoodsPrice(int goodsPrice) {
+            public void setGoodsPrice(double goodsPrice) {
                 this.goodsPrice = goodsPrice;
             }
 
-            public int getHyPrice() {
+            public double getHyPrice() {
                 return hyPrice;
             }
 
-            public void setHyPrice(int hyPrice) {
+            public void setHyPrice(double hyPrice) {
                 this.hyPrice = hyPrice;
             }
         }

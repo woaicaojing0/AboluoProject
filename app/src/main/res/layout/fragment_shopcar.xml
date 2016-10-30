@@ -1,39 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/common_bg"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical">
-
-    <android.support.v7.widget.Toolbar
-        android:id="@+id/toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:background="@color/bg_color"
-        app:contentInsetLeft="0dp"
-        app:contentInsetStart="0dp">
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:text="购物车"
-                android:textSize="18sp"/>
-
-            <TextView
-                android:id="@+id/btn_editAndok"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_centerVertical="true"
-                android:layout_marginRight="50dp"
-                android:text="编辑"/>
-        </RelativeLayout>
-    </android.support.v7.widget.Toolbar>
 
     <View
         android:id="@+id/top_view"
@@ -179,15 +150,46 @@
         android:overScrollMode="never"
         android:scrollbars="none">
 
-        <RelativeLayout
-            android:id="@+id/main_list_shoucang"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
             <com.aboluo.widget.MyListview
                 android:id="@+id/shopcar_listview"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"/>
-        </RelativeLayout>
     </com.handmark.pulltorefresh.library.PullToRefreshScrollView>
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/bg_color"
+        app:contentInsetLeft="0dp"
+        app:contentInsetStart="0dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="购物车"
+                android:textSize="18sp"/>
+
+            <TextView
+                android:id="@+id/btn_editAndok"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="50dp"
+                android:text="编辑"/>
+        </RelativeLayout>
+    </android.support.v7.widget.Toolbar>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="@color/view_color"
+        android:layout_alignBottom="@+id/toolbar"></View>
 </RelativeLayout>

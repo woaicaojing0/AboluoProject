@@ -25,25 +25,29 @@ import com.aboluo.com.R;
 import com.aboluo.model.ShopCarBean.ResultBean.GoodsShoppingCartListBean;
 import com.aboluo.widget.AmountView;
 import com.android.volley.toolbox.StringRequest;
+import com.squareup.okhttp.OkHttpClient;
+import com.squareup.picasso.OkHttpDownloader;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
+
+import static com.aboluo.com.R.id.btnDecrease;
 
 /**
  * Created by CJ on 2016/9/27.
  */
 
-public class ShopCarAdapter extends BaseAdapter {
+public class ShopCarAdapter extends BaseAdapter{
     public void setMlist(List<GoodsShoppingCartListBean> mlist) {
         this.mlist = mlist;
     }
 
     private List<GoodsShoppingCartListBean> mlist;
-    private Callback mCallback;
     private Context mcontext;
     //表示用户是否在编辑状态
-
+private Picasso picasso;
     public int getStates() {
         return states;
     }
@@ -52,32 +56,62 @@ public class ShopCarAdapter extends BaseAdapter {
         this.states = isedit;
     }
 
-    public ArrayList<Boolean> getckisselected() {
-        return ckisselected;
-    }
-
-    public void setckisselected(ArrayList<Boolean> ckisselected) {
-        this.ckisselected = ckisselected;
-    }
 
     //8是view.gone,0是view.visiable
     private int states;
     //选中状态
-    private ArrayList<Boolean> ckisselected;
+    private View.OnClickListener mbtnDecrease;
+    private View.OnClickListener mbtnIncrease;
+    private View.OnClickListener mshopcar_image;
+    private View.OnClickListener mck_by_linelayout;
+    private View.OnClickListener metAmount;
 
-    public ShopCarAdapter(List<GoodsShoppingCartListBean> list, Context context, Callback callback) {
+
+    private View.OnClickListener mhopcar_standards;
+    private textchage mtextchage;
+ private ArrayList<Boolean> mckckisselected;
+    public void setMbtnDecrease(View.OnClickListener mbtnDecrease) {
+        this.mbtnDecrease = mbtnDecrease;
+    }
+
+    public void setMbtnIncrease(View.OnClickListener mbtnIncrease) {
+        this.mbtnIncrease = mbtnIncrease;
+    }
+    public void setMshopcar_image(View.OnClickListener mshopcar_image) {
+        this.mshopcar_image = mshopcar_image;
+    }
+
+    public void setMck_by_linelayout(View.OnClickListener mck_by_linelayout) {
+        this.mck_by_linelayout = mck_by_linelayout;
+    }
+
+    public void setMetAmount(View.OnClickListener metAmount) {
+        this.metAmount = metAmount;
+    }
+
+    public void setMtextchage(textchage mtextchage) {
+        this.mtextchage = mtextchage;
+    }
+
+    public void setMhopcar_standards(View.OnClickListener mhopcar_standards) {
+        this.mhopcar_standards = mhopcar_standards;
+    }
+    public ShopCarAdapter(List<GoodsShoppingCartListBean> list, Context context,ArrayList<Boolean> ckckisselected) {
         this.mcontext = context;
         this.mlist = list;
-        this.mCallback = callback;
-        ckisselected = new ArrayList<>();
+        this.mckckisselected = ckckisselected;
         initDate();
+//        OkHttpClient okHttpClient = new OkHttpClient();
+//        okHttpClient.setConnectTimeout(100, TimeUnit.SECONDS);
+//        okHttpClient.setReadTimeout(100, TimeUnit.SECONDS);
+//        okHttpClient.setWriteTimeout(100, TimeUnit.SECONDS);
+//        picasso = new Picasso.Builder(mcontext)
+//                .downloader(new OkHttpDownloader(okHttpClient))
+//                .build();
     }
 private String ImgeURL = null;
     // 初始化isSelected的数据
     private void initDate() {
-        for (int i = 0; i < mlist.size(); i++) {
-            ckisselected.add(i, false);
-        }
         states = 8;
         ImgeURL = CommonUtils.GetValueByKey(mcontext,"ImgUrl");
     }
@@ -108,18 +142,48 @@ private String ImgeURL = null;
             holder.ck_by_linelayout = (LinearLayout) convertView.findViewById(R.id.ck_by_linelayout);
             holder.moeny = (TextView) convertView.findViewById(R.id.shopcar_txt_itemmoney);
             holder.etAmount = (EditText) convertView.findViewById(R.id.etAmount);
-            holder.btnDecrease = (Button) convertView.findViewById(R.id.btnDecrease);
+            holder.btnDecrease = (Button) convertView.findViewById(btnDecrease);
             holder.btnIncrease = (Button) convertView.findViewById(R.id.btnIncrease);
             holder.maxnum = (TextView) convertView.findViewById(R.id.maxnum);
             holder.shopcar_standards = (TextView) convertView.findViewById(R.id.shopcar_standards);
             holder.shopcar_old_price = (TextView) convertView.findViewById(R.id.shopcar_old_price);
             holder.shopcar_image = (ImageView) convertView.findViewById(R.id.shopcar_image);
+
+            holder.ck_by_linelayout.setOnClickListener(mck_by_linelayout);
+
+            holder.btnDecrease.setOnClickListener(mbtnDecrease);
+
+            holder.btnIncrease.setOnClickListener(mbtnIncrease);
+            holder.shopcar_standards.setOnClickListener(mhopcar_standards);
+
+
+            holder.shopcar_image.setOnClickListener(mshopcar_image);
+
+
+            final ViewHolder finalHolder1 = holder;
+            holder.etAmount.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                }
+
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+                }
+
+                @Override
+                public void afterTextChanged(Editable s) {
+                    mtextchage.textchage(position,s.toString());
+                }
+            });
             convertView.setTag(holder);
         } else {
             holder = (ViewHolder) convertView.getTag();
         }
-
+        String result = String.valueOf(mlist.get(position).getGoodsCount());
         holder.etAmount.setText(String.valueOf(mlist.get(position).getGoodsCount()));
+
         holder.maxnum.setText("100");
         holder.textName.setText(mlist.get(position).getGoodsName().toString());
         holder.moeny.setText(String.valueOf(mlist.get(position).getHyPrice()));
@@ -141,100 +205,36 @@ private String ImgeURL = null;
        String [] imges= mlist.get(position).getGoodsLogo().toString().split(";");
         if(ImgeURL == null)
         {ImgeURL = CommonUtils.GetValueByKey(mcontext,"ImgeURL");}else {}
-        Log.i("woaicaojingshopimg",ImgeURL+imges[0]);
+//        Log.i("woaicaojingshopimg",ImgeURL+imges[0]);
         Picasso.with(mcontext).load(ImgeURL+imges[0]).placeholder(mcontext.getResources().getDrawable(R.drawable.imagviewloading))
                 .error(mcontext.getResources().getDrawable(R.drawable.imageview_error))
                 .into(holder.shopcar_image);
         final ViewHolder finalHolder = holder;
-        holder.ck_buy.setChecked(ckisselected.get(position));
-        holder.ck_by_linelayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (finalHolder.ck_buy.isChecked()) {
-                    finalHolder.ck_buy.setChecked(false);
-                    ckisselected.set(position, false);
-                } else {
-                    finalHolder.ck_buy.setChecked(true);
-                    ckisselected.set(position, true);
-                }
-                Toast.makeText(mcontext, position + "", Toast.LENGTH_SHORT).show();
-                notifyDataSetChanged();
-
-            }
-        });
-        holder.btnDecrease.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (Integer.valueOf(finalHolder.etAmount.getText().toString()) < 1) {
-                } else {
-                    finalHolder.etAmount.setText(String.valueOf(Integer.valueOf(finalHolder.etAmount.getText().toString()) - 1));
-
-                }
-                mCallback.click(v, Integer.valueOf(finalHolder.etAmount.getText().toString()), position);
-                notifyDataSetChanged();
-            }
-        });
-        holder.btnIncrease.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (Integer.valueOf(finalHolder.etAmount.getText().toString()) >= Integer.valueOf(finalHolder.maxnum.getText().toString())) {
-                } else {
-                    finalHolder.etAmount.setText(String.valueOf(Integer.valueOf(finalHolder.etAmount.getText().toString()) + 1));
-                }
-                mCallback.click(v, Integer.valueOf(finalHolder.etAmount.getText().toString()), position);
-                notifyDataSetChanged();
-            }
-        });
-        holder.etAmount.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                //先去服务器更新，如更新成功才会执行一下过程
-                int amount = Integer.valueOf(s.toString());
-                if (s.toString().isEmpty())
-                    return;
-                if (amount > Integer.valueOf(finalHolder.maxnum.getText().toString())) {
-                    finalHolder.etAmount.setText(finalHolder.maxnum.getText().toString());
-                    return;
-                }
-            }
-
-        });
-        holder.shopcar_image.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-              int goods_id =  mlist.get(position).getGoodsId();
-                Intent intent = new Intent(mcontext,GoodsDetailActivity.class);
-                intent.putExtra("goods_id", goods_id);
-                mcontext.startActivity(intent);
-            }
-        });
+        holder.ck_buy.setChecked(mckckisselected.get(position));
+        holder.ck_by_linelayout.setTag(position);
+        holder.btnDecrease.setTag(position);
+        holder.btnIncrease.setTag(position);
+        holder.etAmount.setTag(position);
+        holder.shopcar_image.setTag(position);
+        holder.shopcar_standards.setTag(position);
         return convertView;
     }
+
 
 
     public class ViewHolder {
         public TextView textName;
         public CheckBox ck_buy;
         public AmountView numberButton;
-        public LinearLayout ck_by_linelayout;
+        public LinearLayout ck_by_linelayout,linearLayout_standard;
         public TextView moeny, maxnum, shopcar_standards,shopcar_old_price;
         public EditText etAmount;
         private Button btnDecrease;
         private Button btnIncrease;
         private ImageView shopcar_image;
     }
-
-    public interface Callback {
-        public void click(View v, int Amount, int postion);
+    public  interface  textchage
+    {
+        void   textchage(int postion,String num);
     }
 }

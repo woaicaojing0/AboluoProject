@@ -55,4 +55,10 @@ dependencies {
     compile 'com.commit451:PhotoView:1.2.4'
     //banner
     compile 'com.bigkoo:convenientbanner:2.0.5'
+//    compile 'com.android.support:gridlayout-v7:23.0.0'
+    //万能的适配器
+    compile 'com.zhy:base-adapter:3.0.3'
+    compile 'com.squareup.okhttp:okhttp:2.4.0'
+
+
 }

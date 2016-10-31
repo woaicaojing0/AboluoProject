@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.Paint;
 import android.media.Image;
 import android.text.Editable;
+import android.text.Layout;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -55,7 +56,7 @@ private Picasso picasso;
     public void setstates(int isedit) {
         this.states = isedit;
     }
-
+private LayoutInflater minfLayoutInflater;
 
     //8是view.gone,0是view.visiable
     private int states;
@@ -64,7 +65,9 @@ private Picasso picasso;
     private View.OnClickListener mbtnIncrease;
     private View.OnClickListener mshopcar_image;
     private View.OnClickListener mck_by_linelayout;
-    private View.OnClickListener metAmount;
+
+
+    private View.OnFocusChangeListener metAmount;
 
 
     private View.OnClickListener mhopcar_standards;
@@ -85,9 +88,6 @@ private Picasso picasso;
         this.mck_by_linelayout = mck_by_linelayout;
     }
 
-    public void setMetAmount(View.OnClickListener metAmount) {
-        this.metAmount = metAmount;
-    }
 
     public void setMtextchage(textchage mtextchage) {
         this.mtextchage = mtextchage;
@@ -96,11 +96,16 @@ private Picasso picasso;
     public void setMhopcar_standards(View.OnClickListener mhopcar_standards) {
         this.mhopcar_standards = mhopcar_standards;
     }
+    public void setMetAmount(View.OnFocusChangeListener metAmount) {
+        this.metAmount = metAmount;
+    }
+
     public ShopCarAdapter(List<GoodsShoppingCartListBean> list, Context context,ArrayList<Boolean> ckckisselected) {
         this.mcontext = context;
         this.mlist = list;
         this.mckckisselected = ckckisselected;
         initDate();
+        minfLayoutInflater = LayoutInflater.from(mcontext);
 //        OkHttpClient okHttpClient = new OkHttpClient();
 //        okHttpClient.setConnectTimeout(100, TimeUnit.SECONDS);
 //        okHttpClient.setReadTimeout(100, TimeUnit.SECONDS);
@@ -133,10 +138,10 @@ private String ImgeURL = null;
 
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
-        ViewHolder holder = null;
+        ViewHolder holder;
         if (convertView == null) {
+            convertView = minfLayoutInflater.inflate(R.layout.shopcar_listview_item, null);
             holder = new ViewHolder();
-            convertView = LayoutInflater.from(mcontext).inflate(R.layout.shopcar_listview_item, null);
             holder.textName = (TextView) convertView.findViewById(R.id.shopcar_txt_buyName);
             holder.ck_buy = (CheckBox) convertView.findViewById(R.id.shopcar_ck_buy);
             holder.ck_by_linelayout = (LinearLayout) convertView.findViewById(R.id.ck_by_linelayout);
@@ -158,25 +163,32 @@ private String ImgeURL = null;
 
 
             holder.shopcar_image.setOnClickListener(mshopcar_image);
+            holder.etAmount.setOnFocusChangeListener(metAmount);
+//            holder.etAmount.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+//                @Override
+//                public void onFocusChange(View v, boolean hasFocus) {
+//                 EditText editText =    (EditText)v;
+//                    String result =editText.getText();
+//                }
+//            });
 
-
-            final ViewHolder finalHolder1 = holder;
-            holder.etAmount.addTextChangedListener(new TextWatcher() {
-                @Override
-                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-                }
-
-                @Override
-                public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-                }
-
-                @Override
-                public void afterTextChanged(Editable s) {
-                    mtextchage.textchage(position,s.toString());
-                }
-            });
+//            final ViewHolder finalHolder1 = holder;
+//            holder.etAmount.addTextChangedListener(new TextWatcher() {
+//                @Override
+//                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+//
+//                }
+//
+//                @Override
+//                public void onTextChanged(CharSequence s, int start, int before, int count) {
+//
+//                }
+//
+//                @Override
+//                public void afterTextChanged(Editable s) {
+//                    mtextchage.textchage(position,s.toString());
+//                }
+//            });
             convertView.setTag(holder);
         } else {
             holder = (ViewHolder) convertView.getTag();

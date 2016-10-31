@@ -142,19 +142,15 @@
         </LinearLayout>
     </RelativeLayout>
 
-    <com.handmark.pulltorefresh.library.PullToRefreshScrollView
+    <com.handmark.pulltorefresh.library.PullToRefreshListView
+        android:id="@+id/shopcar_listview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@+id/view"
         android:layout_alignTop="@+id/top_view"
         android:overScrollMode="never"
         android:scrollbars="none">
-
-            <com.aboluo.widget.MyListview
-                android:id="@+id/shopcar_listview"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"/>
-    </com.handmark.pulltorefresh.library.PullToRefreshScrollView>
+    </com.handmark.pulltorefresh.library.PullToRefreshListView>
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"

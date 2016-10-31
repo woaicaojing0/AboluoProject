@@ -693,7 +693,7 @@ public class GoodsDetailActivity extends Activity implements View.OnClickListene
                 }
                 if (isok) {
                     pdialog.show();
-                    StringRequest addrequestshopcar = new StringRequest(Request.Method.POST, URL + "/api/GoodsShoppingCart/ReceiveAddGoodsShoppingCart", new Response.Listener<String>() {
+                    StringRequest addrequestshopcar = new StringRequest(Request.Method.POST, URL + "/api/GoodsShoppingCart/ReceiveAddOrUpdateGoodsShoppingCart", new Response.Listener<String>() {
                         @Override
                         public void onResponse(String response) {
                             pdialog.dismiss();

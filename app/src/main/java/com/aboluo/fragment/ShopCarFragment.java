@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -39,15 +40,16 @@ import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 import  com.aboluo.model.ShopCarBean.ResultBean.*;
+import com.handmark.pulltorefresh.library.PullToRefreshListView;
 import com.squareup.okhttp.OkHttpClient;
 
 /**
  * Created by cj34920 on 2016/9/8.
  */
-public class ShopCarFragment extends Fragment implements View.OnClickListener {
+public class ShopCarFragment extends Fragment implements View.OnClickListener{
     private static String TAG = "UserInfoMsg";
     private View view;
-    private MyListview listView;
+    private PullToRefreshListView listView;
     private Context context;
     //点击的范围太小了，所有让linealayout获取点击事件，去触发ck_all;
     //cb_cart_all_linealayout 全选的里呢啊layout,固定底部的编辑，固定底部的结算
@@ -109,7 +111,7 @@ public class ShopCarFragment extends Fragment implements View.OnClickListener {
         okHttpClient.setWriteTimeout(1, TimeUnit.SECONDS);
         ck_checked = new ArrayList<>();
         context = ShopCarFragment.this.getActivity();
-        listView = (MyListview) view.findViewById(R.id.shopcar_listview);
+        listView = (PullToRefreshListView ) view.findViewById(R.id.shopcar_listview);
         cb_cart_all = (CheckBox) view.findViewById(R.id.cb_cart_all);
         cb_cart_all_linealayout = (LinearLayout) view.findViewById(R.id.cb_cart_all_linealayout);
         btn_editAndok = (TextView) view.findViewById(R.id.btn_editAndok);
@@ -182,8 +184,9 @@ public class ShopCarFragment extends Fragment implements View.OnClickListener {
                 carAdapter.setMbtnIncrease(listener);
                 carAdapter.setMck_by_linelayout(listener);
                 carAdapter.setMhopcar_standards(listener);
-                carAdapter.setMtextchage(textchage);
+                carAdapter.setMetAmount(focusChangeListener);
                 carAdapter.registerDataSetObserver(AdapterDataSetObserver);
+
             }
         }, new Response.ErrorListener() {
             @Override
@@ -219,11 +222,12 @@ public class ShopCarFragment extends Fragment implements View.OnClickListener {
                         //更改集合的数据
                         int num = Double.valueOf(goodsShoppingCartListBean.get(position).getGoodsCount()).intValue();
                         num++;
+                        final int  goodsid = goodsShoppingCartListBean.get(position).getGoodsId();
                         final String goodscolor = goodsShoppingCartListBean.get(position).getGoodsColor();
                         final String goodsstandards = goodsShoppingCartListBean.get(position).getGoodsStandard();
                         final String count = String.valueOf(goodsShoppingCartListBean.get(position).getGoodsCount());
                         final int finalNum = num;
-                        StringRequest stringRequest2 = new StringRequest(Request.Method.POST, URL + "api/GoodsShoppingCart/ReceiveAddGoodsShoppingCart", new Response.Listener<String>() {
+                        StringRequest stringRequest2 = new StringRequest(Request.Method.POST, URL + "/api/GoodsShoppingCart/ReceiveAddOrUpdateGoodsShoppingCart", new Response.Listener<String>() {
                             @Override
                             public void onResponse(String response) {
                                 response = response.replace("\\","");
@@ -242,7 +246,7 @@ public class ShopCarFragment extends Fragment implements View.OnClickListener {
                             protected Map<String, String> getParams() throws AuthFailureError {
                                 Map<String, String> map = new HashMap<>();
                                 map.put("Id", "1");
-                                map.put("goodsId", String.valueOf(position));
+                                map.put("goodsId", String.valueOf(goodsid));
                                 map.put("goodsColor", goodscolor);
                                 map.put("goodsStandard", goodsstandards);
                                 map.put("goodsCount", String .valueOf(finalNum));
@@ -314,19 +318,15 @@ public class ShopCarFragment extends Fragment implements View.OnClickListener {
             }
         }
     };
-    private ShopCarAdapter.textchage textchage = new ShopCarAdapter.textchage() {
+    private  View.OnFocusChangeListener focusChangeListener = new View.OnFocusChangeListener() {
         @Override
-        public void textchage(int postion, String num) {
-            int amount = Integer.valueOf(num);
-            if (num.isEmpty())
-                goodsShoppingCartListBean.get(postion).setGoodsCount(1);
-            else if (amount > Integer.valueOf("10")) {
-                goodsShoppingCartListBean.get(postion).setGoodsCount(10);
-            } else {
-                goodsShoppingCartListBean.get(postion).setGoodsCount(amount);
+        public void onFocusChange(View v, boolean hasFocus) {
+            // 此处为得到焦点时的处理内容
+            if(hasFocus) {
+            }else {
+                EditText editText = (EditText) v;
+                    Toast.makeText(context, editText.getText().toString(), Toast.LENGTH_SHORT).show();
             }
-
-            carAdapter.notifyDataSetChanged();
         }
     };
 
@@ -369,6 +369,7 @@ public class ShopCarFragment extends Fragment implements View.OnClickListener {
         }
         return totalpv;
     }
+
 
 //    private boolean updateShopcar( final List<GoodsShoppingCartListBean>goodsShoppingCartListBean, final int goodsid) {
 //        final boolean[] issuccess = {false};

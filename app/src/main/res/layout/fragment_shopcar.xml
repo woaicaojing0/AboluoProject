@@ -143,6 +143,7 @@
     </RelativeLayout>
 
     <com.handmark.pulltorefresh.library.PullToRefreshListView
+        app:ptrShowIndicator="false"
         android:id="@+id/shopcar_listview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

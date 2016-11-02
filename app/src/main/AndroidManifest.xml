@@ -53,6 +53,8 @@
         <activity android:name="com.aboluo.test.testActivity">
 
         </activity>
+        <activity android:name="com.aboluo.Gesture.SecondActivity"
+                  android:theme="@android:style/Theme.NoTitleBar.Fullscreen" ></activity>
     </application>
 
 </manifest>

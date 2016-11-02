@@ -237,6 +237,26 @@
                 android:layout_width="match_parent"
                 android:layout_height="0.2dp"
                 android:background="@color/view_color"></View>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@color/white">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="10dp"
+                    android:text="应用锁屏"/>
+                <Switch
+                    android:id="@+id/gesture"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="28dp"
+                    android:textOff="关闭"
+                    android:textOn="开启" />
+            </RelativeLayout>
         </LinearLayout>
     </ScrollView>
 </LinearLayout>

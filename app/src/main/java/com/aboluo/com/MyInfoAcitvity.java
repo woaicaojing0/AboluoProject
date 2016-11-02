@@ -92,6 +92,7 @@ public class MyInfoAcitvity extends Activity implements View.OnClickListener {
         }
         if (mode == LockMode.VERIFY_PASSWORD) {
             Intent intent = new Intent(this, SecondActivity.class);
+            intent.putExtra("myinfo",true);
             intent.putExtra(Contants.INTENT_SECONDACTIVITY_KEY, mode);
             startActivityForResult(intent, 1);
 
@@ -104,9 +105,12 @@ public class MyInfoAcitvity extends Activity implements View.OnClickListener {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        int result = data.getIntExtra("startgesture", 3);
-        if (result == 0) {
-            gesture.setChecked(false);
+        if(data == null)
+        {}else {
+            int result = data.getIntExtra("startgesture", 3);
+            if (result == 0) {
+                gesture.setChecked(false);
+            }
         }
     }
 }

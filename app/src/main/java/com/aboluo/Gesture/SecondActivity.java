@@ -20,6 +20,7 @@ import static com.leo.gesturelibray.enums.LockMode.CLEAR_PASSWORD;
 import static com.leo.gesturelibray.enums.LockMode.SETTING_PASSWORD;
 
 public class SecondActivity extends BaseActivity implements RippleView.OnRippleCompleteListener {
+    private boolean ismyinfo =false;
     @Bind(R.id.rv_back)
     RippleView rvBack;
     @Bind(R.id.tv_text)
@@ -69,6 +70,7 @@ public class SecondActivity extends BaseActivity implements RippleView.OnRippleC
     public void initData() {
         //设置模式
         LockMode lockMode = (LockMode) getIntent().getSerializableExtra(Contants.INTENT_SECONDACTIVITY_KEY);
+        ismyinfo = getIntent().getBooleanExtra("myinfo",false);
         setLockMode(lockMode);
     }
 
@@ -98,9 +100,11 @@ public class SecondActivity extends BaseActivity implements RippleView.OnRippleC
         public void onComplete(String password, int[] indexs) {
             if(lvLock.getMode() == LockMode.VERIFY_PASSWORD)
             {
-                Intent  intent = new Intent();
-                intent.putExtra("startgesture",0);
-             setResult(0,intent);
+                if(ismyinfo) {
+                    Intent intent = new Intent();
+                    intent.putExtra("startgesture", 0);
+                    setResult(0, intent);
+                }else {}
             }else {
                 tvHint.setText(getPassWordHint());
             }

@@ -58,6 +58,7 @@ public class LoginActivity extends Activity  implements View.OnClickListener,Tex
     }
     private  void init()
     {
+        MyApplication myApplication = new MyApplication(this);
         txt_register = (TextView) findViewById(R.id.txt_register);
         txt_retrivepwd = (TextView) findViewById(R.id.txt_retrivepwd);
         btn_login = (Button) findViewById(R.id.btn_login);

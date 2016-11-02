@@ -1,11 +1,14 @@
 package com.aboluo.Gesture;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.view.Window;
 import android.widget.TextView;
 
 import com.aboluo.GestureUtils.Contants;
 import com.aboluo.GestureUtils.PasswordUtil;
+import com.aboluo.com.LoginActivity;
 import com.aboluo.com.R;
 import com.andexert.library.RippleView;
 import com.leo.gesturelibray.enums.LockMode;
@@ -132,7 +135,17 @@ public class SecondActivity extends BaseActivity implements RippleView.OnRippleC
 
         @Override
         public void onErrorNumberMany() {
+            //手势失败后，删除登录信息，重新登陆，删除手势，关闭手势操作.
+            SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(SecondActivity.this);
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.remove(Contants.PASS_KEY);
+            editor.remove("isstartgesture");
+            editor.commit();
             tvHint.setText("密码错误次数超过限制，不能再输入");
+            Intent intent = new Intent(SecondActivity.this, LoginActivity.class);
+            String pwd = PasswordUtil.getPin(SecondActivity.this);
+            startActivity(intent);
+            finish();
         }
 
     };

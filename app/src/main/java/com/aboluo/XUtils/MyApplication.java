@@ -9,10 +9,9 @@ import com.android.volley.toolbox.Volley;
 /**
  * Created by cj34920 on 2016/9/9.
  */
-public class MyApplication extends Application {
+public class MyApplication{
     private static MyApplication instance;
     private  static  RequestQueue mRequestQueue;
-    public static  String APPToken ="E1D4EEA9782E40229CA5FC626BFCC666";
     public static  String UserName =null;
     public static  String UserId =null;
     public MyApplication(Context context) {

@@ -54,7 +54,7 @@ public class MenuFragment extends Fragment {
     private GoodsBigType.ResultBean resultBean2; // 保存小类的信息
     private String url;
    private SweetAlertDialog sweetAlertDialog;
-
+private String APPToken = null;
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable final ViewGroup container, @Nullable Bundle savedInstanceState) {
         if (view == null) {
@@ -98,7 +98,7 @@ public class MenuFragment extends Fragment {
                     @Override
                     protected Map<String, String> getParams() throws AuthFailureError {
                         Map<String, String> map = new HashMap<>();
-                        map.put("APPToken", MyApplication.APPToken);
+                        map.put("APPToken",APPToken);
                         map.put("GoodsTypeId", String.valueOf(type_id));
                         return map;
                     }
@@ -161,7 +161,7 @@ public class MenuFragment extends Fragment {
                         @Override
                         protected Map<String, String> getParams() throws AuthFailureError {
                             Map<String, String> map = new HashMap<>();
-                            map.put("APPToken", MyApplication.APPToken);
+                            map.put("APPToken", APPToken);
                             map.put("GoodsTypeId", String.valueOf(resultBean.getGoodsTypeList().get(0).getGoodsTypeId()));
                             return map;
                         }
@@ -180,7 +180,7 @@ public class MenuFragment extends Fragment {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> map = new HashMap<>();
-                map.put("APPToken", MyApplication.APPToken);
+                map.put("APPToken", APPToken);
                 return map;
             }
         };
@@ -198,5 +198,6 @@ public class MenuFragment extends Fragment {
         resultBean2 = new GoodsBigType.ResultBean();
         sweetAlertDialog = new SweetAlertDialog(context,SweetAlertDialog.PROGRESS_TYPE);
         sweetAlertDialog.setTitleText("加载中");
+        APPToken=CommonUtils.GetValueByKey(context,"APPToken");
     }
 }

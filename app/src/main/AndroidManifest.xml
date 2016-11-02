@@ -2,7 +2,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="com.aboluo.com">
-
     <uses-permission android:name="android.permission.INTERNET"></uses-permission>
     <!-- 发送短信-->
     <uses-permission android:name="android.permission.SEND_SMS" />
@@ -12,8 +11,10 @@
     <uses-permission android:name="android.permission.WRITE_SMS" />
     <!-- 接收消息 -->
     <uses-permission android:name="android.prmission.RECEIVE_SMS" />
+
     <application
         tools:replace="android:icon, android:theme"
+        android:name="com.aboluo.XUtils.BaseApplication"
         android:allowBackup="true"
         android:configChanges="keyboard"
         android:icon="@mipmap/ic_launcher"
@@ -33,7 +34,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".LoginActivity"></activity>
+        <activity android:name=".LoginActivity" android:launchMode="singleTask"></activity>
         <activity android:name=".RegisterActivity"></activity>
         <activity android:name=".RetrievepwdActivity"></activity>
         <activity android:name=".MyInfoAcitvity"></activity>
@@ -56,5 +57,4 @@
         <activity android:name="com.aboluo.Gesture.SecondActivity"
                   android:theme="@android:style/Theme.NoTitleBar.Fullscreen" ></activity>
     </application>
-
 </manifest>

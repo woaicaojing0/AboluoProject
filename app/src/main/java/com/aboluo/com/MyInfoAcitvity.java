@@ -5,10 +5,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.provider.SyncStateContract;
 import android.view.View;
 import android.widget.CompoundButton;
-import android.widget.EditText;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -27,17 +25,19 @@ public class MyInfoAcitvity extends Activity implements View.OnClickListener {
     private TextView my_info_text_back;
     private Switch gesture;
     private SharedPreferences sharedPreferences;
-private String pwd;
+    private String pwd;
+    private SharedPreferences.Editor  editor;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_info);
         init();
         my_info_text_back.setOnClickListener(this);
-        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(MyInfoAcitvity.this);
+
+
         pwd = sharedPreferences.getString(Contants.PASS_KEY, "0");
-        if (pwd.equals("0")) {}
-        else {
+        if (pwd.equals("0")) {
+        } else {
             gesture.setChecked(true);
         }
         gesture.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -45,12 +45,15 @@ private String pwd;
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 pwd = sharedPreferences.getString(Contants.PASS_KEY, "0");
                 if (isChecked) {
+                    editor.putBoolean("isstartgesture",true);
+                    editor.commit();
                     if (pwd.equals("0")) {
                         actionSecondActivity(LockMode.SETTING_PASSWORD);
-                    }else {}
+                    } else {
+                    }
                 } else {
-
-
+                    editor.putBoolean("isstartgesture",false);
+                    editor.commit();
                     if (pwd.equals("0")) {
                     } else {
                         actionSecondActivity(LockMode.VERIFY_PASSWORD);
@@ -63,6 +66,8 @@ private String pwd;
     private void init() {
         my_info_text_back = (TextView) findViewById(R.id.my_info_text_back);
         gesture = (Switch) findViewById(R.id.gesture);
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(MyInfoAcitvity.this);
+        editor = sharedPreferences.edit();
     }
 
     @Override
@@ -100,10 +105,7 @@ private String pwd;
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         int result = data.getIntExtra("startgesture", 3);
-        if(result == 0) {
-//            SharedPreferences.Editor editor = sharedPreferences.edit();
-//            editor.remove(Contants.PASS_KEY);
-//            editor.commit();
+        if (result == 0) {
             gesture.setChecked(false);
         }
     }

@@ -2,6 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="com.aboluo.com">
+
     <uses-permission android:name="android.permission.INTERNET"></uses-permission>
     <!-- 发送短信-->
     <uses-permission android:name="android.permission.SEND_SMS" />
@@ -13,15 +14,15 @@
     <uses-permission android:name="android.prmission.RECEIVE_SMS" />
 
     <application
-        tools:replace="android:icon, android:theme"
         android:name="com.aboluo.XUtils.BaseApplication"
         android:allowBackup="true"
         android:configChanges="keyboard"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
+        android:theme="@style/AppTheme"
 
-        android:theme="@style/AppTheme">
+        tools:replace="android:icon, android:theme">
         <activity
             android:name=".MainActivity"
             android:windowSoftInputMode="adjustPan|stateHidden">
@@ -34,18 +35,21 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".LoginActivity" android:launchMode="singleTask"></activity>
+        <activity
+            android:name=".LoginActivity"
+            android:launchMode="singleTask"></activity>
         <activity android:name=".RegisterActivity"></activity>
         <activity android:name=".RetrievepwdActivity"></activity>
         <activity android:name=".MyInfoAcitvity"></activity>
         <activity android:name=".OrderActivity"></activity>
-        <activity android:name=".GoodsDetailActivity"
-                  android:windowSoftInputMode="adjustPan|stateHidden"></activity>
+        <activity
+            android:name=".GoodsDetailActivity"
+            android:windowSoftInputMode="adjustPan|stateHidden"></activity>
         <activity android:name=".HeHuoRenActivity"></activity>
         <activity android:name=".MiaoShaActivity"></activity>
         <activity android:name=".OneYuanAcitvity"></activity>
-        <activity android:name=".AddressActivity"></activity>
-        <activity android:name=".AddAddressActivity"></activity>
+        <activity android:name=".AddressActivity" ></activity>
+        <activity android:name=".AddAddressActivity" android:launchMode="singleTask"></activity>
         <activity android:name=".GoodsListActivity"></activity>
         <activity android:name="com.aboluo.test.AnimationActivtiy">
 
@@ -54,7 +58,12 @@
         <activity android:name="com.aboluo.test.testActivity">
 
         </activity>
-        <activity android:name="com.aboluo.Gesture.SecondActivity"
-                  android:theme="@android:style/Theme.NoTitleBar.Fullscreen" ></activity>
+        <activity
+            android:name="com.aboluo.Gesture.SecondActivity"
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen"></activity>
+        <activity android:name=".address.CityAddressActivity"></activity>
+        <activity android:name=".address.ProvinceAddressActivity"></activity>
+        <activity android:name=".address.RegionAddressActivity"></activity>
+        <activity android:name=".address.StreetAddressActivity"></activity>
     </application>
 </manifest>

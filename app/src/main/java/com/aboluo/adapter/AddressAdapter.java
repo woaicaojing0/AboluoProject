@@ -8,7 +8,7 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.aboluo.com.R;
-
+import com.aboluo.model.AddressInfoBean.ResultBean.MemberAddressListBean;
 import java.util.List;
 
 /**
@@ -16,10 +16,10 @@ import java.util.List;
  */
 
 public class AddressAdapter extends BaseAdapter {
-    private List<String> mlist;
+    private List<MemberAddressListBean> mlist;
     private Context mContext;
 
-    public AddressAdapter(List<String> list, Context context) {
+    public AddressAdapter(List<MemberAddressListBean> list, Context context) {
         this.mlist = list;
         this.mContext = context;
     }
@@ -55,9 +55,12 @@ public class AddressAdapter extends BaseAdapter {
         } else {
             viewHolder = (ViewHolder) convertView.getTag();
         }
-        viewHolder.address_listview_address.setText(mlist.get(position) + "江苏省淮安市枚乘东路1号 老校区:淮阴工学院北京路校区北京北路89号");
-        viewHolder.address_listview_name.setText(mlist.get(position) + "这是姓名");
-        viewHolder.address_listview_phone.setText(mlist.get(position) + "122332222");
+
+        String address = mlist.get(position).getProvince()+mlist.get(position).getCity()+mlist.get(position).getRegion()
+                +mlist.get(position).getStreet()+mlist.get(position).getAddress();
+        viewHolder.address_listview_address.setText(address);
+        viewHolder.address_listview_name.setText(mlist.get(position).getReceiver().toString());
+        viewHolder.address_listview_phone.setText(mlist.get(position).getMobile().toString());
         return convertView;
 
     }

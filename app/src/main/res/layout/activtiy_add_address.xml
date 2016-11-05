@@ -37,14 +37,9 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="48dp"
-        android:orientation="vertical"
+        android:orientation="horizontal"
         android:background="@color/white"
         android:layout_marginTop="2dp">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal">
 
             <TextView
                 android:layout_marginLeft="21dp"
@@ -61,18 +56,14 @@
                 android:layout_height="match_parent"
                 android:hint="请输入收件人姓名"
                 android:background="@null"/>
-        </LinearLayout>
     </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="48dp"
-        android:orientation="vertical"
+        android:orientation="horizontal"
         android:background="@color/white"
         android:layout_marginTop="2dp">
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal">
+
 
             <TextView
                 android:layout_marginLeft="21dp"
@@ -88,7 +79,7 @@
                 android:layout_height="match_parent"
                 android:hint="请输入11位收货人联系电话"
                 android:background="@null"/>
-        </LinearLayout>
+
     </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
@@ -96,13 +87,15 @@
         android:orientation="vertical"
         android:background="@color/white"
         android:layout_marginTop="14dp">
-        <LinearLayout
+        <RelativeLayout
             android:id="@+id/linelayout_location"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:gravity="center_vertical"
             android:orientation="horizontal">
 
             <TextView
+                android:id="@+id/suozaidiqu"
                 android:layout_marginLeft="21dp"
                 android:layout_width="wrap_content"
                 android:gravity="center"
@@ -112,23 +105,60 @@
                 android:layout_marginLeft="18dp"
                 android:id="@+id/add_address_txtview_location"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center"
                 android:lines="1"
+                android:text="sdddddd"
                 android:ellipsize="end"
-                />
-        </LinearLayout>
+                android:layout_toStartOf="@+id/go" />
+            <ImageView
+                android:id="@+id/go"
+                android:layout_alignParentRight="true"
+                android:layout_gravity="end"
+                android:layout_width="40dp"
+                android:layout_height="wrap_content"
+                android:src="@drawable/choose_addrees_go"/>
+
+
+        </RelativeLayout>
     </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="48dp"
         android:orientation="vertical"
         android:background="@color/white"
-        android:layout_marginTop="2dp">
-        <LinearLayout
+        android:layout_marginTop="14dp">
+        <RelativeLayout
+            android:id="@+id/address_street"
             android:layout_width="match_parent"
+            android:layout_height="match_parent">
+        <TextView
+            android:layout_marginLeft="21dp"
+            android:layout_width="wrap_content"
+            android:gravity="center"
             android:layout_height="match_parent"
-            android:orientation="horizontal">
-
+            android:text="街道" />
+            <TextView
+                android:text="街道"
+                android:layout_width="wrap_content"
+                android:gravity="center"
+                android:layout_height="match_parent"
+                android:id="@+id/add_address_txtview_jiedao"
+                android:layout_toStartOf="@+id/imageview_jiedao"/>
+        <ImageView
+            android:id="@+id/imageview_jiedao"
+            android:layout_width="40dp"
+            android:layout_height="match_parent"
+            android:src="@drawable/choose_addrees_go"
+            android:layout_alignParentRight="true"/>
+        </RelativeLayout>
+        </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:orientation="horizontal"
+        android:background="@color/white"
+        android:layout_marginTop="2dp">
             <TextView
                 android:layout_marginLeft="21dp"
                 android:layout_width="wrap_content"
@@ -143,18 +173,14 @@
                 android:layout_height="match_parent"
                 android:hint="请输入详细地址"
                 android:background="@null"/>
-        </LinearLayout>
     </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="48dp"
-        android:orientation="vertical"
+        android:orientation="horizontal"
         android:background="@color/white"
         android:layout_marginTop="2dp">
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal">
+
 
             <TextView
                 android:layout_marginLeft="21dp"
@@ -170,7 +196,6 @@
                 android:layout_height="match_parent"
                 android:hint="请输入6位邮政编码"
                 android:background="@null"/>
-        </LinearLayout>
     </LinearLayout>
     <Button
         android:enabled="false"
@@ -190,4 +215,19 @@
         android:background="#e0000000"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"/>
+    <TextView
+        android:visibility="gone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/txt_region_id"/>
+    <TextView
+        android:visibility="gone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/txt_allid"/>
+    <TextView
+        android:visibility="gone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/txt_street_id"/>
 </LinearLayout>

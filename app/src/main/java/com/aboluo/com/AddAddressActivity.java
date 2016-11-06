@@ -2,14 +2,17 @@ package com.aboluo.com;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -18,6 +21,7 @@ import com.aboluo.XUtils.MyApplication;
 import com.aboluo.XUtils.ValidateUtils;
 import com.aboluo.com.address.ProvinceAddressActivity;
 import com.aboluo.com.address.StreetAddressActivity;
+import com.aboluo.model.AddressInfoBean;
 import com.aboluo.model.BaseModel;
 import com.aboluo.model.PickerViewData;
 import com.aboluo.model.ProvinceBean22;
@@ -29,26 +33,29 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.bigkoo.pickerview.OptionsPickerView;
 import com.bigkoo.pickerview.model.IPickerViewData;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.TooManyListenersException;
 
+import cn.pedant.SweetAlert.SweetAlertDialog;
+
 /**
  * Created by CJ on 2016/10/4.
  */
 
 public class AddAddressActivity extends Activity implements TextWatcher, View.OnClickListener {
-    private Button add_address_save;
+    private Button add_address_save,update_address_save;//新增按钮，更新按钮
     private EditText edit_receive_name, edit_receive_phone, edit_receive_address, edit_receive_zipcode;
     private OptionsPickerView pvOptions;
     private RelativeLayout linelayout_location, address_street; //选择收货地址,街道
     private ArrayList<ProvinceBean22> options1Items = new ArrayList<>();
     private ArrayList<ArrayList<String>> options2Items = new ArrayList<>();
     private ArrayList<ArrayList<ArrayList<IPickerViewData>>> options3Items = new ArrayList<>();
-    //显示联动的地址,选择的地址,选择街道
-    private TextView add_address_txtview_location, add_address_txtview_jiedao;
+    //显示联动的地址,选择的地址,选择街道,头部表示修改还是新增默认是新增
+    private TextView add_address_txtview_location, add_address_txtview_jiedao,toolbar_txt;
     private int address_id = 0, streetid = 0; //选择地址结束后，选择街道需要的id，街道的id
     private String address_name = null, streetname = null, allid = null; //选择地址结束后，地址名称，街道名称
     private TextView txt_allid, txt_region_id, txt_street_id; //都是影藏的 保存数据用的
@@ -56,7 +63,10 @@ public class AddAddressActivity extends Activity implements TextWatcher, View.On
     private RequestQueue requestQueue;
     private String url = null;
     private String APPToken = null;
-
+    private SweetAlertDialog sweetAlertDialog;
+    private int model=0;// 默认是保存模式，1代表是编辑模式
+    private AddressInfoBean.ResultBean.MemberAddressListBean  memberAddressListBean;
+    private Gson gson;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,23 +74,25 @@ public class AddAddressActivity extends Activity implements TextWatcher, View.On
         processExtraData();//从选择地址跳转过来的数据
         init();
         add_address_save.setOnClickListener(this);
+        update_address_save.setOnClickListener(this);
         edit_receive_name.addTextChangedListener(this);
         edit_receive_phone.addTextChangedListener(this);
         edit_receive_address.addTextChangedListener(this);
         edit_receive_zipcode.addTextChangedListener(this);
         linelayout_location.setOnClickListener(this);
         address_street.setOnClickListener(this);
-        initaddress();
     }
 
     private void init() {
         add_address_save = (Button) findViewById(R.id.add_address_save);
+        update_address_save = (Button) findViewById(R.id.update_address_save);
         edit_receive_name = (EditText) findViewById(R.id.edit_receive_name);
         edit_receive_phone = (EditText) findViewById(R.id.edit_receive_phone);
         edit_receive_address = (EditText) findViewById(R.id.edit_receive_address);
         edit_receive_zipcode = (EditText) findViewById(R.id.edit_receive_zipcode);
         linelayout_location = (RelativeLayout) findViewById(R.id.linelayout_location);
         address_street = (RelativeLayout) findViewById(R.id.address_street);
+        toolbar_txt = (TextView) findViewById(R.id.toolbar_txt);
         add_address_txtview_location = (TextView) findViewById(R.id.add_address_txtview_location);
         add_address_txtview_jiedao = (TextView) findViewById(R.id.add_address_txtview_jiedao);
         txt_street_id = (TextView) findViewById(R.id.txt_street_id);
@@ -95,6 +107,13 @@ public class AddAddressActivity extends Activity implements TextWatcher, View.On
         url = CommonUtils.GetValueByKey(AddAddressActivity.this, "apiurl");
         APPToken = CommonUtils.GetValueByKey(AddAddressActivity.this, "APPToken");
         requestQueue = MyApplication.getRequestQueue();
+        sweetAlertDialog= new SweetAlertDialog(this,SweetAlertDialog.PROGRESS_TYPE);
+        sweetAlertDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
+        sweetAlertDialog.setCancelable(false);
+        Intent intent = getIntent();
+       model = intent.getIntExtra("model",0);
+        gson = new Gson();
+        initdata(model);
     }
 
     @Override
@@ -114,7 +133,7 @@ public class AddAddressActivity extends Activity implements TextWatcher, View.On
             isok = true;
             if (ValidateUtils.Zipcode(edit_receive_zipcode.getText().toString())) {
                 isok = true;
-                if (edit_receive_name.length() > 2) {
+                if (edit_receive_name.length() >=2) {
                     isok = true;
                     if (edit_receive_address.length() > 0) {
                         isok = true;
@@ -132,114 +151,11 @@ public class AddAddressActivity extends Activity implements TextWatcher, View.On
         }
         if (isok) {
             add_address_save.setEnabled(true);
+            update_address_save.setEnabled(true);
         } else {
             add_address_save.setEnabled(false);
+            update_address_save.setEnabled(false);
         }
-    }
-
-    private void initaddress() {
-        //选项1
-        options1Items.add(new ProvinceBean22(0, "广东", "广东省，以岭南东道、广南东路得名", "其他数据"));
-        options1Items.add(new ProvinceBean22(1, "湖南", "湖南省地处中国中部、长江中游，因大部分区域处于洞庭湖以南而得名湖南", "芒果TV"));
-        options1Items.add(new ProvinceBean22(3, "广西", "嗯～～", ""));
-
-        //选项2
-        ArrayList<String> options2Items_01 = new ArrayList<>();
-        options2Items_01.add("广州");
-        options2Items_01.add("佛山");
-        options2Items_01.add("东莞");
-        options2Items_01.add("阳江");
-        options2Items_01.add("珠海");
-        ArrayList<String> options2Items_02 = new ArrayList<>();
-        options2Items_02.add("长沙");
-        options2Items_02.add("岳阳");
-        ArrayList<String> options2Items_03 = new ArrayList<>();
-        options2Items_03.add("桂林");
-        options2Items.add(options2Items_01);
-        options2Items.add(options2Items_02);
-        options2Items.add(options2Items_03);
-
-        //选项3
-        ArrayList<ArrayList<IPickerViewData>> options3Items_01 = new ArrayList<>();
-        ArrayList<ArrayList<IPickerViewData>> options3Items_02 = new ArrayList<>();
-        ArrayList<ArrayList<IPickerViewData>> options3Items_03 = new ArrayList<>();
-        ArrayList<IPickerViewData> options3Items_01_01 = new ArrayList<>();
-        options3Items_01_01.add(new PickerViewData("天河"));
-        options3Items_01_01.add(new PickerViewData("黄埔"));
-        options3Items_01_01.add(new PickerViewData("海珠"));
-        options3Items_01_01.add(new PickerViewData("越秀"));
-        options3Items_01.add(options3Items_01_01);
-        ArrayList<IPickerViewData> options3Items_01_02 = new ArrayList<>();
-        options3Items_01_02.add(new PickerViewData("南海"));
-        options3Items_01_02.add(new PickerViewData("高明"));
-        options3Items_01_02.add(new PickerViewData("禅城"));
-        options3Items_01_02.add(new PickerViewData("桂城"));
-        options3Items_01.add(options3Items_01_02);
-        ArrayList<IPickerViewData> options3Items_01_03 = new ArrayList<>();
-        options3Items_01_03.add(new PickerViewData("其他"));
-        options3Items_01_03.add(new PickerViewData("常平"));
-        options3Items_01_03.add(new PickerViewData("虎门"));
-        options3Items_01.add(options3Items_01_03);
-        ArrayList<IPickerViewData> options3Items_01_04 = new ArrayList<>();
-        options3Items_01_04.add(new PickerViewData("其他"));
-        options3Items_01_04.add(new PickerViewData("其他"));
-        options3Items_01_04.add(new PickerViewData("其他"));
-        options3Items_01.add(options3Items_01_04);
-        ArrayList<IPickerViewData> options3Items_01_05 = new ArrayList<>();
-
-        options3Items_01_05.add(new PickerViewData("其他1"));
-        options3Items_01_05.add(new PickerViewData("其他2"));
-        options3Items_01.add(options3Items_01_05);
-
-        ArrayList<IPickerViewData> options3Items_02_01 = new ArrayList<>();
-
-        options3Items_02_01.add(new PickerViewData("长沙1"));
-        options3Items_02_01.add(new PickerViewData("长沙2"));
-        options3Items_02_01.add(new PickerViewData("长沙3"));
-        options3Items_02_01.add(new PickerViewData("长沙4"));
-        options3Items_02_01.add(new PickerViewData("长沙5"));
-
-
-        options3Items_02.add(options3Items_02_01);
-        ArrayList<IPickerViewData> options3Items_02_02 = new ArrayList<>();
-
-        options3Items_02_02.add(new PickerViewData("岳阳"));
-        options3Items_02_02.add(new PickerViewData("岳阳1"));
-        options3Items_02_02.add(new PickerViewData("岳阳2"));
-        options3Items_02_02.add(new PickerViewData("岳阳3"));
-        options3Items_02_02.add(new PickerViewData("岳阳4"));
-        options3Items_02_02.add(new PickerViewData("岳阳5"));
-
-        options3Items_02.add(options3Items_02_02);
-        ArrayList<IPickerViewData> options3Items_03_01 = new ArrayList<>();
-        options3Items_03_01.add(new PickerViewData("好山水"));
-        options3Items_03.add(options3Items_03_01);
-
-        options3Items.add(options3Items_01);
-        options3Items.add(options3Items_02);
-        options3Items.add(options3Items_03);
-
-        //三级联动效果
-        pvOptions.setPicker(options1Items, options2Items, options3Items, true);
-        //设置选择的三级单位
-        pvOptions.setLabels("省", "市", "区");
-        pvOptions.setTitle("选择城市");
-        pvOptions.setCyclic(false, true, true);
-        //设置默认选中的三级项目
-        //监听确定选择按钮
-        pvOptions.setSelectOptions(1, 1, 1);
-        pvOptions.setOnoptionsSelectListener(new OptionsPickerView.OnOptionsSelectListener() {
-
-            @Override
-            public void onOptionsSelect(int options1, int option2, int options3) {
-                //返回的分别是三个级别的选中位置
-                String tx = options1Items.get(options1).getPickerViewText() + "省 "
-                        + options2Items.get(options1).get(option2) + "市 "
-                        + options3Items.get(options1).get(option2).get(options3).getPickerViewText() + "区";
-                add_address_txtview_location.setText(tx);
-                vMasker.setVisibility(View.GONE);
-            }
-        });
     }
 
     @Override
@@ -301,10 +217,15 @@ public class AddAddressActivity extends Activity implements TextWatcher, View.On
             case R.id.add_address_save:
                 saveAddress();
                 break;
+            case R.id.update_address_save:
+                updateAddress();
         }
     }
 
     private void saveAddress() {
+        final String Receiver = edit_receive_name.getText().toString();
+        final String Mobile =edit_receive_phone.getText().toString();
+        final String ZipCode =edit_receive_zipcode.getText().toString();
         final String name = add_address_txtview_location.getText().toString();
         final String allsid = txt_allid.getText().toString();
         final String streename = add_address_txtview_jiedao.getText().toString();
@@ -312,17 +233,22 @@ public class AddAddressActivity extends Activity implements TextWatcher, View.On
         final String allids[] = allsid.split(";");
         final String allname[] = name.split(" ");
         final String address = edit_receive_address.getText().toString();
+        sweetAlertDialog.setTitleText("新增中......");
+        sweetAlertDialog.show();
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url + "/api/Order/AddOrUpdateMemeberAddress", new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 response = response.replace("\\", "");
                 response = response.substring(1, response.length() - 1);
                 BaseModel basemodel = new BaseModel();
+                basemodel =gson.fromJson(response,BaseModel.class);
                 if(basemodel.isIsSuccess())
                 {
                     Toast.makeText(AddAddressActivity.this, basemodel.getMessage().toString(), Toast.LENGTH_SHORT).show();
+                    sweetAlertDialog.dismiss();
                     Intent intent = new Intent(AddAddressActivity.this,AddressActivity.class);
                     startActivity(intent);
+                    finish();
                 }else {
                     Toast.makeText(AddAddressActivity.this, basemodel.getMessage().toString(), Toast.LENGTH_SHORT).show();
                 }
@@ -338,8 +264,8 @@ public class AddAddressActivity extends Activity implements TextWatcher, View.On
                 Map<String, String> map = new HashMap<>();
                 map.put("Id", "0");
                 map.put("MemberId", "1");
-                map.put("Receiver", "曹晶");
-                map.put("Mobile", "18360733212");
+                map.put("Receiver", Receiver);
+                map.put("Mobile", Mobile);
                 map.put("Province", allname[0]);
                 map.put("ProvinceId", allids[0]);
                 map.put("City", allname[1]);
@@ -350,11 +276,125 @@ public class AddAddressActivity extends Activity implements TextWatcher, View.On
                 map.put("StreetId", String.valueOf(streeId));
                 map.put("Address", address);
                 map.put("IsDefault", "0");
-                map.put("ZipCode", "225500");
+                map.put("ZipCode", ZipCode);
                 map.put("APPToken", APPToken);
                 return map;
             }
         };
         requestQueue.add(stringRequest);
+    }
+
+    private void updateAddress(){
+        final String Receiver = edit_receive_name.getText().toString();
+        final String Mobile =edit_receive_phone.getText().toString();
+        final String ZipCode =edit_receive_zipcode.getText().toString();
+        final String name = add_address_txtview_location.getText().toString();
+        final String allsid = txt_allid.getText().toString();
+        final String streename = add_address_txtview_jiedao.getText().toString();
+        final String streeId = txt_street_id.getText().toString();
+        final String allids[] = allsid.split(";");
+        final String allname[] = name.split(" ");
+        final String address = edit_receive_address.getText().toString();
+        sweetAlertDialog.setTitleText("修改中......");
+        sweetAlertDialog.show();
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, url + "/api/Order/AddOrUpdateMemeberAddress", new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                response = response.replace("\\", "");
+                response = response.substring(1, response.length() - 1);
+                BaseModel basemodel = new BaseModel();
+                basemodel =gson.fromJson(response,BaseModel.class);
+                if(basemodel.isIsSuccess())
+                {
+                    Toast.makeText(AddAddressActivity.this, basemodel.getMessage().toString(), Toast.LENGTH_SHORT).show();
+                    sweetAlertDialog.dismiss();
+                    Intent intent = new Intent(AddAddressActivity.this,AddressActivity.class);
+                    startActivity(intent);
+                    finish();
+                }else {
+                    Toast.makeText(AddAddressActivity.this, basemodel.getMessage().toString(), Toast.LENGTH_SHORT).show();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        }) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> map = new HashMap<>();
+                map.put("Id", String.valueOf(model));
+                map.put("MemberId", "1");
+                map.put("Receiver", Receiver);
+                map.put("Mobile", Mobile);
+                map.put("Province", allname[0]);
+                map.put("ProvinceId", allids[0]);
+                map.put("City", allname[1]);
+                map.put("CityId", allids[1]);
+                map.put("Region", allname[2]);
+                map.put("RegionId", allids[2]);
+                map.put("Street", streename);
+                map.put("StreetId", String.valueOf(streeId));
+                map.put("Address", address);
+                map.put("IsDefault", "0");
+                map.put("ZipCode", ZipCode);
+                map.put("APPToken", APPToken);
+                return map;
+            }
+        };
+        requestQueue.add(stringRequest);
+
+    }
+    private void initdata(final int model)
+    {
+
+        if(model != 0) {
+            add_address_save.setVisibility(View.GONE);
+            update_address_save.setVisibility(View.VISIBLE);
+            toolbar_txt.setText("修改收货地址");
+            sweetAlertDialog.setTitleText("加载中......");
+            sweetAlertDialog.show();
+            StringRequest stringRequest = new StringRequest(Request.Method.POST, url+"/api/Order/GetMemberAddressListByMemberId", new Response.Listener<String>() {
+                @Override
+                public void onResponse(String response) {
+                    response = response.replace("\\","");
+                    response =response.substring(1,response.length()-1);
+                    Log.i("woaicaojingone",response);
+                    AddressInfoBean addressInfoBean2= gson.fromJson(response, AddressInfoBean.class);
+                    memberAddressListBean = addressInfoBean2.getResult().getMemberAddressList().get(0);
+                    edit_receive_phone.setText(memberAddressListBean.getMobile());
+                    edit_receive_address.setText(memberAddressListBean.getAddress());
+                    edit_receive_name.setText(memberAddressListBean.getReceiver());
+                    edit_receive_zipcode.setText(memberAddressListBean.getZipCode());
+                    add_address_txtview_location.setText(memberAddressListBean.getProvince()+" "+
+                    memberAddressListBean.getCity()+" "+memberAddressListBean.getRegion()+" ");
+                    add_address_txtview_jiedao.setText(memberAddressListBean.getStreet());
+                    txt_street_id.setText(String.valueOf(memberAddressListBean.getStreetId()));
+                    txt_allid.setText(memberAddressListBean.getProvinceId()+";"+
+                    memberAddressListBean.getCityId()+";"+memberAddressListBean.getRegionId());
+                    txt_region_id.setText(String.valueOf(memberAddressListBean.getRegionId()));
+                    sweetAlertDialog.dismiss();
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    Toast.makeText(AddAddressActivity.this, error.toString(), Toast.LENGTH_SHORT).show();
+                    sweetAlertDialog.dismiss();
+                }
+            }) {
+                @Override
+                protected Map<String, String> getParams() throws AuthFailureError {
+                   Map<String,String> map = new HashMap<>();
+                    map.put("Id",String.valueOf(model));
+                    map.put("MemberId","1");
+                    map.put("APPToken",APPToken);
+                    return  map;
+                }
+            };
+            requestQueue.add(stringRequest);
+        }else {
+            update_address_save.setVisibility(View.GONE);
+            add_address_save.setVisibility(View.VISIBLE);}
     }
 }

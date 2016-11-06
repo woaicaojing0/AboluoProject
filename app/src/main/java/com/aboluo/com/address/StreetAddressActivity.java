@@ -2,12 +2,14 @@ package com.aboluo.com.address;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.aboluo.XUtils.CommonUtils;
 import com.aboluo.XUtils.MyApplication;
@@ -26,6 +28,8 @@ import com.google.gson.Gson;
 import java.util.HashMap;
 import java.util.Map;
 
+import cn.pedant.SweetAlert.SweetAlertDialog;
+
 
 /**
  * Created by CJ on 2016/11/5.
@@ -41,6 +45,7 @@ public class StreetAddressActivity extends Activity{
     private Gson  gson;
     private ProvinceAdapter provinceAdapter;
     private int regionid;
+    private SweetAlertDialog sweetAlertDialog;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -67,24 +72,36 @@ public class StreetAddressActivity extends Activity{
         requestQueue = MyApplication.getRequestQueue();
         provinceBean = new ProvinceBean();
         gson = new Gson();
+        sweetAlertDialog= new SweetAlertDialog(this,SweetAlertDialog.PROGRESS_TYPE);
+        sweetAlertDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
+        sweetAlertDialog.setTitleText("加载中......");
+        sweetAlertDialog.setCancelable(false);
         initdata();
     }
 
     private void initdata() {
+        sweetAlertDialog.show();
         stringRequest = new StringRequest(Request.Method.POST, url + "/api/CountryArea/GetStreetList", new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 response = response.replace("\\", "");
                 response = response.substring(1, response.length() - 1);
                 Log.i("woaicoajingaddress",response);
+
                 provinceBean = gson.fromJson(response,ProvinceBean.class);
-                provinceAdapter = new ProvinceAdapter(provinceBean,StreetAddressActivity.this);
-                choose_address.setAdapter(provinceAdapter);
+                if(provinceBean.isIsSuccess()) {
+                    provinceAdapter = new ProvinceAdapter(provinceBean, StreetAddressActivity.this);
+                    choose_address.setAdapter(provinceAdapter);
+                }else {
+                    Toast.makeText(StreetAddressActivity.this, "网络开小差了", Toast.LENGTH_SHORT).show();
+                }
+                sweetAlertDialog.dismiss();
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-
+                Toast.makeText(StreetAddressActivity.this, error.toString(), Toast.LENGTH_SHORT).show();
+                sweetAlertDialog.dismiss();
             }
         }) {
             @Override

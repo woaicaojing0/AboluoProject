@@ -5,6 +5,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.CheckBox;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.aboluo.com.R;
@@ -18,12 +20,26 @@ import java.util.List;
 public class AddressAdapter extends BaseAdapter {
     private List<MemberAddressListBean> mlist;
     private Context mContext;
+    private View.OnClickListener editeOnclickListener;
+    private View.OnClickListener deleteOnclickListener;
+    private View.OnClickListener ck_defaultOnClickListener;
 
     public AddressAdapter(List<MemberAddressListBean> list, Context context) {
         this.mlist = list;
         this.mContext = context;
     }
 
+    public void setEditeOnclickListener(View.OnClickListener editeOnclickListener) {
+        this.editeOnclickListener = editeOnclickListener;
+    }
+
+    public void setDeleteOnclickListener(View.OnClickListener deleteOnclickListener) {
+        this.deleteOnclickListener = deleteOnclickListener;
+    }
+
+    public void setCk_defaultOnClickListener(View.OnClickListener ck_defaultOnClickListener) {
+        this.ck_defaultOnClickListener = ck_defaultOnClickListener;
+    }
     @Override
     public int getCount() {
         return mlist.size();
@@ -51,6 +67,12 @@ public class AddressAdapter extends BaseAdapter {
             viewHolder.address_listview_address = (TextView) convertView.findViewById(R.id.address_listview_address);
             viewHolder.address_listview_name = (TextView) convertView.findViewById(R.id.address_listview_name);
             viewHolder.address_listview_phone = (TextView) convertView.findViewById(R.id.address_listview_phone);
+            viewHolder.address_edit = (LinearLayout) convertView.findViewById(R.id.address_edit);
+            viewHolder.address_delete = (LinearLayout) convertView.findViewById(R.id.address_delete);
+            viewHolder.ck_defalut = (CheckBox) convertView.findViewById(R.id.checkBox);
+            viewHolder.address_edit.setTag(position);
+            viewHolder.address_delete.setTag(position);
+            viewHolder.ck_defalut.setTag(position);
             convertView.setTag(viewHolder);
         } else {
             viewHolder = (ViewHolder) convertView.getTag();
@@ -61,11 +83,20 @@ public class AddressAdapter extends BaseAdapter {
         viewHolder.address_listview_address.setText(address);
         viewHolder.address_listview_name.setText(mlist.get(position).getReceiver().toString());
         viewHolder.address_listview_phone.setText(mlist.get(position).getMobile().toString());
+        viewHolder.address_edit.setOnClickListener(editeOnclickListener);
+        viewHolder.address_delete.setOnClickListener(deleteOnclickListener);
+        viewHolder.ck_defalut.setOnClickListener(ck_defaultOnClickListener);
+        if(mlist.get(position).getIsDefault() ==0)
+        { viewHolder.ck_defalut.setChecked(false);}else {
+            viewHolder.ck_defalut.setChecked(true);
+        }
         return convertView;
 
     }
 
     public class ViewHolder {
         private TextView address_listview_address, address_listview_phone, address_listview_name;
+        private LinearLayout address_edit,address_delete;
+        private CheckBox ck_defalut;
     }
 }

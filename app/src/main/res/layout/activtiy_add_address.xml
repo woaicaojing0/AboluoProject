@@ -27,6 +27,7 @@
                 android:text="返回" />
 
             <TextView
+                android:id="@+id/toolbar_txt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
@@ -108,7 +109,7 @@
                 android:layout_height="match_parent"
                 android:gravity="center"
                 android:lines="1"
-                android:text="sdddddd"
+                android:text=""
                 android:ellipsize="end"
                 android:layout_toStartOf="@+id/go" />
             <ImageView
@@ -207,8 +208,18 @@
         android:background="@drawable/add_address_btn_selector"
         android:layout_height="36dp"
         android:textColor="@color/white"
-        android:text="保存">
-    </Button>
+        android:text="保存"/>
+    <Button
+        android:enabled="false"
+        android:id="@+id/update_address_save"
+        android:layout_marginTop="32dp"
+        android:layout_marginLeft="31dp"
+        android:layout_marginRight="31dp"
+        android:layout_width="match_parent"
+        android:background="@drawable/add_address_btn_selector"
+        android:layout_height="36dp"
+        android:textColor="@color/white"
+        android:text="更新"/>
     <View
         android:id="@+id/vMasker"
         android:visibility="gone"

@@ -2,12 +2,14 @@ package com.aboluo.com.address;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.aboluo.XUtils.CommonUtils;
 import com.aboluo.XUtils.MyApplication;
@@ -26,6 +28,8 @@ import com.google.gson.Gson;
 import java.util.HashMap;
 import java.util.Map;
 
+import cn.pedant.SweetAlert.SweetAlertDialog;
+
 /**
  * Created by CJ on 2016/11/5.
  */
@@ -41,6 +45,7 @@ public class RegionAddressActivity extends Activity{
     private ProvinceAdapter provinceAdapter;
     private String cityName,allid;
     private int cityId;
+    private SweetAlertDialog sweetAlertDialog;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -71,10 +76,16 @@ public class RegionAddressActivity extends Activity{
         requestQueue = MyApplication.getRequestQueue();
         provinceBean = new ProvinceBean();
         gson = new Gson();
+
+        sweetAlertDialog= new SweetAlertDialog(this,SweetAlertDialog.PROGRESS_TYPE);
+        sweetAlertDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
+        sweetAlertDialog.setTitleText("加载中......");
+        sweetAlertDialog.setCancelable(false);
         initdata();
     }
 
     private void initdata() {
+        sweetAlertDialog.show();
         stringRequest = new StringRequest(Request.Method.POST, url + "/api/CountryArea/GetRegionList", new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
@@ -84,11 +95,13 @@ public class RegionAddressActivity extends Activity{
                 provinceBean = gson.fromJson(response,ProvinceBean.class);
                 provinceAdapter = new ProvinceAdapter(provinceBean,RegionAddressActivity.this);
                 choose_address.setAdapter(provinceAdapter);
+                sweetAlertDialog.dismiss();
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-
+                Toast.makeText(RegionAddressActivity.this, error.toString(), Toast.LENGTH_SHORT).show();
+                sweetAlertDialog.dismiss();
             }
         }) {
             @Override

@@ -23,6 +23,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RadioButton;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -31,7 +32,9 @@ import com.aboluo.XUtils.MyApplication;
 import com.aboluo.XUtils.ScreenUtils;
 import com.aboluo.adapter.ShopCarAdapter;
 import com.aboluo.com.GoodsDetailActivity;
+import com.aboluo.com.GoodsListActivity;
 import com.aboluo.com.R;
+import com.aboluo.model.BaseModel;
 import com.aboluo.model.GoodsDetailInfo;
 import com.aboluo.model.ShopCarBean;
 import com.aboluo.model.UpdateShopInfoBean;
@@ -52,16 +55,18 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
-import  com.aboluo.model.ShopCarBean.ResultBean.*;
+import com.aboluo.model.ShopCarBean.ResultBean.*;
 import com.handmark.pulltorefresh.library.PullToRefreshListView;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.picasso.Picasso;
 import com.tandong.bottomview.view.BottomView;
 
+import cn.pedant.SweetAlert.SweetAlertDialog;
+
 /**
  * Created by cj34920 on 2016/9/8.
  */
-public class ShopCarFragment extends Fragment implements View.OnClickListener{
+public class ShopCarFragment extends Fragment implements View.OnClickListener {
     private static String TAG = "UserInfoMsg";
     private View view;
     private PullToRefreshListView listView;
@@ -72,31 +77,35 @@ public class ShopCarFragment extends Fragment implements View.OnClickListener{
     //全选按钮
     private CheckBox cb_cart_all;
     //保存每个item的选中状态
-    private ArrayList<Boolean> ck_checked;
+    private ArrayList<Boolean> ckisselected;
     private ShopCarAdapter carAdapter;
     //编辑按钮
     private TextView btn_editAndok;
     //删除按钮
     private Button shopcar_btn_delete;
     //合计,存储底部弹出布局是由哪个postion点击的
-    private TextView shopcar_allmoney,store_postion;
+    private TextView shopcar_allmoney, store_postion;
     private RequestQueue requestQueue;
     private String APPToken = null;
-    private String URL = null,ImgUrl = null;
+    private String URL = null, ImgUrl = null;
     private List<ShopCarBean.ResultBean.GoodsShoppingCartListBean> goodsShoppingCartListBean;
-    private ArrayList<Boolean> ckisselected;
     private double totalpv = 0.00;
-private GoodsDetailInfo goodsDetailInfo;
+    private GoodsDetailInfo goodsDetailInfo;
     //父容器、自容器、商品列表颜色布局、尺寸布局,底部弹出类型的确定按钮
-    private LinearLayout all_color, all_standards,goods_type_ok;
+    private LinearLayout all_color, all_standards, goods_type_ok;
     private Boolean hascolor = false, hasstandards = false;
     private int popwith;
-    private ImageView   goods_detail_type_imageview;
+    private ImageView goods_detail_type_imageview;
     private static String goods_type_imgeurl; //需要放大图片的地址
     //颜色和尺寸的单选组
     private MyRadioGroup goodsdetail_type_color, goodsdetail_type_standards;
     private View bottom_view;
     private BottomView bottomView;
+    private SweetAlertDialog sweetAlertDialog;
+    private RelativeLayout no_shopcar, shop_content;
+    private Button go_shoipping; //购物车没有信息是，去逛逛按钮
+    private Button btn_push; //结算按钮
+
     @Override
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -134,9 +143,8 @@ private GoodsDetailInfo goodsDetailInfo;
         okHttpClient.setConnectTimeout(1, TimeUnit.SECONDS);
         okHttpClient.setReadTimeout(1, TimeUnit.SECONDS);
         okHttpClient.setWriteTimeout(1, TimeUnit.SECONDS);
-        ck_checked = new ArrayList<>();
         context = ShopCarFragment.this.getActivity();
-        listView = (PullToRefreshListView ) view.findViewById(R.id.shopcar_listview);
+        listView = (PullToRefreshListView) view.findViewById(R.id.shopcar_listview);
         cb_cart_all = (CheckBox) view.findViewById(R.id.cb_cart_all);
         cb_cart_all_linealayout = (LinearLayout) view.findViewById(R.id.cb_cart_all_linealayout);
         btn_editAndok = (TextView) view.findViewById(R.id.btn_editAndok);
@@ -148,11 +156,18 @@ private GoodsDetailInfo goodsDetailInfo;
         URL = CommonUtils.GetValueByKey(context, "apiurl");
         APPToken = CommonUtils.GetValueByKey(context, "APPToken");
         ckisselected = new ArrayList<>();
-        initshopcar();
         popwith = ScreenUtils.getScreenWidth(context);
         popwith = popwith - CommonUtils.dip2px(context, 60);
         ImgUrl = CommonUtils.GetValueByKey(context, "ImgUrl");
-
+        sweetAlertDialog = new SweetAlertDialog(context, SweetAlertDialog.PROGRESS_TYPE);
+        sweetAlertDialog.setTitleText("加载中");
+        no_shopcar = (RelativeLayout) view.findViewById(R.id.no_shopcar);
+        shop_content = (RelativeLayout) view.findViewById(R.id.shop_content);
+        go_shoipping = (Button) view.findViewById(R.id.go_shoipping);
+        btn_push = (Button) view.findViewById(R.id.btn_push);
+        go_shoipping.setOnClickListener(this);
+        btn_push.setOnClickListener(this);
+        initshopcar();
     }
 
     @Override
@@ -169,43 +184,91 @@ private GoodsDetailInfo goodsDetailInfo;
                     linelayout_ok.setVisibility(View.VISIBLE);
                 }
                 break;
-            case R.id.shopcar_btn_delete:
+            case R.id.shopcar_btn_delete: // 删除按钮
+                final Gson gson = new Gson();
+                boolean selectnum = false;
+                ArrayList<Boolean>  addckisselected = new ArrayList<>();
+                addckisselected.addAll(ckisselected);
+                List<Integer> listint = new ArrayList<>();
+                for (int i = 0; i < addckisselected.size(); i++) {
+                    if (addckisselected.get(i)) {
+                        final int id = goodsShoppingCartListBean.get(i).getId();
+                        final int goodsid = goodsShoppingCartListBean.get(i).getGoodsId();
+                        selectnum = true;
+                        final int finalI = i;
+                        listint.add(i);
+                    }
+                }
+                if (!selectnum) {
+                    Toast.makeText(context, "请选择需要删除的商品", Toast.LENGTH_SHORT).show();
+                } else {
+                   String  id = gson.toJson(listint);
+//                    StringRequest stringRequest = new StringRequest(Request.Method.POST, URL+"/api/GoodsShoppingCart/ReceiveDeleteGoodsShoppingCart", new Response.Listener<String>() {
+//                        @Override
+//                        public void onResponse(String response) {
+//                            response = response.replace("\\", "");
+//                            response = response.substring(1, response.length() - 1);
+//                            BaseModel baseModel =gson.fromJson(response, BaseModel.class);
+//                            if(baseModel.isIsSuccess())
+//                            {
+//                                ckisselected.remove(finalI);
+//                                goodsShoppingCartListBean.remove(finalI);
+//                                carAdapter.notifyDataSetChanged();
+//                                Toast.makeText(context, "删除成功", Toast.LENGTH_SHORT).show();
+//                            }else
+//                            {
+//                                Toast.makeText(context, baseModel.getMessage().toString(), Toast.LENGTH_SHORT).show();
+//                            }
+//                        }
+//                    }, new Response.ErrorListener() {
+//                        @Override
+//                        public void onErrorResponse(VolleyError error) {
+//
+//                        }
+//                    }) {
+//                        @Override
+//                        protected Map<String, String> getParams() throws AuthFailureError {
+//                            Map<String, String> map = new HashMap<>();
+//                            map.put("Id", String.valueOf(id));
+//                            map.put("MemberId", "6");
+//                            map.put("goodsId", String.valueOf(goodsid));
+//                            map.put("APPToken", APPToken);
+//                            return map;
+//                        }
+//                    };
+//                    requestQueue.add(stringRequest);
+                }
                 break;
             case R.id.goods_type_ok: //修改商品规格按钮
-                if(bottom_view == null)
-                {}else {
+                if (bottom_view == null) {
+                } else {
                     final int position = Integer.valueOf(store_postion.getText().toString());
                     final RadioButton radioColor = (RadioButton) bottom_view.findViewById(goodsdetail_type_color.getCheckedRadioButtonId());
                     final RadioButton radioStandards = (RadioButton) bottom_view.findViewById(goodsdetail_type_standards.getCheckedRadioButtonId());
-                    final  int  id = goodsShoppingCartListBean.get(position).getId();
-                    final int  goodsid = goodsShoppingCartListBean.get(position).getGoodsId();
+                    final int id = goodsShoppingCartListBean.get(position).getId();
+                    final int goodsid = goodsShoppingCartListBean.get(position).getGoodsId();
                     final String count = String.valueOf(goodsShoppingCartListBean.get(position).getGoodsCount());
                     StringRequest stringRequest2 = new StringRequest(Request.Method.POST, URL + "/api/GoodsShoppingCart/ReceiveAddOrUpdateGoodsShoppingCart", new Response.Listener<String>() {
                         @Override
                         public void onResponse(String response) {
-                            response = response.replace("\\","");
-                            response = response.substring(1,response.length()-1);
-                            Log.i("woaicaojingupdate",response);
+                            response = response.replace("\\", "");
+                            response = response.substring(1, response.length() - 1);
+                            Log.i("woaicaojingupdate", response);
                             Gson gson = new Gson();
-                            UpdateShopInfoBean updateShopInfoBean = gson.fromJson(response,UpdateShopInfoBean.class);
-                            if(updateShopInfoBean.isIsSuccess()) {
-                                if(radioColor == null)
-                                {
+                            UpdateShopInfoBean updateShopInfoBean = gson.fromJson(response, UpdateShopInfoBean.class);
+                            if (updateShopInfoBean.isIsSuccess()) {
+                                if (radioColor == null) {
                                     goodsShoppingCartListBean.get(position).setGoodsStandard(radioStandards.getText().toString());
-                                }
-                                else  if(radioStandards == null)
-                                {
+                                } else if (radioStandards == null) {
                                     goodsShoppingCartListBean.get(position).setGoodsColor(radioColor.getText().toString());
-                                }
-                                else
-                                {
+                                } else {
                                     goodsShoppingCartListBean.get(position).setGoodsStandard(radioStandards.getText().toString());
                                     goodsShoppingCartListBean.get(position).setGoodsColor(radioColor.getText().toString());
                                 }
                                 carAdapter.notifyDataSetChanged();
                                 bottomView.dismissBottomView();
                                 Toast.makeText(context, updateShopInfoBean.getMessage().toString(), Toast.LENGTH_SHORT).show();
-                            }else {
+                            } else {
                                 Toast.makeText(context, updateShopInfoBean.getMessage().toString(), Toast.LENGTH_SHORT).show();
                             }
                         }
@@ -213,30 +276,25 @@ private GoodsDetailInfo goodsDetailInfo;
                         @Override
                         public void onErrorResponse(VolleyError error) {
                             bottomView.dismissBottomView();
-                            Toast.makeText(context, "修改失败"+error.toString(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(context, "修改失败" + error.toString(), Toast.LENGTH_SHORT).show();
                         }
                     }) {
                         @Override
                         protected Map<String, String> getParams() throws AuthFailureError {
                             Map<String, String> map = new HashMap<>();
-                            map.put("Id", String.valueOf(id) );
+                            map.put("Id", String.valueOf(id));
                             map.put("goodsId", String.valueOf(goodsid));
-                            if(radioColor == null)
-                            {
-                                map.put("goodsStandard",radioStandards.getText().toString());
-                                map.put("goodsColor","");
+                            if (radioColor == null) {
+                                map.put("goodsStandard", radioStandards.getText().toString());
+                                map.put("goodsColor", "");
+                            } else if (radioStandards == null) {
+                                map.put("goodsColor", radioColor.getText().toString());
+                                map.put("goodsStandard", "");
+                            } else {
+                                map.put("goodsStandard", radioStandards.getText().toString());
+                                map.put("goodsColor", radioColor.getText().toString());
                             }
-                            else  if(radioStandards == null)
-                            {
-                                map.put("goodsColor",  radioColor.getText().toString());
-                                map.put("goodsStandard","");
-                            }
-                            else
-                            {
-                                map.put("goodsStandard",radioStandards.getText().toString());
-                                map.put("goodsColor",  radioColor.getText().toString());
-                            }
-                            map.put("goodsCount", String .valueOf(count));
+                            map.put("goodsCount", String.valueOf(count));
                             map.put("memberId", "6");
                             map.put("shopId", "1");
                             map.put("APPToken", APPToken);
@@ -246,6 +304,13 @@ private GoodsDetailInfo goodsDetailInfo;
                     requestQueue.add(stringRequest2);
 
                 }
+                break;
+            case R.id.go_shoipping:
+                Intent intent1 = new Intent(getActivity(), GoodsListActivity.class);
+                startActivity(intent1);
+                break;
+            case R.id.btn_push:
+                Toast.makeText(context, "开始结算啦", Toast.LENGTH_SHORT).show();
                 break;
         }
     }
@@ -257,6 +322,7 @@ private GoodsDetailInfo goodsDetailInfo;
         @Override
         public void onChanged() {
             shopcar_allmoney.setText(String.valueOf(totalPv() + ""));
+            btn_push.setText("结算(" + String.valueOf(totalCheckNumber()) + ")");
         }
 
         /**
@@ -270,6 +336,7 @@ private GoodsDetailInfo goodsDetailInfo;
 
 
     private void initshopcar() {
+        sweetAlertDialog.show();
         StringRequest stringRequest = new StringRequest(Request.Method.POST, URL + "/api/GoodsShoppingCart/ReceiveGoodsShoppingCartList", new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
@@ -278,24 +345,35 @@ private GoodsDetailInfo goodsDetailInfo;
 //                Log.i("woaicaojingshopcar",response);
                 Gson gson = new Gson();
                 ShopCarBean shopCarBean = gson.fromJson(response, ShopCarBean.class);
-                goodsShoppingCartListBean = shopCarBean.getResult().getGoodsShoppingCartList();
-                for (int i = 0; i < goodsShoppingCartListBean.size(); i++) {
-                    ckisselected.add(i, false);
+                if (shopCarBean.isIsSuccess()) {
+                    if (shopCarBean.getResult().getGoodsShoppingCartList().size() == 0) {
+                        no_shopcar.setVisibility(View.VISIBLE);
+                        shop_content.setVisibility(View.GONE);
+                    } else {
+                        no_shopcar.setVisibility(View.GONE);
+                        shop_content.setVisibility(View.VISIBLE);
+                        goodsShoppingCartListBean = shopCarBean.getResult().getGoodsShoppingCartList();
+                        for (int i = 0; i < goodsShoppingCartListBean.size(); i++) {
+                            ckisselected.add(i, false);
+                        }
+                        carAdapter = new ShopCarAdapter(goodsShoppingCartListBean, context, ckisselected);
+                        listView.setAdapter(carAdapter);
+                        carAdapter.setMbtnDecrease(listener);
+                        carAdapter.setMbtnIncrease(listener);
+                        carAdapter.setMck_by_linelayout(listener);
+                        carAdapter.setMhopcar_standards(listener);
+                        carAdapter.setMetAmount(focusChangeListener);
+                        carAdapter.registerDataSetObserver(AdapterDataSetObserver);
+                    }
+                } else {
                 }
-                carAdapter = new ShopCarAdapter(goodsShoppingCartListBean, context, ckisselected);
-                listView.setAdapter(carAdapter);
-                carAdapter.setMbtnDecrease(listener);
-                carAdapter.setMbtnIncrease(listener);
-                carAdapter.setMck_by_linelayout(listener);
-                carAdapter.setMhopcar_standards(listener);
-                carAdapter.setMetAmount(focusChangeListener);
-                carAdapter.registerDataSetObserver(AdapterDataSetObserver);
-
+                sweetAlertDialog.dismiss();
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Log.i("woaicaojingshopcar", error.toString());
+                sweetAlertDialog.dismiss();
             }
         }) {
             @Override
@@ -326,8 +404,8 @@ private GoodsDetailInfo goodsDetailInfo;
                         //更改集合的数据
                         int num = Double.valueOf(goodsShoppingCartListBean.get(position).getGoodsCount()).intValue();
                         num++;
-                        final  int  id = goodsShoppingCartListBean.get(position).getId();
-                        final int  goodsid = goodsShoppingCartListBean.get(position).getGoodsId();
+                        final int id = goodsShoppingCartListBean.get(position).getId();
+                        final int goodsid = goodsShoppingCartListBean.get(position).getGoodsId();
                         final String goodscolor = goodsShoppingCartListBean.get(position).getGoodsColor();
                         final String goodsstandards = goodsShoppingCartListBean.get(position).getGoodsStandard();
                         final String count = String.valueOf(goodsShoppingCartListBean.get(position).getGoodsCount());
@@ -335,32 +413,32 @@ private GoodsDetailInfo goodsDetailInfo;
                         StringRequest stringRequest2 = new StringRequest(Request.Method.POST, URL + "/api/GoodsShoppingCart/ReceiveAddOrUpdateGoodsShoppingCart", new Response.Listener<String>() {
                             @Override
                             public void onResponse(String response) {
-                                response = response.replace("\\","");
-                                response = response.substring(1,response.length()-1);
-                                Log.i("woaicaojingupdate",response);
+                                response = response.replace("\\", "");
+                                response = response.substring(1, response.length() - 1);
+                                Log.i("woaicaojingupdate", response);
                                 Gson gson = new Gson();
-                                UpdateShopInfoBean updateShopInfoBean = gson.fromJson(response,UpdateShopInfoBean.class);
-                                if(updateShopInfoBean.isIsSuccess()) {
+                                UpdateShopInfoBean updateShopInfoBean = gson.fromJson(response, UpdateShopInfoBean.class);
+                                if (updateShopInfoBean.isIsSuccess()) {
                                     goodsShoppingCartListBean.get(position).setGoodsCount(finalNum);
                                     carAdapter.notifyDataSetChanged();
-                                }else {
+                                } else {
                                     Toast.makeText(context, updateShopInfoBean.getMessage().toString(), Toast.LENGTH_SHORT).show();
                                 }
                             }
                         }, new Response.ErrorListener() {
                             @Override
                             public void onErrorResponse(VolleyError error) {
-                                Toast.makeText(context, "修改失败"+error.toString(), Toast.LENGTH_SHORT).show();
+                                Toast.makeText(context, "修改失败" + error.toString(), Toast.LENGTH_SHORT).show();
                             }
                         }) {
                             @Override
                             protected Map<String, String> getParams() throws AuthFailureError {
                                 Map<String, String> map = new HashMap<>();
-                                map.put("Id", String.valueOf(id) );
+                                map.put("Id", String.valueOf(id));
                                 map.put("goodsId", String.valueOf(goodsid));
                                 map.put("goodsColor", goodscolor);
                                 map.put("goodsStandard", goodsstandards);
-                                map.put("goodsCount", String .valueOf(finalNum));
+                                map.put("goodsCount", String.valueOf(finalNum));
                                 map.put("memberId", "6");
                                 map.put("shopId", "1");
                                 map.put("APPToken", APPToken);
@@ -380,8 +458,8 @@ private GoodsDetailInfo goodsDetailInfo;
                         int num = Double.valueOf(goodsShoppingCartListBean.get(position).getGoodsCount()).intValue();
                         if (num > 1) {
                             num--;
-                            final  int  id = goodsShoppingCartListBean.get(position).getId();
-                            final int  goodsid = goodsShoppingCartListBean.get(position).getGoodsId();
+                            final int id = goodsShoppingCartListBean.get(position).getId();
+                            final int goodsid = goodsShoppingCartListBean.get(position).getGoodsId();
                             final String goodscolor = goodsShoppingCartListBean.get(position).getGoodsColor();
                             final String goodsstandards = goodsShoppingCartListBean.get(position).getGoodsStandard();
                             final String count = String.valueOf(goodsShoppingCartListBean.get(position).getGoodsCount());
@@ -389,32 +467,32 @@ private GoodsDetailInfo goodsDetailInfo;
                             StringRequest stringRequest2 = new StringRequest(Request.Method.POST, URL + "/api/GoodsShoppingCart/ReceiveAddOrUpdateGoodsShoppingCart", new Response.Listener<String>() {
                                 @Override
                                 public void onResponse(String response) {
-                                    response = response.replace("\\","");
-                                    response = response.substring(1,response.length()-1);
-                                    Log.i("woaicaojingupdate",response);
+                                    response = response.replace("\\", "");
+                                    response = response.substring(1, response.length() - 1);
+                                    Log.i("woaicaojingupdate", response);
                                     Gson gson = new Gson();
-                                    UpdateShopInfoBean updateShopInfoBean = gson.fromJson(response,UpdateShopInfoBean.class);
-                                    if(updateShopInfoBean.isIsSuccess()) {
+                                    UpdateShopInfoBean updateShopInfoBean = gson.fromJson(response, UpdateShopInfoBean.class);
+                                    if (updateShopInfoBean.isIsSuccess()) {
                                         goodsShoppingCartListBean.get(position).setGoodsCount(finalNum);
                                         carAdapter.notifyDataSetChanged();
-                                    }else {
+                                    } else {
                                         Toast.makeText(context, updateShopInfoBean.getMessage().toString(), Toast.LENGTH_SHORT).show();
                                     }
                                 }
                             }, new Response.ErrorListener() {
                                 @Override
                                 public void onErrorResponse(VolleyError error) {
-                                    Toast.makeText(context, "修改失败"+error.toString(), Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(context, "修改失败" + error.toString(), Toast.LENGTH_SHORT).show();
                                 }
                             }) {
                                 @Override
                                 protected Map<String, String> getParams() throws AuthFailureError {
                                     Map<String, String> map = new HashMap<>();
-                                    map.put("Id", String.valueOf(id) );
+                                    map.put("Id", String.valueOf(id));
                                     map.put("goodsId", String.valueOf(goodsid));
                                     map.put("goodsColor", goodscolor);
                                     map.put("goodsStandard", goodsstandards);
-                                    map.put("goodsCount", String .valueOf(finalNum));
+                                    map.put("goodsCount", String.valueOf(finalNum));
                                     map.put("memberId", "6");
                                     map.put("shopId", "1");
                                     map.put("APPToken", APPToken);
@@ -426,7 +504,7 @@ private GoodsDetailInfo goodsDetailInfo;
 
                             goodsShoppingCartListBean.get(position).setGoodsCount(num); //修改集合中商品数量
                             carAdapter.notifyDataSetChanged();
-                        }else {
+                        } else {
                             Toast.makeText(context, "当前商品不能再少啦", Toast.LENGTH_SHORT).show();
                         }
                     }
@@ -444,7 +522,7 @@ private GoodsDetailInfo goodsDetailInfo;
                         } else {
                             cb_cart_all.setChecked(false);
                         }
-                       carAdapter.notifyDataSetChanged();
+                        carAdapter.notifyDataSetChanged();
                     }
                     break;
                 case R.id.shopcar_image:
@@ -459,7 +537,7 @@ private GoodsDetailInfo goodsDetailInfo;
                     break;
                 case R.id.shopcar_standards:
                     if (tag != null && tag instanceof Integer) {
-                        String color=null,standard = null;
+                        String color = null, standard = null;
                         int position = (Integer) tag;
                         if (goodsShoppingCartListBean.get(position).getGoodsColor() == null) {
                         } else {
@@ -468,15 +546,15 @@ private GoodsDetailInfo goodsDetailInfo;
                         }
                         if (goodsShoppingCartListBean.get(position).getGoodsStandard() == null) {
                         } else {
-                            standard =goodsShoppingCartListBean.get(position).getGoodsStandard().toString();
+                            standard = goodsShoppingCartListBean.get(position).getGoodsStandard().toString();
                             Toast.makeText(context, goodsShoppingCartListBean.get(position).getGoodsStandard().toString(), Toast.LENGTH_SHORT).show();
                         }
                         getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
-                        bottomView = new BottomView(getActivity(),R.style.BottomViewTheme_Defalut,R.layout.fragment_shopcar_update_type);
+                        bottomView = new BottomView(getActivity(), R.style.BottomViewTheme_Defalut, R.layout.fragment_shopcar_update_type);
                         bottomView.setAnimation(R.style.BottomToTopAnim);
                         bottomView.showBottomView(true);
                         bottom_view = bottomView.getView();
-                        inittype(bottomView.getView(),goodsShoppingCartListBean.get(position).getGoodsId(), color, standard,position);
+                        inittype(bottomView.getView(), goodsShoppingCartListBean.get(position).getGoodsId(), color, standard, position);
                     }
                     break;
                 default:
@@ -484,14 +562,14 @@ private GoodsDetailInfo goodsDetailInfo;
             }
         }
     };
-    private  View.OnFocusChangeListener focusChangeListener = new View.OnFocusChangeListener() {
+    private View.OnFocusChangeListener focusChangeListener = new View.OnFocusChangeListener() {
         @Override
         public void onFocusChange(View v, boolean hasFocus) {
             // 此处为得到焦点时的处理内容
-            if(hasFocus) {
-            }else {
+            if (hasFocus) {
+            } else {
                 EditText editText = (EditText) v;
-                    Toast.makeText(context, editText.getText().toString(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, editText.getText().toString(), Toast.LENGTH_SHORT).show();
             }
         }
     };
@@ -511,6 +589,24 @@ private GoodsDetailInfo goodsDetailInfo;
             ;
         }
         return true;
+    }
+
+    /**
+     * 计算当前的选中个数
+     *
+     * @author water
+     * QQ376596444
+     * 2016年5月11日
+     * @version 1.0
+     */
+    public int totalCheckNumber() {
+        int cnumber = 0;
+        for (int i = 0; i < ckisselected.size(); i++) {
+            if (ckisselected.get(i)) {
+                cnumber++;
+            }
+        }
+        return cnumber;
     }
 
     /**
@@ -538,20 +634,20 @@ private GoodsDetailInfo goodsDetailInfo;
 
     /**
      * 加载更新商品类别
-     * @param view
-     * 底部弹出的布局
+     *
+     * @param view 底部弹出的布局
      */
-    private void inittype(View view,int goods_id,String color,String standards,int postion) {
+    private void inittype(View view, int goods_id, String color, String standards, int postion) {
         all_color = (LinearLayout) view.findViewById(R.id.all_color);
         all_standards = (LinearLayout) view.findViewById(R.id.all_standards);
-        goods_detail_type_imageview = (ImageView)view.findViewById(R.id.goods_detail_type_imageview);
-        goodsdetail_type_color = (MyRadioGroup)view.findViewById(R.id.goodsdetail_type_color);
+        goods_detail_type_imageview = (ImageView) view.findViewById(R.id.goods_detail_type_imageview);
+        goodsdetail_type_color = (MyRadioGroup) view.findViewById(R.id.goodsdetail_type_color);
         goodsdetail_type_standards = (MyRadioGroup) view.findViewById(R.id.goodsdetail_type_standards);
         goods_type_ok = (LinearLayout) view.findViewById(R.id.goods_type_ok);
         goods_type_ok.setOnClickListener(this);
         store_postion = (TextView) view.findViewById(R.id.store_postion);
         store_postion.setText(String.valueOf(postion));
-        getgoods_detail(goods_id,color,standards);
+        getgoods_detail(goods_id, color, standards);
     }
 
 
@@ -559,7 +655,7 @@ private GoodsDetailInfo goodsDetailInfo;
      * 获取商品详情的数据，在这个方法里加载initrollPagerView、initwebview
      */
     private void getgoods_detail(final int goods_id, final String color, final String standards) {
-       StringRequest stringRequest = new StringRequest(Request.Method.POST, URL + "/api/Goods/ReceiveGoodsById", new Response.Listener<String>() {
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, URL + "/api/Goods/ReceiveGoodsById", new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 response = response.replace("\\", "");
@@ -579,7 +675,7 @@ private GoodsDetailInfo goodsDetailInfo;
                         all_color.setVisibility(View.GONE);
                     } else {
                         hascolor = true;
-                        CreateColor(listcolor,color);
+                        CreateColor(listcolor, color);
                     }
                 }
                 if (listStandard == null) {
@@ -589,7 +685,7 @@ private GoodsDetailInfo goodsDetailInfo;
                         all_standards.setVisibility(View.GONE);
                     } else {
                         hasstandards = true;
-                        CreateStandards(listStandard,standards);
+                        CreateStandards(listStandard, standards);
                     }
                 }
 
@@ -616,7 +712,7 @@ private GoodsDetailInfo goodsDetailInfo;
      *
      * @param listcolor List<GoodsColorBean></>
      */
-    private void CreateColor(final List<GoodsDetailInfo.ResultBean.GoodsInfoBean.GoodsColorBean> listcolor,String color) {
+    private void CreateColor(final List<GoodsDetailInfo.ResultBean.GoodsInfoBean.GoodsColorBean> listcolor, String color) {
 
         int num = listcolor.size() / 5;
         int yushu = listcolor.size() % 5;
@@ -650,26 +746,26 @@ private GoodsDetailInfo goodsDetailInfo;
                     }
                 });
                 linearLayout.addView(button);
-                if(listcolor.get(i2).getColor().equals(color))
-                {
+                if (listcolor.get(i2).getColor().equals(color)) {
                     button.setChecked(true);
-                }else {}
+                } else {
+                }
             }
             goodsdetail_type_color.addView(linearLayout);
         } else {
             if (yushu == 0) {
                 for (int i = 0; i < num; i++) {
-                    CreateRadioButtonToColor(i, 5, listcolor,color);
+                    CreateRadioButtonToColor(i, 5, listcolor, color);
                 }
 
             } else {
                 num = num + 1;
                 for (int i = 0; i < num; i++) {
                     if (i == (num - 1)) {
-                        CreateRadioButtonToColor(i, yushu, listcolor,color);
+                        CreateRadioButtonToColor(i, yushu, listcolor, color);
 
                     } else {
-                        CreateRadioButtonToColor(i, 5, listcolor,color);
+                        CreateRadioButtonToColor(i, 5, listcolor, color);
                     }
 
                 }
@@ -683,7 +779,7 @@ private GoodsDetailInfo goodsDetailInfo;
      *
      * @param liststandards List<GoodsStandardsBean></>
      */
-    private void CreateStandards(List<GoodsDetailInfo.ResultBean.GoodsInfoBean.GoodsStandardsBean> liststandards,String standards) {
+    private void CreateStandards(List<GoodsDetailInfo.ResultBean.GoodsInfoBean.GoodsStandardsBean> liststandards, String standards) {
 
         int num = liststandards.size() / 5;
         int yushu = liststandards.size() % 5;
@@ -711,28 +807,27 @@ private GoodsDetailInfo goodsDetailInfo;
                     public void onClick(View v) {
                     }
                 });
-                if(standards.equals(liststandards.get(i2).getStandard()))
-                {
+                if (standards.equals(liststandards.get(i2).getStandard())) {
                     button.setChecked(true);
-                }else
-                {}
+                } else {
+                }
                 linearLayout.addView(button);
             }
             goodsdetail_type_standards.addView(linearLayout);
         } else {
             if (yushu == 0) {
                 for (int i = 0; i < num; i++) {
-                    CreateRadioButtonToStandards(i, 5, liststandards,standards);
+                    CreateRadioButtonToStandards(i, 5, liststandards, standards);
                 }
 
             } else {
                 num = num + 1;
                 for (int i = 0; i < num; i++) {
                     if (i == (num - 1)) {
-                        CreateRadioButtonToStandards(i, yushu, liststandards,standards);
+                        CreateRadioButtonToStandards(i, yushu, liststandards, standards);
 
                     } else {
-                        CreateRadioButtonToStandards(i, 5, liststandards,standards);
+                        CreateRadioButtonToStandards(i, 5, liststandards, standards);
                     }
 
                 }
@@ -741,7 +836,7 @@ private GoodsDetailInfo goodsDetailInfo;
         }
     }
 
-    private void CreateRadioButtonToColor(int i, int num, final List<GoodsDetailInfo.ResultBean.GoodsInfoBean.GoodsColorBean> listcolor,String color) {
+    private void CreateRadioButtonToColor(int i, int num, final List<GoodsDetailInfo.ResultBean.GoodsInfoBean.GoodsColorBean> listcolor, String color) {
         LinearLayout linearLayout = new LinearLayout(context);
         linearLayout.setOrientation(LinearLayout.HORIZONTAL);
         linearLayout.setGravity(Gravity.CENTER_VERTICAL);
@@ -771,15 +866,15 @@ private GoodsDetailInfo goodsDetailInfo;
                 }
             });
             linearLayout.addView(button);
-            if(listcolor.get(i2).getColor().equals(color))
-            {
+            if (listcolor.get(i2).getColor().equals(color)) {
                 button.setChecked(true);
-            }else {}
+            } else {
+            }
         }
         goodsdetail_type_color.addView(linearLayout);
     }
 
-    private void CreateRadioButtonToStandards(int i, int num, final List<GoodsDetailInfo.ResultBean.GoodsInfoBean.GoodsStandardsBean> liststandards,String standards) {
+    private void CreateRadioButtonToStandards(int i, int num, final List<GoodsDetailInfo.ResultBean.GoodsInfoBean.GoodsStandardsBean> liststandards, String standards) {
         LinearLayout linearLayout = new LinearLayout(context);
         linearLayout.setOrientation(LinearLayout.HORIZONTAL);
         linearLayout.setGravity(Gravity.CENTER_VERTICAL);
@@ -805,11 +900,10 @@ private GoodsDetailInfo goodsDetailInfo;
                     Toast.makeText(context, finalI + "", Toast.LENGTH_SHORT).show();
                 }
             });
-            if(standards.equals(liststandards.get(i2).getStandard()))
-            {
+            if (standards.equals(liststandards.get(i2).getStandard())) {
                 button.setChecked(true);
-            }else
-            {}
+            } else {
+            }
             linearLayout.addView(button);
         }
         goodsdetail_type_standards.addView(linearLayout);

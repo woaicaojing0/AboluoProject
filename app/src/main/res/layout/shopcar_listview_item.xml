@@ -29,6 +29,7 @@
             android:layout_toEndOf="@+id/textView7" />
 
         <CheckBox
+            android:visibility="gone"
             android:scaleX="0.8"
             android:scaleY="0.8"
             android:id="@+id/shop_name"

@@ -1,17 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    package="com.aboluo.com">
+          xmlns:tools="http://schemas.android.com/tools"
+          package="com.aboluo.com">
 
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE"/>
     <uses-permission android:name="android.permission.INTERNET"></uses-permission>
     <!-- 发送短信-->
-    <uses-permission android:name="android.permission.SEND_SMS" />
+    <uses-permission android:name="android.permission.SEND_SMS"/>
     <!-- 阅读消息 -->
-    <uses-permission android:name="android.permission.READ_SMS" />
+    <uses-permission android:name="android.permission.READ_SMS"/>
     <!-- 写入消息 -->
-    <uses-permission android:name="android.permission.WRITE_SMS" />
+    <uses-permission android:name="android.permission.WRITE_SMS"/>
     <!-- 接收消息 -->
-    <uses-permission android:name="android.prmission.RECEIVE_SMS" />
+    <uses-permission android:name="android.prmission.RECEIVE_SMS"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
 
     <application
         android:name="com.aboluo.XUtils.BaseApplication"
@@ -30,9 +32,9 @@
         </activity>
         <activity android:name=".GuideActivity">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+                <action android:name="android.intent.action.MAIN"/>
 
-                <category android:name="android.intent.category.LAUNCHER" />
+                <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
         <activity
@@ -48,8 +50,10 @@
         <activity android:name=".HeHuoRenActivity"></activity>
         <activity android:name=".MiaoShaActivity"></activity>
         <activity android:name=".OneYuanAcitvity"></activity>
-        <activity android:name=".AddressActivity" ></activity>
-        <activity android:name=".AddAddressActivity" android:launchMode="singleTask"></activity>
+        <activity android:name=".AddressActivity"></activity>
+        <activity
+            android:name=".AddAddressActivity"
+            android:launchMode="singleTask"></activity>
         <activity android:name=".GoodsListActivity"></activity>
         <activity android:name="com.aboluo.test.AnimationActivtiy">
 

@@ -11,12 +11,17 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.GridView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
+import android.widget.Switch;
 import android.widget.Toast;
 
 import com.aboluo.XUtils.CommonUtils;
 import com.aboluo.XUtils.MyApplication;
+import com.aboluo.XUtils.NetworkUtils;
 import com.aboluo.adapter.MenuGridviewAdapter;
 import com.aboluo.adapter.MenuListViewAdapter;
 import com.aboluo.com.GoodsListActivity;
@@ -40,7 +45,7 @@ import cn.pedant.SweetAlert.SweetAlertDialog;
 /**
  * Created by cj34920 on 2016/9/8.
  */
-public class MenuFragment extends Fragment {
+public class MenuFragment extends Fragment implements View.OnClickListener {
     private View view;
     private ListView menu_listview;    //左边大类的listview
     private GridView menu_gridview_top, menu_gridview_youlove;   //右边上边的gridiview 和右边下边的猜你喜欢
@@ -53,8 +58,12 @@ public class MenuFragment extends Fragment {
     private GoodsBigType.ResultBean resultBean; //保存大类的信息
     private GoodsBigType.ResultBean resultBean2; // 保存小类的信息
     private String url;
-   private SweetAlertDialog sweetAlertDialog;
-private String APPToken = null;
+    private SweetAlertDialog sweetAlertDialog;
+    private String APPToken = null;
+    private LinearLayout menu_content; //有网络显示布局
+    private RelativeLayout no_network; //没有网络时显示布局
+    private Button reloading; //重新加载按钮
+
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable final ViewGroup container, @Nullable Bundle savedInstanceState) {
         if (view == null) {
@@ -63,7 +72,6 @@ private String APPToken = null;
 
         }
         init();
-        GetTypeList();
 
         menu_listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -98,7 +106,7 @@ private String APPToken = null;
                     @Override
                     protected Map<String, String> getParams() throws AuthFailureError {
                         Map<String, String> map = new HashMap<>();
-                        map.put("APPToken",APPToken);
+                        map.put("APPToken", APPToken);
                         map.put("GoodsTypeId", String.valueOf(type_id));
                         return map;
                     }
@@ -110,16 +118,17 @@ private String APPToken = null;
         menu_gridview_top.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-               int goods_type_id =  resultBean2.getGoodsTypeList().get(position).getGoodsTypeId();
-               String goods_type_name =  resultBean2.getGoodsTypeList().get(position).getGoodsTypeName();
+                int goods_type_id = resultBean2.getGoodsTypeList().get(position).getGoodsTypeId();
+                String goods_type_name = resultBean2.getGoodsTypeList().get(position).getGoodsTypeName();
                 Intent intent = new Intent(context, GoodsListActivity.class);
-                intent.putExtra("goods_type_id",goods_type_id);
-                intent.putExtra("goods_type_name",goods_type_name);
+                intent.putExtra("goods_type_id", goods_type_id);
+                intent.putExtra("goods_type_name", goods_type_name);
                 startActivity(intent);
             }
         });
         return view;
     }
+
     //获取初始化数据
     private void GetTypeList() {
         sweetAlertDialog.show();
@@ -196,8 +205,34 @@ private String APPToken = null;
         url = CommonUtils.GetValueByKey(context, "apiurl");
         resultBean = new GoodsBigType.ResultBean();
         resultBean2 = new GoodsBigType.ResultBean();
-        sweetAlertDialog = new SweetAlertDialog(context,SweetAlertDialog.PROGRESS_TYPE);
+        sweetAlertDialog = new SweetAlertDialog(context, SweetAlertDialog.PROGRESS_TYPE);
         sweetAlertDialog.setTitleText("加载中");
-        APPToken=CommonUtils.GetValueByKey(context,"APPToken");
+        APPToken = CommonUtils.GetValueByKey(context, "APPToken");
+        no_network = (RelativeLayout) view.findViewById(R.id.no_network);
+        menu_content = (LinearLayout) view.findViewById(R.id.menu_content);
+        reloading = (Button) view.findViewById(R.id.reloading);
+        reloading.setOnClickListener(this);
+        isConnected();
+    }
+
+    private void isConnected() {
+        if (NetworkUtils.isConnected(context)) {
+            no_network.setVisibility(View.GONE);
+            menu_content.setVisibility(View.VISIBLE);
+            GetTypeList();
+
+        } else {
+            no_network.setVisibility(View.VISIBLE);
+            menu_content.setVisibility(View.GONE);
+        }
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.reloading:
+                isConnected();
+                break;
+        }
     }
 }

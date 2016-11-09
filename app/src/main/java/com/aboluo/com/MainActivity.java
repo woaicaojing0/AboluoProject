@@ -78,10 +78,10 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
             fragmentTransaction = getSupportFragmentManager()
                     .beginTransaction();
             if (!fragment.isAdded()) {
-                fragmentTransaction.hide(mNowFragment).add(R.id.content, fragment).commit();
+                fragmentTransaction.remove(mNowFragment).add(R.id.content, fragment).commit();
 
             } else {
-                fragmentTransaction.hide(mNowFragment).show(fragment).commit();
+                fragmentTransaction.remove(mNowFragment).add(R.id.content,fragment).commit();
             }
         } else {
         }

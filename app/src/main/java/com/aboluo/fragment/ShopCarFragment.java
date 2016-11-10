@@ -51,6 +51,7 @@ import com.google.gson.Gson;
 import java.nio.channels.Channels;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
@@ -187,56 +188,69 @@ public class ShopCarFragment extends Fragment implements View.OnClickListener {
             case R.id.shopcar_btn_delete: // 删除按钮
                 final Gson gson = new Gson();
                 boolean selectnum = false;
-                ArrayList<Boolean>  addckisselected = new ArrayList<>();
-                addckisselected.addAll(ckisselected);
-                List<Integer> listint = new ArrayList<>();
-                for (int i = 0; i < addckisselected.size(); i++) {
-                    if (addckisselected.get(i)) {
+                 String ids1 ="";
+                final List<Integer> listxuhao = new ArrayList<>();
+                for (int i = 0; i < ckisselected.size(); i++) {
+                    if (ckisselected.get(i)) {
                         final int id = goodsShoppingCartListBean.get(i).getId();
                         final int goodsid = goodsShoppingCartListBean.get(i).getGoodsId();
                         selectnum = true;
                         final int finalI = i;
-                        listint.add(i);
+                        listxuhao.add(i);
+                        if(ids1 =="")
+                        {
+                            ids1=ids1+String.valueOf(id);
+                        }else {
+                            ids1=ids1+","+String.valueOf(id);
+                        }
                     }
                 }
+                final String ids = ids1;
                 if (!selectnum) {
                     Toast.makeText(context, "请选择需要删除的商品", Toast.LENGTH_SHORT).show();
                 } else {
-                   String  id = gson.toJson(listint);
-//                    StringRequest stringRequest = new StringRequest(Request.Method.POST, URL+"/api/GoodsShoppingCart/ReceiveDeleteGoodsShoppingCart", new Response.Listener<String>() {
-//                        @Override
-//                        public void onResponse(String response) {
-//                            response = response.replace("\\", "");
-//                            response = response.substring(1, response.length() - 1);
-//                            BaseModel baseModel =gson.fromJson(response, BaseModel.class);
-//                            if(baseModel.isIsSuccess())
-//                            {
-//                                ckisselected.remove(finalI);
-//                                goodsShoppingCartListBean.remove(finalI);
-//                                carAdapter.notifyDataSetChanged();
-//                                Toast.makeText(context, "删除成功", Toast.LENGTH_SHORT).show();
-//                            }else
-//                            {
-//                                Toast.makeText(context, baseModel.getMessage().toString(), Toast.LENGTH_SHORT).show();
-//                            }
-//                        }
-//                    }, new Response.ErrorListener() {
-//                        @Override
-//                        public void onErrorResponse(VolleyError error) {
-//
-//                        }
-//                    }) {
-//                        @Override
-//                        protected Map<String, String> getParams() throws AuthFailureError {
-//                            Map<String, String> map = new HashMap<>();
-//                            map.put("Id", String.valueOf(id));
-//                            map.put("MemberId", "6");
-//                            map.put("goodsId", String.valueOf(goodsid));
-//                            map.put("APPToken", APPToken);
-//                            return map;
-//                        }
-//                    };
-//                    requestQueue.add(stringRequest);
+                    StringRequest stringRequest = new StringRequest(Request.Method.POST, URL+"/api/GoodsShoppingCart/ReceiveDeleteGoodsShoppingCart", new Response.Listener<String>() {
+                        @Override
+                        public void onResponse(String response) {
+                            response = response.replace("\\", "");
+                            response = response.substring(1, response.length() - 1);
+                            BaseModel baseModel =gson.fromJson(response, BaseModel.class);
+                            if(baseModel.isIsSuccess())
+                            {
+
+                                for (int i = 0; i < listxuhao.size(); i++) {
+                                    goodsShoppingCartListBean.remove(listxuhao);
+                                }
+                                Iterator<Boolean> it = ckisselected.iterator();
+                                while(it.hasNext()){
+                                    boolean x = it.next();
+                                    if(x){
+                                        it.remove();
+                                    }
+                                }
+                                carAdapter.notifyDataSetChanged();
+                                Toast.makeText(context, "删除成功", Toast.LENGTH_SHORT).show();
+                            }else
+                            {
+                                Toast.makeText(context, baseModel.getMessage().toString(), Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    }, new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+
+                        }
+                    }) {
+                        @Override
+                        protected Map<String, String> getParams() throws AuthFailureError {
+                            Map<String, String> map = new HashMap<>();
+                            map.put("Ids", ids);
+                            map.put("MemberId", "6");
+                            map.put("APPToken", APPToken);
+                            return map;
+                        }
+                    };
+                    requestQueue.add(stringRequest);
                 }
                 break;
             case R.id.goods_type_ok: //修改商品规格按钮

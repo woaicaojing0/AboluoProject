@@ -30,6 +30,7 @@ import android.widget.Toast;
 
 import com.aboluo.XUtils.CommonUtils;
 import com.aboluo.XUtils.MyApplication;
+import com.aboluo.XUtils.RBCallbkRecyclerView;
 import com.aboluo.XUtils.ScreenUtils;
 import com.aboluo.adapter.RecycleViewAdapter;
 import com.aboluo.model.BrandBean;
@@ -58,7 +59,7 @@ public class GoodsListActivity extends Activity implements RecycleViewAdapter.On
     private RequestQueue requestQueue;
     private StringRequest requestlist;
     //显示的容器，用于替代listview
-    private RecyclerView recyclerView;
+    private RBCallbkRecyclerView mRBCallbkRecyclerView;
     //接口地址
     private String url;
     private static String APPToken;
@@ -86,6 +87,9 @@ public class GoodsListActivity extends Activity implements RecycleViewAdapter.On
     private RelativeLayout right_shaixuan;
     private BrandBean brandBean;   //商品品牌属性
     private MyRadioGroup goods_list_brand_radiogroup;
+    private static  int currentpages = 1;
+    private int pagesize = 10;
+    private List<GoodsListInfo.ResultBean.GoodsListBean> goodsListBean;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,7 +101,7 @@ public class GoodsListActivity extends Activity implements RecycleViewAdapter.On
         pdialog.setTitleText("加载中");
         pdialog.setCanceledOnTouchOutside(true);
         pdialog.setCancelable(true);
-        initdate();
+        initdate(1);
         Intent intent = getIntent();
         goods_type_id = intent.getIntExtra("goods_type_id", -1);
         goods_type_name = intent.getStringExtra("goods_type_name");
@@ -106,14 +110,13 @@ public class GoodsListActivity extends Activity implements RecycleViewAdapter.On
             goods_list_typeName.setText(goods_type_name);
         }
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
-        recyclerView.setLayoutManager(linearLayoutManager);
+        mRBCallbkRecyclerView.setLayoutManager(linearLayoutManager);
         goods_list_back.setOnClickListener(this);
         pdialog.show();
         screenwith = ScreenUtils.getScreenWidth(this);
         drawer_layout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED); //关闭手势滑动
         brandWith = (screenwith / 10) * 9;
         right_shaixuan.setLayoutParams(new RelativeLayout.LayoutParams(brandWith, ViewGroup.LayoutParams.MATCH_PARENT));
-        requestQueue.add(requestlist);
         goods_list_search.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
@@ -160,6 +163,15 @@ public class GoodsListActivity extends Activity implements RecycleViewAdapter.On
         btn_goodslist_rest.setOnClickListener(this);
         btn_goodslist_surefiltrate.setOnClickListener(this);
         initfiltrate();
+        mRBCallbkRecyclerView.setReachBottomRow(4);
+        mRBCallbkRecyclerView.setOnReachBottomListener(new RBCallbkRecyclerView.OnReachBottomListener() {
+            @Override
+            public void onReachBottom() {
+                //即将到达几部，进行加载更多操作
+                currentpages++;
+                initdate(currentpages);
+            }
+        });
     }
 
     private void init() {
@@ -171,7 +183,7 @@ public class GoodsListActivity extends Activity implements RecycleViewAdapter.On
         btn_goodslist_rest = (Button) findViewById(R.id.btn_goodslist_rest);
         btn_goodslist_surefiltrate = (Button) findViewById(R.id.btn_goodslist_surefiltrate);
         drawer_layout = (DrawerLayout) findViewById(R.id.drawer_layout);
-        recyclerView = (RecyclerView) findViewById(R.id.goods_list_recycleview);
+        mRBCallbkRecyclerView = (RBCallbkRecyclerView) findViewById(R.id.goods_list_recycleview);
         right_shaixuan = (RelativeLayout) findViewById(R.id.right_shaixuan);
         goods_list_brand_radiogroup = (MyRadioGroup) findViewById(R.id.goods_list_brand_radiogroup);
         requestQueue = MyApplication.getRequestQueue();
@@ -180,7 +192,7 @@ public class GoodsListActivity extends Activity implements RecycleViewAdapter.On
 
     }
 
-    private void initdate() {
+    private void initdate(final int currentpage) {
         requestlist = new StringRequest(Request.Method.POST, url + "/api/Goods/ReceiveGoodsList", new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
@@ -190,10 +202,18 @@ public class GoodsListActivity extends Activity implements RecycleViewAdapter.On
                 Log.i("woaicaojing", url + "/api/Goods/ReceiveGoodsList");
                 Log.i("woaicaojing", response);
                 listBean = gson.fromJson(response, GoodsListInfo.class);
-                recycleViewAdapter = new RecycleViewAdapter(listBean, GoodsListActivity.this, 0);
-                recyclerView.setAdapter(recycleViewAdapter);
-                recycleViewAdapter.setOnItemClickListener(GoodsListActivity.this);
-                pdialog.dismiss();
+                if(goodsListBean == null) {
+                    goodsListBean = listBean.getResult().getGoodsList();
+                    recycleViewAdapter = new RecycleViewAdapter(goodsListBean, GoodsListActivity.this, 0);
+                    mRBCallbkRecyclerView.setAdapter(recycleViewAdapter);
+                    recycleViewAdapter.setOnItemClickListener(GoodsListActivity.this);
+                    pdialog.dismiss();
+                }else {
+                    List<GoodsListInfo.ResultBean.GoodsListBean> goodsListBean2 =listBean.getResult().getGoodsList();
+                    goodsListBean.addAll(goodsListBean2);
+                    recycleViewAdapter.notifyDataSetChanged();
+                }
+
             }
         }, new Response.ErrorListener() {
             @Override
@@ -209,17 +229,18 @@ public class GoodsListActivity extends Activity implements RecycleViewAdapter.On
                     map.put("GoodsTypeId", String.valueOf(goods_type_id));
                 }
                 map.put("APPToken", APPToken);
-                map.put("CurrentPage", "1");
-                map.put("PageSize", "200");
+                map.put("CurrentPage", String.valueOf(currentpage));
+                map.put("PageSize", String.valueOf(pagesize));
                 return map;
             }
         };
+        requestQueue.add(requestlist);
     }
 
     @Override
     public void onItemClick(View view, int position) {
         Toast.makeText(this, position + "", Toast.LENGTH_SHORT).show();
-        int goods_id = listBean.getResult().getGoodsList().get(position).getGoodsId();
+        int goods_id = goodsListBean.get(position).getGoodsId();
         Intent intent = new Intent(this, GoodsDetailActivity.class);
         intent.putExtra("goods_id", goods_id);
         String transitionName = "detail";
@@ -251,7 +272,7 @@ public class GoodsListActivity extends Activity implements RecycleViewAdapter.On
                         linearLayout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, CommonUtils.dip2px(GoodsListActivity.this, 44)));
                         for (int i = 0; i < listBrand.size(); i++) {
                             final RadioButton button = new RadioButton(GoodsListActivity.this);
-                            int buttonwith = (brandWith-CommonUtils.dip2px(GoodsListActivity.this,56));
+                            int buttonwith = (brandWith - CommonUtils.dip2px(GoodsListActivity.this, 56));
                             LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(buttonwith / 3, CommonUtils.dip2px(GoodsListActivity.this, 40));
                             layoutParams.setMargins(CommonUtils.dip2px(GoodsListActivity.this, 10), 0, 0, 0);
                             button.setBackground(getResources().getDrawable(R.drawable.rdobtn_selecter));
@@ -281,12 +302,9 @@ public class GoodsListActivity extends Activity implements RecycleViewAdapter.On
                         } else {
                             hang = hang + 1;
                             for (int i = 0; i < hang; i++) {
-                                if(i == (hang-1))
-                                {
+                                if (i == (hang - 1)) {
                                     creatBrandRadioButton(i, yushu, listBrand);
-                                }
-                                else
-                                {
+                                } else {
                                     creatBrandRadioButton(i, 3, listBrand);
                                 }
                             }
@@ -316,15 +334,14 @@ public class GoodsListActivity extends Activity implements RecycleViewAdapter.On
         requestQueue.add(stringRequest);
     }
 
-    private void creatBrandRadioButton(int i, int num, List<BrandBean.ResultBean.GoodsBrandListBean> listBrand)
-    {
+    private void creatBrandRadioButton(int i, int num, List<BrandBean.ResultBean.GoodsBrandListBean> listBrand) {
         LinearLayout linearLayout = new LinearLayout(GoodsListActivity.this);
         linearLayout.setOrientation(LinearLayout.HORIZONTAL);
         linearLayout.setGravity(Gravity.CENTER_VERTICAL);
         linearLayout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, CommonUtils.dip2px(GoodsListActivity.this, 44)));
         for (int i2 = 0; i2 < num; i2++) {
             final RadioButton button = new RadioButton(GoodsListActivity.this);
-            int buttonwith = (brandWith-CommonUtils.dip2px(GoodsListActivity.this,80));
+            int buttonwith = (brandWith - CommonUtils.dip2px(GoodsListActivity.this, 80));
             LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(buttonwith / 3, CommonUtils.dip2px(GoodsListActivity.this, 40));
             layoutParams.setMargins(CommonUtils.dip2px(GoodsListActivity.this, 10), 0, 0, 0);
             button.setBackground(getResources().getDrawable(R.drawable.rdobtn_selecter));
@@ -334,8 +351,8 @@ public class GoodsListActivity extends Activity implements RecycleViewAdapter.On
             ColorStateList csl = getResources().getColorStateList(R.color.radio_text_selector);
             button.setTextColor(csl);
             button.setLayoutParams(layoutParams);
-            button.setText(listBrand.get(i*3+i2).getBrandName().trim());
-            button.setId(i*3+i2);
+            button.setText(listBrand.get(i * 3 + i2).getBrandName().trim());
+            button.setId(i * 3 + i2);
             final int finalI = i;
             button.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -347,6 +364,7 @@ public class GoodsListActivity extends Activity implements RecycleViewAdapter.On
         }
         goods_list_brand_radiogroup.addView(linearLayout);
     }
+
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
@@ -355,17 +373,21 @@ public class GoodsListActivity extends Activity implements RecycleViewAdapter.On
                 break;
             case R.id.buju:
                 if (v.getTag() == null) {
-                    recyclerView.setLayoutManager(new GridLayoutManager(GoodsListActivity.this, 2));//设置RecyclerView布局管理器为2列垂直排布
-                    recycleViewAdapter = new RecycleViewAdapter(listBean, GoodsListActivity.this, 1);
-                    recyclerView.setAdapter(recycleViewAdapter);
+                    mRBCallbkRecyclerView.setLayoutManager(new GridLayoutManager(GoodsListActivity.this, 2));//设置RecyclerView布局管理器为2列垂直排布
+                    recycleViewAdapter = new RecycleViewAdapter(goodsListBean, GoodsListActivity.this, 1);
+                    int i = recycleViewAdapter.getItemCount();
+                    mRBCallbkRecyclerView.setAdapter(recycleViewAdapter);
                     recycleViewAdapter.setOnItemClickListener(GoodsListActivity.this);
                     v.setTag("wangge");
+                    mRBCallbkRecyclerView.smoothScrollToPosition(i);
                 } else {
-                    recyclerView.setLayoutManager(new LinearLayoutManager(GoodsListActivity.this));
-                    recycleViewAdapter = new RecycleViewAdapter(listBean, GoodsListActivity.this, 0);
-                    recyclerView.setAdapter(recycleViewAdapter);
+                    mRBCallbkRecyclerView.setLayoutManager(new LinearLayoutManager(GoodsListActivity.this));
+                    recycleViewAdapter = new RecycleViewAdapter(goodsListBean, GoodsListActivity.this, 0);
+                    mRBCallbkRecyclerView.setAdapter(recycleViewAdapter);
                     recycleViewAdapter.setOnItemClickListener(GoodsListActivity.this);
                     v.setTag(null);
+                    int i = recycleViewAdapter.getItemCount();
+                    mRBCallbkRecyclerView.smoothScrollToPosition(i);
                 }
                 break;
             case R.id.goods_list_back:

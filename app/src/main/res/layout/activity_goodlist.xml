@@ -52,7 +52,7 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="64dp"
+                android:layout_height="50dp"
                 android:focusable="true"
                 android:focusableInTouchMode="true"
                 android:gravity="center">
@@ -60,7 +60,7 @@
                 <EditText
                     android:id="@+id/goods_list_search"
                     android:layout_width="match_parent"
-                    android:layout_height="50dp"
+                    android:layout_height="40dp"
                     android:layout_marginLeft="8dp"
                     android:layout_marginRight="8dp"
                     android:background="@drawable/goods_list_serach"
@@ -72,7 +72,7 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="56dp"
+                android:layout_height="40dp"
                 android:background="@drawable/goods_list_type"
                 android:orientation="horizontal">
 
@@ -139,85 +139,94 @@
                     android:text="筛选"/>
             </LinearLayout>
 
-            <android.support.v7.widget.RecyclerView
+            <com.aboluo.XUtils.RBCallbkRecyclerView
                 android:id="@+id/goods_list_recycleview"
-
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"/>
+                android:layout_height="match_parent"
+                android:scrollbars="vertical"/>
         </LinearLayout>
         <!-- 右侧筛选-->
         <!--android:layout_gravity="end"-->
         <RelativeLayout
-            android:layout_gravity="end"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_gravity="end"
             android:background="@color/white">
-        <RelativeLayout
-            android:id="@+id/right_shaixuan"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-           <ScrollView
-               android:layout_marginLeft="8dp"
-               android:layout_marginRight="8dp"
-               android:layout_width="match_parent"
-               android:layout_height="match_parent"
-               android:layout_above="@+id/allbtn">
-               <LinearLayout
-                   android:layout_width="match_parent"
-                   android:layout_height="wrap_content"
-                   android:orientation="vertical">
-                   <TextView
-                       android:layout_marginTop="10dp"
-                       android:layout_marginBottom="10dp"
-                       android:textSize="18sp"
-                       android:layout_width="wrap_content"
-                       android:layout_height="wrap_content"
-                       android:text="品牌"/>
-                   <com.aboluo.widget.MyRadioGroup
-                       android:id="@+id/goods_list_brand_radiogroup"
-                       android:layout_width="match_parent"
-                       android:layout_height="wrap_content"
-                       android:gravity="center_vertical"
-                       android:orientation="vertical">
 
-                   </com.aboluo.widget.MyRadioGroup>
-               </LinearLayout>
-           </ScrollView>
-            <!--底部确定和重置按钮-->
-            <LinearLayout
-                android:id="@+id/allbtn"
+            <RelativeLayout
+                android:id="@+id/right_shaixuan"
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:orientation="vertical"
-                android:layout_alignParentBottom="true">
-                <View
-                    android:layout_alignTop="@+id/allbtn"
-                    android:layout_width="fill_parent"
-                    android:layout_height="0.5dp"
-                    android:background="#b8b8b8"></View>
-                <LinearLayout
+                android:layout_height="match_parent">
+
+                <ScrollView
                     android:layout_width="match_parent"
-                    android:layout_height="49dp"
-                    android:orientation="horizontal">
-                <Button
-                    android:id="@+id/btn_goodslist_rest"
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:text="重置"
-                    android:background="@color/white"
-                    android:layout_height="match_parent"/>
-                <Button
-                    android:id="@+id/btn_goodslist_surefiltrate"
-                    android:textColor="@color/white"
-                    android:background="@color/btn_color"
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
                     android:layout_height="match_parent"
-                    android:text="确定"/>
+                    android:layout_above="@+id/allbtn"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginRight="8dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="10dp"
+                            android:layout_marginTop="10dp"
+                            android:text="品牌"
+                            android:textSize="18sp"/>
+
+                        <com.aboluo.widget.MyRadioGroup
+                            android:id="@+id/goods_list_brand_radiogroup"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_vertical"
+                            android:orientation="vertical">
+
+                        </com.aboluo.widget.MyRadioGroup>
+                    </LinearLayout>
+                </ScrollView>
+                <!--底部确定和重置按钮-->
+                <LinearLayout
+                    android:id="@+id/allbtn"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_alignParentBottom="true"
+                    android:orientation="vertical">
+
+                    <View
+                        android:layout_width="fill_parent"
+                        android:layout_height="0.5dp"
+                        android:layout_alignTop="@+id/allbtn"
+                        android:background="#b8b8b8"></View>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="49dp"
+                        android:orientation="horizontal">
+
+                        <Button
+                            android:id="@+id/btn_goodslist_rest"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:background="@color/white"
+                            android:text="重置"/>
+
+                        <Button
+                            android:id="@+id/btn_goodslist_surefiltrate"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:background="@color/btn_color"
+                            android:text="确定"
+                            android:textColor="@color/white"/>
+                    </LinearLayout>
                 </LinearLayout>
-            </LinearLayout>
-            <!--end-->
-        </RelativeLayout>
+                <!--end-->
+            </RelativeLayout>
         </RelativeLayout>
     </android.support.v4.widget.DrawerLayout>
 </LinearLayout>

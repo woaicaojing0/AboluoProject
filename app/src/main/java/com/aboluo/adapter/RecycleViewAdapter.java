@@ -26,14 +26,12 @@ import java.util.List;
 public class RecycleViewAdapter extends RecyclerView.Adapter<RecycleViewAdapter.MyViewHolder> {
     private int mwangge = 0;
     private static String ImgeURL = null;
-    private GoodsListInfo mgoodsListInfo;
     private List<GoodsListInfo.ResultBean.GoodsListBean> mgoodGoodsListBean;
     private OnRecyclerViewItemClickListener onRecyclerViewItemClickListener = null;
     private Context mcontext;
 
-    public RecycleViewAdapter(GoodsListInfo goodsListInfo, Context context, int wangge) {
-        this.mgoodsListInfo = goodsListInfo;
-        this.mgoodGoodsListBean = goodsListInfo.getResult().getGoodsList();
+    public RecycleViewAdapter(List<GoodsListInfo.ResultBean.GoodsListBean> goodsListInfo, Context context, int wangge) {
+        this.mgoodGoodsListBean = goodsListInfo;
         this.mcontext = context;
         this.mwangge = wangge;
         ImgeURL = CommonUtils.GetValueByKey(mcontext, "ImgUrl");
@@ -85,7 +83,7 @@ public class RecycleViewAdapter extends RecyclerView.Adapter<RecycleViewAdapter.
 
     @Override
     public int getItemCount() {
-        return mgoodsListInfo.getResult().getGoodsList().size();
+        return mgoodGoodsListBean.size();
     }
 
     public static class MyViewHolder extends RecyclerView.ViewHolder {

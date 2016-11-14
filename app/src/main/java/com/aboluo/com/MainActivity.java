@@ -1,5 +1,6 @@
 package com.aboluo.com;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import android.support.v4.app.Fragment;
@@ -36,6 +37,21 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
         menu_linelayout.setOnClickListener(this);
         shopcar_linelayout.setOnClickListener(this);
         my_linelayout.setOnClickListener(this);
+    }
+    private  void SwitchFragment(int id)
+    {
+        switch (id)
+        {
+            case 1:
+                break;
+            case 2:
+                break;
+            case 3:
+                switchContent(shopcarfragment);
+                break;
+            case 4:
+                break;
+        }
     }
 
     private void init() {
@@ -91,5 +107,12 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
     {
         fragmentTransaction = getSupportFragmentManager().beginTransaction();
         fragmentTransaction.add(R.id.content,fragment).commit();
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        int id =intent.getIntExtra("id",1);
+        SwitchFragment(id);
     }
 }

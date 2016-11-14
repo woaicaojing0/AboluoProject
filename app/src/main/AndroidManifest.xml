@@ -27,6 +27,7 @@
         tools:replace="android:icon, android:theme">
         <activity
             android:name=".MainActivity"
+            android:launchMode="singleTask"
             android:windowSoftInputMode="adjustPan|stateHidden">
 
         </activity>

@@ -217,9 +217,18 @@ public class ShopCarFragment extends Fragment implements View.OnClickListener {
                             BaseModel baseModel =gson.fromJson(response, BaseModel.class);
                             if(baseModel.isIsSuccess())
                             {
-
-                                for (int i = 0; i < listxuhao.size(); i++) {
-                                    goodsShoppingCartListBean.remove(listxuhao);
+                               Iterator<ShopCarBean.ResultBean.GoodsShoppingCartListBean> it2 = goodsShoppingCartListBean.iterator();
+                               int xuhao =-1;
+                                while(it2.hasNext())
+                                {
+                                    it2.next();
+                                    xuhao++;
+                                    for (int i = 0; i < listxuhao.size(); i++) {
+                                        if(xuhao ==listxuhao.get(i))
+                                        {
+                                            it2.remove();
+                                        }
+                                    }
                                 }
                                 Iterator<Boolean> it = ckisselected.iterator();
                                 while(it.hasNext()){

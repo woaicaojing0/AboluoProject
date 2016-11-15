@@ -444,7 +444,8 @@ public class GoodsDetailActivity extends Activity implements View.OnClickListene
                         Log.i("woaicaojing", goods_type_imgeurl);
                         Log.i("woaicaojing + picURl", ImgUrl + listcolor.get(finalI).getColorImg());
                         Picasso.with(GoodsDetailActivity.this).load(ImgUrl + listcolor.get(finalI).getColorImg()).placeholder(getResources().getDrawable(R.drawable.imagviewloading)).into(goods_detail_type_imageview);
-
+                        RadioButton radioButton = (RadioButton) findViewById(v.getId());
+                        Toast.makeText(GoodsDetailActivity.this, radioButton.getText().toString(), Toast.LENGTH_SHORT).show();
                     }
                 });
                 linearLayout.addView(button);
@@ -557,6 +558,8 @@ public class GoodsDetailActivity extends Activity implements View.OnClickListene
                     Log.i("woaicaojing + picURl", ImgUrl + listcolor.get(finalI).getColorImg());
                     Toast.makeText(GoodsDetailActivity.this, finalI + "", Toast.LENGTH_SHORT).show();
                     Picasso.with(GoodsDetailActivity.this).load(ImgUrl + listcolor.get(finalI).getColorImg()).placeholder(getResources().getDrawable(R.drawable.imagviewloading)).into(goods_detail_type_imageview);
+                    RadioButton radioButton = (RadioButton) findViewById(v.getId());
+                    Toast.makeText(GoodsDetailActivity.this, radioButton.getText().toString(), Toast.LENGTH_SHORT).show();
                 }
             });
             linearLayout.addView(button);

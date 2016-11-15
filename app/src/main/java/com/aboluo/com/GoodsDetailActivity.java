@@ -231,6 +231,13 @@ public class GoodsDetailActivity extends Activity implements View.OnClickListene
      */
     private void initwebview(String detailurl, String pingjia) {
         //详情地址
+        //解决了webview 头部空了一片白的问题
+        goods_detail_webview.getSettings().setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
+        goods_detail_webview.setVerticalScrollBarEnabled(false);
+        goods_detail_webview.setVerticalScrollbarOverlay(false);
+        goods_detail_webview.setHorizontalScrollBarEnabled(false);
+        goods_detail_webview.setHorizontalScrollbarOverlay(false);
+        //end
         WebSettings webviewsetting = goods_detail_webview.getSettings();
         webviewsetting.setJavaScriptEnabled(true);
         webviewsetting.setUseWideViewPort(true);//关键点

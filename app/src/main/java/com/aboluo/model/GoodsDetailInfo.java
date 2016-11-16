@@ -165,6 +165,7 @@ public class GoodsDetailInfo {
              */
 
             private List<GoodsStandardsBean> goodsStandards;
+            private List<GoodsColorStandardListBean> goodsColorStandardList;
 
             public int getGoodsId() {
                 return goodsId;
@@ -494,9 +495,26 @@ public class GoodsDetailInfo {
                 this.goodsStandards = goodsStandards;
             }
 
+            public List<GoodsColorStandardListBean> getGoodsColorStandardList() {
+                return goodsColorStandardList;
+            }
+
+            public void setGoodsColorStandardList(List<GoodsColorStandardListBean> goodsColorStandardList) {
+                this.goodsColorStandardList = goodsColorStandardList;
+            }
+
             public static class GoodsColorBean {
+                private int goodsColorId;
                 private String color;
                 private String colorImg;
+
+                public int getGoodsColorId() {
+                    return goodsColorId;
+                }
+
+                public void setGoodsColorId(int goodsColorId) {
+                    this.goodsColorId = goodsColorId;
+                }
 
                 public String getColor() {
                     return color;
@@ -516,10 +534,19 @@ public class GoodsDetailInfo {
             }
 
             public static class GoodsStandardsBean {
+                private int goodsStandardId;
                 private String standard;
                 private double price;
                 private double hyPrice;
                 private double goodsOriginalPrice;
+
+                public int getGoodsStandardId() {
+                    return goodsStandardId;
+                }
+
+                public void setGoodsStandardId(int goodsStandardId) {
+                    this.goodsStandardId = goodsStandardId;
+                }
 
                 public String getStandard() {
                     return standard;
@@ -551,6 +578,46 @@ public class GoodsDetailInfo {
 
                 public void setGoodsOriginalPrice(double goodsOriginalPrice) {
                     this.goodsOriginalPrice = goodsOriginalPrice;
+                }
+            }
+
+            public static  class GoodsColorStandardListBean
+            {
+                private int Id;
+                private int goodsId;
+                private int goodsStandardId;
+                private int goodsColorId;
+
+                public int getId() {
+                    return Id;
+                }
+
+                public void setId(int id) {
+                    Id = id;
+                }
+
+                public int getGoodsId() {
+                    return goodsId;
+                }
+
+                public void setGoodsId(int goodsId) {
+                    this.goodsId = goodsId;
+                }
+
+                public int getGoodsStandardId() {
+                    return goodsStandardId;
+                }
+
+                public void setGoodsStandardId(int goodsStandardId) {
+                    this.goodsStandardId = goodsStandardId;
+                }
+
+                public int getGoodsColorId() {
+                    return goodsColorId;
+                }
+
+                public void setGoodsColorId(int goodsColorId) {
+                    this.goodsColorId = goodsColorId;
                 }
             }
         }

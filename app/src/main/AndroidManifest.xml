@@ -70,5 +70,6 @@
         <activity android:name=".address.ProvinceAddressActivity"></activity>
         <activity android:name=".address.RegionAddressActivity"></activity>
         <activity android:name=".address.StreetAddressActivity"></activity>
+        <activity android:name=".MakeOrderActivity"></activity>
     </application>
 </manifest>

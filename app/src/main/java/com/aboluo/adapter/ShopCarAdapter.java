@@ -1,13 +1,7 @@
 package com.aboluo.adapter;
 
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Paint;
-import android.media.Image;
-import android.text.Editable;
-import android.text.Layout;
-import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,21 +12,15 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.aboluo.XUtils.CommonUtils;
-import com.aboluo.com.GoodsDetailActivity;
 import com.aboluo.com.R;
 import com.aboluo.model.ShopCarBean.ResultBean.GoodsShoppingCartListBean;
 import com.aboluo.widget.AmountView;
-import com.android.volley.toolbox.StringRequest;
-import com.squareup.okhttp.OkHttpClient;
-import com.squareup.picasso.OkHttpDownloader;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 import static com.aboluo.com.R.id.btnDecrease;
 
@@ -40,7 +28,7 @@ import static com.aboluo.com.R.id.btnDecrease;
  * Created by CJ on 2016/9/27.
  */
 
-public class ShopCarAdapter extends BaseAdapter{
+public class ShopCarAdapter extends BaseAdapter {
     public void setMlist(List<GoodsShoppingCartListBean> mlist) {
         this.mlist = mlist;
     }
@@ -48,7 +36,8 @@ public class ShopCarAdapter extends BaseAdapter{
     private List<GoodsShoppingCartListBean> mlist;
     private Context mcontext;
     //表示用户是否在编辑状态
-private Picasso picasso;
+    private Picasso picasso;
+
     public int getStates() {
         return states;
     }
@@ -56,7 +45,8 @@ private Picasso picasso;
     public void setstates(int isedit) {
         this.states = isedit;
     }
-private LayoutInflater minfLayoutInflater;
+
+    private LayoutInflater minfLayoutInflater;
 
     //8是view.gone,0是view.visiable
     private int states;
@@ -72,7 +62,8 @@ private LayoutInflater minfLayoutInflater;
 
     private View.OnClickListener mhopcar_standards;
     private textchage mtextchage;
- private ArrayList<Boolean> mckckisselected;
+    private ArrayList<Boolean> mckckisselected;
+
     public void setMbtnDecrease(View.OnClickListener mbtnDecrease) {
         this.mbtnDecrease = mbtnDecrease;
     }
@@ -80,6 +71,7 @@ private LayoutInflater minfLayoutInflater;
     public void setMbtnIncrease(View.OnClickListener mbtnIncrease) {
         this.mbtnIncrease = mbtnIncrease;
     }
+
     public void setMshopcar_image(View.OnClickListener mshopcar_image) {
         this.mshopcar_image = mshopcar_image;
     }
@@ -96,11 +88,12 @@ private LayoutInflater minfLayoutInflater;
     public void setMhopcar_standards(View.OnClickListener mhopcar_standards) {
         this.mhopcar_standards = mhopcar_standards;
     }
+
     public void setMetAmount(View.OnFocusChangeListener metAmount) {
         this.metAmount = metAmount;
     }
 
-    public ShopCarAdapter(List<GoodsShoppingCartListBean> list, Context context,ArrayList<Boolean> ckckisselected) {
+    public ShopCarAdapter(List<GoodsShoppingCartListBean> list, Context context, ArrayList<Boolean> ckckisselected) {
         this.mcontext = context;
         this.mlist = list;
         this.mckckisselected = ckckisselected;
@@ -114,11 +107,13 @@ private LayoutInflater minfLayoutInflater;
 //                .downloader(new OkHttpDownloader(okHttpClient))
 //                .build();
     }
-private String ImgeURL = null;
+
+    private String ImgeURL = null;
+
     // 初始化isSelected的数据
     private void initDate() {
         states = 8;
-        ImgeURL = CommonUtils.GetValueByKey(mcontext,"ImgUrl");
+        ImgeURL = CommonUtils.GetValueByKey(mcontext, "ImgUrl");
     }
 
     @Override
@@ -204,7 +199,7 @@ private String ImgeURL = null;
             guige = "尺寸：" + mlist.get(position).getGoodsStandard();
         }
         if (mlist.get(position).getGoodsColor() != null) {
-            guige = guige+" "+"颜色：" + mlist.get(position).getGoodsColor();
+            guige = guige + " " + "颜色：" + mlist.get(position).getGoodsColor();
         }
         if (guige == null) {
             holder.shopcar_standards.setText("无");
@@ -213,40 +208,44 @@ private String ImgeURL = null;
         }
         //   holder.old_money.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG);
         holder.shopcar_old_price.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG);
-        holder.shopcar_old_price.setText("￥"+String.valueOf(mlist.get(position).getGoodsPrice()));
-       String [] imges= mlist.get(position).getGoodsLogo().toString().split(";");
-        if(ImgeURL == null)
-        {ImgeURL = CommonUtils.GetValueByKey(mcontext,"ImgeURL");}else {}
+        holder.shopcar_old_price.setText("￥" + String.valueOf(mlist.get(position).getGoodsPrice()));
+        if (mlist.get(position).getGoodsLogo() == null) {
+        } else {
+            String[] imges = mlist.get(position).getGoodsLogo().toString().split(";");
+            if (ImgeURL == null) {
+                ImgeURL = CommonUtils.GetValueByKey(mcontext, "ImgeURL");
+            } else {
+            }
 //        Log.i("woaicaojingshopimg",ImgeURL+imges[0]);
-        Picasso.with(mcontext).load(ImgeURL+imges[0]).placeholder(mcontext.getResources().getDrawable(R.drawable.imagviewloading))
-                .error(mcontext.getResources().getDrawable(R.drawable.imageview_error))
-                .into(holder.shopcar_image);
-        final ViewHolder finalHolder = holder;
-        holder.ck_buy.setChecked(mckckisselected.get(position));
-        holder.ck_by_linelayout.setTag(position);
-        holder.btnDecrease.setTag(position);
-        holder.btnIncrease.setTag(position);
-        holder.etAmount.setTag(position);
-        holder.shopcar_image.setTag(position);
-        holder.shopcar_standards.setTag(position);
+            Picasso.with(mcontext).load(ImgeURL + imges[0]).placeholder(mcontext.getResources().getDrawable(R.drawable.imagviewloading))
+                    .error(mcontext.getResources().getDrawable(R.drawable.imageview_error))
+                    .into(holder.shopcar_image);
+            final ViewHolder finalHolder = holder;
+            holder.ck_buy.setChecked(mckckisselected.get(position));
+            holder.ck_by_linelayout.setTag(position);
+            holder.btnDecrease.setTag(position);
+            holder.btnIncrease.setTag(position);
+            holder.etAmount.setTag(position);
+            holder.shopcar_image.setTag(position);
+            holder.shopcar_standards.setTag(position);
+        }
         return convertView;
     }
-
 
 
     public class ViewHolder {
         public TextView textName;
         public CheckBox ck_buy;
         public AmountView numberButton;
-        public LinearLayout ck_by_linelayout,linearLayout_standard;
-        public TextView moeny, maxnum, shopcar_standards,shopcar_old_price;
+        public LinearLayout ck_by_linelayout, linearLayout_standard;
+        public TextView moeny, maxnum, shopcar_standards, shopcar_old_price;
         public EditText etAmount;
         private Button btnDecrease;
         private Button btnIncrease;
         private ImageView shopcar_image;
     }
-    public  interface  textchage
-    {
-        void   textchage(int postion,String num);
+
+    public interface textchage {
+        void textchage(int postion, String num);
     }
 }

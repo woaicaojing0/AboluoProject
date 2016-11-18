@@ -1,5 +1,8 @@
 package com.aboluo.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.util.List;
 
 /**
@@ -81,7 +84,7 @@ public class ShopCarBean {
             this.GoodsShoppingCartList = GoodsShoppingCartList;
         }
 
-        public static class GoodsShoppingCartListBean {
+        public static class GoodsShoppingCartListBean   implements Parcelable {
             private int Id;
             private int goodsId;
             private String goodsColor;
@@ -97,6 +100,36 @@ public class ShopCarBean {
             private String goodsLogo;
             private double goodsPrice;
             private double hyPrice;
+
+            protected GoodsShoppingCartListBean(Parcel in) {
+                Id = in.readInt();
+                goodsId = in.readInt();
+                goodsColor = in.readString();
+                goodsStandard = in.readString();
+                goodsCount = in.readInt();
+                memberId = in.readInt();
+                shopId = in.readInt();
+                createTime = in.readString();
+                flag = in.readInt();
+                goodsName = in.readString();
+                goodsSub = in.readString();
+                yunfei = in.readInt();
+                goodsLogo = in.readString();
+                goodsPrice = in.readDouble();
+                hyPrice = in.readDouble();
+            }
+
+            public static final Creator<GoodsShoppingCartListBean> CREATOR = new Creator<GoodsShoppingCartListBean>() {
+                @Override
+                public GoodsShoppingCartListBean createFromParcel(Parcel in) {
+                    return new GoodsShoppingCartListBean(in);
+                }
+
+                @Override
+                public GoodsShoppingCartListBean[] newArray(int size) {
+                    return new GoodsShoppingCartListBean[size];
+                }
+            };
 
             public int getId() {
                 return Id;
@@ -216,6 +249,30 @@ public class ShopCarBean {
 
             public void setHyPrice(double hyPrice) {
                 this.hyPrice = hyPrice;
+            }
+
+            @Override
+            public int describeContents() {
+                return 0;
+            }
+
+            @Override
+            public void writeToParcel(Parcel dest, int flags) {
+                dest.writeInt(Id);
+                dest.writeInt(goodsId);
+                dest.writeString(goodsColor);
+                dest.writeString(goodsStandard);
+                dest.writeInt(goodsCount);
+                dest.writeInt(memberId);
+                dest.writeInt(shopId);
+                dest.writeString(createTime);
+                dest.writeInt(flag);
+                dest.writeString(goodsName);
+                dest.writeString(goodsSub);
+                dest.writeInt(yunfei);
+                dest.writeString(goodsLogo);
+                dest.writeDouble(goodsPrice);
+                dest.writeDouble(hyPrice);
             }
         }
     }

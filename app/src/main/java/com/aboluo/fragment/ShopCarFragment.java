@@ -9,6 +9,7 @@ import android.graphics.Paint;
 import android.graphics.drawable.BitmapDrawable;
 import android.media.Image;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.Gravity;
@@ -33,6 +34,8 @@ import com.aboluo.XUtils.ScreenUtils;
 import com.aboluo.adapter.ShopCarAdapter;
 import com.aboluo.com.GoodsDetailActivity;
 import com.aboluo.com.GoodsListActivity;
+import com.aboluo.com.MakeOrderActivity;
+import com.aboluo.com.OrderActivity;
 import com.aboluo.com.R;
 import com.aboluo.model.BaseModel;
 import com.aboluo.model.GoodsDetailInfo;
@@ -106,7 +109,7 @@ public class ShopCarFragment extends Fragment implements View.OnClickListener {
     private RelativeLayout no_shopcar, shop_content;
     private Button go_shoipping; //购物车没有信息是，去逛逛按钮
     private Button btn_push; //结算按钮
-
+    private ArrayList<GoodsShoppingCartListBean> OrderSureList; //最终到下单页的数据
     @Override
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -169,6 +172,7 @@ public class ShopCarFragment extends Fragment implements View.OnClickListener {
         go_shoipping.setOnClickListener(this);
         btn_push.setOnClickListener(this);
         initshopcar();
+        OrderSureList= new ArrayList<>();
     }
 
     @Override
@@ -334,6 +338,15 @@ public class ShopCarFragment extends Fragment implements View.OnClickListener {
                 break;
             case R.id.btn_push:
                 Toast.makeText(context, "开始结算啦", Toast.LENGTH_SHORT).show();
+                Intent intent  =new Intent(context, MakeOrderActivity.class);
+                for (int i = 0; i < goodsShoppingCartListBean.size(); i++) {
+                    boolean check = ckisselected.get(i);
+                    if (check) {
+                        OrderSureList.add(goodsShoppingCartListBean.get(i));
+                    }
+                }
+                intent.putExtra("data", OrderSureList);
+                startActivity(intent);
                 break;
         }
     }
@@ -648,6 +661,7 @@ public class ShopCarFragment extends Fragment implements View.OnClickListener {
             int choose = 0;
             if (check) {
                 choose = 1;
+                OrderSureList.add(goodsShoppingCartListBean.get(i));
             }
             double item = count * choose * itempv;
             totalpv += item;

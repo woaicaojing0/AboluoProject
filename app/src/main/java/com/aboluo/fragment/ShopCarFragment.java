@@ -258,7 +258,7 @@ public class ShopCarFragment extends Fragment implements View.OnClickListener {
                         protected Map<String, String> getParams() throws AuthFailureError {
                             Map<String, String> map = new HashMap<>();
                             map.put("Ids", ids);
-                            map.put("MemberId", "6");
+                            map.put("MemberId", "1");
                             map.put("APPToken", APPToken);
                             return map;
                         }
@@ -322,7 +322,7 @@ public class ShopCarFragment extends Fragment implements View.OnClickListener {
                                 map.put("goodsColor", radioColor.getText().toString());
                             }
                             map.put("goodsCount", String.valueOf(count));
-                            map.put("memberId", "6");
+                            map.put("memberId", "1");
                             map.put("shopId", "1");
                             map.put("APPToken", APPToken);
                             return map;
@@ -337,6 +337,7 @@ public class ShopCarFragment extends Fragment implements View.OnClickListener {
                 startActivity(intent1);
                 break;
             case R.id.btn_push:
+                OrderSureList.clear();
                 Toast.makeText(context, "开始结算啦", Toast.LENGTH_SHORT).show();
                 Intent intent  =new Intent(context, MakeOrderActivity.class);
                 for (int i = 0; i < goodsShoppingCartListBean.size(); i++) {
@@ -345,6 +346,7 @@ public class ShopCarFragment extends Fragment implements View.OnClickListener {
                         OrderSureList.add(goodsShoppingCartListBean.get(i));
                     }
                 }
+                intent.putExtra("allmoney",shopcar_allmoney.getText().toString());
                 intent.putExtra("data", OrderSureList);
                 startActivity(intent);
                 break;
@@ -415,7 +417,7 @@ public class ShopCarFragment extends Fragment implements View.OnClickListener {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> map = new HashMap<>();
-                map.put("MemberId", "6");
+                map.put("MemberId", "1");
                 map.put("APPToken", APPToken);
                 return map;
             }
@@ -475,7 +477,7 @@ public class ShopCarFragment extends Fragment implements View.OnClickListener {
                                 map.put("goodsColor", goodscolor);
                                 map.put("goodsStandard", goodsstandards);
                                 map.put("goodsCount", String.valueOf(finalNum));
-                                map.put("memberId", "6");
+                                map.put("memberId", "1");
                                 map.put("shopId", "1");
                                 map.put("APPToken", APPToken);
                                 return map;
@@ -529,7 +531,7 @@ public class ShopCarFragment extends Fragment implements View.OnClickListener {
                                     map.put("goodsColor", goodscolor);
                                     map.put("goodsStandard", goodsstandards);
                                     map.put("goodsCount", String.valueOf(finalNum));
-                                    map.put("memberId", "6");
+                                    map.put("memberId", "1");
                                     map.put("shopId", "1");
                                     map.put("APPToken", APPToken);
                                     return map;

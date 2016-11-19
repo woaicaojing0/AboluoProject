@@ -212,11 +212,6 @@ public class ShopCarAdapter extends BaseAdapter {
         if (mlist.get(position).getGoodsLogo() == null) {
         } else {
             String[] imges = mlist.get(position).getGoodsLogo().toString().split(";");
-            if (ImgeURL == null) {
-                ImgeURL = CommonUtils.GetValueByKey(mcontext, "ImgeURL");
-            } else {
-            }
-//        Log.i("woaicaojingshopimg",ImgeURL+imges[0]);
             Picasso.with(mcontext).load(ImgeURL + imges[0]).placeholder(mcontext.getResources().getDrawable(R.drawable.imagviewloading))
                     .error(mcontext.getResources().getDrawable(R.drawable.imageview_error))
                     .into(holder.shopcar_image);

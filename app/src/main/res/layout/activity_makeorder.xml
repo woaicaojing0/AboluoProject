@@ -85,11 +85,13 @@
                             android:orientation="horizontal">
 
                             <TextView
+                                android:id="@+id/address_name"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="姓名" />
 
                             <TextView
+                                android:id="@+id/address_phone"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginLeft="20dp"
@@ -103,6 +105,7 @@
                             android:gravity="center">
 
                             <TextView
+                                android:id="@+id/address_detailaddress"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:ellipsize="end"
@@ -159,18 +162,19 @@
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="40dp"
                     android:background="@color/white"
+                    android:gravity="center_vertical"
                     android:orientation="horizontal">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="16dp"
-                        android:layout_marginLeft="16dp"
                         android:text="买家留言:" />
 
                     <EditText
+                        android:id="@+id/edit_remark"
+                        android:layout_marginLeft="8dp"
                         android:layout_width="200dp"
                         android:layout_height="wrap_content"
                         android:background="@null"
@@ -208,8 +212,7 @@
                         android:orientation="horizontal">
 
                         <TextView
-
-                            android:id="@+id/textView9"
+                            android:id="@+id/txt_goods_allnum"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="共计12件商品" />
@@ -221,6 +224,7 @@
                             android:text="合计:" />
 
                         <TextView
+                            android:id="@+id/goods_smallallmoeny"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="￥180.0"
@@ -237,7 +241,7 @@
     <RelativeLayout
         android:id="@+id/order_bottom"
         android:layout_width="match_parent"
-        android:layout_height="48dp"
+        android:layout_height="56dp"
         android:layout_alignParentBottom="true"
         android:background="@color/white">
 
@@ -250,7 +254,8 @@
             android:text="合计:" />
 
         <TextView
-            android:id="@+id/textView8"
+            android:layout_marginLeft="8dp"
+            android:id="@+id/txt_allmoney"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
@@ -259,7 +264,8 @@
             android:textColor="@color/btn_color" />
 
         <Button
-            android:layout_width="80dp"
+            android:id="@+id/Submit_Order"
+            android:layout_width="100dp"
             android:layout_height="match_parent"
             android:layout_alignParentRight="true"
             android:background="@color/btn_color"

@@ -1,6 +1,7 @@
 package com.aboluo.adapter;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,7 +9,10 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.aboluo.XUtils.CommonUtils;
 import com.aboluo.com.R;
+import com.aboluo.model.ShopCarBean.ResultBean.GoodsShoppingCartListBean;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -17,24 +21,25 @@ import java.util.List;
  */
 
 public class OrderSureListViewAdapter extends BaseAdapter {
-    private List<String> ListDemo;
+    private String ImgeURL = null;
+    private List<GoodsShoppingCartListBean> mlist;
     private Context mcontext;
     private LayoutInflater layoutInflater;
 
-    public OrderSureListViewAdapter(List<String> listDemo, Context context) {
+    public OrderSureListViewAdapter(List<GoodsShoppingCartListBean> list, Context context) {
         this.mcontext = context;
-        this.ListDemo = listDemo;
+        this.mlist = list;
         layoutInflater = LayoutInflater.from(mcontext);
     }
 
     @Override
     public int getCount() {
-        return ListDemo.size();
+        return mlist.size();
     }
 
     @Override
     public Object getItem(int position) {
-        return ListDemo.get(position);
+        return mlist.get(position);
     }
 
     @Override
@@ -58,6 +63,34 @@ public class OrderSureListViewAdapter extends BaseAdapter {
         }
         else {
             holder = (ViewHolder) convertView.getTag();
+        }
+        String result = String.valueOf(mlist.get(position).getGoodsCount());
+        holder.order_txt_num.setText("X"+String.valueOf(mlist.get(position).getGoodsCount()));
+        holder.order_txt_desc.setText(mlist.get(position).getGoodsName().toString());
+        holder.order_txt_money.setText("￥"+String.valueOf(mlist.get(position).getHyPrice()));
+        String guige = null;
+        if (mlist.get(position).getGoodsStandard() != null) {
+            guige = "尺寸：" + mlist.get(position).getGoodsStandard();
+        }
+        if (mlist.get(position).getGoodsColor() != null) {
+            guige = guige + " " + "颜色：" + mlist.get(position).getGoodsColor();
+        }
+        if (guige == null) {
+            holder.order_txt_colorStandards.setText("无");
+        } else {
+            holder.order_txt_colorStandards.setText(guige);
+        }
+        if (mlist.get(position).getGoodsLogo() == null) {
+        } else {
+            String[] imges = mlist.get(position).getGoodsLogo().toString().split(";");
+            if (ImgeURL == null) {
+                ImgeURL = CommonUtils.GetValueByKey(mcontext, "ImgUrl");
+            } else {
+            }
+        Log.i("woaicaojingshopimg",ImgeURL+imges[0]);
+            Picasso.with(mcontext).load(ImgeURL + imges[0]).placeholder(mcontext.getResources().getDrawable(R.drawable.imagviewloading))
+                    .error(mcontext.getResources().getDrawable(R.drawable.imageview_error))
+                    .into(holder.order_image);
         }
         return convertView;
     }

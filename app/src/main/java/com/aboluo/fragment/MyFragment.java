@@ -110,8 +110,6 @@ public class MyFragment extends Fragment implements View.OnClickListener {
                 intent6.putExtra("TAG", 5);
                 startActivity(intent6);
             case  R.id.feedbackInfo:
-                Intent intent7 = new Intent(MyFragment.this.getActivity(), MakeOrderActivity.class);
-                startActivity(intent7);
 
         }
 

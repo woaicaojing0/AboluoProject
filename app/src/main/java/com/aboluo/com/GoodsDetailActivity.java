@@ -1078,7 +1078,7 @@ public class GoodsDetailActivity extends Activity implements View.OnClickListene
                         map.put("goodsStandard", "无");
                     }
                     map.put("goodsCount", etAmount.getText().toString());
-                    map.put("memberId", "6");
+                    map.put("memberId", "1");
                     map.put("shopId", "1");
                     map.put("APPToken", APPToken);
                     return map;

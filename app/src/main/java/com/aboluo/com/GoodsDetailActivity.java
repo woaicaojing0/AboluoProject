@@ -486,19 +486,22 @@ public class GoodsDetailActivity extends Activity implements View.OnClickListene
                                     listStandard.add(listcolorstandard.get(i).getGoodsStandardId());
                                 }
                             }
-                            for (int i = 0; i < liststandards.size(); i++) {
-                                boolean isshow = false;
-                                for (int i1 = 0; i1 < listStandard.size(); i1++) {
-                                    if (liststandards.get(i).getGoodsStandardId() == listStandard.get(i1)) {
-                                        isshow = true;
+                            if(liststandards ==null)
+                            {}else {
+                                for (int i = 0; i < liststandards.size(); i++) {
+                                    boolean isshow = false;
+                                    for (int i1 = 0; i1 < listStandard.size(); i1++) {
+                                        if (liststandards.get(i).getGoodsStandardId() == listStandard.get(i1)) {
+                                            isshow = true;
+                                        }
                                     }
-                                }
-                                if (!isshow) {
-                                    RadioButton radioButton1 = (RadioButton) findViewById(liststandards.get(i).getGoodsStandardId());
-                                    radioButton1.setEnabled(false);
-                                } else {
-                                    RadioButton radioButton1 = (RadioButton) findViewById(liststandards.get(i).getGoodsStandardId());
-                                    radioButton1.setEnabled(true);
+                                    if (!isshow) {
+                                        RadioButton radioButton1 = (RadioButton) findViewById(liststandards.get(i).getGoodsStandardId());
+                                        radioButton1.setEnabled(false);
+                                    } else {
+                                        RadioButton radioButton1 = (RadioButton) findViewById(liststandards.get(i).getGoodsStandardId());
+                                        radioButton1.setEnabled(true);
+                                    }
                                 }
                             }
                         }
@@ -581,21 +584,24 @@ public class GoodsDetailActivity extends Activity implements View.OnClickListene
                                     listcolorInt.add(listcolorstandard.get(i).getGoodsColorId());
                                 }
                             }
-                            for (int i = 0; i < listcolor.size(); i++) {
-                                boolean isshow = false;
-                                for (int i1 = 0; i1 < listcolorInt.size(); i1++) {
-                                    if (listcolor.get(i).getGoodsColorId() == listcolorInt.get(i1)) {
-                                        isshow = true;
+                            if(listcolor ==null)
+                            {}else {
+                                for (int i = 0; i < listcolor.size(); i++) {
+                                    boolean isshow = false;
+                                    for (int i1 = 0; i1 < listcolorInt.size(); i1++) {
+                                        if (listcolor.get(i).getGoodsColorId() == listcolorInt.get(i1)) {
+                                            isshow = true;
+                                        }
                                     }
-                                }
-                                if (!isshow) {
-                                    RadioButton radioButton1 = (RadioButton) findViewById(listcolor.get(i).getGoodsColorId());
-                                    radioButton1.setEnabled(false);
-                                } else {
-                                    RadioButton radioButton1 = (RadioButton) findViewById(listcolor.get(i).getGoodsColorId());
-                                    ColorStateList csl = getResources().getColorStateList(R.color.radio_text_selector);
-                                    radioButton1.setTextColor(csl);
-                                    radioButton1.setEnabled(true);
+                                    if (!isshow) {
+                                        RadioButton radioButton1 = (RadioButton) findViewById(listcolor.get(i).getGoodsColorId());
+                                        radioButton1.setEnabled(false);
+                                    } else {
+                                        RadioButton radioButton1 = (RadioButton) findViewById(listcolor.get(i).getGoodsColorId());
+                                        ColorStateList csl = getResources().getColorStateList(R.color.radio_text_selector);
+                                        radioButton1.setTextColor(csl);
+                                        radioButton1.setEnabled(true);
+                                    }
                                 }
                             }
                             List<GoodsStandardsBean> goodsStandardsBean = goodsDetailInfo.getResult().getGoodsInfo().getGoodsStandards();
@@ -679,19 +685,22 @@ public class GoodsDetailActivity extends Activity implements View.OnClickListene
                                 listStandard.add(listcolorstandard.get(i).getGoodsStandardId());
                             }
                         }
-                        for (int i = 0; i < liststandards.size(); i++) {
-                            boolean isshow = false;
-                            for (int i1 = 0; i1 < listStandard.size(); i1++) {
-                                if (liststandards.get(i).getGoodsStandardId() == listStandard.get(i1)) {
-                                    isshow = true;
+                        if(liststandards ==null)
+                        {}else {
+                            for (int i = 0; i < liststandards.size(); i++) {
+                                boolean isshow = false;
+                                for (int i1 = 0; i1 < listStandard.size(); i1++) {
+                                    if (liststandards.get(i).getGoodsStandardId() == listStandard.get(i1)) {
+                                        isshow = true;
+                                    }
                                 }
-                            }
-                            if (!isshow) {
-                                RadioButton radioButton1 = (RadioButton) findViewById(liststandards.get(i).getGoodsStandardId());
-                                radioButton1.setEnabled(false);
-                            } else {
-                                RadioButton radioButton1 = (RadioButton) findViewById(liststandards.get(i).getGoodsStandardId());
-                                radioButton1.setEnabled(true);
+                                if (!isshow) {
+                                    RadioButton radioButton1 = (RadioButton) findViewById(liststandards.get(i).getGoodsStandardId());
+                                    radioButton1.setEnabled(false);
+                                } else {
+                                    RadioButton radioButton1 = (RadioButton) findViewById(liststandards.get(i).getGoodsStandardId());
+                                    radioButton1.setEnabled(true);
+                                }
                             }
                         }
                     }
@@ -745,6 +754,8 @@ public class GoodsDetailActivity extends Activity implements View.OnClickListene
                                 listcolorInt.add(listcolorstandard.get(i).getGoodsColorId());
                             }
                         }
+                        if(listcolor ==null)
+                        {}else {
                         for (int i = 0; i < listcolor.size(); i++) {
                             boolean isshow = false;
                             for (int i1 = 0; i1 < listcolorInt.size(); i1++) {
@@ -761,6 +772,7 @@ public class GoodsDetailActivity extends Activity implements View.OnClickListene
                                 radioButton1.setTextColor(csl);
                                 radioButton1.setEnabled(true);
                             }
+                        }
                         }
                         List<GoodsStandardsBean> goodsStandardsBean = goodsDetailInfo.getResult().getGoodsInfo().getGoodsStandards();
                         for (int i = 0; i < goodsStandardsBean.size(); i++) {

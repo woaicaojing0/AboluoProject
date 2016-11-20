@@ -57,8 +57,9 @@ public class MakeOrderActivity extends Activity implements View.OnClickListener 
     private Button Submit_Order;
     private int requsetcode = 1;
     private String moeny;
-    private  TextView order_yunfei;
-    private double yunfei=0.0;
+    private TextView order_yunfei;
+    private double yunfei = 0.0;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -69,9 +70,9 @@ public class MakeOrderActivity extends Activity implements View.OnClickListener 
         orderSureListViewAdapter = new OrderSureListViewAdapter(goodsShoppingCartListBean, this);
         OrderList.setAdapter(orderSureListViewAdapter);
         for (int i = 0; i < goodsShoppingCartListBean.size(); i++) {
-            yunfei =yunfei+goodsShoppingCartListBean.get(i).getYunfei();
+            yunfei = yunfei + goodsShoppingCartListBean.get(i).getYunfei();
         }
-        order_yunfei.setText("运费："+String.valueOf(yunfei));
+        order_yunfei.setText("运费：" + String.valueOf(yunfei));
 //        initialData();
 //        expandableListView = (ExpandableListView) findViewById(R.id.expandableListViewdemo);
 //        expandableListAdapter = new OrderExpendListViewAdapter(dataset,this,parentList);
@@ -123,7 +124,7 @@ public class MakeOrderActivity extends Activity implements View.OnClickListener 
         Intent intent = getIntent();
         Bundle bundle = intent.getExtras();
         goodsShoppingCartListBean = bundle.getParcelableArrayList("data");
-        moeny =  bundle.get("allmoney").toString();
+        moeny = bundle.get("allmoney").toString();
         txt_allmoney.setText("￥" + bundle.get("allmoney").toString() + "元");
         goods_smallallmoeny.setText("￥" + bundle.get("allmoney").toString());
         txt_goods_allnum.setText("共计" + goodsShoppingCartListBean.size() + "件商品");
@@ -142,23 +143,28 @@ public class MakeOrderActivity extends Activity implements View.OnClickListener 
                 addressDefaultBean = gson.fromJson(response, AddressDefaultBean.class);
                 AddressDefaultBean addressDefaultBean2 = addressDefaultBean;
                 if (addressDefaultBean.isIsSuccess()) {
-                    StringBuffer stringBuffer = new StringBuffer();
-                    if (addressDefaultBean.getResult().getProvince().toString().indexOf("省") == -1) {
+                    if (addressDefaultBean.getResult().getReceiver() == null) {
+                        Toast.makeText(MakeOrderActivity.this, "请先设置默认地址！", Toast.LENGTH_SHORT).show();
                     } else {
-                        stringBuffer.append(addressDefaultBean.getResult().getProvince().toString());
+                        StringBuffer stringBuffer = new StringBuffer();
+                        if (addressDefaultBean.getResult().getProvince().toString().indexOf("省") == -1) {
+                        } else {
+                            stringBuffer.append(addressDefaultBean.getResult().getProvince().toString());
+                        }
+                        stringBuffer.append(addressDefaultBean.getResult().getCity().toString());
+                        stringBuffer.append(addressDefaultBean.getResult().getRegion().toString());
+                        stringBuffer.append(addressDefaultBean.getResult().getStreet().toString());
+                        stringBuffer.append(addressDefaultBean.getResult().getAddress().toString());
+                        address_detailaddress.setText(stringBuffer.toString());
+                        address_name.setText(addressDefaultBean.getResult().getReceiver().toString());
+                        address_phone.setText(addressDefaultBean.getResult().getMobile().toString());
                     }
-                    stringBuffer.append(addressDefaultBean.getResult().getCity().toString());
-                    stringBuffer.append(addressDefaultBean.getResult().getRegion().toString());
-                    stringBuffer.append(addressDefaultBean.getResult().getStreet().toString());
-                    stringBuffer.append(addressDefaultBean.getResult().getAddress().toString());
-                    address_detailaddress.setText(stringBuffer.toString());
-                    address_name.setText(addressDefaultBean.getResult().getReceiver().toString());
-                    address_phone.setText(addressDefaultBean.getResult().getMobile().toString());
-//                    addressInfoBean.getResult().getMemberAddressList().get(0).get
-                } else {
-                    Toast.makeText(MakeOrderActivity.this, "获取默认地址出错，请重试！", Toast.LENGTH_SHORT).show();
                 }
-                Log.i("woaicaojingpay",addressDefaultBean.getResult().toString());
+//                    addressInfoBean.getResult().getMemberAddressList().get(0).get
+                else {
+                    Toast.makeText(MakeOrderActivity.this, "获取默认地址出错，请重试！", Toast.LENGTH_SHORT).show();
+                    Log.i("woaicaojingpay", addressDefaultBean.getResult().toString());
+                }
                 pdialog.dismiss();
             }
         }, new Response.ErrorListener() {
@@ -167,7 +173,7 @@ public class MakeOrderActivity extends Activity implements View.OnClickListener 
                 Toast.makeText(MakeOrderActivity.this, "获取默认地址出错，请重试！" + error.toString(), Toast.LENGTH_SHORT).show();
                 pdialog.dismiss();
 
-                Log.i("woaicaojingpay",error.toString());
+                Log.i("woaicaojingpay", error.toString());
             }
         }) {
             @Override
@@ -182,7 +188,7 @@ public class MakeOrderActivity extends Activity implements View.OnClickListener 
     }
 
     private void SubmitOrder() {
-        final String lastmoney = String.valueOf(Double.valueOf(moeny) +yunfei);
+        final String lastmoney = String.valueOf(Double.valueOf(moeny) + yunfei);
         List<OrderInfoBean> bean = new ArrayList<>();
         for (int i = 0; i < goodsShoppingCartListBean.size(); i++) {
             OrderInfoBean bean1 = new OrderInfoBean();
@@ -202,26 +208,27 @@ public class MakeOrderActivity extends Activity implements View.OnClickListener 
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url + "/api/Order/SubOrder", new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                response = response.replace("\\","");
-                response = response.substring(1,response.length()-1);
+                response = response.replace("\\", "");
+                response = response.substring(1, response.length() - 1);
                 BaseModel baseModel = new BaseModel();
-                baseModel = gson.fromJson(response,BaseModel.class);
-                if(baseModel.isIsSuccess())
-                {
+                baseModel = gson.fromJson(response, BaseModel.class);
+                if (baseModel.isIsSuccess()) {
                     Intent intent = new Intent(MakeOrderActivity.this, OrderPayActivity.class);
                     intent.putExtra("payMoney", lastmoney);
                     intent.putExtra("OrderNum", baseModel.getOrderSerialId().toString());
                     startActivityForResult(intent, requsetcode);
-                }else {}
-
-               Toast.makeText(MakeOrderActivity.this, response, Toast.LENGTH_SHORT).show();
+                    pdialog.dismiss();
+                } else {
+                }
+                Toast.makeText(MakeOrderActivity.this, response, Toast.LENGTH_SHORT).show();
+                pdialog.dismiss();
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Toast.makeText(MakeOrderActivity.this, error.toString(), Toast.LENGTH_SHORT).show();
                 byte[] htmlBodyBytes = error.networkResponse.data;
-                Log.i("woaicaojingeorror",new String(htmlBodyBytes));
+                Log.i("woaicaojingeorror", new String(htmlBodyBytes));
                 pdialog.dismiss();
             }
         }) {
@@ -233,7 +240,7 @@ public class MakeOrderActivity extends Activity implements View.OnClickListener 
                 map.put("AddressId", String.valueOf(addressDefaultBean.getResult().getId()));
                 map.put("Remark", edit_remark.getText().toString());
                 map.put("Products", Products);
-                map.put("APPToken",APPToken);
+                map.put("APPToken", APPToken);
                 return map;
             }
         };
@@ -252,8 +259,8 @@ public class MakeOrderActivity extends Activity implements View.OnClickListener 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
-        if(data ==null)
-        {}else {
+        if (data == null) {
+        } else {
             String backactivity = data.getStringExtra("back");
 
             if (backactivity.equals("OrderPay")) {

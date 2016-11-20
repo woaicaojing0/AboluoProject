@@ -967,7 +967,7 @@ public class ShopCarFragment extends Fragment implements View.OnClickListener {
                     }
                 });
                 linearLayout.addView(button);
-                if (listcolor.get(i2).getColor().equals(standards)) {
+                if (liststandards.get(i2).getStandard().equals(standards)) {
                     button.setChecked(true);
                 } else {
                 }

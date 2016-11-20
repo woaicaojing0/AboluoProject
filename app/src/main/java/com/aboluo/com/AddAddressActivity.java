@@ -245,18 +245,21 @@ public class AddAddressActivity extends Activity implements TextWatcher, View.On
                 if(basemodel.isIsSuccess())
                 {
                     Toast.makeText(AddAddressActivity.this, basemodel.getMessage().toString(), Toast.LENGTH_SHORT).show();
-                    sweetAlertDialog.dismiss();
                     Intent intent = new Intent(AddAddressActivity.this,AddressActivity.class);
                     startActivity(intent);
                     finish();
                 }else {
                     Toast.makeText(AddAddressActivity.this, basemodel.getMessage().toString(), Toast.LENGTH_SHORT).show();
                 }
+                sweetAlertDialog.dismiss();
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-
+                byte[] htmlBodyBytes = error.networkResponse.data;
+                Toast.makeText(AddAddressActivity.this,  error.toString(), Toast.LENGTH_SHORT).show();
+                Log.i("woaiocaojingerroe",new String(htmlBodyBytes));
+                sweetAlertDialog.dismiss();
             }
         }) {
             @Override
@@ -307,18 +310,19 @@ public class AddAddressActivity extends Activity implements TextWatcher, View.On
                 if(basemodel.isIsSuccess())
                 {
                     Toast.makeText(AddAddressActivity.this, basemodel.getMessage().toString(), Toast.LENGTH_SHORT).show();
-                    sweetAlertDialog.dismiss();
                     Intent intent = new Intent(AddAddressActivity.this,AddressActivity.class);
                     startActivity(intent);
                     finish();
                 }else {
                     Toast.makeText(AddAddressActivity.this, basemodel.getMessage().toString(), Toast.LENGTH_SHORT).show();
                 }
+                sweetAlertDialog.dismiss();
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-
+                Toast.makeText(AddAddressActivity.this, error.getMessage(), Toast.LENGTH_SHORT).show();
+                sweetAlertDialog.dismiss();
             }
         }) {
             @Override

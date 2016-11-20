@@ -12,17 +12,24 @@ import com.aboluo.Gesture.SecondActivity;
 import com.aboluo.GestureUtils.Contants;
 import com.leo.gesturelibray.enums.LockMode;
 
+import cn.beecloud.BeeCloud;
+
 /**
  * Created by CJ on 2016/11/2.
  */
 
 public class BaseApplication extends Application {
     public int count = 0;
-public  boolean  out = false;
+    public boolean out = false;
+
     @Override
     public void onCreate() {
-
         super.onCreate();
+        //开启测试模式
+        BeeCloud.setSandbox(false);
+        //此处第二个参数是控制台的test secret
+        BeeCloud.setAppIdAndSecret("b17c4dc6-4420-44d4-8334-2e664700a189",
+                "4b4a1c8a-6d65-499a-b75f-8099099b36c3");
         registerActivityLifecycleCallbacks(new ActivityLifecycleCallbacks() {
             @Override
             public void onActivityStopped(Activity activity) {
@@ -41,7 +48,8 @@ public  boolean  out = false;
                     Log.v("viclee", ">>>>>>>>>>>>>>>>>>>切到前台  lifecycle");
                     if (preferences.getBoolean("isstartgesture", false)) {
                         actionSecondActivity(LockMode.VERIFY_PASSWORD, activity);
-                    }else {}
+                    } else {
+                    }
                 }
                 count++;
 

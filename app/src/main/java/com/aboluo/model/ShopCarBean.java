@@ -14,7 +14,7 @@ public class ShopCarBean {
     /**
      * IsSuccess : true
      * Message : null
-     * Result : {"GoodsShoppingCartList":[{"Id":10,"goodsId":1154,"goodsColor":"黑色","goodsStandard":"M","goodsCount":1,"memberId":6,"shopId":1,"createTime":"2016-10-24T20: 36: 12.510901","flag":1,"goodsName":"新款青春潮流休闲西服男士修身爆款外套","goodsSub":"","yunfei":0,"goodsLogo":"/GoodsLogo//uploads/goods/574d27626cfa7.jpg;","goodsPrice":150,"hyPrice":128},{"Id":4,"goodsId":1103,"goodsColor":"red","goodsStandard":"12","goodsCount":5,"memberId":6,"shopId":1,"createTime":"2016-10-24T00: 04: 38.97938","flag":1,"goodsName":"新款男式休闲裤薄款韩版修身中腰直筒青年男士免烫长裤（浅色系列）","goodsSub":"","yunfei":0,"goodsLogo":"/GoodsLogo//uploads/goods/574c2f5a9dfc2.jpg;","goodsPrice":132,"hyPrice":112}]}
+     * Result : {"GoodsShoppingCartList":[{"Id":32,"goodsId":3067,"goodsColorId":52,"goodsColor":"黑色","goodsStandardId":52,"goodsStandard":"XXXXL","goodsCount":1,"memberId":1,"shopId":1,"createTime":"2016-11-20T14:01:55.878265","flag":1,"goodsName":"20161115测试","goodsSub":"20161115测试","yunfei":0,"goodsLogo":null,"goodsPrice":300,"hyPrice":250}]}
      * ListResult : null
      */
 
@@ -57,21 +57,23 @@ public class ShopCarBean {
 
     public static class ResultBean {
         /**
-         * Id : 10
-         * goodsId : 1154
+         * Id : 32
+         * goodsId : 3067
+         * goodsColorId : 52
          * goodsColor : 黑色
-         * goodsStandard : M
+         * goodsStandardId : 52
+         * goodsStandard : XXXXL
          * goodsCount : 1
-         * memberId : 6
+         * memberId : 1
          * shopId : 1
-         * createTime : 2016-10-24T20: 36: 12.510901
+         * createTime : 2016-11-20T14:01:55.878265
          * flag : 1
-         * goodsName : 新款青春潮流休闲西服男士修身爆款外套
-         * goodsSub :
+         * goodsName : 20161115测试
+         * goodsSub : 20161115测试
          * yunfei : 0
-         * goodsLogo : /GoodsLogo//uploads/goods/574d27626cfa7.jpg;
-         * goodsPrice : 150
-         * hyPrice : 128
+         * goodsLogo : null
+         * goodsPrice : 300
+         * hyPrice : 250
          */
 
         private List<GoodsShoppingCartListBean> GoodsShoppingCartList;
@@ -87,7 +89,9 @@ public class ShopCarBean {
         public static class GoodsShoppingCartListBean   implements Parcelable {
             private int Id;
             private int goodsId;
+            private int goodsColorId;
             private String goodsColor;
+            private int goodsStandardId;
             private String goodsStandard;
             private int goodsCount;
             private int memberId;
@@ -105,7 +109,9 @@ public class ShopCarBean {
                 Id = in.readInt();
                 goodsId = in.readInt();
                 goodsColor = in.readString();
+                goodsColorId = in.readInt();
                 goodsStandard = in.readString();
+                goodsStandardId = in.readInt();
                 goodsCount = in.readInt();
                 memberId = in.readInt();
                 shopId = in.readInt();
@@ -147,12 +153,28 @@ public class ShopCarBean {
                 this.goodsId = goodsId;
             }
 
+            public int getGoodsColorId() {
+                return goodsColorId;
+            }
+
+            public void setGoodsColorId(int goodsColorId) {
+                this.goodsColorId = goodsColorId;
+            }
+
             public String getGoodsColor() {
                 return goodsColor;
             }
 
             public void setGoodsColor(String goodsColor) {
                 this.goodsColor = goodsColor;
+            }
+
+            public int getGoodsStandardId() {
+                return goodsStandardId;
+            }
+
+            public void setGoodsStandardId(int goodsStandardId) {
+                this.goodsStandardId = goodsStandardId;
             }
 
             public String getGoodsStandard() {
@@ -261,7 +283,9 @@ public class ShopCarBean {
                 dest.writeInt(Id);
                 dest.writeInt(goodsId);
                 dest.writeString(goodsColor);
+                dest.writeInt(goodsColorId);
                 dest.writeString(goodsStandard);
+                dest.writeInt(goodsStandardId);
                 dest.writeInt(goodsCount);
                 dest.writeInt(memberId);
                 dest.writeInt(shopId);

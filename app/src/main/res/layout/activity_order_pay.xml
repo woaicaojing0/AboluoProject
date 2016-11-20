@@ -32,6 +32,7 @@
                 android:text="支付" />
         </RelativeLayout>
     </android.support.v7.widget.Toolbar>
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="54dp"
@@ -45,12 +46,14 @@
             android:layout_height="wrap_content"
             android:text="支付金额"/>
         <TextView
+            android:id="@+id/txt_lastpaymoeny"
             android:layout_alignParentRight="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/btn_color"
             android:text="￥180.0"/>
     </RelativeLayout>
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="54dp"
@@ -75,22 +78,23 @@
         android:paddingLeft="16dp"
         android:paddingRight="16dp">
         <RadioButton
-            android:text="1"
+            android:button="@null"
+            android:background="@null"
+            android:text="支付宝支付(默认)"
+            android:checked="true"
             android:layout_width="match_parent"
             android:layout_height="54dp"
             android:layout_marginTop="4dp"/>
         <RadioButton
-            android:text="1"
-            android:layout_width="match_parent"
-            android:layout_height="54dp"
-            android:layout_marginTop="4dp"/>
-        <RadioButton
-            android:text="1"
+            android:button="@null"
+            android:background="@null"
+            android:text="微信支付"
             android:layout_width="match_parent"
             android:layout_height="54dp"
             android:layout_marginTop="4dp"/>
     </RadioGroup>
     <Button
+        android:id="@+id/sure_pay"
         android:layout_marginTop="16dp"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"

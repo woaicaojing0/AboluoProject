@@ -1069,11 +1069,13 @@ public class GoodsDetailActivity extends Activity implements View.OnClickListene
                     map.put("goodsId", String.valueOf(goods_id));
                     if (radioButton != null) {
                         map.put("goodsColor", radioButton.getText().toString());
+                        map.put("goodsColorId", String.valueOf(radioButton.getId()));
                     } else {
                         map.put("goodsColor", "无");
                     }
                     if (radioButton2 != null) {
                         map.put("goodsStandard", radioButton2.getText().toString());
+                        map.put("goodsStandardId", String.valueOf(radioButton2.getId()));
                     } else {
                         map.put("goodsStandard", "无");
                     }
@@ -1081,6 +1083,7 @@ public class GoodsDetailActivity extends Activity implements View.OnClickListene
                     map.put("memberId", "1");
                     map.put("shopId", "1");
                     map.put("APPToken", APPToken);
+
                     return map;
 
                 }

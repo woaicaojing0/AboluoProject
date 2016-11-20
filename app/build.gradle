@@ -66,4 +66,5 @@ dependencies {
     compile 'com.r0adkll:slidableactivity:2.0.5'
     compile 'com.jakewharton:butterknife:7.0.1'
     compile 'com.leo.gesturelibray:GestureLibray:1.1.1'
+    compile project(path: ':sdk')
 }

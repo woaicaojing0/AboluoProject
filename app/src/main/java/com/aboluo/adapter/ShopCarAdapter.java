@@ -190,16 +190,16 @@ public class ShopCarAdapter extends BaseAdapter {
         }
         String result = String.valueOf(mlist.get(position).getGoodsCount());
         holder.etAmount.setText(String.valueOf(mlist.get(position).getGoodsCount()));
-
+        holder.etAmount.setEnabled(false);
         holder.maxnum.setText("100");
         holder.textName.setText(mlist.get(position).getGoodsName().toString());
         holder.moeny.setText(String.valueOf(mlist.get(position).getHyPrice()));
         String guige = null;
-        if (mlist.get(position).getGoodsStandard() != null) {
-            guige = "尺寸：" + mlist.get(position).getGoodsStandard();
-        }
         if (mlist.get(position).getGoodsColor() != null) {
-            guige = guige + " " + "颜色：" + mlist.get(position).getGoodsColor();
+            guige = "颜色：" + mlist.get(position).getGoodsColor();
+        }
+        if (mlist.get(position).getGoodsStandard() != null) {
+            guige = guige + " " +"尺寸：" + mlist.get(position).getGoodsStandard();
         }
         if (guige == null) {
             holder.shopcar_standards.setText("无");
@@ -208,13 +208,14 @@ public class ShopCarAdapter extends BaseAdapter {
         }
         //   holder.old_money.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG);
         holder.shopcar_old_price.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG);
-        holder.shopcar_old_price.setText("￥" + String.valueOf(mlist.get(position).getGoodsPrice()));
+        holder.shopcar_old_price.setText("￥" + String.valueOf(mlist.get(position).getHyPrice()));
         if (mlist.get(position).getGoodsLogo() == null) {
         } else {
             String[] imges = mlist.get(position).getGoodsLogo().toString().split(";");
             Picasso.with(mcontext).load(ImgeURL + imges[0]).placeholder(mcontext.getResources().getDrawable(R.drawable.imagviewloading))
                     .error(mcontext.getResources().getDrawable(R.drawable.imageview_error))
                     .into(holder.shopcar_image);
+        }
             final ViewHolder finalHolder = holder;
             holder.ck_buy.setChecked(mckckisselected.get(position));
             holder.ck_by_linelayout.setTag(position);
@@ -223,7 +224,7 @@ public class ShopCarAdapter extends BaseAdapter {
             holder.etAmount.setTag(position);
             holder.shopcar_image.setTag(position);
             holder.shopcar_standards.setTag(position);
-        }
+
         return convertView;
     }
 

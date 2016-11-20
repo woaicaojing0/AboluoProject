@@ -63,10 +63,14 @@ import com.aboluo.model.ShopCarBean.ResultBean.*;
 import com.handmark.pulltorefresh.library.PullToRefreshListView;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.picasso.Picasso;
+import com.switfpass.pay.bean.MchBean;
 import com.tandong.bottomview.view.BottomView;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
 
+import com.aboluo.model.GoodsDetailInfo.ResultBean.GoodsInfoBean.GoodsColorStandardListBean;
+import com.aboluo.model.GoodsDetailInfo.ResultBean.GoodsInfoBean.GoodsColorBean;
+import com.aboluo.model.GoodsDetailInfo.ResultBean.GoodsInfoBean.GoodsStandardsBean;
 /**
  * Created by cj34920 on 2016/9/8.
  */
@@ -110,6 +114,7 @@ public class ShopCarFragment extends Fragment implements View.OnClickListener {
     private Button go_shoipping; //购物车没有信息是，去逛逛按钮
     private Button btn_push; //结算按钮
     private ArrayList<GoodsShoppingCartListBean> OrderSureList; //最终到下单页的数据
+    private TextView car_goods_detail_type_txtmoney; //修改bottomview 中的商品价格
     @Override
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -266,7 +271,7 @@ public class ShopCarFragment extends Fragment implements View.OnClickListener {
                     requestQueue.add(stringRequest);
                 }
                 break;
-            case R.id.goods_type_ok: //修改商品规格按钮
+            case R.id.car_goods_type_ok: //修改商品规格按钮
                 if (bottom_view == null) {
                 } else {
                     final int position = Integer.valueOf(store_postion.getText().toString());
@@ -286,11 +291,22 @@ public class ShopCarFragment extends Fragment implements View.OnClickListener {
                             if (updateShopInfoBean.isIsSuccess()) {
                                 if (radioColor == null) {
                                     goodsShoppingCartListBean.get(position).setGoodsStandard(radioStandards.getText().toString());
+                                    goodsShoppingCartListBean.get(position).setGoodsStandardId(radioStandards.getId());
                                 } else if (radioStandards == null) {
                                     goodsShoppingCartListBean.get(position).setGoodsColor(radioColor.getText().toString());
+                                    goodsShoppingCartListBean.get(position).setGoodsColorId(radioColor.getId());
                                 } else {
                                     goodsShoppingCartListBean.get(position).setGoodsStandard(radioStandards.getText().toString());
                                     goodsShoppingCartListBean.get(position).setGoodsColor(radioColor.getText().toString());
+                                    goodsShoppingCartListBean.get(position).setGoodsStandardId(radioStandards.getId());
+                                    goodsShoppingCartListBean.get(position).setGoodsStandardId(radioColor.getId());
+                                }
+                                List<GoodsStandardsBean> listStandard = goodsDetailInfo.getResult().getGoodsInfo().getGoodsStandards();
+                                for (int i = 0; i < listStandard.size(); i++) {
+                                    if (listStandard.get(i).getGoodsStandardId() == radioStandards.getId()) {
+                                        goodsShoppingCartListBean.get(position).setHyPrice(Double.valueOf(listStandard.get(i).getHyPrice()));
+
+                                    }
                                 }
                                 carAdapter.notifyDataSetChanged();
                                 bottomView.dismissBottomView();
@@ -313,13 +329,17 @@ public class ShopCarFragment extends Fragment implements View.OnClickListener {
                             map.put("goodsId", String.valueOf(goodsid));
                             if (radioColor == null) {
                                 map.put("goodsStandard", radioStandards.getText().toString());
+                                map.put("goodsStandardId",String.valueOf(radioStandards.getId()));
                                 map.put("goodsColor", "");
                             } else if (radioStandards == null) {
                                 map.put("goodsColor", radioColor.getText().toString());
+                                map.put("goodsColorId", String.valueOf(radioColor.getId()));
                                 map.put("goodsStandard", "");
                             } else {
                                 map.put("goodsStandard", radioStandards.getText().toString());
+                                map.put("goodsStandardId",String.valueOf(radioStandards.getId()));
                                 map.put("goodsColor", radioColor.getText().toString());
+                                map.put("goodsColorId", String.valueOf(radioColor.getId()));
                             }
                             map.put("goodsCount", String.valueOf(count));
                             map.put("memberId", "1");
@@ -346,9 +366,14 @@ public class ShopCarFragment extends Fragment implements View.OnClickListener {
                         OrderSureList.add(goodsShoppingCartListBean.get(i));
                     }
                 }
-                intent.putExtra("allmoney",shopcar_allmoney.getText().toString());
-                intent.putExtra("data", OrderSureList);
-                startActivity(intent);
+                if(OrderSureList.size()==0)
+                {
+                    Toast.makeText(context, "请选择需要结算的商品", Toast.LENGTH_SHORT).show();
+                }else {
+                    intent.putExtra("allmoney", shopcar_allmoney.getText().toString());
+                    intent.putExtra("data", OrderSureList);
+                    startActivity(intent);
+                }
                 break;
         }
     }
@@ -380,7 +405,7 @@ public class ShopCarFragment extends Fragment implements View.OnClickListener {
             public void onResponse(String response) {
                 response = response.replace("\\", "");
                 response = response.substring(1, response.length() - 1);
-//                Log.i("woaicaojingshopcar",response);
+                Log.i("woaicaojingshopcar",response);
                 Gson gson = new Gson();
                 ShopCarBean shopCarBean = gson.fromJson(response, ShopCarBean.class);
                 if (shopCarBean.isIsSuccess()) {
@@ -445,7 +470,9 @@ public class ShopCarFragment extends Fragment implements View.OnClickListener {
                         final int id = goodsShoppingCartListBean.get(position).getId();
                         final int goodsid = goodsShoppingCartListBean.get(position).getGoodsId();
                         final String goodscolor = goodsShoppingCartListBean.get(position).getGoodsColor();
+                        final String goodscolorid = String.valueOf(goodsShoppingCartListBean.get(position).getGoodsColorId());
                         final String goodsstandards = goodsShoppingCartListBean.get(position).getGoodsStandard();
+                        final String goodsstandardsid = String.valueOf(goodsShoppingCartListBean.get(position).getGoodsStandardId());
                         final String count = String.valueOf(goodsShoppingCartListBean.get(position).getGoodsCount());
                         final int finalNum = num;
                         StringRequest stringRequest2 = new StringRequest(Request.Method.POST, URL + "/api/GoodsShoppingCart/ReceiveAddOrUpdateGoodsShoppingCart", new Response.Listener<String>() {
@@ -459,6 +486,7 @@ public class ShopCarFragment extends Fragment implements View.OnClickListener {
                                 if (updateShopInfoBean.isIsSuccess()) {
                                     goodsShoppingCartListBean.get(position).setGoodsCount(finalNum);
                                     carAdapter.notifyDataSetChanged();
+                                    Toast.makeText(context, updateShopInfoBean.getMessage().toString(), Toast.LENGTH_SHORT).show();
                                 } else {
                                     Toast.makeText(context, updateShopInfoBean.getMessage().toString(), Toast.LENGTH_SHORT).show();
                                 }
@@ -475,7 +503,9 @@ public class ShopCarFragment extends Fragment implements View.OnClickListener {
                                 map.put("Id", String.valueOf(id));
                                 map.put("goodsId", String.valueOf(goodsid));
                                 map.put("goodsColor", goodscolor);
+                                map.put("goodsColorId", goodscolorid);
                                 map.put("goodsStandard", goodsstandards);
+                                map.put("goodsStandardId", goodsstandardsid);
                                 map.put("goodsCount", String.valueOf(finalNum));
                                 map.put("memberId", "1");
                                 map.put("shopId", "1");
@@ -499,7 +529,9 @@ public class ShopCarFragment extends Fragment implements View.OnClickListener {
                             final int id = goodsShoppingCartListBean.get(position).getId();
                             final int goodsid = goodsShoppingCartListBean.get(position).getGoodsId();
                             final String goodscolor = goodsShoppingCartListBean.get(position).getGoodsColor();
+                            final String goodscolorid = String.valueOf(goodsShoppingCartListBean.get(position).getGoodsColorId());
                             final String goodsstandards = goodsShoppingCartListBean.get(position).getGoodsStandard();
+                            final String goodsstandardsid = String.valueOf(goodsShoppingCartListBean.get(position).getGoodsStandardId());
                             final String count = String.valueOf(goodsShoppingCartListBean.get(position).getGoodsCount());
                             final int finalNum = num;
                             StringRequest stringRequest2 = new StringRequest(Request.Method.POST, URL + "/api/GoodsShoppingCart/ReceiveAddOrUpdateGoodsShoppingCart", new Response.Listener<String>() {
@@ -513,6 +545,7 @@ public class ShopCarFragment extends Fragment implements View.OnClickListener {
                                     if (updateShopInfoBean.isIsSuccess()) {
                                         goodsShoppingCartListBean.get(position).setGoodsCount(finalNum);
                                         carAdapter.notifyDataSetChanged();
+                                        Toast.makeText(context, updateShopInfoBean.getMessage().toString(), Toast.LENGTH_SHORT).show();
                                     } else {
                                         Toast.makeText(context, updateShopInfoBean.getMessage().toString(), Toast.LENGTH_SHORT).show();
                                     }
@@ -529,7 +562,9 @@ public class ShopCarFragment extends Fragment implements View.OnClickListener {
                                     map.put("Id", String.valueOf(id));
                                     map.put("goodsId", String.valueOf(goodsid));
                                     map.put("goodsColor", goodscolor);
+                                    map.put("goodsColorId", goodscolorid);
                                     map.put("goodsStandard", goodsstandards);
+                                    map.put("goodsStandardId", goodsstandardsid);
                                     map.put("goodsCount", String.valueOf(finalNum));
                                     map.put("memberId", "1");
                                     map.put("shopId", "1");
@@ -607,7 +642,7 @@ public class ShopCarFragment extends Fragment implements View.OnClickListener {
             if (hasFocus) {
             } else {
                 EditText editText = (EditText) v;
-                Toast.makeText(context, editText.getText().toString(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, editText.getText().toString()+"暂时不能修改", Toast.LENGTH_SHORT).show();
             }
         }
     };
@@ -677,14 +712,15 @@ public class ShopCarFragment extends Fragment implements View.OnClickListener {
      * @param view 底部弹出的布局
      */
     private void inittype(View view, int goods_id, String color, String standards, int postion) {
-        all_color = (LinearLayout) view.findViewById(R.id.all_color);
-        all_standards = (LinearLayout) view.findViewById(R.id.all_standards);
-        goods_detail_type_imageview = (ImageView) view.findViewById(R.id.goods_detail_type_imageview);
-        goodsdetail_type_color = (MyRadioGroup) view.findViewById(R.id.goodsdetail_type_color);
-        goodsdetail_type_standards = (MyRadioGroup) view.findViewById(R.id.goodsdetail_type_standards);
-        goods_type_ok = (LinearLayout) view.findViewById(R.id.goods_type_ok);
+        all_color = (LinearLayout) view.findViewById(R.id.car_all_color);
+        all_standards = (LinearLayout) view.findViewById(R.id.car_all_standards);
+        goods_detail_type_imageview = (ImageView) view.findViewById(R.id.car_goods_detail_type_imageview);
+        goodsdetail_type_color = (MyRadioGroup) view.findViewById(R.id.car_goodsdetail_type_color);
+        goodsdetail_type_standards = (MyRadioGroup) view.findViewById(R.id.car_goodsdetail_type_standards);
+        goods_type_ok = (LinearLayout) view.findViewById(R.id.car_goods_type_ok);
         goods_type_ok.setOnClickListener(this);
         store_postion = (TextView) view.findViewById(R.id.store_postion);
+        car_goods_detail_type_txtmoney = (TextView) view.findViewById(R.id.car_goods_detail_type_txtmoney);
         store_postion.setText(String.valueOf(postion));
         getgoods_detail(goods_id, color, standards);
     }
@@ -704,9 +740,14 @@ public class ShopCarFragment extends Fragment implements View.OnClickListener {
                 goodsDetailInfo = gson.fromJson(response, GoodsDetailInfo.class);
                 List<GoodsDetailInfo.ResultBean.GoodsInfoBean.GoodsColorBean> listcolor = goodsDetailInfo.getResult().getGoodsInfo().getGoodsColor();
                 List<GoodsDetailInfo.ResultBean.GoodsInfoBean.GoodsStandardsBean> listStandard = goodsDetailInfo.getResult().getGoodsInfo().getGoodsStandards();
+                List<GoodsColorStandardListBean> listcolorstandards = goodsDetailInfo.getResult().getGoodsInfo().getGoodsColorStandardList();
                 String imageurl = goodsDetailInfo.getResult().getGoodsInfo().getGoodsLogo();
-                String[] imageurls = imageurl.split(";");
-                Log.i("woaicaojinggoodstype", imageurls[0]);
+                if (goodsDetailInfo.getResult().getGoodsInfo().getGoodsLogo() == null) {
+                } else {
+                    String[] imageurls = imageurl.split(";");
+                    Log.i("woaicaojinggoodstype", imageurls[0]);
+                }
+
                 if (listcolor == null) {
                     all_color.setVisibility(View.GONE);
                 } else {
@@ -714,7 +755,7 @@ public class ShopCarFragment extends Fragment implements View.OnClickListener {
                         all_color.setVisibility(View.GONE);
                     } else {
                         hascolor = true;
-                        CreateColor(listcolor, color);
+                        CreateColor(listcolor, color,listcolorstandards,listStandard);
                     }
                 }
                 if (listStandard == null) {
@@ -724,7 +765,7 @@ public class ShopCarFragment extends Fragment implements View.OnClickListener {
                         all_standards.setVisibility(View.GONE);
                     } else {
                         hasstandards = true;
-                        CreateStandards(listStandard, standards);
+                        CreateStandards(listStandard,listcolorstandards,listcolor,standards);
                     }
                 }
 
@@ -751,7 +792,7 @@ public class ShopCarFragment extends Fragment implements View.OnClickListener {
      *
      * @param listcolor List<GoodsColorBean></>
      */
-    private void CreateColor(final List<GoodsDetailInfo.ResultBean.GoodsInfoBean.GoodsColorBean> listcolor, String color) {
+    private void CreateColor(final List<GoodsColorBean> listcolor,  String color,final List<GoodsColorStandardListBean> listcolorstandard, final List<GoodsStandardsBean> liststandards) {
 
         int num = listcolor.size() / 5;
         int yushu = listcolor.size() % 5;
@@ -772,15 +813,59 @@ public class ShopCarFragment extends Fragment implements View.OnClickListener {
                 button.setTextColor(csl);
                 button.setLayoutParams(layoutParams);
                 button.setText(listcolor.get(i2).getColor());
-                button.setId(i2);
+                button.setId(listcolor.get(i2).getGoodsColorId());
                 final int finalI = i2;
                 button.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        boolean ischeck =false;
+                        if(v.getTag() == null) {
+                            v.setTag(true);
+                        }else {
+                            ischeck = (boolean) v.getTag();
+                        }
+                        int colorid = v.getId();
                         goods_type_imgeurl = ImgUrl + listcolor.get(finalI).getColorImg();
                         Log.i("woaicaojing", goods_type_imgeurl);
                         Log.i("woaicaojing + picURl", ImgUrl + listcolor.get(finalI).getColorImg());
                         Picasso.with(context).load(ImgUrl + listcolor.get(finalI).getColorImg()).placeholder(getResources().getDrawable(R.drawable.imagviewloading)).into(goods_detail_type_imageview);
+                        RadioButton radioButton = (RadioButton)bottom_view.findViewById(v.getId());
+                        Toast.makeText(context, radioButton.getText().toString(), Toast.LENGTH_SHORT).show();
+                        if(listcolorstandard == null)
+                        {}else {
+                            RadioButton checkRadioButton = (RadioButton)bottom_view.findViewById(goodsdetail_type_standards.getCheckedRadioButtonId());
+                            List<Integer> listStandard = new ArrayList<Integer>();
+                            for (int i = 0; i < listcolorstandard.size(); i++) {
+                                if (listcolorstandard.get(i).getGoodsColorId() == colorid) {
+                                    listStandard.add(listcolorstandard.get(i).getGoodsStandardId());
+                                }
+                            }
+                            for (int i = 0; i < liststandards.size(); i++) {
+                                boolean isshow = false;
+                                for (int i1 = 0; i1 < listStandard.size(); i1++) {
+                                    if (liststandards.get(i).getGoodsStandardId() == listStandard.get(i1)) {
+                                        isshow = true;
+                                    }
+                                }
+                                if (!isshow) {
+                                    RadioButton radioButton1 = (RadioButton)bottom_view.findViewById(liststandards.get(i).getGoodsStandardId());
+                                    radioButton1.setEnabled(false);
+                                } else {
+                                    RadioButton radioButton1 = (RadioButton)bottom_view.findViewById(liststandards.get(i).getGoodsStandardId());
+                                    radioButton1.setEnabled(true);
+                                }
+                            }
+                        }
+
+//                        if(ischeck ==false)
+//                        {
+//                            ((RadioButton) v).setChecked(true);
+//                            v.setTag(true);
+//                        }else
+//                        {
+//                            ((RadioButton) v).setChecked(false);
+//                            v.setTag(false);
+//                        }
 
                     }
                 });
@@ -794,17 +879,17 @@ public class ShopCarFragment extends Fragment implements View.OnClickListener {
         } else {
             if (yushu == 0) {
                 for (int i = 0; i < num; i++) {
-                    CreateRadioButtonToColor(i, 5, listcolor, color);
+                    CreateRadioButtonToColor(i, 5, listcolor,listcolorstandard,liststandards,color);
                 }
 
             } else {
                 num = num + 1;
                 for (int i = 0; i < num; i++) {
                     if (i == (num - 1)) {
-                        CreateRadioButtonToColor(i, yushu, listcolor, color);
+                        CreateRadioButtonToColor(i, yushu, listcolor,listcolorstandard,liststandards,color);
 
                     } else {
-                        CreateRadioButtonToColor(i, 5, listcolor, color);
+                        CreateRadioButtonToColor(i, 5, listcolor,listcolorstandard,liststandards,color);
                     }
 
                 }
@@ -818,17 +903,17 @@ public class ShopCarFragment extends Fragment implements View.OnClickListener {
      *
      * @param liststandards List<GoodsStandardsBean></>
      */
-    private void CreateStandards(List<GoodsDetailInfo.ResultBean.GoodsInfoBean.GoodsStandardsBean> liststandards, String standards) {
+    private void CreateStandards(final List<GoodsDetailInfo.ResultBean.GoodsInfoBean.GoodsStandardsBean> liststandards, final List<GoodsColorStandardListBean> listcolorstandard, final List<GoodsColorBean> listcolor,String standards) {
 
         int num = liststandards.size() / 5;
         int yushu = liststandards.size() % 5;
         if (num == 0) {
-            LinearLayout linearLayout = new LinearLayout(context);
+            final LinearLayout linearLayout = new LinearLayout(context);
             linearLayout.setOrientation(LinearLayout.HORIZONTAL);
             linearLayout.setGravity(Gravity.CENTER_VERTICAL);
             linearLayout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, CommonUtils.dip2px(context, 54)));
             for (int i2 = 0; i2 < liststandards.size(); i2++) {
-                RadioButton button = new RadioButton(context);
+                final RadioButton button = new RadioButton(context);
                 LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(popwith / 5, CommonUtils.dip2px(context, 50));
                 layoutParams.setMargins(CommonUtils.dip2px(context, 10), 0, 0, 0);
                 button.setBackground(getResources().getDrawable(R.drawable.rdobtn_selecter));
@@ -839,34 +924,69 @@ public class ShopCarFragment extends Fragment implements View.OnClickListener {
                 button.setTextColor(csl);
                 button.setLayoutParams(layoutParams);
                 button.setText(liststandards.get(i2).getStandard());
-                button.setId(100 + i2);
+                button.setId(liststandards.get(i2).getGoodsStandardId());
                 final int finalI = i2;
                 button.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        int standardsId = v.getId();
+                        RadioButton checkRadioButton = (RadioButton)bottom_view.findViewById(goodsdetail_type_color.getCheckedRadioButtonId());
+                        List<Integer> listcolorInt = new ArrayList<Integer>();
+                        if(listcolorstandard == null)
+                        {}else {
+                            for (int i = 0; i < listcolorstandard.size(); i++) {
+                                if (listcolorstandard.get(i).getGoodsStandardId() == standardsId) {
+                                    listcolorInt.add(listcolorstandard.get(i).getGoodsColorId());
+                                }
+                            }
+                            for (int i = 0; i < listcolor.size(); i++) {
+                                boolean isshow = false;
+                                for (int i1 = 0; i1 < listcolorInt.size(); i1++) {
+                                    if (listcolor.get(i).getGoodsColorId() == listcolorInt.get(i1)) {
+                                        isshow = true;
+                                    }
+                                }
+                                if (!isshow) {
+                                    RadioButton radioButton1 = (RadioButton)bottom_view.findViewById(listcolor.get(i).getGoodsColorId());
+                                    radioButton1.setEnabled(false);
+                                } else {
+                                    RadioButton radioButton1 = (RadioButton)bottom_view.findViewById(listcolor.get(i).getGoodsColorId());
+                                    ColorStateList csl = getResources().getColorStateList(R.color.radio_text_selector);
+                                    radioButton1.setTextColor(csl);
+                                    radioButton1.setEnabled(true);
+                                }
+                            }
+                            List<GoodsStandardsBean> goodsStandardsBean = goodsDetailInfo.getResult().getGoodsInfo().getGoodsStandards();
+                            for (int i = 0; i < goodsStandardsBean.size(); i++) {
+                                if (goodsStandardsBean.get(i).getGoodsStandardId() == standardsId) {
+                                    car_goods_detail_type_txtmoney.setText("会员价：￥" + String.valueOf(goodsStandardsBean.get(i).getHyPrice()) + "元");
+                                }
+                            }
+                        }
+
                     }
                 });
-                if (standards.equals(liststandards.get(i2).getStandard())) {
+                linearLayout.addView(button);
+                if (listcolor.get(i2).getColor().equals(standards)) {
                     button.setChecked(true);
                 } else {
                 }
-                linearLayout.addView(button);
             }
             goodsdetail_type_standards.addView(linearLayout);
         } else {
             if (yushu == 0) {
                 for (int i = 0; i < num; i++) {
-                    CreateRadioButtonToStandards(i, 5, liststandards, standards);
+                    CreateRadioButtonToStandards(i, 5, liststandards,listcolorstandard,listcolor,standards);
                 }
 
             } else {
                 num = num + 1;
                 for (int i = 0; i < num; i++) {
                     if (i == (num - 1)) {
-                        CreateRadioButtonToStandards(i, yushu, liststandards, standards);
+                        CreateRadioButtonToStandards(i, yushu, liststandards,listcolorstandard,listcolor,standards);
 
                     } else {
-                        CreateRadioButtonToStandards(i, 5, liststandards, standards);
+                        CreateRadioButtonToStandards(i, 5, liststandards,listcolorstandard,listcolor,standards);
                     }
 
                 }
@@ -874,8 +994,7 @@ public class ShopCarFragment extends Fragment implements View.OnClickListener {
 
         }
     }
-
-    private void CreateRadioButtonToColor(int i, int num, final List<GoodsDetailInfo.ResultBean.GoodsInfoBean.GoodsColorBean> listcolor, String color) {
+    private void CreateRadioButtonToColor(int i, int num, final List<GoodsColorBean> listcolor, final List<GoodsColorStandardListBean> listcolorstandard, final List<GoodsStandardsBean> liststandards, final String color) {
         LinearLayout linearLayout = new LinearLayout(context);
         linearLayout.setOrientation(LinearLayout.HORIZONTAL);
         linearLayout.setGravity(Gravity.CENTER_VERTICAL);
@@ -891,21 +1010,65 @@ public class ShopCarFragment extends Fragment implements View.OnClickListener {
             button.setTextColor(csl);
             button.setGravity(Gravity.CENTER);
             button.setLayoutParams(layoutParams);
-            button.setId((5 * i) + i2);
+            button.setId((listcolor.get((5 * i) + i2).getGoodsColorId()));
             int i22 = (5 * i) + i2;
             button.setText(listcolor.get((5 * i) + i2).getColor());
             final int finalI = i22;
             button.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    boolean ischeck =false;
+                    if(v.getTag() == null) {
+                        v.setTag(true);
+                    }else {
+                        ischeck = (boolean) v.getTag();
+                    }
+                    int colorid = v.getId();
                     goods_type_imgeurl = ImgUrl + listcolor.get(finalI).getColorImg();
+                    Log.i("woaicaojing", goods_type_imgeurl);
                     Log.i("woaicaojing + picURl", ImgUrl + listcolor.get(finalI).getColorImg());
-                    Toast.makeText(context, finalI + "", Toast.LENGTH_SHORT).show();
                     Picasso.with(context).load(ImgUrl + listcolor.get(finalI).getColorImg()).placeholder(getResources().getDrawable(R.drawable.imagviewloading)).into(goods_detail_type_imageview);
+                    RadioButton radioButton = (RadioButton)bottom_view.findViewById(v.getId());
+                    Toast.makeText(context, radioButton.getText().toString(), Toast.LENGTH_SHORT).show();
+                    if(listcolorstandard == null)
+                    {}else {
+                        RadioButton checkRadioButton = (RadioButton)bottom_view.findViewById(goodsdetail_type_standards.getCheckedRadioButtonId());
+                        List<Integer> listStandard = new ArrayList<Integer>();
+                        for (int i = 0; i < listcolorstandard.size(); i++) {
+                            if (listcolorstandard.get(i).getGoodsColorId() == colorid) {
+                                listStandard.add(listcolorstandard.get(i).getGoodsStandardId());
+                            }
+                        }
+                        for (int i = 0; i < liststandards.size(); i++) {
+                            boolean isshow = false;
+                            for (int i1 = 0; i1 < listStandard.size(); i1++) {
+                                if (liststandards.get(i).getGoodsStandardId() == listStandard.get(i1)) {
+                                    isshow = true;
+                                }
+                            }
+                            if (!isshow) {
+                                RadioButton radioButton1 = (RadioButton)bottom_view.findViewById(liststandards.get(i).getGoodsStandardId());
+                                radioButton1.setEnabled(false);
+                            } else {
+                                RadioButton radioButton1 = (RadioButton)bottom_view.findViewById(liststandards.get(i).getGoodsStandardId());
+                                radioButton1.setEnabled(true);
+                            }
+                        }
+                    }
+
+//                        if(ischeck ==false)
+//                        {
+//                            ((RadioButton) v).setChecked(true);
+//                            v.setTag(true);
+//                        }else
+//                        {
+//                            ((RadioButton) v).setChecked(false);
+//                            v.setTag(false);
+//                        }
                 }
             });
             linearLayout.addView(button);
-            if (listcolor.get(i2).getColor().equals(color)) {
+            if (listcolor.get((5 * i) + i2).getColor().equals(color)) {
                 button.setChecked(true);
             } else {
             }
@@ -913,7 +1076,7 @@ public class ShopCarFragment extends Fragment implements View.OnClickListener {
         goodsdetail_type_color.addView(linearLayout);
     }
 
-    private void CreateRadioButtonToStandards(int i, int num, final List<GoodsDetailInfo.ResultBean.GoodsInfoBean.GoodsStandardsBean> liststandards, String standards) {
+    private void CreateRadioButtonToStandards(int i, int num, final List<GoodsStandardsBean> liststandards, final List<GoodsColorStandardListBean> listcolorstandard, final List<GoodsColorBean> listcolor,String standards) {
         LinearLayout linearLayout = new LinearLayout(context);
         linearLayout.setOrientation(LinearLayout.HORIZONTAL);
         linearLayout.setGravity(Gravity.CENTER_VERTICAL);
@@ -929,17 +1092,51 @@ public class ShopCarFragment extends Fragment implements View.OnClickListener {
             button.setTextColor(csl);
             button.setGravity(Gravity.CENTER);
             button.setLayoutParams(layoutParams);
-            button.setId(100 + (5 * i) + i2);
+            button.setId(liststandards.get((5 * i) + i2).getGoodsStandardId());
             int i22 = (5 * i) + i2;
             button.setText(liststandards.get((5 * i) + i2).getStandard());
             final int finalI = i22;
             button.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Toast.makeText(context, finalI + "", Toast.LENGTH_SHORT).show();
+                    int standardsId = v.getId();
+                    RadioButton checkRadioButton = (RadioButton)bottom_view.findViewById(goodsdetail_type_color.getCheckedRadioButtonId());
+                    List<Integer> listcolorInt = new ArrayList<Integer>();
+                    if(listcolorstandard == null)
+                    {}else {
+                        for (int i = 0; i < listcolorstandard.size(); i++) {
+                            if (listcolorstandard.get(i).getGoodsStandardId() == standardsId) {
+                                listcolorInt.add(listcolorstandard.get(i).getGoodsColorId());
+                            }
+                        }
+                        for (int i = 0; i < listcolor.size(); i++) {
+                            boolean isshow = false;
+                            for (int i1 = 0; i1 < listcolorInt.size(); i1++) {
+                                if (listcolor.get(i).getGoodsColorId() == listcolorInt.get(i1)) {
+                                    isshow = true;
+                                }
+                            }
+                            if (!isshow) {
+                                RadioButton radioButton1 = (RadioButton)bottom_view.findViewById(listcolor.get(i).getGoodsColorId());
+                                radioButton1.setEnabled(false);
+                            } else {
+                                RadioButton radioButton1 = (RadioButton)bottom_view.findViewById(listcolor.get(i).getGoodsColorId());
+                                ColorStateList csl = getResources().getColorStateList(R.color.radio_text_selector);
+                                radioButton1.setTextColor(csl);
+                                radioButton1.setEnabled(true);
+                            }
+                        }
+                        List<GoodsStandardsBean> goodsStandardsBean = goodsDetailInfo.getResult().getGoodsInfo().getGoodsStandards();
+                        for (int i = 0; i < goodsStandardsBean.size(); i++) {
+                            if (goodsStandardsBean.get(i).getGoodsStandardId() == standardsId) {
+                                car_goods_detail_type_txtmoney.setText("会员价：￥" + String.valueOf(goodsStandardsBean.get(i).getHyPrice()) + "元");
+
+                            }
+                        }
+                    }
                 }
             });
-            if (standards.equals(liststandards.get(i2).getStandard())) {
+            if (standards.equals(liststandards.get((5 * i) + i2).getStandard())) {
                 button.setChecked(true);
             } else {
             }
@@ -948,4 +1145,10 @@ public class ShopCarFragment extends Fragment implements View.OnClickListener {
         goodsdetail_type_standards.addView(linearLayout);
     }
 
+    @Override
+    public void onResume() {
+        super.onPause();
+//        Toast.makeText(context, "暂停结束了", Toast.LENGTH_SHORT).show();
+        initshopcar();
+    }
 }

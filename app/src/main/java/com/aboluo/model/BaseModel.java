@@ -15,7 +15,7 @@ public class BaseModel {
     private boolean IsSuccess;
     private String Message;
     private Object Result;
-
+    private String OrderSerialId;
     public boolean isIsSuccess() {
         return IsSuccess;
     }
@@ -38,5 +38,13 @@ public class BaseModel {
 
     public void setResult(Object Result) {
         this.Result = Result;
+    }
+
+    public String getOrderSerialId() {
+        return OrderSerialId;
+    }
+
+    public void setOrderSerialId(String orderSerialId) {
+        OrderSerialId = orderSerialId;
     }
 }

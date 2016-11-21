@@ -193,10 +193,20 @@ public class MakeOrderActivity extends Activity implements View.OnClickListener 
         for (int i = 0; i < goodsShoppingCartListBean.size(); i++) {
             OrderInfoBean bean1 = new OrderInfoBean();
             bean1.setGoodsId(goodsShoppingCartListBean.get(i).getGoodsId());
-            bean1.setGoodsColor(goodsShoppingCartListBean.get(i).getGoodsColor());
+            if(goodsShoppingCartListBean.get(i).getGoodsColor().equals("无"))
+            {
+                bean1.setGoodsColor("");
+            }else {
+                bean1.setGoodsColor(goodsShoppingCartListBean.get(i).getGoodsColor());
+            }
             bean1.setGoodsColorId(goodsShoppingCartListBean.get(i).getGoodsColorId());
             bean1.setGoodsStandardId(goodsShoppingCartListBean.get(i).getGoodsStandardId());
-            bean1.setGoodsStandard(goodsShoppingCartListBean.get(i).getGoodsStandard());
+            if(goodsShoppingCartListBean.get(i).getGoodsStandard().equals("无"))
+            {
+                bean1.setGoodsStandard("");
+            }else {
+                bean1.setGoodsStandard(goodsShoppingCartListBean.get(i).getGoodsStandard());
+            }
             bean1.setGoodsQuantity(goodsShoppingCartListBean.get(i).getGoodsCount());
             bean1.setFreight(goodsShoppingCartListBean.get(i).getYunfei());
             bean.add(bean1);
@@ -262,7 +272,6 @@ public class MakeOrderActivity extends Activity implements View.OnClickListener 
         if (data == null) {
         } else {
             String backactivity = data.getStringExtra("back");
-
             if (backactivity.equals("OrderPay")) {
                 this.finish();
             }

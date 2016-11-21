@@ -198,6 +198,28 @@
                 android:hint="请输入6位邮政编码"
                 android:background="@null"/>
     </LinearLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:orientation="horizontal"
+        android:background="@color/white"
+        android:layout_marginTop="16dp">
+
+
+        <TextView
+            android:layout_marginLeft="21dp"
+            android:layout_width="wrap_content"
+            android:gravity="center"
+            android:layout_height="match_parent"
+            android:text="设为默认地址" />
+
+        <Switch
+            android:id="@+id/swtich_isdefult"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="16dp"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent" />
+    </RelativeLayout>
     <Button
         android:enabled="false"
         android:id="@+id/add_address_save"

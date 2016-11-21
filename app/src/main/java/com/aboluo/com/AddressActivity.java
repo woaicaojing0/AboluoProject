@@ -51,6 +51,7 @@ public class AddressActivity extends Activity implements View.OnClickListener {
     private SweetAlertDialog baseaAlertDialog;
     private AddressAdapter addressAdapter;
     private List<AddressInfoBean.ResultBean.MemberAddressListBean> listbean;
+    private boolean IsPause = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -273,5 +274,19 @@ public class AddressActivity extends Activity implements View.OnClickListener {
             }
         };
         requestQueue.add(stringRequest);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (IsPause) {
+            initdata();
+        }else {}
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        IsPause=true;
     }
 }

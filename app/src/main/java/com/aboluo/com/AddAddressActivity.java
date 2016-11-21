@@ -67,6 +67,7 @@ public class AddAddressActivity extends Activity implements TextWatcher, View.On
     private int model=0;// 默认是保存模式，1代表是编辑模式
     private AddressInfoBean.ResultBean.MemberAddressListBean  memberAddressListBean;
     private Gson gson;
+    private Switch swtich_isdefult;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -98,6 +99,7 @@ public class AddAddressActivity extends Activity implements TextWatcher, View.On
         txt_street_id = (TextView) findViewById(R.id.txt_street_id);
         txt_allid = (TextView) findViewById(R.id.txt_allid);
         txt_region_id = (TextView) findViewById(R.id.txt_region_id);
+        swtich_isdefult = (Switch) findViewById(R.id.swtich_isdefult);
         if (address_name == null) {
         } else {
             add_address_txtview_location.setText(address_name);
@@ -233,8 +235,14 @@ public class AddAddressActivity extends Activity implements TextWatcher, View.On
         final String allids[] = allsid.split(";");
         final String allname[] = name.split(" ");
         final String address = edit_receive_address.getText().toString();
+        String IsDefault="0";
+        if(swtich_isdefult.isChecked())
+        {
+            IsDefault = "1";
+        }else{}
         sweetAlertDialog.setTitleText("新增中......");
         sweetAlertDialog.show();
+        final String finalIsDefault = IsDefault;
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url + "/api/Order/AddOrUpdateMemeberAddress", new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
@@ -278,7 +286,7 @@ public class AddAddressActivity extends Activity implements TextWatcher, View.On
                 map.put("Street", streename);
                 map.put("StreetId", String.valueOf(streeId));
                 map.put("Address", address);
-                map.put("IsDefault", "0");
+                map.put("IsDefault", finalIsDefault);
                 map.put("ZipCode", ZipCode);
                 map.put("APPToken", APPToken);
                 return map;

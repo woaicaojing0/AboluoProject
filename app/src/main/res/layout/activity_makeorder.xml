@@ -64,6 +64,7 @@
                 android:orientation="vertical">
 
                 <RelativeLayout
+                    android:id="@+id/change_make_sure_location"
                     android:layout_width="match_parent"
                     android:layout_height="60dp"
                     android:layout_marginTop="5dp"

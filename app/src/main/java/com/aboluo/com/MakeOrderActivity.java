@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -59,7 +60,8 @@ public class MakeOrderActivity extends Activity implements View.OnClickListener 
     private String moeny;
     private TextView order_yunfei;
     private double yunfei = 0.0;
-
+    private int choose_address_requestcode =2;
+private RelativeLayout change_make_sure_location;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -73,36 +75,8 @@ public class MakeOrderActivity extends Activity implements View.OnClickListener 
             yunfei = yunfei + goodsShoppingCartListBean.get(i).getYunfei();
         }
         order_yunfei.setText("运费：" + String.valueOf(yunfei));
-//        initialData();
-//        expandableListView = (ExpandableListView) findViewById(R.id.expandableListViewdemo);
-//        expandableListAdapter = new OrderExpendListViewAdapter(dataset,this,parentList);
-//        expandableListView.setAdapter(expandableListAdapter);
-//        for (int i = 0; i < parentList.length; i++) {
-//            expandableListView.expandGroup(i);
-//        }
-//        expandableListView.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
-//            @Override
-//            public boolean onGroupClick(ExpandableListView parent, View v, int groupPosition, long id) {
-//                return true;
-//            }
-//        });
-
+        change_make_sure_location.setOnClickListener(this);
     }
-//    private void initialData() {
-//        childrenList1.add(parentList[0] + "-" + "first");
-//        childrenList1.add(parentList[0] + "-" + "second");
-//        childrenList1.add(parentList[0] + "-" + "third");
-//        childrenList2.add(parentList[1] + "-" + "first");
-//        childrenList2.add(parentList[1] + "-" + "second");
-//        childrenList2.add(parentList[1] + "-" + "third");
-//        childrenList3.add(parentList[2] + "-" + "first");
-//        childrenList3.add(parentList[2] + "-" + "second");
-//        childrenList3.add(parentList[2] + "-" + "third");
-//        dataset.put(parentList[0], childrenList1);
-//        dataset.put(parentList[1], childrenList2);
-//        dataset.put(parentList[2], childrenList3);
-//    }
-
     private void init() {
         txt_allmoney = (TextView) findViewById(R.id.txt_allmoney);
         goods_smallallmoeny = (TextView) findViewById(R.id.goods_smallallmoeny);
@@ -113,6 +87,7 @@ public class MakeOrderActivity extends Activity implements View.OnClickListener 
         edit_remark = (EditText) findViewById(R.id.edit_remark);
         Submit_Order = (Button) findViewById(R.id.Submit_Order);
         order_yunfei = (TextView) findViewById(R.id.order_yunfei);
+        change_make_sure_location = (RelativeLayout) findViewById(R.id.change_make_sure_location);
         requestQueue = MyApplication.getRequestQueue();
         url = CommonUtils.GetValueByKey(this, "apiurl");
         APPToken = CommonUtils.GetValueByKey(this, "APPToken");
@@ -263,6 +238,9 @@ public class MakeOrderActivity extends Activity implements View.OnClickListener 
             case R.id.Submit_Order:
                 SubmitOrder();
                 break;
+            case R.id.change_make_sure_location:
+                Intent intent = new Intent(MakeOrderActivity.this,ChooseAddressActivtiy.class);
+                startActivityForResult(intent,choose_address_requestcode);
         }
     }
 

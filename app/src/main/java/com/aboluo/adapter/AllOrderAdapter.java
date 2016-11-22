@@ -74,9 +74,9 @@ public class AllOrderAdapter extends BaseAdapter {
         holder.txt_order_goodsName.setText(String.valueOf(mlist.get(position).getGoodsName()));
         holder.txt_order_standardandcolor.setText(String.valueOf("颜色分类:" + mlist.get(position).getGoodsColor() +
                 "规格分类："+mlist.get(position).getGoodsStandard()));
-        holder.txt_order_hyprice.setText(String.valueOf(mlist.get(position).getGoodsPrice()));
-        holder.txt_order_yuanprice.setText(String.valueOf(mlist.get(position).getGoodsPrice()));
-        holder.txt_order_goods_num.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG);
+        holder.txt_order_hyprice.setText("￥"+String.valueOf(mlist.get(position).getGoodsPrice()));
+        holder.txt_order_yuanprice.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG);
+        holder.txt_order_yuanprice.setText("￥"+String.valueOf(mlist.get(position).getGoodsPrice()));
         holder.txt_order_goods_num.setText(String.valueOf("X"+String.valueOf(mlist.get(position).getGoodsQuantity())));
         return convertView;
     }

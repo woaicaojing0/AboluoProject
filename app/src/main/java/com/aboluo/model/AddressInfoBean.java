@@ -1,5 +1,8 @@
 package com.aboluo.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.util.List;
 
 /**
@@ -81,7 +84,7 @@ public class AddressInfoBean {
             this.MemberAddressList = MemberAddressList;
         }
 
-        public static class MemberAddressListBean {
+        public static class MemberAddressListBean  implements Parcelable {
             private int Id;
             private int MemberId;
             private String Receiver;
@@ -97,6 +100,36 @@ public class AddressInfoBean {
             private String Address;
             private String ZipCode;
             private int IsDefault;
+
+            protected MemberAddressListBean(Parcel in) {
+                Id = in.readInt();
+                MemberId = in.readInt();
+                Receiver = in.readString();
+                Mobile = in.readString();
+                Province = in.readString();
+                ProvinceId = in.readInt();
+                City = in.readString();
+                CityId = in.readInt();
+                Region = in.readString();
+                RegionId = in.readInt();
+                Street = in.readString();
+                StreetId = in.readInt();
+                Address = in.readString();
+                ZipCode = in.readString();
+                IsDefault = in.readInt();
+            }
+
+            public static final Creator<MemberAddressListBean> CREATOR = new Creator<MemberAddressListBean>() {
+                @Override
+                public MemberAddressListBean createFromParcel(Parcel in) {
+                    return new MemberAddressListBean(in);
+                }
+
+                @Override
+                public MemberAddressListBean[] newArray(int size) {
+                    return new MemberAddressListBean[size];
+                }
+            };
 
             public int getId() {
                 return Id;
@@ -216,6 +249,30 @@ public class AddressInfoBean {
 
             public void setIsDefault(int IsDefault) {
                 this.IsDefault = IsDefault;
+            }
+
+            @Override
+            public int describeContents() {
+                return 0;
+            }
+
+            @Override
+            public void writeToParcel(Parcel dest, int flags) {
+                dest.writeInt(Id);
+                dest.writeInt(MemberId);
+                dest.writeString(Receiver);
+                dest.writeString(Mobile);
+                dest.writeString(Province);
+                dest.writeInt(ProvinceId);
+                dest.writeString(City);
+                dest.writeInt(CityId);
+                dest.writeString(Region);
+                dest.writeInt(RegionId);
+                dest.writeString(Street);
+                dest.writeInt(StreetId);
+                dest.writeString(Address);
+                dest.writeString(ZipCode);
+                dest.writeInt(IsDefault);
             }
         }
     }

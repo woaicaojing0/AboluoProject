@@ -83,16 +83,19 @@ public class MyFragment extends Fragment implements View.OnClickListener {
             case R.id.my_allorder:
                 Intent intent1 = new Intent(MyFragment.this.getActivity(), OrderActivity.class);
                 intent1.putExtra("TAG", 0);
+                intent1.putExtra("status",10);
                 startActivity(intent1);
                 break;
             case R.id.my_nopay:
                 Intent intent2 = new Intent(MyFragment.this.getActivity(), OrderActivity.class);
                 intent2.putExtra("TAG", 1);
+                intent2.putExtra("status",20);
                 startActivity(intent2);
                 break;
             case R.id.my_nosend:
                 Intent intent3 = new Intent(MyFragment.this.getActivity(), OrderActivity.class);
                 intent3.putExtra("TAG", 2);
+                intent3.putExtra("status",30);
                 startActivity(intent3);
                 break;
             case R.id.my_noreceive:

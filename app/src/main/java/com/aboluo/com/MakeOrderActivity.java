@@ -17,6 +17,7 @@ import com.aboluo.XUtils.CommonUtils;
 import com.aboluo.XUtils.MyApplication;
 import com.aboluo.adapter.OrderSureListViewAdapter;
 import com.aboluo.model.AddressDefaultBean;
+import com.aboluo.model.AddressInfoBean;
 import com.aboluo.model.BaseModel;
 import com.aboluo.model.OrderInfoBean;
 import com.aboluo.model.ShopCarBean.ResultBean.GoodsShoppingCartListBean;
@@ -247,12 +248,33 @@ private RelativeLayout change_make_sure_location;
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
-        if (data == null) {
-        } else {
-            String backactivity = data.getStringExtra("back");
-            if (backactivity.equals("OrderPay")) {
-                this.finish();
-            }
+        switch (requestCode) {
+            case 1:
+                if (resultCode ==1) {
+                    this.finish();
+                }
+                    break;
+            case 2:
+                if(resultCode ==2)
+                {
+                    Bundle bundle = data.getExtras();
+                    List<AddressInfoBean.ResultBean.MemberAddressListBean> memberAddressListBean = bundle.getParcelableArrayList("data");
+                    StringBuffer stringBuffer = new StringBuffer();
+                    if (memberAddressListBean.get(0).getProvince().toString().indexOf("省") == -1) {
+                    } else {
+                        stringBuffer.append(memberAddressListBean.get(0).getProvince().toString());
+                    }
+                    stringBuffer.append(memberAddressListBean.get(0).getCity().toString());
+                    stringBuffer.append(memberAddressListBean.get(0).getRegion().toString());
+                    stringBuffer.append(memberAddressListBean.get(0).getStreet().toString());
+                    stringBuffer.append(memberAddressListBean.get(0).getAddress().toString());
+                    address_detailaddress.setText(stringBuffer.toString());
+                    address_name.setText(memberAddressListBean.get(0).getReceiver().toString());
+                    address_phone.setText(memberAddressListBean.get(0).getMobile().toString());
+                }
+                break;
+            default:
+                break;
         }
     }
 }

@@ -1,9 +1,12 @@
 package com.aboluo.com;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -18,11 +21,12 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.google.gson.Gson;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
-
+import com.aboluo.model.AddressInfoBean.ResultBean.MemberAddressListBean;
 /**
  * Created by CJ on 2016/11/21.
  */
@@ -43,6 +47,18 @@ public class ChooseAddressActivtiy  extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_make_sure_choose_address);
         init();
+        listview_choose_address.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+              MemberAddressListBean memberAddressListBean = addressInfoBean.getResult().getMemberAddressList().get(position);
+                Intent intent = new Intent();
+                ArrayList<MemberAddressListBean> memberAddressListBeanlist =new ArrayList<MemberAddressListBean>();
+                memberAddressListBeanlist.add(memberAddressListBean);
+                intent.putExtra("data", memberAddressListBeanlist);
+                setResult(2,intent);
+                finish();
+            }
+        });
     }
 
     private void init() {

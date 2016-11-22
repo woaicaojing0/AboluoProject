@@ -5,8 +5,9 @@
     android:orientation="vertical">
 
     <LinearLayout
+        android:background="#F5f5f5"
         android:layout_width="match_parent"
-        android:layout_height="86dp"
+        android:layout_height="100dp"
         android:orientation="horizontal">
 
         <LinearLayout
@@ -52,6 +53,7 @@
                 android:orientation="vertical">
 
                 <TextView
+                    android:lines="2"
                     android:id="@+id/order_txt_colorStandards"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -67,6 +69,7 @@
                 android:layout_height="wrap_content"
                 android:text="X1"/>
                 <TextView
+                    android:layout_marginRight="8dp"
                     android:id="@+id/order_txt_money"
                     android:layout_alignParentRight="true"
                     android:layout_width="wrap_content"

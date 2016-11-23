@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.aboluo.XUtils.CommonUtils;
@@ -28,7 +29,7 @@ public class AllOrderAdapter extends BaseAdapter {
     private Picasso picasso;
     private String ImageURL;
 
-    public  AllOrderAdapter(Context context, List<OrderListBean> list) {
+    public AllOrderAdapter(Context context, List<OrderListBean> list) {
         this.context = context;
         this.mlist = list;
         this.layoutInflater = LayoutInflater.from(context);
@@ -53,36 +54,59 @@ public class AllOrderAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        ViewHolder holder = null;
+        View contentView =null;
+        ViewHolder2 holder2 = null;
         if (convertView == null) {
-            holder = new ViewHolder();
+
+            holder2 = new ViewHolder2();
             convertView = layoutInflater.inflate(R.layout.fragment_allorder_listview_item, null);
-            holder.image_order_goodsimage = (ImageView) convertView.findViewById(R.id.image_order_goodsimage);
-            holder.txt_order_goodsName = (TextView) convertView.findViewById(R.id.txt_order_goodsName);
-            holder.txt_order_standardandcolor = (TextView) convertView.findViewById(R.id.txt_order_standardandcolor);
-            holder.txt_order_hyprice = (TextView) convertView.findViewById(R.id.txt_order_hyprice);
-            holder.txt_order_yuanprice = (TextView) convertView.findViewById(R.id.txt_order_yuanprice);
-            holder.txt_order_goods_num = (TextView) convertView.findViewById(R.id.txt_order_goods_num);
-            convertView.setTag(holder);
+            holder2.content_view = (LinearLayout) convertView.findViewById(R.id.content_view);
+            convertView.setTag(holder2);
         } else {
-            holder = (ViewHolder) convertView.getTag();
+            holder2 = (ViewHolder2) convertView.getTag();
         }
-        picasso.load(ImageURL + "/" + mlist.get(position).getGoodsLogoUrl())
-                .placeholder(context.getResources().getDrawable(R.drawable.imagviewloading))
-                .into(holder.image_order_goodsimage);
-        Log.i("woaaicaojingallorder",ImageURL + "/" + mlist.get(position).getGoodsLogoUrl());
-        holder.txt_order_goodsName.setText(String.valueOf(mlist.get(position).getGoodsName()));
-        holder.txt_order_standardandcolor.setText(String.valueOf("颜色分类:" + mlist.get(position).getGoodsColor() +
-                "规格分类："+mlist.get(position).getGoodsStandard()));
-        holder.txt_order_hyprice.setText("￥"+String.valueOf(mlist.get(position).getGoodsPrice()));
-        holder.txt_order_yuanprice.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG);
-        holder.txt_order_yuanprice.setText("￥"+String.valueOf(mlist.get(position).getGoodsPrice()));
-        holder.txt_order_goods_num.setText(String.valueOf("X"+String.valueOf(mlist.get(position).getGoodsQuantity())));
+        if(holder2.content_view.getChildCount() >0)
+        {
+            holder2.content_view.removeAllViews();
+        }
+        for (int i = 0; i < mlist.size(); i++) {
+            ViewHolder holder = null;
+            if(holder ==null){
+                holder = new ViewHolder();
+                contentView = layoutInflater.inflate(R.layout.fragment_allorder_content_item, null);
+                holder.image_order_goodsimage = (ImageView) contentView.findViewById(R.id.image_order_goodsimage);
+                holder.txt_order_goodsName = (TextView) contentView.findViewById(R.id.txt_order_goodsName);
+                holder.txt_order_standardandcolor = (TextView) contentView.findViewById(R.id.txt_order_standardandcolor);
+                holder.txt_order_hyprice = (TextView) contentView.findViewById(R.id.txt_order_hyprice);
+                holder.txt_order_yuanprice = (TextView) contentView.findViewById(R.id.txt_order_yuanprice);
+                holder.txt_order_goods_num = (TextView) contentView.findViewById(R.id.txt_order_goods_num);
+                contentView.setTag(holder);
+            }else{
+                holder = (ViewHolder) contentView.getTag();
+            }
+            picasso.load(ImageURL + "/" + mlist.get(i).getGoodsLogoUrl())
+                    .placeholder(context.getResources().getDrawable(R.drawable.imagviewloading))
+                    .into(holder.image_order_goodsimage);
+            Log.i("woaaicaojingallorder", ImageURL + "/" + mlist.get(i).getGoodsLogoUrl());
+            holder.txt_order_goodsName.setText(String.valueOf(mlist.get(i).getGoodsName()));
+            holder.txt_order_standardandcolor.setText(String.valueOf("颜色分类：" + mlist.get(i).getGoodsColor() +
+                    " 规格分类：" + mlist.get(i).getGoodsStandard()));
+            holder.txt_order_hyprice.setText("￥" + String.valueOf(mlist.get(i).getGoodsPrice()));
+            holder.txt_order_yuanprice.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG);
+            holder.txt_order_yuanprice.setText("￥" + String.valueOf(mlist.get(i).getGoodsPrice()));
+            holder.txt_order_goods_num.setText(String.valueOf("X" + String.valueOf(mlist.get(i).getGoodsQuantity())));
+            holder2.content_view.addView(contentView);
+        }
+
         return convertView;
     }
 
     class ViewHolder {
         public TextView txt_order_goodsName, txt_order_hyprice, txt_order_yuanprice, txt_order_standardandcolor, txt_order_goods_num;
         public ImageView image_order_goodsimage;
+    }
+
+    class ViewHolder2 {
+        public LinearLayout content_view;
     }
 }

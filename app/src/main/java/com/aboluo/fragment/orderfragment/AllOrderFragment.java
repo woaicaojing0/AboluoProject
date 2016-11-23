@@ -23,6 +23,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.google.gson.Gson;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -65,11 +66,112 @@ public class AllOrderFragment extends Fragment{
             public void onResponse(String response) {
                 response = response.replace("\\","");
                 response = response.substring(1,response.length()-1);
+                response ="{\n" +
+                        "    \"IsSuccess\": true,\n" +
+                        "    \"Message\": null,\n" +
+                        "    \"Result\": {\n" +
+                        "        \"OrderList\": [\n" +
+                        "            {\n" +
+                        "                \"orderId\": 596,\n" +
+                        "                \"orderCode\": \"201611201944270003\",\n" +
+                        "                \"memberId\": 1,\n" +
+                        "                \"addressId\": 35,\n" +
+                        "                \"expressId\": 0,\n" +
+                        "                \"orderStatus\": 10,\n" +
+                        "                \"payTypeId\": 0,\n" +
+                        "                \"tuihuo\": \"\",\n" +
+                        "                \"payTime\": \"1900-01-01T00:00:00\",\n" +
+                        "                \"totalPrice\": 200,\n" +
+                        "                \"orderRemarks\": null,\n" +
+                        "                \"shouhuoTime\": \"1900-01-01T00:00:00\",\n" +
+                        "                \"addTime\": \"2016-11-20T19:44:27\",\n" +
+                        "                \"Receiver\": \"曹晶\",\n" +
+                        "                \"Mobile\": \"18360733212\",\n" +
+                        "                \"Address\": \"许路新村\",\n" +
+                        "                \"Price\": 300,\n" +
+                        "                \"orderItemId\": 706,\n" +
+                        "                \"goodsId\": 3058,\n" +
+                        "                \"goodsName\": \"研发测试\",\n" +
+                        "                \"goodsSub\": \"研发测试\",\n" +
+                        "                \"goodsColorId\": 0,\n" +
+                        "                \"goodsColor\": \"无\",\n" +
+                        "                \"goodsStandardId\": 45,\n" +
+                        "                \"goodsStandard\": \"789\",\n" +
+                        "                \"goodsPrice\": 300,\n" +
+                        "                \"yunfei\": 0,\n" +
+                        "                \"goodsLogoUrl\": \"e7eec70dca2047dbba1d9ccf00d05643.jpg\",\n" +
+                        "                \"goodsQuantity\": 1\n" +
+                        "            },\n" +
+                        "            {\n" +
+                        "                \"orderId\": 596,\n" +
+                        "                \"orderCode\": \"201611201944270003\",\n" +
+                        "                \"memberId\": 1,\n" +
+                        "                \"addressId\": 35,\n" +
+                        "                \"expressId\": 0,\n" +
+                        "                \"orderStatus\": 10,\n" +
+                        "                \"payTypeId\": 0,\n" +
+                        "                \"tuihuo\": \"\",\n" +
+                        "                \"payTime\": \"1900-01-01T00:00:00\",\n" +
+                        "                \"totalPrice\": 200,\n" +
+                        "                \"orderRemarks\": null,\n" +
+                        "                \"shouhuoTime\": \"1900-01-01T00:00:00\",\n" +
+                        "                \"addTime\": \"2016-11-20T19:44:27\",\n" +
+                        "                \"Receiver\": \"曹晶\",\n" +
+                        "                \"Mobile\": \"18360733212\",\n" +
+                        "                \"Address\": \"许路新村\",\n" +
+                        "                \"Price\": 300,\n" +
+                        "                \"orderItemId\": 706,\n" +
+                        "                \"goodsId\": 3058,\n" +
+                        "                \"goodsName\": \"研发测试2\",\n" +
+                        "                \"goodsSub\": \"研发测试2\",\n" +
+                        "                \"goodsColorId\": 0,\n" +
+                        "                \"goodsColor\": \"无\",\n" +
+                        "                \"goodsStandardId\": 45,\n" +
+                        "                \"goodsStandard\": \"789\",\n" +
+                        "                \"goodsPrice\": 300,\n" +
+                        "                \"yunfei\": 0,\n" +
+                        "                \"goodsLogoUrl\": \"e7eec70dca2047dbba1d9ccf00d05643.jpg\",\n" +
+                        "                \"goodsQuantity\": 1\n" +
+                        "            },\n" +
+                        "            {\n" +
+                        "                \"orderId\": 596,\n" +
+                        "                \"orderCode\": \"201611201944270003\",\n" +
+                        "                \"memberId\": 1,\n" +
+                        "                \"addressId\": 35,\n" +
+                        "                \"expressId\": 0,\n" +
+                        "                \"orderStatus\": 10,\n" +
+                        "                \"payTypeId\": 0,\n" +
+                        "                \"tuihuo\": \"\",\n" +
+                        "                \"payTime\": \"1900-01-01T00:00:00\",\n" +
+                        "                \"totalPrice\": 200,\n" +
+                        "                \"orderRemarks\": null,\n" +
+                        "                \"shouhuoTime\": \"1900-01-01T00:00:00\",\n" +
+                        "                \"addTime\": \"2016-11-20T19:44:27\",\n" +
+                        "                \"Receiver\": \"曹晶\",\n" +
+                        "                \"Mobile\": \"18360733212\",\n" +
+                        "                \"Address\": \"许路新村\",\n" +
+                        "                \"Price\": 300,\n" +
+                        "                \"orderItemId\": 706,\n" +
+                        "                \"goodsId\": 3058,\n" +
+                        "                \"goodsName\": \"研发测试3\",\n" +
+                        "                \"goodsSub\": \"研发测试3\",\n" +
+                        "                \"goodsColorId\": 0,\n" +
+                        "                \"goodsColor\": \"无\",\n" +
+                        "                \"goodsStandardId\": 45,\n" +
+                        "                \"goodsStandard\": \"789\",\n" +
+                        "                \"goodsPrice\": 300,\n" +
+                        "                \"yunfei\": 0,\n" +
+                        "                \"goodsLogoUrl\": \"e7eec70dca2047dbba1d9ccf00d05643.jpg\",\n" +
+                        "                \"goodsQuantity\": 1\n" +
+                        "            }\n" +
+                        "        ]\n" +
+                        "    },\n" +
+                        "    \"ListResult\": null\n" +
+                        "}";
                 Log.i("woaicaojingallorder",response);
                 orderBean =gson.fromJson(response,SearchOrderBean.class);
                 allOrderAdapter =new AllOrderAdapter(AllOrderFragment.this.getContext(),orderBean.getResult().getOrderList());
                 allorder_listview.setAdapter(allOrderAdapter);
-
             }
         }, new Response.ErrorListener() {
             @Override

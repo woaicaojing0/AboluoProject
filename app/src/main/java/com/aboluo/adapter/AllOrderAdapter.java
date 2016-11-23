@@ -65,15 +65,17 @@ public class AllOrderAdapter extends BaseAdapter {
         } else {
             holder2 = (ViewHolder2) convertView.getTag();
         }
+        //这段代码很重要，如果没有 你可以试试看，滑动listview之后，每次都会添加商品 导致一个订单号对应很多商品
         if(holder2.content_view.getChildCount() >0)
         {
             holder2.content_view.removeAllViews();
         }
-        for (int i = 0; i < mlist.size(); i++) {
+        //end
+        for (int i = 0; i < mlist.size(); i++) {   //for 循环商品的数量，动态添加
             ViewHolder holder = null;
             if(holder ==null){
                 holder = new ViewHolder();
-                contentView = layoutInflater.inflate(R.layout.fragment_allorder_content_item, null);
+                contentView = layoutInflater.inflate(R.layout.fragment_allorder_content_item, null); // 商品显示的view
                 holder.image_order_goodsimage = (ImageView) contentView.findViewById(R.id.image_order_goodsimage);
                 holder.txt_order_goodsName = (TextView) contentView.findViewById(R.id.txt_order_goodsName);
                 holder.txt_order_standardandcolor = (TextView) contentView.findViewById(R.id.txt_order_standardandcolor);
@@ -95,17 +97,17 @@ public class AllOrderAdapter extends BaseAdapter {
             holder.txt_order_yuanprice.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG);
             holder.txt_order_yuanprice.setText("￥" + String.valueOf(mlist.get(i).getGoodsPrice()));
             holder.txt_order_goods_num.setText(String.valueOf("X" + String.valueOf(mlist.get(i).getGoodsQuantity())));
-            holder2.content_view.addView(contentView);
+            holder2.content_view.addView(contentView);  //
         }
 
         return convertView;
     }
-
+    //商品
     class ViewHolder {
         public TextView txt_order_goodsName, txt_order_hyprice, txt_order_yuanprice, txt_order_standardandcolor, txt_order_goods_num;
         public ImageView image_order_goodsimage;
     }
-
+    //主listview
     class ViewHolder2 {
         public LinearLayout content_view;
     }

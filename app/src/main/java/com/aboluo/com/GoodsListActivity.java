@@ -87,7 +87,7 @@ public class GoodsListActivity extends Activity implements RecycleViewAdapter.On
     private RelativeLayout right_shaixuan;
     private BrandBean brandBean;   //商品品牌属性
     private MyRadioGroup goods_list_brand_radiogroup;
-    private static  int currentpages = 1;
+    private  int currentpages = 1;
     private int pagesize = 10;
     private List<GoodsListInfo.ResultBean.GoodsListBean> goodsListBean;
 

@@ -203,6 +203,7 @@
                 <!--限时抢购倒计时 end-->
                 <!-- 限时抢购栏目-->
                 <LinearLayout
+                    android:id="@+id/beginSecKill"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"

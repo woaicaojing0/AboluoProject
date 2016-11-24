@@ -7,6 +7,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -33,12 +34,14 @@ import com.aboluo.com.MiaoShaActivity;
 import com.aboluo.com.OneYuanAcitvity;
 import com.aboluo.com.R;
 import com.aboluo.com.SecKillActivity;
+import com.aboluo.model.SecKillAllInfo;
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
+import com.google.gson.Gson;
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.handmark.pulltorefresh.library.PullToRefreshScrollView;
 import com.jude.rollviewpager.OnItemClickListener;
@@ -75,6 +78,7 @@ public class IndexFragment extends Fragment implements View.OnClickListener{
     private String URL;
     private String APPToken;
     private LinearLayout beginSecKill;
+    private Gson gson;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         if (view != null) {
@@ -190,9 +194,11 @@ public class IndexFragment extends Fragment implements View.OnClickListener{
         beginSecKill = (LinearLayout) view.findViewById(R.id.beginSecKill);
         requestQueue = MyApplication.getRequestQueue();
         ImageUrl = CommonUtils.GetValueByKey(IndexFragment.this.getContext(),"ImgUrl");
-        URL = CommonUtils.GetValueByKey(IndexFragment.this.getContext(),"URL");
+        URL = CommonUtils.GetValueByKey(IndexFragment.this.getContext(),"apiurl");
         APPToken = CommonUtils.GetValueByKey(IndexFragment.this.getContext(),"APPToken");
+        gson = new Gson();
         beginSecKill.setOnClickListener(this);
+        initSecKill();
 
     }
 
@@ -225,12 +231,16 @@ public class IndexFragment extends Fragment implements View.OnClickListener{
         StringRequest stringRequest = new StringRequest(Request.Method.POST, URL+"/api/ActiveApi/RecieveMainSeckillList", new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-
+                response  =response.replace("\\","");
+                response = response.substring(1,response.length()-1);
+                SecKillAllInfo secKillAllInfo = gson.fromJson(response,SecKillAllInfo.class);
+                Log.i("woaicaojingseckill",response);
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-
+                    byte[] bytes = error.networkResponse.data;
+                Log.i("woaicaojingseckill",new String(bytes));
             }
         }){
             @Override

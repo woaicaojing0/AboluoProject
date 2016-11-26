@@ -1,0 +1,338 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white">
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <!--中间ScrollView-->
+        <com.aboluo.widget.VerticalScrollView
+            android:id="@+id/seckill_contentscrollView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+                <!--pageview 轮播效果-->
+                <com.jude.rollviewpager.RollPagerView
+                    android:id="@+id/sekilldetail_roll_view_pager"
+                    android:layout_width="match_parent"
+                    android:layout_height="240dp"
+                    android:transitionName="detail"
+                    app:rollviewpager_hint_gravity="center"
+                    app:rollviewpager_play_delay="3000" />
+                <!--pageview 轮播效果 end -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="56dp"
+                    android:background="@color/btn_color"
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_marginLeft="8dp"
+                            android:gravity="center_vertical"
+                            android:text="￥"
+                            android:textColor="@color/white"
+                            android:textSize="18dp" />
+
+                        <TextView
+                            android:id="@+id/txt_seckilldetailgoods_price"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:gravity="center_vertical"
+                            android:text="128"
+                            android:textColor="@color/white"
+                            android:textSize="32dp" />
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_marginLeft="8dp"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="0dp"
+                                android:layout_weight="1" />
+
+                            <TextView
+                                android:id="@+id/txt_seckilldetailgoods_num"
+                                android:layout_width="wrap_content"
+                                android:layout_height="0dp"
+                                android:layout_weight="1"
+                                android:text="库存 100 件"
+                                android:textColor="@color/white" />
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                        <cn.iwgang.countdownview.CountdownView xmlns:app="http://schemas.android.com/apk/res-auto"
+                            android:id="@+id/cv_seckillgoodsdetail"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentRight="true"
+                            android:layout_centerVertical="true"
+                            android:layout_gravity="right"
+                            android:layout_marginRight="8dp"
+                            app:isHideTimeBackground="true"
+                            app:isShowDay="false"
+                            app:isShowHour="true"
+                            app:isShowMillisecond="true"
+                            app:isShowMinute="true"
+                            app:isShowSecond="true"
+                            app:isTimeTextBold="true"
+                            app:suffixGravity="center"
+                            app:suffixHour=":"
+                            app:suffixMinute=":"
+                            app:suffixSecond=":"
+                            app:suffixTextColor="@color/white"
+                            app:suffixTextSize="16sp"
+                            app:timeBgColor="@color/white"
+                            app:timeBgRadius="2sp"
+                            app:timeTextColor="@color/white"
+                            app:timeTextSize="16sp" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="8dp"
+                        android:background="@drawable/aboluoziying"
+                        android:text=" 阿波罗自营"
+                        android:textColor="#fd5e89" />
+
+                    <TextView
+                        android:id="@+id/txt_seckilldetailgoods_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="8dp"
+                        android:ellipsize="end"
+                        android:gravity="center_vertical"
+                        android:lines="2"
+                        android:text="商品名称"
+                        android:textColor="@color/black"
+                        android:textSize="18sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/layout_txt_goods_sub"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <View
+                        android:layout_width="fill_parent"
+                        android:layout_height="0.5dp"
+                        android:background="#b8b8b8"></View>
+
+                    <TextView
+                        android:id="@+id/txt_goods_sub"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="8dp"
+                        android:ellipsize="end"
+                        android:gravity="center_vertical"
+                        android:lines="1"
+                        android:text=""
+                        android:textSize="18sp" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.2dp"
+                    android:layout_above="@+id/seckill_goodsdetail_bottom"
+                    android:background="@color/view_color" />
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="42dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/txt_seckill_goodsdetail_stands"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center_vertical"
+                        android:paddingLeft="8dp" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="fill_parent"
+                    android:layout_height="10dp"
+                    android:background="#efefef"></View>
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="45dp">
+
+                    <RelativeLayout
+                        android:id="@+id/goods_detail_layout_btn"
+                        android:layout_width="0dp"
+                        android:layout_height="45dp"
+                        android:layout_weight="1"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:focusableInTouchMode="true"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerInParent="true"
+                            android:layout_gravity="center"
+                            android:text="商品详情"></TextView>
+
+                        <View
+                            android:id="@+id/id_goods_detail_view"
+                            android:layout_width="match_parent"
+                            android:layout_height="2dp"
+                            android:layout_alignParentBottom="true"
+                            android:layout_marginRight="2dp"
+                            android:background="@color/red"></View>
+                    </RelativeLayout>
+
+
+                    <View
+                        android:layout_width="1dp"
+                        android:layout_height="16dp"
+                        android:layout_gravity="center"
+                        android:background="@color/view_color"></View>
+
+                    <RelativeLayout
+                        android:id="@+id/goods_pingjia_layout_btn"
+                        android:layout_width="0dp"
+                        android:layout_height="45dp"
+                        android:layout_weight="1"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:focusableInTouchMode="true"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerInParent="true"
+                            android:layout_gravity="center"
+                            android:text="商品评价"></TextView>
+
+                        <View
+                            android:id="@+id/id_goods_pingjia_view"
+                            android:layout_width="match_parent"
+                            android:layout_height="2dp"
+                            android:layout_alignParentBottom="true"
+                            android:layout_marginRight="2dp"
+                            android:background="@color/red"
+                            android:visibility="gone"></View>
+                    </RelativeLayout>
+                </LinearLayout>
+
+                <WebView
+                    android:id="@+id/kill_goods_detail_webview"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:scrollbars="vertical"></WebView>
+
+                <WebView
+                    android:id="@+id/seckill_goods_pingjia_webview"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:scrollbars="vertical"></WebView>
+            </LinearLayout>
+        </com.aboluo.widget.VerticalScrollView>
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/seckill_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:layout_alignParentTop="true"
+            app:contentInsetLeft="0dp"
+            app:contentInsetStart="0dp">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <ImageView
+                    android:id="@+id/seckillgoods_detail_image_back"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="10dp"
+                    android:background="#00000000"
+                    android:src="@drawable/back"
+                    android:text="返回" />
+
+                <TextView
+                    android:id="@+id/seckillgoods_detail_top_txt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:text="商品详情"
+                    android:textColor="#00000000" />
+
+
+            </RelativeLayout>
+        </android.support.v7.widget.Toolbar>
+        <!--<View-->
+        <!--android:id="@+id/top_view"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="0.2dp"-->
+        <!--android:layout_alignBottom="@+id/toolbar"-->
+        <!--android:background="@color/view_color"/>-->
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_alignParentBottom="true">
+
+        <LinearLayout
+            android:id="@+id/seckill_goodsdetail_bottom"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_alignParentBottom="true"
+            android:background="#fd5e89"
+            android:gravity="center">
+
+            <TextView
+                android:id="@+id/tv_menu_me"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="立即购买"
+                android:textColor="@color/white"
+                android:textSize="18sp" />
+        </LinearLayout>
+    </RelativeLayout>
+</RelativeLayout>

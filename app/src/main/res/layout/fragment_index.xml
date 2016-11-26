@@ -1,13 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/ALLFather"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <android.support.v7.widget.Toolbar
-        xmlns:app="http://schemas.android.com/apk/res-auto"
+    <android.support.v7.widget.Toolbar xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         app:contentInsetLeft="0dp"
@@ -32,14 +30,14 @@
                     android:layout_width="30dp"
                     android:layout_height="30dp"
                     android:layout_marginLeft="6dp"
-                    android:src="@mipmap/ic_launcher"/>
+                    android:src="@mipmap/ic_launcher" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="苏州"
                     android:textColor="@color/white"
-                    android:textSize="12sp"/>
+                    android:textSize="12sp" />
             </LinearLayout>
 
             <LinearLayout
@@ -62,8 +60,7 @@
                     android:paddingLeft="6dp"
                     android:paddingRight="6dp"
                     android:textColorHint="#909090"
-                    android:textSize="14sp"
-                    />
+                    android:textSize="14sp" />
             </LinearLayout>
 
             <LinearLayout
@@ -76,375 +73,370 @@
                 <ImageView
                     android:layout_width="36dp"
                     android:layout_height="36dp"
-                    android:src="@mipmap/ic_launcher"/>
+                    android:src="@mipmap/ic_launcher" />
             </LinearLayout>
         </RelativeLayout>
         <!--头部actionbar end-->
     </android.support.v7.widget.Toolbar>
 
-    <com.handmark.pulltorefresh.library.PullToRefreshScrollView
-        xmlns:ptr="http://schemas.android.com/apk/res-auto"
+    <com.handmark.pulltorefresh.library.PullToRefreshScrollView xmlns:ptr="http://schemas.android.com/apk/res-auto"
         android:id="@+id/pullToRefresh"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scrollbars="none"
         ptr:ptrAnimationStyle="flip">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+            <!--pageview 轮播效果-->
+            <com.jude.rollviewpager.RollPagerView xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/roll_view_pager"
+                android:layout_width="match_parent"
+                android:layout_height="120dp"
+                app:rollviewpager_hint_gravity="right"
+                app:rollviewpager_play_delay="3000" />
+            <!--pageview 轮播效果 end -->
+            <GridView
+                android:id="@+id/mid_gridview"
+                android:layout_width="match_parent"
+                android:layout_height="120dp"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="10dp"
+                android:gravity="center"
+                android:numColumns="4"></GridView>
+
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="0.2dp"
+                android:background="#b8b8b8"></View>
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="-1dp"
+                android:src="@drawable/index_down" />
+            <!--跑马灯效果 -->
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical">
-                <!--pageview 轮播效果-->
-                <com.jude.rollviewpager.RollPagerView
-                    xmlns:app="http://schemas.android.com/apk/res-auto"
-                    android:id="@+id/roll_view_pager"
-                    android:layout_width="match_parent"
-                    android:layout_height="120dp"
-                    app:rollviewpager_hint_gravity="right"
-                    app:rollviewpager_play_delay="3000"/>
-                <!--pageview 轮播效果 end -->
-                <GridView
-                    android:id="@+id/mid_gridview"
-                    android:layout_width="match_parent"
-                    android:layout_height="120dp"
-                    android:layout_marginBottom="10dp"
-                    android:layout_marginTop="10dp"
-                    android:gravity="center"
-                    android:numColumns="4"
-                    >
-                </GridView>
-
-                <View
-                    android:layout_width="fill_parent"
-                    android:layout_height="0.2dp"
-                    android:background="#b8b8b8">
-                </View>
+                android:layout_height="40dp"
+                android:layout_marginBottom="8dp"
+                android:orientation="horizontal">
 
                 <ImageView
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginTop="-1dp"
-                    android:src="@drawable/index_down"/>
-                <!--跑马灯效果 -->
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="40dp"
-                    android:layout_marginBottom="8dp"
-                    android:orientation="horizontal">
-
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="4dp"
-                        android:src="@drawable/index_top_news"/>
-
-                    <com.sunfusheng.marqueeview.MarqueeView
-                        xmlns:app="http://schemas.android.com/apk/res-auto"
-                        android:id="@+id/marqueeView"
-                        android:layout_width="match_parent"
-                        android:layout_height="40dp"
-                        android:layout_marginTop="4dp"
-                        app:mvAnimDuration="1000"
-                        app:mvInterval="3000"
-                        app:mvSingleLine="false"
-                        app:mvTextColor="@color/black"
-                        app:mvTextSize="12sp"/>
-                </LinearLayout>
-
-                <View
-                    android:layout_width="fill_parent"
-                    android:layout_height="0.2dp"
-                    android:background="#b8b8b8">
-                </View>
-                <!--限时抢购倒计时 -->
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal">
-
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@drawable/index_limit_time"/>
-
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent">
-
-                        <cn.iwgang.countdownview.CountdownView
-                            android:id="@+id/cv_countdownViewTest1"
-                            xmlns:app="http://schemas.android.com/apk/res-auto"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentRight="true"
-                            android:layout_centerVertical="true"
-                            android:layout_marginRight="10dp"
-                            app:timeBgColor="@color/black"
-                            app:timeBgRadius="2sp"
-                            app:isHideTimeBackground="false"
-                            app:isShowDay="false"
-                            app:isShowHour="true"
-                            app:isShowMinute="true"
-                            app:isShowSecond="true"
-                            app:isShowMillisecond="false"
-                            app:timeTextColor="@color/white"
-                            app:timeTextSize="16sp"
-                            app:isTimeTextBold="true"
-                            app:suffixGravity="center"
-                            app:suffixTextColor="#000000"
-                            app:suffixTextSize="16sp"
-                            app:suffixHour=":"
-                            app:suffixMinute=":"
-                            app:suffixSecond=""
-                            app:suffixMillisecond="毫秒" />
-                    </RelativeLayout>
-                </LinearLayout>
-                <!--限时抢购倒计时 end-->
-                <!-- 限时抢购栏目-->
-                <LinearLayout
-                    android:id="@+id/beginSecKill"
-                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
-                    android:orientation="vertical">
+                    android:src="@drawable/index_top_news" />
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:orientation="horizontal">
-
-                        <LinearLayout
-                            android:id="@+id/index_xianshi"
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:layout_weight="1"
-                            android:gravity="center">
-
-                            <ImageView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:src="@drawable/index_limit_bg"/>
-                        </LinearLayout>
-
-                        <View
-                            android:layout_width="0.2dp"
-                            android:layout_height="match_parent"
-                            android:layout_marginBottom="6dp"
-                            android:layout_marginTop="6dp"
-                            android:background="#b8b8b8">
-                        </View>
-
-                        <LinearLayout
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:layout_weight="1"
-                            android:gravity="center">
-
-                            <ImageView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:src="@drawable/index_limit_bg"
-                                android:id="@+id/imageView3" />
-                        </LinearLayout>
-
-                        <View
-                            android:layout_width="0.2dp"
-                            android:layout_height="match_parent"
-                            android:layout_marginBottom="6dp"
-                            android:layout_marginTop="6dp"
-                            android:background="#b8b8b8">
-                        </View>
-
-                        <LinearLayout
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:layout_weight="1"
-                            android:gravity="center">
-
-                            <ImageView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:src="@drawable/index_limit_bg"/>
-                        </LinearLayout>
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:orientation="horizontal">
-
-                        <LinearLayout
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:layout_weight="1"
-                            android:orientation="horizontal">
-
-                            <ImageView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:src="@drawable/index_limit_shop"/>
-
-                            <LinearLayout
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="center_vertical"
-                                android:layout_marginRight="8dp">
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text="205"
-                                    android:textColor="@color/black"
-                                    android:textSize="12sp"
-                                    android:textStyle="bold"/>
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text="/"/>
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text="608"
-                                    android:textColor="@color/red"
-                                    android:textSize="12sp"
-                                    android:textStyle="bold"/>
-                            </LinearLayout>
-
-                            <ImageView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="right|center_vertical"
-                                android:src="@drawable/index_limit_buy_cart"
-                                />
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:layout_weight="1"
-                            android:orientation="horizontal">
-
-                            <ImageView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:src="@drawable/index_limit_shop"/>
-
-                            <LinearLayout
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="center_vertical"
-                                android:layout_marginRight="8dp">
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text="205"
-                                    android:textColor="@color/black"
-                                    android:textSize="12sp"
-                                    android:textStyle="bold"/>
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text="/"/>
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text="608"
-                                    android:textColor="@color/red"
-                                    android:textSize="12sp"
-                                    android:textStyle="bold"/>
-                            </LinearLayout>
-
-                            <ImageView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="right|center_vertical"
-                                android:src="@drawable/index_limit_buy_cart"
-                                />
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:layout_weight="1"
-                            android:orientation="horizontal">
-
-                            <ImageView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:src="@drawable/index_limit_shop"/>
-
-                            <LinearLayout
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="center_vertical"
-                                android:layout_marginRight="8dp">
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text="205"
-                                    android:textColor="@color/black"
-                                    android:textSize="12sp"
-                                    android:textStyle="bold"/>
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text="/"/>
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text="608"
-                                    android:textColor="@color/red"
-                                    android:textSize="12sp"
-                                    android:textStyle="bold"/>
-                            </LinearLayout>
-
-                            <ImageView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="right|center_vertical"
-                                android:src="@drawable/index_limit_buy_cart"
-                                />
-                        </LinearLayout>
-
-
-                    </LinearLayout>
-                </LinearLayout>
-                <!-- 限时抢购栏目 end-->
-                <!--活动专区 -->
-                <View
+                <com.sunfusheng.marqueeview.MarqueeView xmlns:app="http://schemas.android.com/apk/res-auto"
+                    android:id="@+id/marqueeView"
                     android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_marginTop="28dp"
-                    android:layout_marginBottom="28dp"
-                    android:background="@color/huodong_view"/>
-                <include
-                    android:id="@+id/id_ly_huodong"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    layout="@layout/activtiy_main_huodong"/>
-                <EditText
-                    android:layout_width="wrap_content"
-                    android:layout_height="400dp"
-                    android:layout_weight="1"
-                    android:text="QWEWQWE\NQ1WEQWE\N\n"/>
+                    android:layout_height="40dp"
+                    android:layout_marginTop="4dp"
+                    app:mvAnimDuration="1000"
+                    app:mvInterval="3000"
+                    app:mvSingleLine="false"
+                    app:mvTextColor="@color/black"
+                    app:mvTextSize="12sp" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="0.2dp"
+                android:background="#b8b8b8"></View>
+            <!--限时抢购倒计时 -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
 
                 <ImageView
-                    android:id="@+id/ceshi_imgeview"
-                    android:layout_width="match_parent"
-                    android:layout_height="400dp"
-                    android:text="QWEWQWE\NQ1WEQWE\N\n"/>
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/index_limit_time" />
 
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <cn.iwgang.countdownview.CountdownView xmlns:app="http://schemas.android.com/apk/res-auto"
+                        android:id="@+id/cv_countdownViewTest1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="8dp"
+                        app:isHideTimeBackground="false"
+                        app:isShowDay="false"
+                        app:isShowHour="true"
+                        app:isShowMillisecond="false"
+                        app:isShowMinute="true"
+                        app:isShowSecond="true"
+                        app:isTimeTextBold="true"
+                        app:suffixGravity="center"
+                        app:suffixHour=":"
+                        app:suffixMillisecond="毫秒"
+                        app:suffixMinute=":"
+                        app:suffixSecond=""
+                        app:suffixTextColor="#000000"
+                        app:suffixTextSize="16sp"
+                        app:timeBgColor="@color/black"
+                        app:timeBgRadius="2sp"
+                        app:timeTextColor="@color/white"
+                        app:timeTextSize="16sp" />
+                </RelativeLayout>
             </LinearLayout>
+            <!--限时抢购倒计时 end-->
+            <!-- 限时抢购栏目-->
+            <LinearLayout
+                android:id="@+id/beginSecKill"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="2dp"
+                    android:layout_marginRight="2dp"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+                        android:id="@+id/index_xianshi"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:gravity="center">
+
+                        <ImageView
+                            android:id="@+id/seckill_imge0"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:src="@drawable/index_limit_bg" />
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="0.2dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginBottom="6dp"
+                        android:layout_marginTop="6dp"
+                        android:background="#b8b8b8"></View>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:gravity="center">
+
+                        <ImageView
+
+                            android:id="@+id/seckill_imge1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/index_limit_bg" />
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="0.2dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginBottom="6dp"
+                        android:layout_marginTop="6dp"
+                        android:background="#b8b8b8"></View>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:gravity="center">
+
+                        <ImageView
+                            android:id="@+id/seckill_imge2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/index_limit_bg" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/index_limit_shop" />
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginRight="8dp">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="205"
+                                android:textColor="@color/black"
+                                android:textSize="12sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="/" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="608"
+                                android:textColor="@color/red"
+                                android:textSize="12sp"
+                                android:textStyle="bold" />
+                        </LinearLayout>
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="right|center_vertical"
+                            android:src="@drawable/index_limit_buy_cart" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/index_limit_shop" />
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginRight="8dp">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="205"
+                                android:textColor="@color/black"
+                                android:textSize="12sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="/" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="608"
+                                android:textColor="@color/red"
+                                android:textSize="12sp"
+                                android:textStyle="bold" />
+                        </LinearLayout>
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="right|center_vertical"
+                            android:src="@drawable/index_limit_buy_cart" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/index_limit_shop" />
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginRight="8dp">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="205"
+                                android:textColor="@color/black"
+                                android:textSize="12sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="/" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="608"
+                                android:textColor="@color/red"
+                                android:textSize="12sp"
+                                android:textStyle="bold" />
+                        </LinearLayout>
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="right|center_vertical"
+                            android:src="@drawable/index_limit_buy_cart" />
+                    </LinearLayout>
+
+
+                </LinearLayout>
+            </LinearLayout>
+            <!-- 限时抢购栏目 end-->
+            <!--活动专区 -->
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginBottom="28dp"
+                android:layout_marginTop="28dp"
+                android:background="@color/huodong_view" />
+
+            <include
+                android:id="@+id/id_ly_huodong"
+                layout="@layout/activtiy_main_huodong"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content" />
+
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="400dp"
+                android:layout_weight="1"
+                android:text="QWEWQWE\NQ1WEQWE\N\n" />
+
+            <ImageView
+                android:id="@+id/ceshi_imgeview"
+                android:layout_width="match_parent"
+                android:layout_height="400dp"
+                android:text="QWEWQWE\NQ1WEQWE\N\n" />
+
+        </LinearLayout>
     </com.handmark.pulltorefresh.library.PullToRefreshScrollView>
 </LinearLayout>

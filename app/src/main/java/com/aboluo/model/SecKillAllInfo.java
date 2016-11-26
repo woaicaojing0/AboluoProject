@@ -1,5 +1,8 @@
 package com.aboluo.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.util.List;
 
 /**
@@ -24,7 +27,7 @@ public class SecKillAllInfo {
      * StartTime : 2016-11-25T08:00:00
      * EndTime : 2016-11-25T12:00:00
      * Image : /SeckillImg/1419a406666e441aaf5375f804d6c62a.png
-     * State : 暂未开启
+     * State : 0,1,2 //(0-未开启，1-已开启，2-准备中，3-已结束）
      */
 
     private List<SkillMainListBean> SkillMainList;
@@ -61,13 +64,33 @@ public class SecKillAllInfo {
         this.SkillMainList = SkillMainList;
     }
 
-    public static class SkillMainListBean {
+    public static class SkillMainListBean implements Parcelable {
         private int SId;
         private Object Name;
         private String StartTime;
         private String EndTime;
         private String Image;
         private String State;
+
+        protected SkillMainListBean(Parcel in) {
+            SId = in.readInt();
+            StartTime = in.readString();
+            EndTime = in.readString();
+            Image = in.readString();
+            State = in.readString();
+        }
+
+        public static final Creator<SkillMainListBean> CREATOR = new Creator<SkillMainListBean>() {
+            @Override
+            public SkillMainListBean createFromParcel(Parcel in) {
+                return new SkillMainListBean(in);
+            }
+
+            @Override
+            public SkillMainListBean[] newArray(int size) {
+                return new SkillMainListBean[size];
+            }
+        };
 
         public int getSId() {
             return SId;
@@ -115,6 +138,20 @@ public class SecKillAllInfo {
 
         public void setState(String State) {
             this.State = State;
+        }
+
+        @Override
+        public int describeContents() {
+            return 0;
+        }
+
+        @Override
+        public void writeToParcel(Parcel dest, int flags) {
+            dest.writeInt(SId);
+            dest.writeString(StartTime);
+            dest.writeString(EndTime);
+            dest.writeString(Image);
+            dest.writeString(State);
         }
     }
 }

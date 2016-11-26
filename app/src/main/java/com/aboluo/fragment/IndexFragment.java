@@ -1,6 +1,5 @@
 package com.aboluo.fragment;
 
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -13,7 +12,6 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.BaseAdapter;
 import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageView;
@@ -23,13 +21,15 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.aboluo.XUtils.CommonUtils;
+import com.aboluo.XUtils.ConstUtils;
 import com.aboluo.XUtils.MyApplication;
+import com.aboluo.XUtils.ScreenUtils;
+import com.aboluo.XUtils.TimeUtils;
 import com.aboluo.adapter.BannerAdapter;
 import com.aboluo.adapter.GridViewAdapter;
 import com.aboluo.com.GoodsDetailActivity;
 import com.aboluo.com.GoodsListActivity;
 import com.aboluo.com.HeHuoRenActivity;
-import com.aboluo.com.MainActivity;
 import com.aboluo.com.MiaoShaActivity;
 import com.aboluo.com.OneYuanAcitvity;
 import com.aboluo.com.R;
@@ -51,16 +51,18 @@ import com.squareup.picasso.Picasso;
 import com.sunfusheng.marqueeview.MarqueeView;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import cn.iwgang.countdownview.CountdownView;
+import cn.pedant.SweetAlert.SweetAlertDialog;
 
 /**
  * Created by cj34920 on 2016/9/8.
  */
-public class IndexFragment extends Fragment implements View.OnClickListener{
+public class IndexFragment extends Fragment implements View.OnClickListener {
     private LinearLayout linearLayout;
     private EditText top_editsearch;
     private RollPagerView rollPagerView;
@@ -71,7 +73,7 @@ public class IndexFragment extends Fragment implements View.OnClickListener{
             "http://pic24.nipic.com/20121025/10444819_041559015351_2.jpg"};
     private PullToRefreshScrollView pullToRefreshScrollView;
     private BannerAdapter bannerAdapter;
-    private ImageView ceshi_imgeview;
+    private ImageView ceshi_imgeview, seckill_imge1, seckill_imge0, seckill_imge2;
     private CountdownView mCvCountdownView;
     private RequestQueue requestQueue;
     private String ImageUrl;
@@ -79,6 +81,11 @@ public class IndexFragment extends Fragment implements View.OnClickListener{
     private String APPToken;
     private LinearLayout beginSecKill;
     private Gson gson;
+    private SecKillAllInfo secKillAllInfo;
+    private ArrayList<SecKillAllInfo.SkillMainListBean> listskillbean;
+    private Picasso picasso;
+    private SweetAlertDialog pdialog;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         if (view != null) {
@@ -155,17 +162,17 @@ public class IndexFragment extends Fragment implements View.OnClickListener{
         });
         Picasso.with(this.getActivity()).load("http://img.pconline.com.cn/images/upload/upc/tx/wallpaper/1309/05/c5/25283777_1378352004384_800x600.jpg").into(ceshi_imgeview);
 //            Picasso.with(this.getActivity()).setIndicatorsEnabled(true);
-        mCvCountdownView.start(24000); // 毫秒
         mCvCountdownView.setOnCountdownEndListener(new CountdownView.OnCountdownEndListener() {
             @Override
             public void onEnd(CountdownView cv) {
-                cv.setVisibility(View.GONE);
+//                cv.setVisibility(View.GONE);
+                initSecKill();
             }
         });
         mCvCountdownView.setOnCountdownIntervalListener(3000, new CountdownView.OnCountdownIntervalListener() {
             @Override
             public void onInterval(CountdownView cv, long remainTime) {
-                Toast.makeText(IndexFragment.this.getActivity(), "1", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(IndexFragment.this.getActivity(), "1", Toast.LENGTH_SHORT).show();
             }
         });
         ceshi_imgeview.setOnClickListener(new View.OnClickListener() {
@@ -190,14 +197,28 @@ public class IndexFragment extends Fragment implements View.OnClickListener{
         marqueeView = (MarqueeView) view.findViewById(R.id.marqueeView);
         pullToRefreshScrollView = (PullToRefreshScrollView) view.findViewById(R.id.pullToRefresh);
         ceshi_imgeview = (ImageView) view.findViewById(R.id.ceshi_imgeview);
+        seckill_imge0 = (ImageView) view.findViewById(R.id.seckill_imge0);
+        seckill_imge1 = (ImageView) view.findViewById(R.id.seckill_imge1);
+        seckill_imge2 = (ImageView) view.findViewById(R.id.seckill_imge2);
         mCvCountdownView = (CountdownView) view.findViewById(R.id.cv_countdownViewTest1);
         beginSecKill = (LinearLayout) view.findViewById(R.id.beginSecKill);
         requestQueue = MyApplication.getRequestQueue();
-        ImageUrl = CommonUtils.GetValueByKey(IndexFragment.this.getContext(),"ImgUrl");
-        URL = CommonUtils.GetValueByKey(IndexFragment.this.getContext(),"apiurl");
-        APPToken = CommonUtils.GetValueByKey(IndexFragment.this.getContext(),"APPToken");
+        ImageUrl = CommonUtils.GetValueByKey(IndexFragment.this.getContext(), "ImgUrl");
+        URL = CommonUtils.GetValueByKey(IndexFragment.this.getContext(), "apiurl");
+        APPToken = CommonUtils.GetValueByKey(IndexFragment.this.getContext(), "APPToken");
+        picasso = Picasso.with(IndexFragment.this.getContext());
         gson = new Gson();
+        pdialog = new SweetAlertDialog(IndexFragment.this.getContext(), SweetAlertDialog.PROGRESS_TYPE);
+        pdialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
+        pdialog.setTitleText("加载中");
+        pdialog.setCanceledOnTouchOutside(true);
+        pdialog.setCancelable(true);
+        int screenWidth = ScreenUtils.getScreenWidth(IndexFragment.this.getContext());
+        beginSecKill.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, screenWidth / 3));
         beginSecKill.setOnClickListener(this);
+        seckill_imge0.setOnClickListener(this);
+        seckill_imge1.setOnClickListener(this);
+        seckill_imge2.setOnClickListener(this);
         initSecKill();
 
     }
@@ -228,41 +249,74 @@ public class IndexFragment extends Fragment implements View.OnClickListener{
     }
 
     private void initSecKill() {
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, URL+"/api/ActiveApi/RecieveMainSeckillList", new Response.Listener<String>() {
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, URL + "/api/ActiveApi/RecieveMainSeckillList", new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                response  =response.replace("\\","");
-                response = response.substring(1,response.length()-1);
-                SecKillAllInfo secKillAllInfo = gson.fromJson(response,SecKillAllInfo.class);
-                Log.i("woaicaojingseckill",response);
+                response = response.replace("\\", "");
+                response = response.substring(1, response.length() - 1);
+                secKillAllInfo = gson.fromJson(response, SecKillAllInfo.class);
+                if (secKillAllInfo.getResult().equals("暂无秒杀场次")) {
+                    mCvCountdownView.setVisibility(View.GONE);
+                } else {
+                    listskillbean = (ArrayList<SecKillAllInfo.SkillMainListBean>) secKillAllInfo.getSkillMainList();
+                    GetSreverTime();
+                }
+
+                Log.i("woaicaojingseckill", response);
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                    byte[] bytes = error.networkResponse.data;
-                Log.i("woaicaojingseckill",new String(bytes));
+                byte[] bytes = error.networkResponse.data;
+                Log.i("woaicaojingseckill", new String(bytes));
             }
-        }){
+        }) {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
-                Map<String,String> map = new HashMap<>();
-                map.put("APPToken",APPToken);
-                return  map;
+                Map<String, String> map = new HashMap<>();
+                map.put("APPToken", APPToken);
+                return map;
             }
         };
         requestQueue.add(stringRequest);
     }
-    private void   GetSreverTime()
-    {
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, URL+"/api/ConfigApi/ReceiveServerTime", new Response.Listener<String>() {
+
+    private void GetSreverTime() {
+        //(0-未开启，1-已开启，2-准备中，3-已结束）
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, URL + "/api/ConfigApi/ReceiveServerTime", new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-
+                response = response.replace("\\", "");
+                response = response.substring(2, response.length() - 2);
+                String beginedTime = null;
+                String whilebeginTime = null;
+                long time = 0;
+                for (int i = 0; i < listskillbean.size(); i++) {
+                    if (listskillbean.get(i).getState().equals("1")) {
+                        beginedTime = listskillbean.get(i).getEndTime().toString();
+                    } else if (listskillbean.get(i).getState().equals("2")) {
+                        if (whilebeginTime == null) {
+                            whilebeginTime = listskillbean.get(i).getStartTime().toString();
+                        } else {
+                        }
+                    } else {
+                    }
+                }
+                if (beginedTime != null) {
+                    Date date = TimeUtils.string2Date(beginedTime);
+                    Date date2 = TimeUtils.string2Date(response);
+                    time = TimeUtils.getIntervalTime(date, date2, ConstUtils.TimeUnit.MSEC);
+                } else if (whilebeginTime != null) {
+                    time = TimeUtils.getIntervalTime(response, whilebeginTime, ConstUtils.TimeUnit.MSEC);
+                } else {
+                }
+                mCvCountdownView.start(time); // 毫秒
+                InitSeckillImage(listskillbean);
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-
+                Toast.makeText(IndexFragment.this.getContext(), error.toString(), Toast.LENGTH_SHORT).show();
             }
         });
         requestQueue.add(stringRequest);
@@ -270,14 +324,47 @@ public class IndexFragment extends Fragment implements View.OnClickListener{
 
     @Override
     public void onClick(View v) {
-            switch (v.getId())
-            {
-                case  R.id.beginSecKill:
-                    Intent intent = new Intent(IndexFragment.this.getContext(), SecKillActivity.class);
-                    startActivity(intent);
-                    break;
-                default:
-                    break;
-            }
+        switch (v.getId()) {
+            case R.id.seckill_imge0:
+                Intent intent = new Intent(IndexFragment.this.getContext(), SecKillActivity.class);
+                intent.putExtra("data", listskillbean);
+                intent.putExtra("changci", 0);
+                startActivity(intent);
+                break;
+            case R.id.seckill_imge1:
+                Intent intent2 = new Intent(IndexFragment.this.getContext(), SecKillActivity.class);
+                intent2.putExtra("data", listskillbean);
+                intent2.putExtra("changci", 1);
+                startActivity(intent2);
+                break;
+            case R.id.seckill_imge2:
+                Intent intent3 = new Intent(IndexFragment.this.getContext(), SecKillActivity.class);
+                intent3.putExtra("data", listskillbean);
+                intent3.putExtra("changci", 2);
+                startActivity(intent3);
+                break;
+            default:
+                break;
+        }
+    }
+
+    private void InitSeckillImage(List<SecKillAllInfo.SkillMainListBean> listskillbean) {
+        if (listskillbean.size() >= 3) {
+            Log.i("woaicaojingseckill", ImageUrl + listskillbean.get(1).getImage());
+            picasso.load(ImageUrl + listskillbean.get(0).getImage())
+                    .placeholder(IndexFragment.this.getResources().getDrawable(R.drawable.imagviewloading))
+                    .error(IndexFragment.this.getResources().getDrawable(R.drawable.imageview_error))
+                    .into(seckill_imge0);
+            picasso.load(ImageUrl + listskillbean.get(1).getImage())
+                    .placeholder(IndexFragment.this.getResources().getDrawable(R.drawable.imagviewloading))
+                    .error(IndexFragment.this.getResources().getDrawable(R.drawable.imageview_error))
+                    .into(seckill_imge1);
+            picasso.load(ImageUrl + listskillbean.get(2).getImage())
+                    .placeholder(IndexFragment.this.getResources().getDrawable(R.drawable.imagviewloading))
+                    .error(IndexFragment.this.getResources().getDrawable(R.drawable.imageview_error))
+                    .into(seckill_imge2);
+        } else {
+            Toast.makeText(IndexFragment.this.getContext(), "当前秒杀场次不够三场", Toast.LENGTH_SHORT).show();
+        }
     }
 }

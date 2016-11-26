@@ -1,39 +1,68 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
-    <LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="32dp"
+        android:layout_marginTop="8dp"
         android:gravity="center">
-        <cn.iwgang.countdownview.CountdownView
-            android:id="@+id/cv_countdownViewTest1"
-            xmlns:app="http://schemas.android.com/apk/res-auto"
+
+        <View
+            android:id="@+id/view_left"
+            android:layout_width="8dp"
+            android:layout_height="match_parent"
+            android:background="@color/btn_color"></View>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="8dp"
+            android:layout_toRightOf="@+id/view_left"
+            android:gravity="center_vertical"
+            android:text="限时限量，疯狂抢购"
+            android:textColor="@color/btn_color" />
+
+        <TextView
+            android:id="@+id/txt_countview"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_toLeftOf="@+id/cv_seckilldetail"
+            android:gravity="center"
+            android:text="距离本场结束" />
+
+        <cn.iwgang.countdownview.CountdownView xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/cv_seckilldetail"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:layout_marginRight="10dp"
-            app:timeBgColor="@color/black"
-            app:timeBgRadius="2sp"
+            android:layout_marginRight="8dp"
             app:isHideTimeBackground="false"
             app:isShowDay="false"
             app:isShowHour="true"
+            app:isShowMillisecond="false"
             app:isShowMinute="true"
             app:isShowSecond="true"
-            app:isShowMillisecond="false"
-            app:timeTextColor="@color/white"
-            app:timeTextSize="16sp"
             app:isTimeTextBold="true"
             app:suffixGravity="center"
-            app:suffixTextColor="#000000"
-            app:suffixTextSize="16sp"
             app:suffixHour=":"
+            app:suffixMillisecond="毫秒"
             app:suffixMinute=":"
             app:suffixSecond=""
-            app:suffixMillisecond="毫秒" />
-    </LinearLayout>
+            app:suffixTextColor="#000000"
+            app:suffixTextSize="16sp"
+            app:timeBgColor="@color/white"
+            app:timeBgRadius="2sp"
+            app:timeTextColor="@color/gray"
+            app:timeTextSize="16sp" />
+    </RelativeLayout>
+
     <ListView
+        android:id="@+id/seckill_listview"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"></ListView>
+        android:layout_height="wrap_content"
+        android:listSelector="#00000000"></ListView>
 </LinearLayout>

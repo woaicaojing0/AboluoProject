@@ -330,6 +330,16 @@
                 android:textColor="@color/white"
                 android:textSize="16sp"
                 android:text="登录" />
+            <Button
+                android:visibility="gone"
+                android:id="@+id/my_out"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/myinfo_btn_login"
+                android:layout_marginTop="20dp"
+                android:textColor="@color/white"
+                android:textSize="16sp"
+                android:text="注销" />
         </LinearLayout>
     </ScrollView>
 

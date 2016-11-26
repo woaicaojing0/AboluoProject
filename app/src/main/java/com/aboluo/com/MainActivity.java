@@ -2,15 +2,14 @@ package com.aboluo.com;
 
 import android.content.Intent;
 import android.os.Bundle;
-
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.view.View;
 import android.view.Window;
 import android.widget.LinearLayout;
 
+import com.aboluo.XUtils.CommonUtils;
 import com.aboluo.XUtils.MyApplication;
 import com.aboluo.fragment.IndexFragment;
 import com.aboluo.fragment.MenuFragment;
@@ -38,10 +37,9 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
         shopcar_linelayout.setOnClickListener(this);
         my_linelayout.setOnClickListener(this);
     }
-    private  void SwitchFragment(int id)
-    {
-        switch (id)
-        {
+
+    private void SwitchFragment(int id) {
+        switch (id) {
             case 1:
                 break;
             case 2:
@@ -81,7 +79,12 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
                 switchContent(menufragment);
                 break;
             case R.id.index_bottom_shopcar:
-                switchContent(shopcarfragment);
+                if (CommonUtils.IsLogin(MainActivity.this)) {
+                    switchContent(shopcarfragment);
+                } else {
+                    Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+                    startActivity(intent);
+                }
                 break;
             case R.id.index_bottom_me:
                 switchContent(myfragment);
@@ -97,22 +100,22 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
                 fragmentTransaction.remove(mNowFragment).add(R.id.content, fragment).commit();
 
             } else {
-                fragmentTransaction.remove(mNowFragment).add(R.id.content,fragment).commit();
+                fragmentTransaction.remove(mNowFragment).add(R.id.content, fragment).commit();
             }
         } else {
         }
         mNowFragment = fragment;
     }
-    private void FristChangeFragment(Fragment fragment)
-    {
+
+    private void FristChangeFragment(Fragment fragment) {
         fragmentTransaction = getSupportFragmentManager().beginTransaction();
-        fragmentTransaction.add(R.id.content,fragment).commit();
+        fragmentTransaction.add(R.id.content, fragment).commit();
     }
 
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
-        int id =intent.getIntExtra("id",1);
+        int id = intent.getIntExtra("id", 1);
         SwitchFragment(id);
     }
 }

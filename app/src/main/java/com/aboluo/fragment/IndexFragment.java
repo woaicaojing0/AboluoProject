@@ -34,6 +34,7 @@ import com.aboluo.com.MiaoShaActivity;
 import com.aboluo.com.OneYuanAcitvity;
 import com.aboluo.com.R;
 import com.aboluo.com.SecKillActivity;
+import com.aboluo.model.IndexBannerBean;
 import com.aboluo.model.SecKillAllInfo;
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -85,6 +86,7 @@ public class IndexFragment extends Fragment implements View.OnClickListener {
     private ArrayList<SecKillAllInfo.SkillMainListBean> listskillbean;
     private Picasso picasso;
     private SweetAlertDialog pdialog;
+    private IndexBannerBean indexBannerBean;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -106,12 +108,8 @@ public class IndexFragment extends Fragment implements View.OnClickListener {
         Drawable drawable = getResources().getDrawable(R.mipmap.ic_launcher);
         drawable.setBounds(0, 0, 80, 80);
         top_editsearch.setCompoundDrawables(drawable, null, drawable, null);
-        //头部滚动banner
         rollPagerView.setHintView(new ColorPointHintView(this.getActivity(), Color.RED, Color.WHITE));
-        bannerAdapter = new BannerAdapter(this.getActivity(), imgurl, rollPagerView);
-        rollPagerView.setAdapter(bannerAdapter); // 设置适配器（请求网络图片，适配器要在网络请求完成后再设置）
-        rollPagerView.getViewPager().getAdapter().notifyDataSetChanged();// 更新banner图片
-        rollPagerView.setFocusable(false);
+        initBanner();
         rollPagerView.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
@@ -223,6 +221,7 @@ public class IndexFragment extends Fragment implements View.OnClickListener {
 
     }
 
+
     private StringRequest getInfo() {
         StringRequest stringRequest = new StringRequest(Request.Method.POST, "http://msoa.weidustudio.com/api/MachineManage/ReceiveProductListByCategoryId", new Response.Listener<String>() {
             @Override
@@ -257,6 +256,7 @@ public class IndexFragment extends Fragment implements View.OnClickListener {
                 secKillAllInfo = gson.fromJson(response, SecKillAllInfo.class);
                 if (secKillAllInfo.getResult().equals("暂无秒杀场次")) {
                     mCvCountdownView.setVisibility(View.GONE);
+                    Toast.makeText(IndexFragment.this.getContext(), "暂无秒杀场次", Toast.LENGTH_SHORT).show();
                 } else {
                     listskillbean = (ArrayList<SecKillAllInfo.SkillMainListBean>) secKillAllInfo.getSkillMainList();
                     GetSreverTime();
@@ -267,8 +267,9 @@ public class IndexFragment extends Fragment implements View.OnClickListener {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                byte[] bytes = error.networkResponse.data;
-                Log.i("woaicaojingseckill", new String(bytes));
+//                byte[] bytes = error.networkResponse.data;
+//                Log.i("woaicaojingseckill", new String(bytes));
+                Toast.makeText(IndexFragment.this.getContext(), error.toString(), Toast.LENGTH_SHORT).show();
             }
         }) {
             @Override
@@ -366,5 +367,47 @@ public class IndexFragment extends Fragment implements View.OnClickListener {
         } else {
             Toast.makeText(IndexFragment.this.getContext(), "当前秒杀场次不够三场", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    //加载首页的配置
+    private void initBanner() {
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, URL + "/api/ConfigApi/ReceiveHomeConfig", new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                response = response.replace("\\", "");
+                response = response.substring(1, response.length() - 1);
+                indexBannerBean = gson.fromJson(response, IndexBannerBean.class);
+                if (indexBannerBean.isIsSuccess()) {
+                    String[] arrString = new String[indexBannerBean.getAppConfigList().size()];
+                    for (int i = 0; i < indexBannerBean.getAppConfigList().size(); i++) {
+                        arrString[i] = ImageUrl + indexBannerBean.getAppConfigList().get(i).getImage();
+                    }
+                    //头部滚动banner
+                    bannerAdapter = new BannerAdapter(IndexFragment.this.getContext(), arrString, rollPagerView);
+                    rollPagerView.setAdapter(bannerAdapter); // 设置适配器（请求网络图片，适配器要在网络请求完成后再设置）
+                    rollPagerView.getViewPager().getAdapter().notifyDataSetChanged();// 更新banner图片
+                    rollPagerView.setFocusable(false);
+                } else {
+                    Toast.makeText(IndexFragment.this.getContext(), indexBannerBean.getMessage().toString(), Toast.LENGTH_SHORT).show();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                byte[] data = error.networkResponse.data;
+                Toast.makeText(IndexFragment.this.getContext(), new String(data), Toast.LENGTH_SHORT).show();
+            }
+        }) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> map = new HashMap<>();
+                map.put("ConfigModule", "1");
+                map.put("APPToken", APPToken);
+                return map;
+            }
+        };
+        requestQueue.add(stringRequest);
+
+
     }
 }

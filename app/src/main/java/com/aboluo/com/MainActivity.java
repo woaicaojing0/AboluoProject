@@ -8,6 +8,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.view.View;
 import android.view.Window;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.aboluo.XUtils.CommonUtils;
 import com.aboluo.XUtils.MyApplication;
@@ -82,12 +83,20 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
                 if (CommonUtils.IsLogin(MainActivity.this)) {
                     switchContent(shopcarfragment);
                 } else {
+                    Toast.makeText(this, "请先登录！", Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(MainActivity.this, LoginActivity.class);
                     startActivity(intent);
                 }
                 break;
             case R.id.index_bottom_me:
-                switchContent(myfragment);
+                if (CommonUtils.IsLogin(MainActivity.this)) {
+                    switchContent(myfragment);
+                } else {
+                    Toast.makeText(this, "请先登录！", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+                    startActivity(intent);
+                }
+
                 break;
         }
     }

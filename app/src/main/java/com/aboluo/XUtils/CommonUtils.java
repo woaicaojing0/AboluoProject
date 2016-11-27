@@ -180,4 +180,10 @@ public class CommonUtils {
         editor.putString("UserId",UserId);
         return editor.commit();
     }
+    public static  String GetMemberId(Context context)
+    {
+        SharedPreferences sharedPreferences = context.getSharedPreferences("aboluoInfo", Context.MODE_PRIVATE);
+        String memberId = sharedPreferences.getString("UserId", "0");
+        return  memberId;
+    }
 }

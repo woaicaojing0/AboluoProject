@@ -176,11 +176,16 @@ public class SecKillGoodsDetailActivity extends Activity implements View.OnClick
     }
 
     private void initPageViewAndWebView(SeckillListBean seckillListBean) {
-        String[] imgesurl = seckillListBean.getGoodsPicture().split(";");
-        initrollPagerView(imgesurl);
-        String detailurl = CommonUtils.GetValueByKey(this, "backUrl") + "/moblie/Index?productId=" + seckillListBean.getGoodsId();
-        Log.i("woaicaojing", detailurl);
-        initwebview(detailurl, null);
+        if(seckillListBean.getGoodsPicture() ==null)
+        {
+            Toast.makeText(this, "请先添加商品的banner图片", Toast.LENGTH_SHORT).show();
+        }else {
+            String[] imgesurl = seckillListBean.getGoodsPicture().split(";");
+            initrollPagerView(imgesurl);
+            String detailurl = CommonUtils.GetValueByKey(this, "backUrl") + "/moblie/Index?productId=" + seckillListBean.getGoodsId();
+            Log.i("woaicaojing", detailurl);
+            initwebview(detailurl, null);
+        }
     }
 
     private void initdata(SeckillListBean seckillListBean) {

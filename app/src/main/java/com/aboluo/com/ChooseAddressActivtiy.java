@@ -41,11 +41,12 @@ public class ChooseAddressActivtiy  extends Activity {
     private AddressInfoBean addressInfoBean;
     private Gson gson;
     private ChooseAddressAdapter chooseAddressAdapter;
-
+    private String MemberId;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_make_sure_choose_address);
+        MemberId = CommonUtils.GetMemberId(ChooseAddressActivtiy.this);
         init();
         listview_choose_address.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -106,7 +107,7 @@ public class ChooseAddressActivtiy  extends Activity {
             @Override
             protected Map<String, String> getParams() {
                 Map<String, String> map = new HashMap<>();
-                map.put("MemberId", "1");
+                map.put("MemberId", MemberId);
                 map.put("APPToken", APPToken);
                 return map;
             }

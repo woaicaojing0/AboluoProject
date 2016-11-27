@@ -68,11 +68,13 @@ public class AddAddressActivity extends Activity implements TextWatcher, View.On
     private AddressInfoBean.ResultBean.MemberAddressListBean  memberAddressListBean;
     private Gson gson;
     private Switch swtich_isdefult;
+    private String MemberId;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activtiy_add_address);
         processExtraData();//从选择地址跳转过来的数据
+        MemberId = CommonUtils.GetMemberId(this);
         init();
         add_address_save.setOnClickListener(this);
         update_address_save.setOnClickListener(this);
@@ -274,7 +276,7 @@ public class AddAddressActivity extends Activity implements TextWatcher, View.On
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> map = new HashMap<>();
                 map.put("Id", "0");
-                map.put("MemberId", "1");
+                map.put("MemberId",MemberId);
                 map.put("Receiver", Receiver);
                 map.put("Mobile", Mobile);
                 map.put("Province", allname[0]);
@@ -337,7 +339,7 @@ public class AddAddressActivity extends Activity implements TextWatcher, View.On
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> map = new HashMap<>();
                 map.put("Id", String.valueOf(model));
-                map.put("MemberId", "1");
+                map.put("MemberId", MemberId);
                 map.put("Receiver", Receiver);
                 map.put("Mobile", Mobile);
                 map.put("Province", allname[0]);
@@ -399,7 +401,7 @@ public class AddAddressActivity extends Activity implements TextWatcher, View.On
                 protected Map<String, String> getParams() throws AuthFailureError {
                    Map<String,String> map = new HashMap<>();
                     map.put("Id",String.valueOf(model));
-                    map.put("MemberId","1");
+                    map.put("MemberId",MemberId);
                     map.put("APPToken",APPToken);
                     return  map;
                 }

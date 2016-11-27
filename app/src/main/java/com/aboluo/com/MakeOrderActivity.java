@@ -64,12 +64,14 @@ public class MakeOrderActivity extends Activity implements View.OnClickListener 
     private int choose_address_requestcode =2;
     private static int AddressId =0;
 private RelativeLayout change_make_sure_location;
+    private String MemberId;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_makeorder);
         OrderList = (MyListview) findViewById(R.id.orderlist);
+        MemberId = CommonUtils.GetMemberId(MakeOrderActivity.this);
         init();
         orderSureListViewAdapter = new OrderSureListViewAdapter(goodsShoppingCartListBean, this);
         OrderList.setAdapter(orderSureListViewAdapter);
@@ -156,7 +158,7 @@ private RelativeLayout change_make_sure_location;
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> map = new HashMap<>();
-                map.put("MemberId", "1");
+                map.put("MemberId", MemberId);
                 map.put("APPToken", APPToken);
                 return map;
             }
@@ -188,58 +190,59 @@ private RelativeLayout change_make_sure_location;
             bean1.setFreight(goodsShoppingCartListBean.get(i).getYunfei());
             bean.add(bean1);
         }
-        if(addressDefaultBean.isIsSuccess() == false&&AddressId==0)
-        {
-            Toast.makeText(this, "请选择收货地址", Toast.LENGTH_SHORT).show();
-        }else {
-            final Gson gson = new Gson();
-            final String Products = gson.toJson(bean);
-            pdialog.setTitleText("提交中");
-            pdialog.show();
-            StringRequest stringRequest = new StringRequest(Request.Method.POST, url + "/api/Order/SubOrder", new Response.Listener<String>() {
-                @Override
-                public void onResponse(String response) {
-                    response = response.replace("\\", "");
-                    response = response.substring(1, response.length() - 1);
-                    BaseModel baseModel = new BaseModel();
-                    baseModel = gson.fromJson(response, BaseModel.class);
-                    if (baseModel.isIsSuccess()) {
-                        Intent intent = new Intent(MakeOrderActivity.this, OrderPayActivity.class);
-                        intent.putExtra("payMoney", lastmoney);
-                        intent.putExtra("OrderNum", baseModel.getOrderSerialId().toString());
-                        startActivityForResult(intent, requsetcode);
+        if (addressDefaultBean.isIsSuccess()) {
+            if (addressDefaultBean.getResult().getReceiver() == null) {
+                Toast.makeText(this, "请选择收货地址", Toast.LENGTH_SHORT).show();
+            } else {
+                final Gson gson = new Gson();
+                final String Products = gson.toJson(bean);
+                pdialog.setTitleText("提交中");
+                pdialog.show();
+                StringRequest stringRequest = new StringRequest(Request.Method.POST, url + "/api/Order/SubOrder", new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        response = response.replace("\\", "");
+                        response = response.substring(1, response.length() - 1);
+                        BaseModel baseModel = new BaseModel();
+                        baseModel = gson.fromJson(response, BaseModel.class);
+                        if (baseModel.isIsSuccess()) {
+                            Intent intent = new Intent(MakeOrderActivity.this, OrderPayActivity.class);
+                            intent.putExtra("payMoney", lastmoney);
+                            intent.putExtra("OrderNum", baseModel.getOrderSerialId().toString());
+                            startActivityForResult(intent, requsetcode);
+                            pdialog.dismiss();
+                        } else {
+                        }
+                        Toast.makeText(MakeOrderActivity.this, response, Toast.LENGTH_SHORT).show();
                         pdialog.dismiss();
-                    } else {
                     }
-                    Toast.makeText(MakeOrderActivity.this, response, Toast.LENGTH_SHORT).show();
-                    pdialog.dismiss();
-                }
-            }, new Response.ErrorListener() {
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                    Toast.makeText(MakeOrderActivity.this, error.toString(), Toast.LENGTH_SHORT).show();
-                    byte[] htmlBodyBytes = error.networkResponse.data;
-                    Log.i("woaicaojingeorror", new String(htmlBodyBytes));
-                    pdialog.dismiss();
-                }
-            }) {
-                @Override
-                protected Map<String, String> getParams() throws AuthFailureError {
-                    Map<String, String> map = new HashMap<>();
-                    map.put("MemberId", "1");
-                    map.put("TotalPrice", moeny);
-                    if(addressDefaultBean.isIsSuccess()) {
-                        map.put("AddressId", String.valueOf(addressDefaultBean.getResult().getId()));
-                    }else {
-                        map.put("AddressId",String.valueOf(AddressId));
+                }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(MakeOrderActivity.this, error.toString(), Toast.LENGTH_SHORT).show();
+                        byte[] htmlBodyBytes = error.networkResponse.data;
+                        Log.i("woaicaojingeorror", new String(htmlBodyBytes));
+                        pdialog.dismiss();
                     }
-                    map.put("Remark", edit_remark.getText().toString());
-                    map.put("Products", Products);
-                    map.put("APPToken", APPToken);
-                    return map;
-                }
-            };
-            requestQueue.add(stringRequest);
+                }) {
+                    @Override
+                    protected Map<String, String> getParams() throws AuthFailureError {
+                        Map<String, String> map = new HashMap<>();
+                        map.put("MemberId", MemberId);
+                        map.put("TotalPrice", moeny);
+                        if (addressDefaultBean.isIsSuccess()) {
+                            map.put("AddressId", String.valueOf(addressDefaultBean.getResult().getId()));
+                        } else {
+                            map.put("AddressId", String.valueOf(AddressId));
+                        }
+                        map.put("Remark", edit_remark.getText().toString());
+                        map.put("Products", Products);
+                        map.put("APPToken", APPToken);
+                        return map;
+                    }
+                };
+                requestQueue.add(stringRequest);
+            }
         }
     }
 

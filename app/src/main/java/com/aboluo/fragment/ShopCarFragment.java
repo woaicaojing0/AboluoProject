@@ -106,6 +106,8 @@ public class ShopCarFragment extends Fragment implements View.OnClickListener {
     private Button btn_push; //结算按钮
     private ArrayList<GoodsShoppingCartListBean> OrderSureList; //最终到下单页的数据
     private TextView car_goods_detail_type_txtmoney; //修改bottomview 中的商品价格
+    private String MemberId;
+    private static boolean isnormal;
 
     @Override
 
@@ -114,6 +116,8 @@ public class ShopCarFragment extends Fragment implements View.OnClickListener {
             view = inflater.inflate(R.layout.fragment_shopcar, null);
         } else {
         }
+        isnormal = true;
+        MemberId = CommonUtils.GetMemberId(ShopCarFragment.this.getContext());
         init();
         cb_cart_all_linealayout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -250,7 +254,7 @@ public class ShopCarFragment extends Fragment implements View.OnClickListener {
                         protected Map<String, String> getParams() throws AuthFailureError {
                             Map<String, String> map = new HashMap<>();
                             map.put("Ids", ids);
-                            map.put("MemberId", "1");
+                            map.put("MemberId", MemberId);
                             map.put("APPToken", APPToken);
                             return map;
                         }
@@ -329,7 +333,7 @@ public class ShopCarFragment extends Fragment implements View.OnClickListener {
                                 map.put("goodsColorId", String.valueOf(radioColor.getId()));
                             }
                             map.put("goodsCount", String.valueOf(count));
-                            map.put("memberId", "1");
+                            map.put("memberId", MemberId);
                             map.put("shopId", "1");
                             map.put("APPToken", APPToken);
                             return map;
@@ -402,6 +406,7 @@ public class ShopCarFragment extends Fragment implements View.OnClickListener {
                         no_shopcar.setVisibility(View.GONE);
                         shop_content.setVisibility(View.VISIBLE);
                         goodsShoppingCartListBean = shopCarBean.getResult().getGoodsShoppingCartList();
+                        ckisselected.clear();
                         for (int i = 0; i < goodsShoppingCartListBean.size(); i++) {
                             ckisselected.add(i, false);
                         }
@@ -428,7 +433,7 @@ public class ShopCarFragment extends Fragment implements View.OnClickListener {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> map = new HashMap<>();
-                map.put("MemberId", "1");
+                map.put("MemberId", MemberId);
                 map.put("APPToken", APPToken);
                 return map;
             }
@@ -493,7 +498,7 @@ public class ShopCarFragment extends Fragment implements View.OnClickListener {
                                 map.put("goodsStandard", goodsstandards);
                                 map.put("goodsStandardId", goodsstandardsid);
                                 map.put("goodsCount", String.valueOf(finalNum));
-                                map.put("memberId", "1");
+                                map.put("memberId", MemberId);
                                 map.put("shopId", "1");
                                 map.put("APPToken", APPToken);
                                 return map;
@@ -552,7 +557,7 @@ public class ShopCarFragment extends Fragment implements View.OnClickListener {
                                     map.put("goodsStandard", goodsstandards);
                                     map.put("goodsStandardId", goodsstandardsid);
                                     map.put("goodsCount", String.valueOf(finalNum));
-                                    map.put("memberId", "1");
+                                    map.put("memberId", MemberId);
                                     map.put("shopId", "1");
                                     map.put("APPToken", APPToken);
                                     return map;
@@ -653,9 +658,9 @@ public class ShopCarFragment extends Fragment implements View.OnClickListener {
     /**
      * 计算当前的选中个数
      *
-     * @author water
-     * QQ376596444
-     * 2016年5月11日
+     * @author cjr
+     * QQ1206067690
+     * 2016年10月11日
      * @version 1.0
      */
     public int totalCheckNumber() {
@@ -1136,15 +1141,20 @@ public class ShopCarFragment extends Fragment implements View.OnClickListener {
     public void onResume() {
         super.onPause();
 //        Toast.makeText(context, "暂停结束了", Toast.LENGTH_SHORT).show();
-        initshopcar();
-        if (ckisselected.size() != 0) {
-            for (int i = 0; i < ckisselected.size(); i++) {
-                ckisselected.set(i, false);
-            }
-            if (carAdapter != null) {
-                carAdapter.notifyDataSetChanged();
-            }
+        if (isnormal) {
+            isnormal = false;
         } else {
+            initshopcar();
+            if (ckisselected.size() != 0) {
+                for (int i = 0; i < ckisselected.size(); i++) {
+                    ckisselected.set(i, false);
+                }
+                if (carAdapter != null) {
+                    carAdapter.notifyDataSetChanged();
+                }
+                cb_cart_all.setChecked(false);
+            } else {
+            }
         }
     }
 }

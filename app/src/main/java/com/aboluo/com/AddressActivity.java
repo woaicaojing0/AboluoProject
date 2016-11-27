@@ -25,6 +25,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.google.gson.Gson;
 
+import java.lang.reflect.Member;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -52,11 +53,12 @@ public class AddressActivity extends Activity implements View.OnClickListener {
     private AddressAdapter addressAdapter;
     private List<AddressInfoBean.ResultBean.MemberAddressListBean> listbean;
     private boolean IsPause = false;
-
+    private String MemberId;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_address);
+        MemberId = CommonUtils.GetMemberId(this);
         init();
         list = new ArrayList<>();
         for (int i = 0; i < 10; i++) {
@@ -132,7 +134,7 @@ public class AddressActivity extends Activity implements View.OnClickListener {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> map = new HashMap<>();
-                map.put("MemberId", "1");
+                map.put("MemberId", MemberId);
                 map.put("APPToken", APPToken);
                 return map;
             }
@@ -229,7 +231,7 @@ public class AddressActivity extends Activity implements View.OnClickListener {
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> map = new HashMap<>();
                 map.put("Id", String.valueOf(last_id));
-                map.put("MemberId", "1");
+                map.put("MemberId", MemberId);
                 map.put("APPToken", APPToken);
                 return map;
             }
@@ -268,7 +270,7 @@ public class AddressActivity extends Activity implements View.OnClickListener {
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> map = new HashMap<>();
                 map.put("Id", String.valueOf(deleteid));
-                map.put("MemberId", "1");
+                map.put("MemberId", MemberId);
                 map.put("APPToken", APPToken);
                 return map;
             }

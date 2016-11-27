@@ -41,10 +41,12 @@ public class AllOrderFragment extends Fragment{
     private SearchOrderBean orderBean;
     private Gson gson;
     private AllOrderAdapter allOrderAdapter;
+    private String MemberId;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_allorder,null);
+        MemberId =CommonUtils.GetMemberId(AllOrderFragment.this.getContext());
         init();
         return view;
     }
@@ -184,7 +186,7 @@ public class AllOrderFragment extends Fragment{
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> map = new HashMap<>();
-                map.put("MemberId", "1");
+                map.put("MemberId", MemberId);
                 map.put("OrderStatus", "0");
                 map.put("CurrentPage", "1");
                 map.put("PageSize", "10");

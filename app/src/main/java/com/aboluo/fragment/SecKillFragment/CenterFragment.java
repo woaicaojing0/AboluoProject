@@ -183,6 +183,7 @@ public class CenterFragment extends Fragment {
                     });
                 } else {
                     cv_seckilldetail.setVisibility(View.GONE);
+                    txt_countview.setText("秒杀已结束");
                 }
                 pdialog.dismiss();
             }

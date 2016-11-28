@@ -394,8 +394,8 @@ public class IndexFragment extends Fragment implements View.OnClickListener {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                byte[] data = error.networkResponse.data;
-                Toast.makeText(IndexFragment.this.getContext(), new String(data), Toast.LENGTH_SHORT).show();
+//                byte[] data = error.networkResponse.data;
+              //  Toast.makeText(IndexFragment.this.getContext(), new String(data), Toast.LENGTH_SHORT).show();
             }
         }) {
             @Override

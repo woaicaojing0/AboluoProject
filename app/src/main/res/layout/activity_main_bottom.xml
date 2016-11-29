@@ -31,7 +31,7 @@
                 android:id="@+id/iv_menu_home"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
-                android:background="@mipmap/ic_launcher"
+                android:background="@drawable/home"
                 android:contentDescription="@string/app_name"/>
             <TextView
                 android:id="@+id/tv_menu_home"
@@ -43,7 +43,7 @@
         </LinearLayout>
         <!-- 热点 -->
         <LinearLayout
-            android:id="@+id/index_bottom_menu"
+            android:id="@+id/index_menu_menu"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -53,13 +53,13 @@
             android:orientation="vertical"
             >
             <ImageView
-                android:id="@+id/iv_menu_hot"
+                android:id="@+id/iv_bottom_menu"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
-                android:background="@mipmap/ic_launcher"
+                android:background="@drawable/sort_light"
                 android:contentDescription="@string/app_name"/>
             <TextView
-                android:id="@+id/tv_menu_hot"
+                android:id="@+id/tv_bottom_menu"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="菜单"
@@ -78,13 +78,13 @@
             android:orientation="vertical"
             >
             <ImageView
-                android:id="@+id/iv_menu_talk"
+                android:id="@+id/iv_menu_car"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
-                android:background="@mipmap/ic_launcher"
+                android:background="@drawable/cart"
                 android:contentDescription="@string/app_name"/>
             <TextView
-                android:id="@+id/tv_menu_talk"
+                android:id="@+id/tv_menu_car"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="购物车"
@@ -106,7 +106,7 @@
                 android:id="@+id/iv_menu_me"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
-                android:background="@mipmap/ic_launcher"
+                android:background="@drawable/my"
                 />
             <TextView
                 android:id="@+id/tv_menu_me"

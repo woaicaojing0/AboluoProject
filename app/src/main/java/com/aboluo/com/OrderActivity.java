@@ -29,7 +29,7 @@ public class OrderActivity extends FragmentActivity {
     private List<Fragment> list_fragment;                                //定义要装fragment的列表
     private List<String> list_title;                                     //tab名称列表
     private OrderTabAdapter fAdapter;
-    private int selected;
+    private int selected,status;
 
     public OrderActivity() {
     }
@@ -40,6 +40,7 @@ public class OrderActivity extends FragmentActivity {
         setContentView(R.layout.activity_order);
         Intent intent = getIntent();
         selected = intent.getIntExtra("TAG", 0);
+        status = intent.getIntExtra("status", 0);
         init();
     }
 

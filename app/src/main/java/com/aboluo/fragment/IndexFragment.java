@@ -251,10 +251,16 @@ public class IndexFragment extends Fragment implements View.OnClickListener {
         StringRequest stringRequest = new StringRequest(Request.Method.POST, URL + "/api/ActiveApi/RecieveMainSeckillList", new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
+                seckill_imge0.setVisibility(View.VISIBLE);
+                seckill_imge1.setVisibility(View.VISIBLE);
+                seckill_imge2.setVisibility(View.VISIBLE);
                 response = response.replace("\\", "");
                 response = response.substring(1, response.length() - 1);
                 secKillAllInfo = gson.fromJson(response, SecKillAllInfo.class);
                 if (secKillAllInfo.getResult().equals("暂无秒杀场次")) {
+                    seckill_imge0.setVisibility(View.GONE);
+                    seckill_imge1.setVisibility(View.GONE);
+                    seckill_imge2.setVisibility(View.GONE);
                     mCvCountdownView.setVisibility(View.GONE);
                     Toast.makeText(IndexFragment.this.getContext(), "暂无秒杀场次", Toast.LENGTH_SHORT).show();
                 } else {

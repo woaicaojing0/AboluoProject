@@ -29,5 +29,5 @@
     <color name="main_bottom">#eeeeee</color>
     <color name="btn_color">#fd5e89</color>
     <color name="common_bg">#efefef</color>
-
+    <color name="txtColor">#5f646e</color>
 </resources>

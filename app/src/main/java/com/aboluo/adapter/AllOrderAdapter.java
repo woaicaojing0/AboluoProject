@@ -80,7 +80,7 @@ public class AllOrderAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        View contentView = null;
+        View contentView = null;    //中间内容的布局
         ViewHolder2 holder2 = null;
         if (convertView == null) {
 
@@ -92,6 +92,8 @@ public class AllOrderAdapter extends BaseAdapter {
             holder2.btn_cancelorder = (Button) convertView.findViewById(R.id.btn_cancelorder);
             holder2.btn_payorder = (Button) convertView.findViewById(R.id.btn_payorder);
             holder2.txt_order_status = (TextView) convertView.findViewById(R.id.txt_order_status);
+            holder2.order_allmoney = (TextView) convertView.findViewById(R.id.order_allmoney);
+            holder2.order_goodsnum = (TextView) convertView.findViewById(R.id.order_goodsnum);
             convertView.setTag(holder2);
         } else {
             holder2 = (ViewHolder2) convertView.getTag();
@@ -121,15 +123,36 @@ public class AllOrderAdapter extends BaseAdapter {
                     .into(holder.image_order_goodsimage);
             Log.i("woaaicaojingallorder", ImageURL + "/" + mlist.get(position).getOrderItemList().get(i).getGoodsLogoUrl());
             holder.txt_order_goodsName.setText(String.valueOf(mlist.get(position).getOrderItemList().get(i).getGoodsName()));
-            holder.txt_order_standardandcolor.setText(String.valueOf("颜色分类：" + mlist.get(position).getOrderItemList().get(i).getGoodsColor() +
-                    " 规格分类：" + mlist.get(position).getOrderItemList().get(i).getGoodsStandard()));
+           //判断该商品是否有规格和颜色
+            if(mlist.get(position).getOrderItemList().get(i).getGoodsColorId() ==0)
+            {
+                if(mlist.get(position).getOrderItemList().get(i).getGoodsStandardId() ==0)
+                {
+                    holder.txt_order_standardandcolor.setText("");
+                }else {
+                    holder.txt_order_standardandcolor.setText(String.valueOf(
+                            " 规格分类：" + mlist.get(position).getOrderItemList().get(i).getGoodsStandard()));
+                }
+            }else {
+                if(mlist.get(position).getOrderItemList().get(i).getGoodsStandardId() ==0)
+                {
+                    holder.txt_order_standardandcolor.setText(String.valueOf("颜色分类：" +
+                            mlist.get(position).getOrderItemList().get(i).getGoodsColor()));
+                }else {
+                    holder.txt_order_standardandcolor.setText(String.valueOf("颜色分类：" + mlist.get(position).getOrderItemList().get(i).getGoodsColor() +
+                            " 规格分类：" + mlist.get(position).getOrderItemList().get(i).getGoodsStandard()));
+                }
+            }
             holder.txt_order_hyprice.setText("￥" + String.valueOf(mlist.get(position).getOrderItemList().get(i).getGoodsPrice()));
             holder.txt_order_yuanprice.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG);
             holder.txt_order_yuanprice.setText("￥" + String.valueOf(mlist.get(position).getOrderItemList().get(i).getGoodsPrice()));
             holder.txt_order_goods_num.setText(String.valueOf("X" + String.valueOf(mlist.get(position).getOrderItemList().get(i).getGoodsQuantity())));
+
             contentView.setOnClickListener(itemOnclickListener);
             contentView.setTag(position);
-            holder2.txt_order_status.setText(OrderStatus(mlist.get(position).getOrderStatus(),holder2));
+            holder2.txt_order_status.setText(OrderStatus(mlist.get(position).getOrderStatus(), holder2));
+            holder2.order_allmoney.setText(String.valueOf("￥" + String.valueOf(mlist.get(position).getTotalPrice())));
+            holder2.order_goodsnum.setText(String.valueOf(String.valueOf(mlist.get(position).getOrderItemList().size())));
             holder2.btn_findgoods.setOnClickListener(FindGoodsOnclickListener);
             holder2.btn_ok.setOnClickListener(SureOkOnclickListener);
             holder2.btn_cancelorder.setOnClickListener(CancelOrderOnclickListener);
@@ -155,10 +178,10 @@ public class AllOrderAdapter extends BaseAdapter {
     class ViewHolder2 {
         public LinearLayout content_view;
         public Button btn_findgoods, btn_ok, btn_cancelorder, btn_payorder;
-        private TextView txt_order_status;
+        public TextView txt_order_status, order_allmoney,order_goodsnum;
     }
 
-    public String OrderStatus(int orderStatus,ViewHolder2 holder2) {
+    public String OrderStatus(int orderStatus, ViewHolder2 holder2) {
         String result;
         switch (orderStatus) {
             case 10:

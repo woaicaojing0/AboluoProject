@@ -1,5 +1,6 @@
 package com.aboluo.fragment.orderfragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -7,12 +8,14 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Toast;
 
 import com.aboluo.XUtils.CommonUtils;
 import com.aboluo.XUtils.MyApplication;
 import com.aboluo.adapter.AllOrderAdapter;
+import com.aboluo.com.OrderPayActivity;
 import com.aboluo.com.R;
 import com.aboluo.model.SearchOrderBean;
 import com.android.volley.AuthFailureError;
@@ -46,7 +49,7 @@ public class AllOrderFragment extends Fragment implements View.OnClickListener {
     private AllOrderAdapter allOrderAdapter;
     private String MemberId;
     private int InitPage = 1;
-
+    private LinearLayout allorder_empty;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -75,6 +78,7 @@ public class AllOrderFragment extends Fragment implements View.OnClickListener {
 
     private void init() {
         allorder_listview = (PullToRefreshListView) view.findViewById(R.id.allorder_listview);
+        allorder_empty = (LinearLayout) view.findViewById(R.id.allorder_empty);
         requestQueue = MyApplication.getRequestQueue();
         APPToken = CommonUtils.GetValueByKey(AllOrderFragment.this.getActivity(), "APPToken");
         URL = CommonUtils.GetValueByKey(AllOrderFragment.this.getActivity(), "apiurl");
@@ -87,27 +91,50 @@ public class AllOrderFragment extends Fragment implements View.OnClickListener {
         stringRequest = new StringRequest(Request.Method.POST, URL + "/api/Order/GetOrderListByMemberId", new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
+                boolean IsEmpty = false;
+                allorder_empty.setVisibility(View.GONE);
+                allorder_listview.setVisibility(View.VISIBLE);
                 response = response.replace("\\", "");
                 response = response.substring(1, response.length() - 1);
                 Log.i("woaicaojingallorder", response);
-                if (orderBean == null) {
-                    orderBean = new SearchOrderBean();
-                    orderBean = gson.fromJson(response, SearchOrderBean.class);
-                    allOrderAdapter = new AllOrderAdapter(AllOrderFragment.this.getContext(), orderBean.getResult());
-                    allorder_listview.setAdapter(allOrderAdapter);
-                } else {
-                    SearchOrderBean searchOrderBean = new SearchOrderBean();
-                    searchOrderBean = gson.fromJson(response, SearchOrderBean.class);
-                    orderBean.getResult().addAll(searchOrderBean.getResult());
-                    allOrderAdapter.notifyDataSetChanged();
+                SearchOrderBean searchOrderBean = new SearchOrderBean();
+                searchOrderBean = gson.fromJson(response, SearchOrderBean.class);
+                if(searchOrderBean.isIsSuccess()) {
+                    if (orderBean == null) {
+                        if(searchOrderBean.getResult().size() == 0)
+                        {
+                            allorder_empty.setVisibility(View.VISIBLE);
+                            allorder_listview.setVisibility(View.GONE);
+                            IsEmpty=true;
+                        }else {
+                            orderBean = new SearchOrderBean();
+                            orderBean = gson.fromJson(response, SearchOrderBean.class);
+                            allOrderAdapter = new AllOrderAdapter(AllOrderFragment.this.getContext(), orderBean.getResult());
+                            allorder_listview.setAdapter(allOrderAdapter);
+                        }
+                    } else {
+                        if(searchOrderBean.getResult().size() ==0)
+                        {
+                            Toast.makeText(AllOrderFragment.this.getContext(),
+                                    "没有数据啦", Toast.LENGTH_SHORT).show();
+                        }else {
+                            orderBean.getResult().addAll(searchOrderBean.getResult());
+                            allOrderAdapter.notifyDataSetChanged();
+                        }
+                    }
+                    if(IsEmpty)
+                    {}else {
+                        allOrderAdapter.setCancelOrderOnclickListener(AllOrderFragment.this);
+                        allOrderAdapter.setFindGoodsOnclickListener(AllOrderFragment.this);
+                        allOrderAdapter.setPayOnclickListener(AllOrderFragment.this);
+                        allOrderAdapter.setSureOkOnclickListener(AllOrderFragment.this);
+                        allOrderAdapter.setItemOnclickListener(AllOrderFragment.this);
+                        allorder_listview.onRefreshComplete();
+                    }
+                }else {
+                    Toast.makeText(AllOrderFragment.this.getContext(),
+                            searchOrderBean.getMessage().toString(), Toast.LENGTH_SHORT).show();
                 }
-
-                allOrderAdapter.setCancelOrderOnclickListener(AllOrderFragment.this);
-                allOrderAdapter.setFindGoodsOnclickListener(AllOrderFragment.this);
-                allOrderAdapter.setPayOnclickListener(AllOrderFragment.this);
-                allOrderAdapter.setSureOkOnclickListener(AllOrderFragment.this);
-                allOrderAdapter.setItemOnclickListener(AllOrderFragment.this);
-                allorder_listview.onRefreshComplete();
             }
         }, new Response.ErrorListener() {
             @Override
@@ -123,7 +150,7 @@ public class AllOrderFragment extends Fragment implements View.OnClickListener {
                 map.put("MemberId", MemberId);
                 map.put("OrderStatus", "0");
                 map.put("CurrentPage", String.valueOf(page));
-                map.put("PageSize", "3");
+                map.put("PageSize", "10");
                 map.put("NCount", "5");
                 map.put("APPToken", APPToken);
                 return map;
@@ -138,36 +165,47 @@ public class AllOrderFragment extends Fragment implements View.OnClickListener {
         int key = v.getId();
         switch (key) {
             //btn_findgoods, btn_ok, btn_cancelorder, btn_payorder;
-            case R.id.content_view: //点击添加数量按钮，执行相应的处理
+            case R.id.content_view: //点击查看物流按钮，执行相应的处理
                 // 获取 Adapter 中设置的 Tag
                 if (tag != null && tag instanceof Integer) { //解决问题：如何知道你点击的按钮是哪一个列表项中的，通过Tag的position
                     final int position = (Integer) tag;
                     Toast.makeText(AllOrderFragment.this.getContext(), position + "", Toast.LENGTH_SHORT).show();
                 }
-            case R.id.btn_findgoods: //点击添加数量按钮，执行相应的处理
+            case R.id.btn_findgoods: //点击查看物流按钮，执行相应的处理
                 // 获取 Adapter 中设置的 Tag
                 if (tag != null && tag instanceof Integer) { //解决问题：如何知道你点击的按钮是哪一个列表项中的，通过Tag的position
                     final int position = (Integer) tag;
                     Toast.makeText(AllOrderFragment.this.getContext(), position + "", Toast.LENGTH_SHORT).show();
                 }
-            case R.id.btn_ok: //点击添加数量按钮，执行相应的处理
+            case R.id.btn_ok: //点击确认收货按钮，执行相应的处理
                 // 获取 Adapter 中设置的 Tag
                 if (tag != null && tag instanceof Integer) { //解决问题：如何知道你点击的按钮是哪一个列表项中的，通过Tag的position
                     final int position = (Integer) tag;
                     Toast.makeText(AllOrderFragment.this.getContext(), position + "", Toast.LENGTH_SHORT).show();
                 }
-            case R.id.btn_cancelorder: //点击添加数量按钮，执行相应的处理
+            case R.id.btn_cancelorder: //点击取消支付按钮，执行相应的处理
                 // 获取 Adapter 中设置的 Tag
                 if (tag != null && tag instanceof Integer) { //解决问题：如何知道你点击的按钮是哪一个列表项中的，通过Tag的position
                     final int position = (Integer) tag;
                     Toast.makeText(AllOrderFragment.this.getContext(), position + "", Toast.LENGTH_SHORT).show();
                 }
-            case R.id.btn_payorder: //点击添加数量按钮，执行相应的处理
+            case R.id.btn_payorder: //点击支付按钮，执行相应的处理
                 // 获取 Adapter 中设置的 Tag
                 if (tag != null && tag instanceof Integer) { //解决问题：如何知道你点击的按钮是哪一个列表项中的，通过Tag的position
                     final int position = (Integer) tag;
                     Toast.makeText(AllOrderFragment.this.getContext(), position + "", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(AllOrderFragment.this.getActivity(), OrderPayActivity.class);
+                    intent.putExtra("payMoney", orderBean.getResult().get(position).getTotalPrice().toString());
+                    intent.putExtra("OrderNum", orderBean.getResult().get(position).getOrderCode().toString());
+                    startActivity(intent);
                 }
         }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        InitPage=1;
+        orderBean=null;
     }
 }

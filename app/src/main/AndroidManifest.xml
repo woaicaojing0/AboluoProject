@@ -45,7 +45,9 @@
             android:launchMode="singleTask"></activity>
         <activity android:name=".RegisterActivity"></activity>
         <activity android:name=".RetrievepwdActivity"></activity>
-        <activity android:name=".MyInfoAcitvity"></activity>
+        <activity android:name=".MyInfoAcitvity"
+            android:screenOrientation="portrait"
+            android:configChanges="orientation|keyboardHidden|screenSize"></activity>
         <activity android:name=".OrderActivity"></activity>
         <activity
             android:name=".GoodsDetailActivity"
@@ -99,5 +101,16 @@
             android:windowSoftInputMode="adjustResize|stateHidden"/>
         <activity android:name=".SecKillActivity"></activity>
         <!---end-->
+        <activity android:name=".SimpleActivity"
+            android:screenOrientation="portrait"
+            android:configChanges="orientation|keyboardHidden|screenSize">
+
+        </activity>
+        <activity android:name=".ResultActivity"
+            android:screenOrientation="portrait"
+            android:configChanges="orientation|keyboardHidden|screenSize"></activity>
+        <activity android:name=".testactivity">
+
+        </activity>
     </application>
 </manifest>

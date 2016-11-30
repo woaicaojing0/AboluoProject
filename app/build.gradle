@@ -68,4 +68,5 @@ dependencies {
     compile 'com.leo.gesturelibray:GestureLibray:1.1.1'
     //sdk解锁
     compile project(path: ':sdk')
+    compile 'com.jph.takephoto:takephoto_library:4.0.2'
 }

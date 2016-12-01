@@ -34,6 +34,7 @@ import com.aboluo.com.MiaoShaActivity;
 import com.aboluo.com.OneYuanAcitvity;
 import com.aboluo.com.R;
 import com.aboluo.com.SecKillActivity;
+import com.aboluo.com.SignInActivity;
 import com.aboluo.model.IndexBannerBean;
 import com.aboluo.model.SecKillAllInfo;
 import com.android.volley.AuthFailureError;
@@ -134,6 +135,11 @@ public class IndexFragment extends Fragment implements View.OnClickListener {
                         Intent intent4 = new Intent(getActivity(), MiaoShaActivity.class);
                         startActivity(intent4);
                         break;
+                    case 5:
+                        Intent intent5 = new Intent(getActivity(), SignInActivity.class);
+                        startActivity(intent5);
+                        break;
+
                 }
             }
         });

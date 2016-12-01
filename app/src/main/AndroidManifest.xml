@@ -78,6 +78,9 @@
         <activity android:name=".OrderPayActivity"></activity>
         <activity android:name=".ChooseAddressActivtiy"></activity>
         <activity android:name=".SecKillGoodsDetailActivity"></activity>
+        <activity android:name=".SignInActivity"></activity>
+        <activity android:name=".SignInInfoActivity"
+            android:theme="@style/alert_dialog"></activity>
         <!--线下测试模式-->
         <activity
             android:name="cn.beecloud.BCMockPayActivity"

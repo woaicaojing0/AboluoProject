@@ -65,6 +65,7 @@ public class MakeOrderActivity extends Activity implements View.OnClickListener 
     private static int AddressId =0;
 private RelativeLayout change_make_sure_location;
     private String MemberId;
+    private String payfrom;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -104,6 +105,7 @@ private RelativeLayout change_make_sure_location;
         Bundle bundle = intent.getExtras();
         goodsShoppingCartListBean = bundle.getParcelableArrayList("data");
         moeny = bundle.get("allmoney").toString();
+        payfrom = bundle.get("payfrom").toString();
         txt_allmoney.setText("￥" + bundle.get("allmoney").toString() + "元");
         goods_smallallmoeny.setText("￥" + bundle.get("allmoney").toString());
         txt_goods_allnum.setText("共计" + goodsShoppingCartListBean.size() + "件商品");
@@ -209,7 +211,7 @@ private RelativeLayout change_make_sure_location;
                             Intent intent = new Intent(MakeOrderActivity.this, OrderPayActivity.class);
                             intent.putExtra("payMoney", lastmoney);
                             intent.putExtra("OrderNum", baseModel.getOrderSerialId().toString());
-                            intent.putExtra("payfrom", "1");
+                            intent.putExtra("payfrom", payfrom);
                             startActivityForResult(intent, requsetcode);
                             pdialog.dismiss();
                         } else {

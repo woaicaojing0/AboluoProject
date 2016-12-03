@@ -104,7 +104,22 @@ public class ShopCarBean {
             private String goodsLogo;
             private double goodsPrice;
             private double hyPrice;
-
+            public GoodsShoppingCartListBean(int goodsid,int goodsColorId,String goodsColor,
+                                             int goodsStandardId,String goodsStandard,
+                                             int goodsCount,int yunfei,String goodsName,
+                                             String goodsLogo,double hyprice)
+            {
+                this.setGoodsId(goodsid);
+                this.setGoodsColorId(goodsColorId);
+                this.setGoodsColor(goodsColor);
+                this.setGoodsStandardId(goodsStandardId);
+                this.setGoodsStandard(goodsStandard);
+                this.setGoodsCount(goodsCount);
+                this.setYunfei(yunfei);
+                this.setGoodsName(goodsName);
+                this.setGoodsLogo(goodsLogo);
+                this.setHyPrice(hyprice);
+            }
             protected GoodsShoppingCartListBean(Parcel in) {
                 Id = in.readInt();
                 goodsId = in.readInt();

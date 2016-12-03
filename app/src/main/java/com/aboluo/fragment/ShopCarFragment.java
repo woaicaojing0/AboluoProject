@@ -362,6 +362,7 @@ public class ShopCarFragment extends Fragment implements View.OnClickListener {
                 } else {
                     intent.putExtra("allmoney", shopcar_allmoney.getText().toString());
                     intent.putExtra("data", OrderSureList);
+                    intent.putExtra("payfrom", "1"); //代表从购物车结算的
                     startActivity(intent);
                 }
                 break;

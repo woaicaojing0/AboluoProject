@@ -117,6 +117,7 @@
                     android:paddingTop="2dp">
 
                     <LinearLayout
+                        android:id="@+id/goodsdetail_btn_buynow"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:background="#fd5e89"

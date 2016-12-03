@@ -46,6 +46,7 @@ import com.aboluo.model.GoodsDetailInfo;
 import com.aboluo.model.GoodsDetailInfo.ResultBean.GoodsInfoBean.GoodsColorBean;
 import com.aboluo.model.GoodsDetailInfo.ResultBean.GoodsInfoBean.GoodsColorStandardListBean;
 import com.aboluo.model.GoodsDetailInfo.ResultBean.GoodsInfoBean.GoodsStandardsBean;
+import com.aboluo.model.ShopCarBean.ResultBean.GoodsShoppingCartListBean;
 import com.aboluo.widget.MyRadioGroup;
 import com.aboluo.widget.VerticalScrollView;
 import com.android.volley.AuthFailureError;
@@ -111,7 +112,8 @@ public class GoodsDetailActivity extends Activity implements View.OnClickListene
     private static int popwith; //获取当前屏幕的宽度
     private static boolean isshowtype = false;  //当前商品类型是否显示
     private LinearLayout index_bottom_shopcar, goods_type_addshopcart; //1底部加入购车按钮 商品列表中的加入购物车
-    private LinearLayout goods_type_selected, goods_type_ok; // 1 有加入购物车和立即购买按钮。 2 只有确定按钮
+    private LinearLayout goods_type_selected, goods_type_ok; // 1 有加入购物车和立即购买按钮。 2 只有确定按钮\
+    private LinearLayout goodsdetail_btn_buynow, pop_goodsdetail_btn_buynow;
     private Boolean hascolor = false, hasstandards = false;
     private SweetAlertDialog pdialog;
     private static String goods_type_imgeurl; //需要放大图片的地址
@@ -119,6 +121,8 @@ public class GoodsDetailActivity extends Activity implements View.OnClickListene
     private Toolbar toolbar; //渐变显示的toolbar
     private int height;
     private String MemberId;
+    private ArrayList<GoodsShoppingCartListBean> goodsShoppingCartListBean; //传入下订单的信息
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -136,6 +140,8 @@ public class GoodsDetailActivity extends Activity implements View.OnClickListene
         index_bottom_shopcar.setOnClickListener(this);
         goods_type_ok.setOnClickListener(this);
         goods_type_addshopcart.setOnClickListener(this);
+        pop_goodsdetail_btn_buynow.setOnClickListener(this);
+        goodsdetail_btn_buynow.setOnClickListener(this);
         firstView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
             public void onGlobalLayout() {
@@ -328,6 +334,8 @@ public class GoodsDetailActivity extends Activity implements View.OnClickListene
         goods_type_selected = (LinearLayout) findViewById(R.id.goods_type_selected);
         goods_type_ok = (LinearLayout) findViewById(R.id.goods_type_ok);
         layout_txt_goods_sub = (LinearLayout) findViewById(R.id.layout_txt_goods_sub);
+        goodsdetail_btn_buynow = (LinearLayout) findViewById(R.id.goodsdetail_btn_buynow);
+        pop_goodsdetail_btn_buynow = (LinearLayout) findViewById(R.id.pop_goodsdetail_btn_buynow);
         contentscrollView = (VerticalScrollView) findViewById(R.id.contentscrollView);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         pdialog = new SweetAlertDialog(this, SweetAlertDialog.PROGRESS_TYPE);
@@ -338,6 +346,7 @@ public class GoodsDetailActivity extends Activity implements View.OnClickListene
         URL = CommonUtils.GetValueByKey(this, "apiurl");
         ImgUrl = CommonUtils.GetValueByKey(this, "ImgUrl");
         APPToken = CommonUtils.GetValueByKey(this, "APPToken");
+        goodsShoppingCartListBean = new ArrayList<>();
 
     }
 
@@ -863,9 +872,105 @@ public class GoodsDetailActivity extends Activity implements View.OnClickListene
                 goods_type_ok.setVisibility(View.VISIBLE);
                 goods_type_selected.setVisibility(View.GONE);
                 initShowAnim();
-
-
+                break;
+            case R.id.pop_goodsdetail_btn_buynow: //弹出popwindow的立即购买
+                if (!CheckChooseAll()) {
+                } else {
+                    BuyNow();
+                }
+                break;
+            case R.id.goodsdetail_btn_buynow:  //详情底部的立即购买
+                if (!CheckChooseAll()) {
+                } else {
+                    BuyNow();
+                }
+                break;
         }
+    }
+
+    public void BuyNow() {
+        goodsShoppingCartListBean.clear();
+        int colorid = 0;
+        String color = null;
+        int standardsid = 0;
+        String standards = null;
+        double hyprice = goodsDetailInfo.getResult().getGoodsInfo().getHyPrice(); //默认是会员价，如果有规，会根据规格去找价格
+        final RadioButton radioButton = (RadioButton) findViewById(goodsdetail_type_color.getCheckedRadioButtonId());
+        final RadioButton radioButton2 = (RadioButton) findViewById(goodsdetail_type_standards.getCheckedRadioButtonId());
+        if (radioButton != null) {
+            color = radioButton.getText().toString();
+            colorid = radioButton.getId();
+        } else {
+            color = "无";
+        }
+        if (radioButton2 != null) {
+            standards = radioButton2.getText().toString();
+            standardsid = radioButton2.getId();
+            List<GoodsStandardsBean> goodsStandardsBean = goodsDetailInfo.getResult().getGoodsInfo().getGoodsStandards();
+            for (int i = 0; i < goodsStandardsBean.size(); i++) { //根据规格id寻找价格
+                if (goodsStandardsBean.get(i).getGoodsStandardId() == standardsid) {
+                    hyprice = goodsStandardsBean.get(i).getHyPrice();
+
+                }
+            }
+        } else {
+            standards = "无";
+        }
+        GoodsShoppingCartListBean goodsShoppingCartListBean2 = new GoodsShoppingCartListBean(
+                goodsDetailInfo.getResult().getGoodsInfo().getGoodsId(),
+                colorid,
+                color,
+                standardsid,
+                standards,
+                Integer.valueOf(etAmount.getText().toString()),
+                (new Double(goodsDetailInfo.getResult().getGoodsInfo().getYunfei())).intValue(),
+                goodsDetailInfo.getResult().getGoodsInfo().getGoodsName(),
+                goodsDetailInfo.getResult().getGoodsInfo().getGoodsLogo(),
+                hyprice
+        );
+        goodsShoppingCartListBean.add(goodsShoppingCartListBean2);
+        Intent intent1 = new Intent(GoodsDetailActivity.this, MakeOrderActivity.class);
+        intent1.putExtra("allmoney", String.valueOf(hyprice *
+                Integer.valueOf(etAmount.getText().toString())));
+        intent1.putExtra("data", goodsShoppingCartListBean);
+        intent1.putExtra("payfrom", "1"); //代表从购物车结算的
+        startActivity(intent1);
+    }
+
+    public boolean CheckChooseAll() {
+        final RadioButton radioButton = (RadioButton) findViewById(goodsdetail_type_color.getCheckedRadioButtonId());
+        final RadioButton radioButton2 = (RadioButton) findViewById(goodsdetail_type_standards.getCheckedRadioButtonId());
+        boolean isok = false;
+        if (radioButton == null && radioButton2 == null) {
+            if (hasstandards) {
+                if (hascolor) {
+                    Toast.makeText(GoodsDetailActivity.this, "请选择商品尺寸和颜色", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(GoodsDetailActivity.this, "请选择商品尺寸", Toast.LENGTH_SHORT).show();
+                }
+            } else {
+                if (hascolor) {
+                    Toast.makeText(GoodsDetailActivity.this, "请选择商品颜色", Toast.LENGTH_SHORT).show();
+                } else {
+                    isok = true;
+                }
+            }
+        } else if (radioButton == null) {
+            if (hascolor) {
+                Toast.makeText(GoodsDetailActivity.this, "请选择商品颜色", Toast.LENGTH_SHORT).show();
+            } else {
+                isok = true;
+            }
+        } else if (radioButton2 == null) {
+            if (hasstandards) {
+                Toast.makeText(GoodsDetailActivity.this, "请选择商品尺寸", Toast.LENGTH_SHORT).show();
+            } else {
+                isok = true;
+            }
+        } else {
+            isok = true;
+        }
+        return isok;
     }
 
     /**
@@ -1018,49 +1123,7 @@ public class GoodsDetailActivity extends Activity implements View.OnClickListene
     private void addShopCar() {
         final RadioButton radioButton = (RadioButton) findViewById(goodsdetail_type_color.getCheckedRadioButtonId());
         final RadioButton radioButton2 = (RadioButton) findViewById(goodsdetail_type_standards.getCheckedRadioButtonId());
-//                if (hasstandards) {
-//                    if (radioButton2 == null) {
-//                        Toast.makeText(GoodsDetailActivity.this, "请选择商品尺寸", Toast.LENGTH_SHORT).show();
-//                    } else {
-//                    }
-//                }
-//                if (hascolor) {
-//                    if (radioButton == null) {
-//                        Toast.makeText(GoodsDetailActivity.this, "请选择商品颜色", Toast.LENGTH_SHORT).show();
-//                    }
-//                    else{}
-//                }
-        boolean isok = false;
-        if (radioButton == null && radioButton2 == null) {
-            if (hasstandards) {
-                if (hascolor) {
-                    Toast.makeText(GoodsDetailActivity.this, "请选择商品尺寸和颜色", Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(GoodsDetailActivity.this, "请选择商品尺寸", Toast.LENGTH_SHORT).show();
-                }
-            } else {
-                if (hascolor) {
-                    Toast.makeText(GoodsDetailActivity.this, "请选择商品颜色", Toast.LENGTH_SHORT).show();
-                } else {
-                    isok = true;
-                }
-            }
-        } else if (radioButton == null) {
-            if (hascolor) {
-                Toast.makeText(GoodsDetailActivity.this, "请选择商品颜色", Toast.LENGTH_SHORT).show();
-            } else {
-                isok = true;
-            }
-        } else if (radioButton2 == null) {
-            if (hasstandards) {
-                Toast.makeText(GoodsDetailActivity.this, "请选择商品尺寸", Toast.LENGTH_SHORT).show();
-            } else {
-                isok = true;
-            }
-        } else {
-            isok = true;
-        }
-        if (isok) {
+        if (CheckChooseAll()) {
             pdialog.show();
             StringRequest addrequestshopcar = new StringRequest(Request.Method.POST, URL + "/api/GoodsShoppingCart/ReceiveAddOrUpdateGoodsShoppingCart", new Response.Listener<String>() {
                 @Override
@@ -1105,7 +1168,6 @@ public class GoodsDetailActivity extends Activity implements View.OnClickListene
                     map.put("memberId", MemberId);
                     map.put("shopId", "1");
                     map.put("APPToken", APPToken);
-
                     return map;
 
                 }

@@ -47,12 +47,18 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
     }
 
     private void SwitchFragment(int id) {
+        CleanBootomButton();
         switch (id) {
             case 1:
                 break;
             case 2:
+                iv_bottom_menu.setBackground(getResources().getDrawable(R.drawable.sort_light_fill));
+                tv_bottom_menu.setTextColor(getResources().getColor(R.color.btn_color));
+                switchContent(menufragment);
                 break;
             case 3:
+                iv_menu_car.setBackground(getResources().getDrawable(R.drawable.cart_fill));
+                tv_menu_car.setTextColor(getResources().getColor(R.color.btn_color));
                 switchContent(shopcarfragment);
                 break;
             case 4:
@@ -67,13 +73,14 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
         menu_linelayout = (LinearLayout) findViewById(R.id.index_menu_menu);
         shopcar_linelayout = (LinearLayout) findViewById(R.id.index_bottom_shopcar);
         my_linelayout = (LinearLayout) findViewById(R.id.index_bottom_me);
-
         indexFragment = new IndexFragment();
         menufragment = new MenuFragment();
         myfragment = new MyFragment();
         shopcarfragment = new ShopCarFragment();
         indexFragment = new IndexFragment();
         mNowFragment = indexFragment;
+        iv_menu_home.setBackground(getResources().getDrawable(R.drawable.home_fill));
+        tv_menu_home.setTextColor(getResources().getColor(R.color.btn_color));
         FristChangeFragment(indexFragment);
     }
 private void initBootomButton()

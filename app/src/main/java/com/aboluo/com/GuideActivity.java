@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.aboluo.adapter.ViewPagerAdapter;
@@ -24,7 +25,7 @@ public class GuideActivity extends Activity implements ViewPager.OnPageChangeLis
     private ViewPager vp;
     private ViewPagerAdapter vpAdapter;
     private List<View> views;
-    private Button btn_enter_main;
+    private RelativeLayout btn_enter_main;
     private SharedPreferences preferences;
     //引导图片资源
     private static final int[] pics = { R.drawable.guide_01,
@@ -68,7 +69,7 @@ preferences = getSharedPreferences("abolu",MODE_PRIVATE);
             iv.setImageResource(pics[i]);
             views.add(iv);
         }
-        btn_enter_main = (Button) findViewById(R.id.btn_enter_main);
+        btn_enter_main = (RelativeLayout) findViewById(R.id.btn_enter_main);
         vp = (ViewPager) findViewById(R.id.viewpager);
     }
     @Override
@@ -78,7 +79,7 @@ preferences = getSharedPreferences("abolu",MODE_PRIVATE);
 
     @Override
     public void onPageSelected(int position) {
-        Toast.makeText(this, "跳转页面了" +position, Toast.LENGTH_SHORT).show();
+        //Toast.makeText(this, "跳转页面了" +position, Toast.LENGTH_SHORT).show();
         btn_enter_main.setVisibility(position == views.size() - 1 ? View.VISIBLE : View.GONE);
     }
 
@@ -92,7 +93,7 @@ preferences = getSharedPreferences("abolu",MODE_PRIVATE);
         SharedPreferences.Editor editor = preferences.edit();
         editor.putBoolean("isFristIn",true);
         editor.commit();
-        Toast.makeText(this, "跳转页面了", Toast.LENGTH_SHORT).show();
+       // Toast.makeText(this, "跳转页面了", Toast.LENGTH_SHORT).show();
         Intent intent = new Intent(this,MainActivity.class);
         startActivity(intent);
         this.finish();

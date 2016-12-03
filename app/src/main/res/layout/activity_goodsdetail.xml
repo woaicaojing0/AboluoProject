@@ -26,7 +26,7 @@
             android:orientation="vertical">
                 <!--pageview 轮播效果-->
                 <com.jude.rollviewpager.RollPagerView
-                    android:id="@+id/roll_view_pager"
+                    android:id="@+id/roll_view_pager_detail"
                     android:layout_width="match_parent"
                     android:layout_height="240dp"
                     android:transitionName="detail"

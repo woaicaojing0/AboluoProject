@@ -293,7 +293,7 @@ public class GoodsDetailActivity extends Activity implements View.OnClickListene
         btnDecrease = (Button) findViewById(R.id.btnDecrease);
         btnIncrease = (Button) findViewById(R.id.btnIncrease);
         etAmount = (EditText) findViewById(R.id.etAmount);
-        rollPagerView = (RollPagerView) findViewById(R.id.roll_view_pager);
+        rollPagerView = (RollPagerView) findViewById(R.id.roll_view_pager_detail);
         goods_pingjia_layout_btn = (RelativeLayout) findViewById(R.id.goods_pingjia_layout_btn);
         goods_detail_layout_btn = (RelativeLayout) findViewById(R.id.goods_detail_layout_btn);
         id_goods_detail_view = (View) findViewById(R.id.id_goods_detail_view);

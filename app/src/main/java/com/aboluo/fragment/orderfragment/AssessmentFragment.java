@@ -174,27 +174,27 @@ public class AssessmentFragment extends Fragment implements View.OnClickListener
                     Toast.makeText(context, position + "", Toast.LENGTH_SHORT).show();
                 }
                 break;
-            case R.id.btn_findgoods: //点击添加数量按钮，执行相应的处理
+            case R.id.txt_findgoods: //点击添加数量按钮，执行相应的处理
                 // 获取 Adapter 中设置的 Tag
                 if (tag != null && tag instanceof Integer) { //解决问题：如何知道你点击的按钮是哪一个列表项中的，通过Tag的position
                     final int position = (Integer) tag;
                     Toast.makeText(context, position + "", Toast.LENGTH_SHORT).show();
                 }
                 break;
-            case R.id.btn_ok: //点击添加数量按钮，执行相应的处理
+            case R.id.txt_ok: //点击添加数量按钮，执行相应的处理
                 // 获取 Adapter 中设置的 Tag
                 if (tag != null && tag instanceof Integer) { //解决问题：如何知道你点击的按钮是哪一个列表项中的，通过Tag的position
                     final int position = (Integer) tag;
                     Toast.makeText(context, position + "", Toast.LENGTH_SHORT).show();
                 }
-            case R.id.btn_cancelorder: //点击添加数量按钮，执行相应的处理
+            case R.id.txt_cancelorder: //点击添加数量按钮，执行相应的处理
                 // 获取 Adapter 中设置的 Tag
                 if (tag != null && tag instanceof Integer) { //解决问题：如何知道你点击的按钮是哪一个列表项中的，通过Tag的position
                     final int position = (Integer) tag;
                     Toast.makeText(context, position + "", Toast.LENGTH_SHORT).show();
                 }
                 break;
-            case R.id.btn_payorder: //点击添加数量按钮，执行相应的处理
+            case R.id.txt_payorder: //点击添加数量按钮，执行相应的处理
                 // 获取 Adapter 中设置的 Tag
                 if (tag != null && tag instanceof Integer) { //解决问题：如何知道你点击的按钮是哪一个列表项中的，通过Tag的position
                     final int position = (Integer) tag;

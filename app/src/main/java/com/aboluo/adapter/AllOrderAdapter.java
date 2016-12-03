@@ -34,7 +34,7 @@ public class AllOrderAdapter extends BaseAdapter {
     private View.OnClickListener PayOnclickListener;
     private View.OnClickListener SureOkOnclickListener;
     private View.OnClickListener CancelOrderOnclickListener;
-
+    private View.OnClickListener CuicuiOrderOnClickListener;
     public void setItemOnclickListener(View.OnClickListener itemOnclickListener) {
         this.itemOnclickListener = itemOnclickListener;
     }
@@ -53,6 +53,10 @@ public class AllOrderAdapter extends BaseAdapter {
 
     public void setCancelOrderOnclickListener(View.OnClickListener cancelOrderOnclickListener) {
         CancelOrderOnclickListener = cancelOrderOnclickListener;
+    }
+
+    public void setCuicuiOrderOnClickListener(View.OnClickListener cuicuiOrderOnClickListener) {
+        CuicuiOrderOnClickListener = cuicuiOrderOnClickListener;
     }
 
     public AllOrderAdapter(Context context, List<ResultBean> list) {
@@ -87,10 +91,11 @@ public class AllOrderAdapter extends BaseAdapter {
             holder2 = new ViewHolder2();
             convertView = layoutInflater.inflate(R.layout.fragment_allorder_listview_item, null);
             holder2.content_view = (LinearLayout) convertView.findViewById(R.id.content_view);
-            holder2.btn_findgoods = (Button) convertView.findViewById(R.id.btn_findgoods);
-            holder2.btn_ok = (Button) convertView.findViewById(R.id.btn_ok);
-            holder2.btn_cancelorder = (Button) convertView.findViewById(R.id.btn_cancelorder);
-            holder2.btn_payorder = (Button) convertView.findViewById(R.id.btn_payorder);
+            holder2.txt_findgoods = (TextView) convertView.findViewById(R.id.txt_findgoods);
+            holder2.txt_ok = (TextView) convertView.findViewById(R.id.txt_ok);
+            holder2.txt_cancelorder = (TextView) convertView.findViewById(R.id.txt_cancelorder);
+            holder2.txt_payorder = (TextView) convertView.findViewById(R.id.txt_payorder);
+            holder2.txt_cuicui = (TextView) convertView.findViewById(R.id.txt_cuicui);
             holder2.txt_order_status = (TextView) convertView.findViewById(R.id.txt_order_status);
             holder2.order_allmoney = (TextView) convertView.findViewById(R.id.order_allmoney);
             holder2.order_goodsnum = (TextView) convertView.findViewById(R.id.order_goodsnum);
@@ -153,14 +158,16 @@ public class AllOrderAdapter extends BaseAdapter {
             holder2.txt_order_status.setText(OrderStatus(mlist.get(position).getOrderStatus(), holder2));
             holder2.order_allmoney.setText(String.valueOf("￥" + String.valueOf(mlist.get(position).getTotalPrice())));
             holder2.order_goodsnum.setText(String.valueOf(String.valueOf(mlist.get(position).getOrderItemList().size())));
-            holder2.btn_findgoods.setOnClickListener(FindGoodsOnclickListener);
-            holder2.btn_ok.setOnClickListener(SureOkOnclickListener);
-            holder2.btn_cancelorder.setOnClickListener(CancelOrderOnclickListener);
-            holder2.btn_payorder.setOnClickListener(PayOnclickListener);
-            holder2.btn_findgoods.setTag(position);
-            holder2.btn_ok.setTag(position);
-            holder2.btn_cancelorder.setTag(position);
-            holder2.btn_payorder.setTag(position);
+            holder2.txt_findgoods.setOnClickListener(FindGoodsOnclickListener);
+            holder2.txt_ok.setOnClickListener(SureOkOnclickListener);
+            holder2.txt_cancelorder.setOnClickListener(CancelOrderOnclickListener);
+            holder2.txt_payorder.setOnClickListener(PayOnclickListener);
+            holder2.txt_cuicui.setOnClickListener(CuicuiOrderOnClickListener);
+            holder2.txt_findgoods.setTag(position);
+            holder2.txt_ok.setTag(position);
+            holder2.txt_cancelorder.setTag(position);
+            holder2.txt_payorder.setTag(position);
+            holder2.txt_cuicui.setTag(position);
             holder2.content_view.addView(contentView);  //
         }
 
@@ -177,7 +184,7 @@ public class AllOrderAdapter extends BaseAdapter {
     //主listview
     class ViewHolder2 {
         public LinearLayout content_view;
-        public Button btn_findgoods, btn_ok, btn_cancelorder, btn_payorder;
+        public TextView txt_findgoods, txt_ok, txt_cancelorder, txt_payorder,txt_cuicui;
         public TextView txt_order_status, order_allmoney,order_goodsnum;
     }
 
@@ -186,20 +193,21 @@ public class AllOrderAdapter extends BaseAdapter {
         switch (orderStatus) {
             case 10:
                 result = "待付款";
-                holder2.btn_cancelorder.setVisibility(View.VISIBLE);
-                holder2.btn_payorder.setVisibility(View.VISIBLE);
+                holder2.txt_cancelorder.setVisibility(View.VISIBLE);
+                holder2.txt_payorder.setVisibility(View.VISIBLE);
                 break;
             case 20:
                 result = "待发货";
+                holder2.txt_cuicui.setVisibility(View.VISIBLE);
                 break;
             case 30:
                 result = "卖家已发货";
-                holder2.btn_findgoods.setVisibility(View.VISIBLE);
-                holder2.btn_ok.setVisibility(View.VISIBLE);
+                holder2.txt_findgoods.setVisibility(View.VISIBLE);
+                holder2.txt_ok.setVisibility(View.VISIBLE);
                 break;
             case 40:
                 result = "已完成";
-                holder2.btn_findgoods.setVisibility(View.VISIBLE);
+                holder2.txt_findgoods.setVisibility(View.VISIBLE);
                 break;
             default:
                 result = "暂无信息";

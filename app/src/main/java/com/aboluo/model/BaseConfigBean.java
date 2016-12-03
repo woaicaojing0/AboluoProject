@@ -6,7 +6,7 @@ import java.util.List;
  * Created by CJ on 2016/11/27.
  */
 
-public class IndexBannerBean {
+public class BaseConfigBean {
 
     /**
      * AppConfigList : [{"Image":"/AppMenuImg/a0b0b474d6ea4da28763c972d0e0d935.jpg","Name":"测试","Params":"","SortId":1,"Url":""},{"Image":"/AppMenuImg/3d8cea8e1024416d9cf14b027790c4b3.jpg","Name":"123","Params":"","SortId":2,"Url":""},{"Image":"/AppMenuImg/f83a24a2235846bfa02257773312e784.jpg","Name":"345","Params":"","SortId":3,"Url":""}]

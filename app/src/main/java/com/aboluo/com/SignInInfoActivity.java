@@ -41,6 +41,7 @@ public class SignInInfoActivity extends Activity {
         txt_SureOut.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                setResult(RESULT_OK);
                 finish();
             }
         });

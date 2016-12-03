@@ -6,35 +6,65 @@ package com.aboluo.model;
 
 public class SignInfoBean {
 
-    /**
-     * SLId : 2
-     * SLMemberId : 1974
-     * SLScoreType : 1
-     * SLScoreValue : 2
-     * SLRemark : ????
-     * SLCreateTime : 2016-12-01T20:50:33
-     * SLIsDelete : 0
-     * SLDay : 20161201
-     */
 
-    private MemberScoreLogEntityBean MemberScoreLogEntity;
     /**
-     * MemberScoreLogEntity : {"SLId":2,"SLMemberId":1974,"SLScoreType":1,"SLScoreValue":2,"SLRemark":"????","SLCreateTime":"2016-12-01T20:50:33","SLIsDelete":0,"SLDay":20161201}
+     * MemberScoreLogEntity : null
+     * SignScore : 0
+     * ContineSignDay : 0
+     * TotalDay : 7
+     * ForenScoreConfig : 10
      * IsSuccess : true
-     * Message : 获取成功
-     * Result : 1
+     * Message : 今日未签到
+     * Result : 2
      */
 
+    private Object MemberScoreLogEntity;
+    private int SignScore;
+    private int ContineSignDay;
+    private int TotalDay;
+    private int ForenScoreConfig;
     private boolean IsSuccess;
     private String Message;
     private int Result;
 
-    public MemberScoreLogEntityBean getMemberScoreLogEntity() {
+    public Object getMemberScoreLogEntity() {
         return MemberScoreLogEntity;
     }
 
-    public void setMemberScoreLogEntity(MemberScoreLogEntityBean MemberScoreLogEntity) {
+    public void setMemberScoreLogEntity(Object MemberScoreLogEntity) {
         this.MemberScoreLogEntity = MemberScoreLogEntity;
+    }
+
+    public int getSignScore() {
+        return SignScore;
+    }
+
+    public void setSignScore(int SignScore) {
+        this.SignScore = SignScore;
+    }
+
+    public int getContineSignDay() {
+        return ContineSignDay;
+    }
+
+    public void setContineSignDay(int ContineSignDay) {
+        this.ContineSignDay = ContineSignDay;
+    }
+
+    public int getTotalDay() {
+        return TotalDay;
+    }
+
+    public void setTotalDay(int TotalDay) {
+        this.TotalDay = TotalDay;
+    }
+
+    public int getForenScoreConfig() {
+        return ForenScoreConfig;
+    }
+
+    public void setForenScoreConfig(int ForenScoreConfig) {
+        this.ForenScoreConfig = ForenScoreConfig;
     }
 
     public boolean isIsSuccess() {
@@ -59,80 +89,5 @@ public class SignInfoBean {
 
     public void setResult(int Result) {
         this.Result = Result;
-    }
-
-    public static class MemberScoreLogEntityBean {
-        private int SLId;
-        private int SLMemberId;
-        private int SLScoreType;
-        private int SLScoreValue;
-        private String SLRemark;
-        private String SLCreateTime;
-        private int SLIsDelete;
-        private String SLDay;
-
-        public int getSLId() {
-            return SLId;
-        }
-
-        public void setSLId(int SLId) {
-            this.SLId = SLId;
-        }
-
-        public int getSLMemberId() {
-            return SLMemberId;
-        }
-
-        public void setSLMemberId(int SLMemberId) {
-            this.SLMemberId = SLMemberId;
-        }
-
-        public int getSLScoreType() {
-            return SLScoreType;
-        }
-
-        public void setSLScoreType(int SLScoreType) {
-            this.SLScoreType = SLScoreType;
-        }
-
-        public int getSLScoreValue() {
-            return SLScoreValue;
-        }
-
-        public void setSLScoreValue(int SLScoreValue) {
-            this.SLScoreValue = SLScoreValue;
-        }
-
-        public String getSLRemark() {
-            return SLRemark;
-        }
-
-        public void setSLRemark(String SLRemark) {
-            this.SLRemark = SLRemark;
-        }
-
-        public String getSLCreateTime() {
-            return SLCreateTime;
-        }
-
-        public void setSLCreateTime(String SLCreateTime) {
-            this.SLCreateTime = SLCreateTime;
-        }
-
-        public int getSLIsDelete() {
-            return SLIsDelete;
-        }
-
-        public void setSLIsDelete(int SLIsDelete) {
-            this.SLIsDelete = SLIsDelete;
-        }
-
-        public String getSLDay() {
-            return SLDay;
-        }
-
-        public void setSLDay(String SLDay) {
-            this.SLDay = SLDay;
-        }
     }
 }

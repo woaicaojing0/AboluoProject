@@ -39,6 +39,7 @@ public class OrderPayActivity extends Activity implements View.OnClickListener {
     private int  paymoney ;
     private String OrderNum;
     private int requsetcode = 1;
+    private String payfrom;
     private TextView txt_lastpaymoeny;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,6 +60,7 @@ public class OrderPayActivity extends Activity implements View.OnClickListener {
         Intent intent = getIntent();
         String yuanmoney = intent.getStringExtra("payMoney");
         OrderNum = intent.getStringExtra("OrderNum");
+        payfrom = intent.getStringExtra("payfrom");
         paymoney =Integer.valueOf(CommonUtils.yuanToFen(yuanmoney));
         txt_lastpaymoeny.setText("￥"+String.valueOf(yuanmoney));
         Log.i("woaicaojingpay","实际支付的金额为"+paymoney);
@@ -204,6 +206,8 @@ public class OrderPayActivity extends Activity implements View.OnClickListener {
                 mapOptional.put("客户端", "安卓");
                 mapOptional.put("consumptioncode", "consumptionCode");
                 mapOptional.put("money", "2");
+                mapOptional.put("payfrom", payfrom);  //标识从哪边支付的，1购物车 2个人中心（待付款） 3秒杀 4一元购
+
 
                 BCPay.getInstance(OrderPayActivity.this).reqAliPaymentAsync(
                         "阿波罗商铺",

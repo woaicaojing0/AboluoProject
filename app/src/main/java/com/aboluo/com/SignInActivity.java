@@ -11,10 +11,7 @@ import android.widget.Toast;
 
 import com.aboluo.XUtils.CommonUtils;
 import com.aboluo.XUtils.MyApplication;
-import com.aboluo.fragment.IndexFragment;
-import com.aboluo.fragment.ShopCarFragment;
-import com.aboluo.model.BaseModel;
-import com.aboluo.model.MessageInfo;
+import com.aboluo.model.BaseSignInBean;
 import com.aboluo.model.SignInfoBean;
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -25,20 +22,17 @@ import com.android.volley.toolbox.StringRequest;
 import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
 
-import org.w3c.dom.Text;
-
 import java.util.HashMap;
 import java.util.Map;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
-import rx.Single;
 
 /**
  * Created by cj34920 on 2016/12/1.
  */
 
 public class SignInActivity extends Activity implements View.OnClickListener {
-    private TextView txt_signInfo, txt_signvalue;
+    private TextView txt_signInfo, txt_signvalue, txt_alreadyday, txt_againday;
     private RequestQueue requestQueue;
     private String ImageUrl;
     private String URL;
@@ -48,17 +42,23 @@ public class SignInActivity extends Activity implements View.OnClickListener {
     private String MemberId;
     private SweetAlertDialog pdialog;
     private LinearLayout unalready_signed, already_signed;
+    private SignInfoBean signInfoBean;
+    private boolean isfrist = true;
+    private static final int signinfocode = 1;
+    private boolean isfromsigninfo = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signin);
         init();
-        txt_signInfo.setOnClickListener(this);
-        unalready_signed.setOnClickListener(this);
         if (MemberId == "0") {
+            Intent intent = new Intent(SignInActivity.this, LoginActivity.class);
+            startActivity(intent);
             Toast.makeText(this, "请先登录", Toast.LENGTH_SHORT).show();
         } else {
+            txt_signInfo.setOnClickListener(this);
+            unalready_signed.setOnClickListener(this);
             GetTodayScroe();
         }
     }
@@ -67,6 +67,8 @@ public class SignInActivity extends Activity implements View.OnClickListener {
         MemberId = CommonUtils.GetMemberId(this);
         txt_signInfo = (TextView) findViewById(R.id.txt_signInfo);
         txt_signvalue = (TextView) findViewById(R.id.txt_signvalue);
+        txt_alreadyday = (TextView) findViewById(R.id.txt_alreadyday);
+        txt_againday = (TextView) findViewById(R.id.txt_againday);
         unalready_signed = (LinearLayout) findViewById(R.id.unalready_signed);
         already_signed = (LinearLayout) findViewById(R.id.already_signed);
         requestQueue = MyApplication.getRequestQueue();
@@ -80,6 +82,7 @@ public class SignInActivity extends Activity implements View.OnClickListener {
         pdialog.setTitleText("加载中");
         pdialog.setCanceledOnTouchOutside(true);
         pdialog.setCancelable(true);
+        //signInfoBean= new SignInfoBean();
 
     }
 
@@ -89,13 +92,14 @@ public class SignInActivity extends Activity implements View.OnClickListener {
         switch (v.getId()) {
             case R.id.txt_signInfo:
                 Intent intent = new Intent(SignInActivity.this, SignInInfoActivity.class);
-                startActivity(intent);
+                startActivityForResult(intent, signinfocode);
                 break;
             case R.id.unalready_signed:
                 InitSign();
         }
 
     }
+
     //签到操作
     public void InitSign() {
         pdialog.show();
@@ -105,11 +109,13 @@ public class SignInActivity extends Activity implements View.OnClickListener {
                 //"{\"IsSuccess\":false,\"Message\":\"今日已签到\",\"Result\":1}"
                 response = response.replace("\\", "");
                 response = response.substring(1, response.length() - 1);
-                MessageInfo messageInfo = gson.fromJson(response, MessageInfo.class);
+                BaseSignInBean messageInfo = gson.fromJson(response, BaseSignInBean.class);
                 pdialog.dismiss();
-                if (messageInfo.isIsSuccess()) {
+                if (messageInfo.getResult() == 2) {
                     unalready_signed.setVisibility(View.GONE);
                     already_signed.setVisibility(View.VISIBLE);
+                    txt_alreadyday.setText(String.valueOf(signInfoBean.getContineSignDay() + 1));
+                    txt_againday.setText(String.valueOf(signInfoBean.getTotalDay() - signInfoBean.getContineSignDay() - 1));
                 } else {
                 }
                 Toast.makeText(SignInActivity.this, messageInfo.getMessage(), Toast.LENGTH_SHORT).show();
@@ -117,7 +123,8 @@ public class SignInActivity extends Activity implements View.OnClickListener {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(SignInActivity.this, error.toString(), Toast.LENGTH_SHORT).show();
+                byte[] date = error.networkResponse.data;
+                Toast.makeText(SignInActivity.this, new String(date), Toast.LENGTH_SHORT).show();
                 pdialog.dismiss();
             }
         }) {
@@ -126,6 +133,8 @@ public class SignInActivity extends Activity implements View.OnClickListener {
                 Map<String, String> map = new HashMap<>();
                 map.put("MemberId", MemberId);
                 map.put("APPToken", APPToken);
+                map.put("LoginCheckToken", "123");
+                map.put("LoginPhone", "123");
                 return map;
             }
         };
@@ -137,18 +146,21 @@ public class SignInActivity extends Activity implements View.OnClickListener {
         StringRequest stringRequest = new StringRequest(Request.Method.POST, URL + "/api/MemberApi/RecieveTodayScore", new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                //"{\"IsSuccess\":false,\"Message\":\"今日已签到\",\"Result\":1}"
                 response = response.replace("\\", "");
                 response = response.substring(1, response.length() - 1);
-                SignInfoBean signInfoBean = gson.fromJson(response, SignInfoBean.class);
-                if (signInfoBean.getResult()==1) {
+                signInfoBean = gson.fromJson(response, SignInfoBean.class);
+                if (signInfoBean.getResult() == 2) {
                     unalready_signed.setVisibility(View.VISIBLE);
                     already_signed.setVisibility(View.GONE);
-                    txt_signvalue.setText("+"+String.valueOf(signInfoBean.getMemberScoreLogEntity().getSLScoreValue()));
+                    txt_alreadyday.setText(String.valueOf(signInfoBean.getContineSignDay()));
+                    txt_againday.setText(String.valueOf(signInfoBean.getTotalDay() - signInfoBean.getContineSignDay()));
+                    txt_signvalue.setText("+" + String.valueOf(signInfoBean.getForenScoreConfig()));
 
                 } else {
                     unalready_signed.setVisibility(View.GONE);
                     already_signed.setVisibility(View.VISIBLE);
+                    txt_alreadyday.setText(String.valueOf(signInfoBean.getContineSignDay() + 1));
+                    txt_againday.setText(String.valueOf(signInfoBean.getTotalDay() - signInfoBean.getContineSignDay() - 1));
                     Toast.makeText(SignInActivity.this, "您已签到！", Toast.LENGTH_SHORT).show();
                 }
                 pdialog.dismiss();
@@ -156,7 +168,9 @@ public class SignInActivity extends Activity implements View.OnClickListener {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(SignInActivity.this, error.toString(), Toast.LENGTH_SHORT).show();
+
+                byte[] date = error.networkResponse.data;
+                Toast.makeText(SignInActivity.this, new String(date), Toast.LENGTH_SHORT).show();
                 pdialog.dismiss();
             }
         }) {
@@ -174,6 +188,34 @@ public class SignInActivity extends Activity implements View.OnClickListener {
     @Override
     protected void onResume() {
         super.onResume();
+        if (isfrist) {
+            isfrist = false;
+        } else {
+            MemberId = CommonUtils.GetMemberId(this);
+            if (MemberId == "0") {
+                finish();
+            } else {
+                if (isfromsigninfo) { //是否从 签到攻略跳转的
+                } else {
+                    isfrist = true;
+                    txt_signInfo.setOnClickListener(this);
+                    unalready_signed.setOnClickListener(this);
+                    GetTodayScroe();
+                }
+            }
+
+        }
 //        InitSign();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        switch (requestCode) {
+            case signinfocode:
+                isfromsigninfo = true;
+                break;
+            default:
+                break;
+        }
     }
 }

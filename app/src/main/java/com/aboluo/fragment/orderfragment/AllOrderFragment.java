@@ -129,6 +129,7 @@ public class AllOrderFragment extends Fragment implements View.OnClickListener {
                         allOrderAdapter.setPayOnclickListener(AllOrderFragment.this);
                         allOrderAdapter.setSureOkOnclickListener(AllOrderFragment.this);
                         allOrderAdapter.setItemOnclickListener(AllOrderFragment.this);
+                        allOrderAdapter.setCuicuiOrderOnClickListener(AllOrderFragment.this);
                         allorder_listview.onRefreshComplete();
                     }
                 }else {
@@ -172,28 +173,28 @@ public class AllOrderFragment extends Fragment implements View.OnClickListener {
                     Toast.makeText(AllOrderFragment.this.getContext(), position + "", Toast.LENGTH_SHORT).show();
                 }
                 break;
-            case R.id.btn_findgoods: //点击查看物流按钮，执行相应的处理
+            case R.id.txt_findgoods: //点击查看物流按钮，执行相应的处理
                 // 获取 Adapter 中设置的 Tag
                 if (tag != null && tag instanceof Integer) { //解决问题：如何知道你点击的按钮是哪一个列表项中的，通过Tag的position
                     final int position = (Integer) tag;
                     Toast.makeText(AllOrderFragment.this.getContext(), position + "", Toast.LENGTH_SHORT).show();
                 }
                 break;
-            case R.id.btn_ok: //点击确认收货按钮，执行相应的处理
+            case R.id.txt_ok: //点击确认收货按钮，执行相应的处理
                 // 获取 Adapter 中设置的 Tag
                 if (tag != null && tag instanceof Integer) { //解决问题：如何知道你点击的按钮是哪一个列表项中的，通过Tag的position
                     final int position = (Integer) tag;
                     Toast.makeText(AllOrderFragment.this.getContext(), position + "", Toast.LENGTH_SHORT).show();
                 }
                 break;
-            case R.id.btn_cancelorder: //点击取消支付按钮，执行相应的处理
+            case R.id.txt_cancelorder: //点击取消支付按钮，执行相应的处理
                 // 获取 Adapter 中设置的 Tag
                 if (tag != null && tag instanceof Integer) { //解决问题：如何知道你点击的按钮是哪一个列表项中的，通过Tag的position
                     final int position = (Integer) tag;
                     Toast.makeText(AllOrderFragment.this.getContext(), position + "", Toast.LENGTH_SHORT).show();
                 }
                 break;
-            case R.id.btn_payorder: //点击支付按钮，执行相应的处理
+            case R.id.txt_payorder: //点击支付按钮，执行相应的处理
                 // 获取 Adapter 中设置的 Tag
                 if (tag != null && tag instanceof Integer) { //解决问题：如何知道你点击的按钮是哪一个列表项中的，通过Tag的position
                     final int position = (Integer) tag;
@@ -201,8 +202,16 @@ public class AllOrderFragment extends Fragment implements View.OnClickListener {
                     Intent intent = new Intent(AllOrderFragment.this.getActivity(), OrderPayActivity.class);
                     intent.putExtra("payMoney", orderBean.getResult().get(position).getTotalPrice().toString());
                     intent.putExtra("OrderNum", orderBean.getResult().get(position).getOrderCode().toString());
+                    intent.putExtra("payfrom", "2");
                     startActivity(intent);
                 }
+            case R.id.txt_cuicui:
+                if (tag != null && tag instanceof Integer) { //解决问题：如何知道你点击的按钮是哪一个列表项中的，通过Tag的position
+                    final int position = (Integer) tag;
+                    Toast.makeText(AllOrderFragment.this.getContext(), "催货成功", Toast.LENGTH_SHORT).show();
+                }
+                break;
+            default:
                 break;
         }
     }
@@ -212,5 +221,6 @@ public class AllOrderFragment extends Fragment implements View.OnClickListener {
         super.onResume();
         InitPage=1;
         orderBean=null;
+        GetInfo(1);
     }
 }

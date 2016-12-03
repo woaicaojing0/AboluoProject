@@ -3,10 +3,10 @@ package com.aboluo.fragment;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -30,12 +30,12 @@ import com.aboluo.adapter.GridViewAdapter;
 import com.aboluo.com.GoodsDetailActivity;
 import com.aboluo.com.GoodsListActivity;
 import com.aboluo.com.HeHuoRenActivity;
-import com.aboluo.com.MiaoShaActivity;
-import com.aboluo.com.OneYuanAcitvity;
+import com.aboluo.com.MainActivity;
 import com.aboluo.com.R;
 import com.aboluo.com.SecKillActivity;
 import com.aboluo.com.SignInActivity;
-import com.aboluo.model.IndexBannerBean;
+import com.aboluo.com.UnaryActivity;
+import com.aboluo.model.BaseConfigBean;
 import com.aboluo.model.SecKillAllInfo;
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -87,7 +87,8 @@ public class IndexFragment extends Fragment implements View.OnClickListener {
     private ArrayList<SecKillAllInfo.SkillMainListBean> listskillbean;
     private Picasso picasso;
     private SweetAlertDialog pdialog;
-    private IndexBannerBean indexBannerBean;
+    private BaseConfigBean indexBannerBean;
+    private LinearLayout linelayout_miaosha;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -105,10 +106,13 @@ public class IndexFragment extends Fragment implements View.OnClickListener {
                 return false;
             }
         });
-        //edittext 中的图标
-        Drawable drawable = getResources().getDrawable(R.mipmap.ic_launcher);
-        drawable.setBounds(0, 0, 80, 80);
-        top_editsearch.setCompoundDrawables(drawable, null, drawable, null);
+//        //edittext 中的图标
+//        Drawable drawable = getResources().getDrawable(R.mipmap.ic_launcher);
+//        drawable.setBounds(0, 0, 80, 80);
+//        top_editsearch.setCompoundDrawables(drawable, null, drawable, null);
+        //窗口的宽度
+        int screenWidth = ScreenUtils.getScreenWidth(this.getContext());
+        rollPagerView.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, screenWidth / 3));
         rollPagerView.setHintView(new ColorPointHintView(this.getActivity(), Color.RED, Color.WHITE));
         initBanner();
         rollPagerView.setOnItemClickListener(new OnItemClickListener() {
@@ -128,12 +132,26 @@ public class IndexFragment extends Fragment implements View.OnClickListener {
                         startActivity(intent);
                         break;
                     case 1:
-                        Intent intent1 = new Intent(getActivity(), OneYuanAcitvity.class);
+                        Intent intent1 = new Intent(getActivity(), UnaryActivity.class);
                         startActivity(intent1);
                         break;
+                    case 3:
+                        Intent intent2 = new Intent(getActivity(), MainActivity.class);
+                        intent2.putExtra("id", 2);
+                        startActivity(intent2);
+                        break;
                     case 4:
-                        Intent intent4 = new Intent(getActivity(), MiaoShaActivity.class);
-                        startActivity(intent4);
+                        if (secKillAllInfo == null) {
+                        } else {
+                            if (secKillAllInfo.getResult().equals("暂无秒杀场次")) {
+                                Toast.makeText(IndexFragment.this.getContext(), "暂无秒杀场次", Toast.LENGTH_SHORT).show();
+                            } else {
+                                Intent SecKillintent = new Intent(IndexFragment.this.getContext(), SecKillActivity.class);
+                                SecKillintent.putExtra("data", listskillbean);
+                                SecKillintent.putExtra("changci", 0);
+                                startActivity(SecKillintent);
+                            }
+                        }
                         break;
                     case 5:
                         Intent intent5 = new Intent(getActivity(), SignInActivity.class);
@@ -189,6 +207,17 @@ public class IndexFragment extends Fragment implements View.OnClickListener {
 
             }
         });
+        top_editsearch.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                if (keyCode == KeyEvent.KEYCODE_ENTER) {
+                    String s = top_editsearch.getText().toString().trim();
+                    Toast.makeText(IndexFragment.this.getContext(), s, Toast.LENGTH_LONG).show();
+                    return true;
+                }
+                return false;
+            }
+        });
         return view;
     }
 
@@ -206,6 +235,7 @@ public class IndexFragment extends Fragment implements View.OnClickListener {
         seckill_imge2 = (ImageView) view.findViewById(R.id.seckill_imge2);
         mCvCountdownView = (CountdownView) view.findViewById(R.id.cv_countdownViewTest1);
         beginSecKill = (LinearLayout) view.findViewById(R.id.beginSecKill);
+        linelayout_miaosha = (LinearLayout) view.findViewById(R.id.linelayout_miaosha);
         requestQueue = MyApplication.getRequestQueue();
         ImageUrl = CommonUtils.GetValueByKey(IndexFragment.this.getContext(), "ImgUrl");
         URL = CommonUtils.GetValueByKey(IndexFragment.this.getContext(), "apiurl");
@@ -264,12 +294,14 @@ public class IndexFragment extends Fragment implements View.OnClickListener {
                 response = response.substring(1, response.length() - 1);
                 secKillAllInfo = gson.fromJson(response, SecKillAllInfo.class);
                 if (secKillAllInfo.getResult().equals("暂无秒杀场次")) {
+                    linelayout_miaosha.setVisibility(View.GONE);
                     seckill_imge0.setVisibility(View.GONE);
                     seckill_imge1.setVisibility(View.GONE);
                     seckill_imge2.setVisibility(View.GONE);
                     mCvCountdownView.setVisibility(View.GONE);
                     Toast.makeText(IndexFragment.this.getContext(), "暂无秒杀场次", Toast.LENGTH_SHORT).show();
                 } else {
+                    linelayout_miaosha.setVisibility(View.VISIBLE);
                     listskillbean = (ArrayList<SecKillAllInfo.SkillMainListBean>) secKillAllInfo.getSkillMainList();
                     GetSreverTime();
                 }
@@ -388,7 +420,7 @@ public class IndexFragment extends Fragment implements View.OnClickListener {
             public void onResponse(String response) {
                 response = response.replace("\\", "");
                 response = response.substring(1, response.length() - 1);
-                indexBannerBean = gson.fromJson(response, IndexBannerBean.class);
+                indexBannerBean = gson.fromJson(response, BaseConfigBean.class);
                 if (indexBannerBean.isIsSuccess()) {
                     String[] arrString = new String[indexBannerBean.getAppConfigList().size()];
                     for (int i = 0; i < indexBannerBean.getAppConfigList().size(); i++) {
@@ -407,7 +439,7 @@ public class IndexFragment extends Fragment implements View.OnClickListener {
             @Override
             public void onErrorResponse(VolleyError error) {
 //                byte[] data = error.networkResponse.data;
-              //  Toast.makeText(IndexFragment.this.getContext(), new String(data), Toast.LENGTH_SHORT).show();
+                //  Toast.makeText(IndexFragment.this.getContext(), new String(data), Toast.LENGTH_SHORT).show();
             }
         }) {
             @Override

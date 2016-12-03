@@ -11,18 +11,11 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentStart="true" />
     <RelativeLayout
+        android:visibility="gone"
+        android:id="@+id/btn_enter_main"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <Button
-            android:id="@+id/btn_enter_main"
-            android:layout_width="135dp"
-            android:layout_height="45dp"
-            android:layout_marginBottom="48dp"
-            android:text="立即体验"
-            android:visibility="gone"
-            android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true" />
     </RelativeLayout>
 
 </FrameLayout>

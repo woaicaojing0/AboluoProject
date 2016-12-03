@@ -8,7 +8,7 @@
         android:layout_marginTop="3dp"
         android:layout_width="match_parent"
         android:layout_height="100dp"
-        android:background="#EDEDED"
+        android:background="#f5f5f5"
         android:orientation="horizontal">
 
         <ImageView

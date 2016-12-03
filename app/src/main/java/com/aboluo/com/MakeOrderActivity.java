@@ -209,6 +209,7 @@ private RelativeLayout change_make_sure_location;
                             Intent intent = new Intent(MakeOrderActivity.this, OrderPayActivity.class);
                             intent.putExtra("payMoney", lastmoney);
                             intent.putExtra("OrderNum", baseModel.getOrderSerialId().toString());
+                            intent.putExtra("payfrom", "1");
                             startActivityForResult(intent, requsetcode);
                             pdialog.dismiss();
                         } else {

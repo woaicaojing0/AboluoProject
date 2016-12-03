@@ -137,7 +137,7 @@
                                 android:id="@+id/shopcar_allmoney"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="180"
+                                android:text="0.00"
                                 android:textColor="#fd5f8a"
                                 android:textSize="20sp"/>
                         </LinearLayout>

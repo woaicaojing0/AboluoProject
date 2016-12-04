@@ -84,6 +84,7 @@
             android:theme="@style/alert_dialog"></activity>
         <activity android:name=".UnaryActivity"></activity>
         <activity android:name=".UnaryDetailActivity"></activity>
+        <activity android:name=".OrderOneDetailActivity"></activity>
         <!--线下测试模式-->
         <activity
             android:name="cn.beecloud.BCMockPayActivity"

@@ -118,7 +118,8 @@ public class LoginActivity extends Activity implements View.OnClickListener, Tex
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         pDialog.dismiss();
-                        Toast.makeText(LoginActivity.this, error.toString(), Toast.LENGTH_SHORT).show();
+                        byte[] ss = error.networkResponse.data;
+                        Toast.makeText(LoginActivity.this, new String(ss), Toast.LENGTH_SHORT).show();
                     }
                 }) {
                     @Override

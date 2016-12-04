@@ -23,7 +23,6 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
-import com.baidu.paysdk.login.Login;
 import com.google.gson.Gson;
 
 import java.util.HashMap;
@@ -62,10 +61,8 @@ public class Retrievepwd1Activity extends Activity implements View.OnClickListen
             }
         });
         retrievepwd_btn_next.addTextChangedListener(this);
-        retrievepwd_edit_yzm.addTextChangedListener(this);
         retrievepwd_btn_next.setOnClickListener(this);
         retrievepwd_btn_getinfo.setOnClickListener(this);
-        time.start();
     }
 
     private void init() {
@@ -80,7 +77,14 @@ public class Retrievepwd1Activity extends Activity implements View.OnClickListen
         Intent intent = getIntent();
         Mode = intent.getStringExtra("mode");
         EmailOrPhone = intent.getStringExtra("EmailOrPhone");
-        yzm = intent.getStringExtra("yzm");
+        if(EmailOrPhone !=null&&Mode!=null) {
+            if (Mode.equals("phone")) {
+                GetPwdByPhone(EmailOrPhone);
+            } else {
+                GetPwdByEmail(EmailOrPhone);
+            }
+            time.start();
+        }else {}
     }
 
     @Override
@@ -106,14 +110,15 @@ public class Retrievepwd1Activity extends Activity implements View.OnClickListen
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.retrievepwd_btn_getinfo:
-                if(Mode == null)
-                {}else {
+                if (EmailOrPhone != null&&Mode !=null) {
                     if (Mode == "email") {
                         GetPwdByPhone(EmailOrPhone);
                     } else {
                         GetPwdByEmail(EmailOrPhone);
                     }
                     time.start();
+                } else {
+
                 }
                 break;
             case R.id.retrievepwd_btn_next:

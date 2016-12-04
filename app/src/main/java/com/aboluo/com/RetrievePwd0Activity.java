@@ -51,10 +51,16 @@ public class RetrievePwd0Activity  extends Activity implements TextWatcher{
             public void onClick(View v) {
                 final String number = phone_email_txt.getText().toString().trim();
                 if (ValidateUtils.isMobileNO(number)) {
-                    GetPwdByPhone(number);
+                    Intent intent = new Intent(RetrievePwd0Activity.this,Retrievepwd1Activity.class);
+                    intent.putExtra("mode","phone");
+                    intent.putExtra("EmailOrPhone",number);
+                    startActivity(intent);
                 } else {
                     if (ValidateUtils.isEmail(number)) {
-                        GetPwdByEmail(number);
+                        Intent intent = new Intent(RetrievePwd0Activity.this,Retrievepwd1Activity.class);
+                        intent.putExtra("mode","email");
+                        intent.putExtra("EmailOrPhone",number);
+                        startActivity(intent);
                     } else {
                         new SweetAlertDialog(RetrievePwd0Activity.this, SweetAlertDialog.ERROR_TYPE)
                                 .setTitleText("提示")
@@ -94,79 +100,5 @@ public class RetrievePwd0Activity  extends Activity implements TextWatcher{
                 isok = true;
         }
         retrievepwd_btn_yzm.setEnabled(isok);
-    }
-    private  void GetPwdByPhone(final  String number)
-    {
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, URL + "/api/Login/FindPwdSendMessage",
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        Log.i("TAG", response);
-                        Gson gson = new Gson();
-                        response = response.replace("\\", "");//去掉'/'
-                        response = response.substring(1, response.length() - 1); //去掉头尾引号。
-                        messageInfo = gson.fromJson(response, MessageInfo.class);
-                        if (messageInfo.isIsSuccess()) {
-                            Intent intent = new Intent(RetrievePwd0Activity.this,Retrievepwd1Activity.class);
-                            intent.putExtra("yzm",messageInfo.getResult().getMessageCode());
-                            intent.putExtra("mode","phone");
-                            intent.putExtra("EmailOrPhone",number);
-                            startActivity(intent);
-                        } else {
-                        }
-                        Toast.makeText(RetrievePwd0Activity.this, messageInfo.getMessage(), Toast.LENGTH_SHORT).show();
-                    }
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Toast.makeText(RetrievePwd0Activity.this, error.toString(), Toast.LENGTH_SHORT).show();
-            }
-        }) {
-            @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-                Map<String, String> map = new HashMap<>();
-                map.put("UserLoginNumber", number);
-                map.put("APPToken", APPToken);
-                return map;
-            }
-        };
-        requestQueue.add(stringRequest);
-    }
-    private  void GetPwdByEmail(final  String number)
-    {
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, URL + "/api/Login/FindPwdSendEmail",
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        Log.i("TAG", response);
-                        Gson gson = new Gson();
-                        response = response.replace("\\", "");//去掉'/'
-                        response = response.substring(1, response.length() - 1); //去掉头尾引号。
-                        messageInfo = gson.fromJson(response, MessageInfo.class);
-                        if (messageInfo.isIsSuccess()) {
-                            Intent intent = new Intent(RetrievePwd0Activity.this,Retrievepwd1Activity.class);
-                            intent.putExtra("yzm",messageInfo.getResult().getMessageCode());
-                            intent.putExtra("mode","email");
-                            intent.putExtra("EmailOrPhone",number);
-                            startActivity(intent);
-                        } else {
-                        }
-                        Toast.makeText(RetrievePwd0Activity.this, messageInfo.getMessage(), Toast.LENGTH_SHORT).show();
-                    }
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Toast.makeText(RetrievePwd0Activity.this, error.toString(), Toast.LENGTH_SHORT).show();
-            }
-        }) {
-            @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-                Map<String, String> map = new HashMap<>();
-                map.put("UserLoginNumber", number);
-                map.put("APPToken", APPToken);
-                return map;
-            }
-        };
-        requestQueue.add(stringRequest);
     }
 }

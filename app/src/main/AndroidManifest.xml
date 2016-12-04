@@ -44,7 +44,8 @@
             android:name=".LoginActivity"
             android:launchMode="singleTask"></activity>
         <activity android:name=".RegisterActivity"></activity>
-        <activity android:name=".RetrievepwdActivity"></activity>
+        <activity android:name=".Retrievepwd1Activity"></activity>
+        <activity android:name=".RetrievePwd0Activity"></activity>
         <activity android:name=".MyInfoAcitvity"
             android:screenOrientation="portrait"
             android:configChanges="orientation|keyboardHidden|screenSize"></activity>

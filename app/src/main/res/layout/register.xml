@@ -49,7 +49,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
                 android:background="@null"
-                android:hint="请输入手机号" />
+                android:hint="请输入手机号/邮箱" />
 
             <View
                 android:layout_width="match_parent"

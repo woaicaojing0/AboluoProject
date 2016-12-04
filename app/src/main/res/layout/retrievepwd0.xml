@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#eae9e9">
+
+        <android.support.v7.widget.Toolbar
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            app:contentInsetLeft="0dp"
+            app:contentInsetStart="0dp"
+            android:id="@+id/toolbar"
+            android:background="@color/white">
+            <TextView
+                android:id="@+id/retrievepwd_btn_close"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:text="关闭"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:text="找回密码"/>
+        </android.support.v7.widget.Toolbar>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.2dp"
+        android:background="#b8b8b8"></View>
+    <LinearLayout
+        android:layout_marginTop="18dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#FFFFFF"
+        android:orientation="vertical">
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.2dp"
+            android:background="#b8b8b8"></View>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginLeft="16dp">
+            <EditText
+                android:id="@+id/phone_email_txt"
+                android:background="@null"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:hint="手机号/邮箱"/>
+        </LinearLayout>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.2dp"
+            android:background="#b8b8b8"></View>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:layout_marginBottom="30dp">
+
+        <Button
+            android:enabled="false"
+            android:id="@+id/retrievepwd_btn_yzm"
+            android:layout_width="match_parent"
+            android:layout_height="43dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:background="@drawable/register_btn_bg"
+            android:text="获取验证码"
+            android:textColor="@color/white"
+            android:textSize="18sp" />
+    </LinearLayout>
+
+
+</LinearLayout>

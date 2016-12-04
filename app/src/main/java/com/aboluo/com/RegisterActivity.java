@@ -1,6 +1,7 @@
 package com.aboluo.com;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -17,8 +18,8 @@ import com.aboluo.XUtils.CommonUtils;
 import com.aboluo.XUtils.MyApplication;
 import com.aboluo.XUtils.ValidateUtils;
 import com.aboluo.broadcast.SMSBroadcastReceiver;
-import com.aboluo.model.RegisterInfo;
 import com.aboluo.model.MessageInfo;
+import com.aboluo.model.RegisterInfo;
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -36,17 +37,18 @@ import cn.pedant.SweetAlert.SweetAlertDialog;
  * Created by CJ on 2016/9/21.
  */
 
-public class RegisterActivity extends Activity implements View.OnClickListener,TextWatcher {
+public class RegisterActivity extends Activity implements View.OnClickListener, TextWatcher {
     private Button btn_getinfo; // 获取验证码的按钮
     private SMSBroadcastReceiver mSMSBroadcastReceiver;  //短信的广播监听
     private EditText register_edit_auth, register_edit_phone, register_edit_pwd;
     private static final String ACTION = "android.provider.Telephony.SMS_RECEIVED";
     private RequestQueue requestQueue;
     private Button btn_register;    //注册按钮
-  private CountDownTimer time;
-    private  MessageInfo messageInfo;
-    private static  String URL =null;
-    private static  String APPToken = null;
+    private CountDownTimer time;
+    private MessageInfo messageInfo;
+    private static String URL = null;
+    private static String APPToken = null;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,8 +70,8 @@ public class RegisterActivity extends Activity implements View.OnClickListener,T
         register_edit_pwd = (EditText) findViewById(R.id.register_edit_pwd);
         btn_register = (Button) findViewById(R.id.btn_register);
         requestQueue = MyApplication.getRequestQueue();
-        URL =CommonUtils.GetValueByKey(this,"apiurl");
-        APPToken =CommonUtils.GetValueByKey(this,"APPToken");
+        URL = CommonUtils.GetValueByKey(this, "apiurl");
+        APPToken = CommonUtils.GetValueByKey(this, "APPToken");
     }
 
     @Override
@@ -91,63 +93,107 @@ public class RegisterActivity extends Activity implements View.OnClickListener,T
         });
     }
 
+    //通过手机号码获取验证码
+    private void GetPhoneAuth(final String number) {
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, URL + "/api/Login/SendMessage",
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        Log.i("TAG", response);
+                        Gson gson = new Gson();
+                        response = response.replace("\\", "");//去掉'/'
+                        response = response.substring(1, response.length() - 1); //去掉头尾引号。
+                        messageInfo = gson.fromJson(response, MessageInfo.class);
+                        if (messageInfo.isIsSuccess()) {
+                            time.start();
+                            btn_getinfo.setEnabled(false);
+                        } else {
+                        }
+                        Toast.makeText(RegisterActivity.this, messageInfo.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(RegisterActivity.this, error.toString(), Toast.LENGTH_SHORT).show();
+            }
+        }) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> map = new HashMap<>();
+                map.put("UserLoginNumber", number);
+                map.put("APPToken", APPToken);
+                return map;
+            }
+        };
+        requestQueue.add(stringRequest);
+    }
+
+    private void GetEmailAuth(final String email) {
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, URL + "/api/Login/SendEmail",
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        Log.i("TAG", response);
+                        Gson gson = new Gson();
+                        response = response.replace("\\", "");//去掉'/'
+                        response = response.substring(1, response.length() - 1); //去掉头尾引号。
+                        messageInfo = gson.fromJson(response, MessageInfo.class);
+                        if (messageInfo.isIsSuccess()) {
+                            btn_getinfo.setEnabled(false);
+                            time.start();
+                        } else {
+                        }
+                        Toast.makeText(RegisterActivity.this, messageInfo.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(RegisterActivity.this, error.toString(), Toast.LENGTH_SHORT).show();
+            }
+        }) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> map = new HashMap<>();
+                map.put("UserLoginNumber", email);
+                map.put("APPToken", APPToken);
+                return map;
+            }
+        };
+        requestQueue.add(stringRequest);
+    }
+
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btn_getinfo:
                 final String number = register_edit_phone.getText().toString().trim();
                 if (ValidateUtils.isMobileNO(number)) {
-                    time.start();
-                    btn_getinfo.setEnabled(false);
-                    StringRequest stringRequest = new StringRequest(Request.Method.POST, URL+"/api/Login/SendMessage",
-                            new Response.Listener<String>() {
-                                @Override
-                                public void onResponse(String response) {
-                                    Log.i("TAG",response);
-                                    Gson gson = new Gson();
-                                    response=response.replace("\\", "");//去掉'/'
-                                    response=response.substring(1, response.length()-1); //去掉头尾引号。
-                                    messageInfo=  gson.fromJson(response, MessageInfo.class);
-                                    Toast.makeText(RegisterActivity.this, messageInfo.getMessage(), Toast.LENGTH_SHORT).show();
-                                }
-                            }, new Response.ErrorListener() {
-                        @Override
-                        public void onErrorResponse(VolleyError error) {
-                            Toast.makeText(RegisterActivity.this, error.toString(), Toast.LENGTH_SHORT).show();
-                        }
-                    }) {
-                        @Override
-                        protected Map<String, String> getParams() throws AuthFailureError {
-                            Map<String, String> map = new HashMap<>();
-                            map.put("UserLoginNumber", number);
-                            map.put("APPToken", APPToken);
-                            return map;
-                        }
-                    };
-                   requestQueue.add(stringRequest);
+                    GetPhoneAuth(number);
                 } else {
-                    new SweetAlertDialog(this, SweetAlertDialog.ERROR_TYPE)
-                            .setTitleText("提示")
-                            .setContentText("您输入的手机号有误!")
-                            .setConfirmText("确定")
-                            .show();
+                    if (ValidateUtils.isEmail(number)) {
+                        GetEmailAuth(number);
+                    } else {
+                        new SweetAlertDialog(this, SweetAlertDialog.ERROR_TYPE)
+                                .setTitleText("提示")
+                                .setContentText("您输入的手机号或邮箱有误!")
+                                .setConfirmText("确定")
+                                .show();
+                    }
                 }
                 break;
             case R.id.btn_register:
                 final String number2 = register_edit_phone.getText().toString().trim();
                 final String yanzhengma = register_edit_auth.getText().toString().trim();
                 final String pwd = register_edit_pwd.getText().toString().trim();
-                if(ValidateUtils.isMiMaRight(pwd))
-                {
-                    if(!messageInfo.getResult().getSendPhoneNumber().equals(number2))
-                    {
+                if (ValidateUtils.isMiMaRight(pwd)) {
+                    if (!messageInfo.getResult().getSendPhoneNumber().equals(number2)) {
                         new SweetAlertDialog(this, SweetAlertDialog.ERROR_TYPE)
                                 .setTitleText("提示")
-                                .setContentText("请输入正确的手机号!")
+                                .setContentText("请输入正确的手机号或邮箱!")
                                 .setConfirmText("确定")
                                 .show();
-                    }else {
-                        StringRequest stringRequest = new StringRequest(Request.Method.POST, URL+"/api/Login/UserRegister", new Response.Listener<String>() {
+                    } else {
+                        StringRequest stringRequest = new StringRequest(Request.Method.POST, URL + "/api/Login/UserRegister", new Response.Listener<String>() {
                             @Override
                             public void onResponse(String response) {
                                 Log.i("TAG", response);
@@ -155,6 +201,14 @@ public class RegisterActivity extends Activity implements View.OnClickListener,T
                                 response = response.replace("\\", "");//去掉'/'
                                 response = response.substring(1, response.length() - 1); //去掉头尾引号。
                                 RegisterInfo registerInfo = gson.fromJson(response, RegisterInfo.class);
+                                if (registerInfo.isIsSuccess()) {
+                                    Intent intent = new Intent();
+                                    intent.putExtra("LoginName", number2);
+                                    intent.putExtra("LoginPwd", pwd);
+                                    setResult(RESULT_OK, intent);
+                                    finish();
+                                } else {
+                                }
                                 Toast.makeText(RegisterActivity.this, registerInfo.getMessage(), Toast.LENGTH_SHORT).show();
                             }
                         }, new Response.ErrorListener() {
@@ -177,8 +231,7 @@ public class RegisterActivity extends Activity implements View.OnClickListener,T
                         };
                         requestQueue.add(stringRequest);
                     }
-                }
-                else {
+                } else {
                     new SweetAlertDialog(this, SweetAlertDialog.ERROR_TYPE)
                             .setTitleText("提示")
                             .setContentText("请输入正确格式的密码!")
@@ -209,12 +262,17 @@ public class RegisterActivity extends Activity implements View.OnClickListener,T
     @Override
     public void afterTextChanged(Editable editable) {
         boolean isok = false;
-        if(ValidateUtils.isMobileNO(register_edit_phone.getText().toString().trim()))
-        {
-            if(register_edit_pwd.getText().length() >5)
-            {
+        if (ValidateUtils.isMobileNO(register_edit_phone.getText().toString().trim())) {
+            if (register_edit_pwd.getText().length() > 5) {
                 isok = true;
             }
+        } else {
+            if (ValidateUtils.isEmail(register_edit_phone.getText().toString().trim())) {
+                if (register_edit_pwd.getText().length() > 5) {
+                    isok = true;
+                }
+            }
+
         }
         btn_register.setEnabled(isok);
     }
@@ -223,15 +281,17 @@ public class RegisterActivity extends Activity implements View.OnClickListener,T
         public TimeCount(long millisInFuture, long countDownInterval) {
             super(millisInFuture, countDownInterval);//参数依次为总时长,和计时的时间间隔
         }
+
         @Override
         public void onFinish() {//计时完毕时触发
             btn_getinfo.setText("重新验证");
             btn_getinfo.setEnabled(true);
         }
+
         @Override
-        public void onTick(long millisUntilFinished){//计时过程显示
+        public void onTick(long millisUntilFinished) {//计时过程显示
             btn_getinfo.setEnabled(false);
-            btn_getinfo.setText(millisUntilFinished /1000+"秒重新发送");
+            btn_getinfo.setText(millisUntilFinished / 1000 + "秒重新发送");
         }
     }
 }

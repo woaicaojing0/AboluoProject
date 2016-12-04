@@ -46,6 +46,7 @@ public class LoginActivity extends Activity implements View.OnClickListener, Tex
     private static String APPToken = null;
     private SharedPreferences preferences;
     private SharedPreferences.Editor editor;
+    private static final int registercode = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,10 +84,10 @@ public class LoginActivity extends Activity implements View.OnClickListener, Tex
         switch (v.getId()) {
             case R.id.txt_register:
                 Intent intent = new Intent(this, RegisterActivity.class);
-                startActivity(intent);
+                startActivityForResult(intent, registercode);
                 break;
             case R.id.txt_retrivepwd:
-                Intent intent2 = new Intent(this, RetrievepwdActivity.class);
+                Intent intent2 = new Intent(this, RetrievePwd0Activity.class);
                 startActivity(intent2);
                 break;
             case R.id.btn_login:
@@ -160,4 +161,24 @@ public class LoginActivity extends Activity implements View.OnClickListener, Tex
 
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        switch (requestCode) {
+            case registercode:
+                if (data == null) {
+                } else {
+                    String loginName = data.getStringExtra("LoginName");
+                    String LoginPwd = data.getStringExtra("LoginPwd");
+                    if (loginName != null && LoginPwd != null) {
+                        edit_username.setText(loginName);
+                        edit_userpwd.setText(LoginPwd);
+                        btn_login.setEnabled(true);
+                    }
+                }
+                break;
+            default:
+                break;
+        }
+
+    }
 }

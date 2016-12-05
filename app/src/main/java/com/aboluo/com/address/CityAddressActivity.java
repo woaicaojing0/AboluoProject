@@ -84,7 +84,7 @@ public class CityAddressActivity extends Activity {
 
     private void initdata() {
         sweetAlertDialog.show();
-        stringRequest = new StringRequest(Request.Method.POST, url + "/api/CountryArea/GetCityList", new Response.Listener<String>() {
+        stringRequest = new StringRequest(Request.Method.POST, url + "/api/CountryArea/ReceiveCityList", new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 response = response.replace("\\", "");

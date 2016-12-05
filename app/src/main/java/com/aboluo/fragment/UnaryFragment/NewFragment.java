@@ -19,16 +19,16 @@ import com.aboluo.widget.CustomViewPager1;
 public class NewFragment extends Fragment {
     private TextView txt_fragment_unary;
     private CustomViewPager1 vp;
-    public NewFragment(CustomViewPager1 viewPager1)
-    {
-        this.vp = viewPager1;
-    }
+//    public NewFragment(CustomViewPager1 viewPager1)
+//    {
+//        this.vp = viewPager1;
+//    }
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_base_unary, null);
         init(view);
-        vp.setObjectForPosition(view,2);
+//        vp.setObjectForPosition(view,2);
         txt_fragment_unary.setText("2");
         return view;
     }

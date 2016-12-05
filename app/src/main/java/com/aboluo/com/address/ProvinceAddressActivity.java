@@ -77,7 +77,7 @@ public class ProvinceAddressActivity  extends Activity{
 
     private void initdata() {
         sweetAlertDialog.show();
-        stringRequest = new StringRequest(Request.Method.POST, url + "/api/CountryArea/GetProvinceList", new Response.Listener<String>() {
+        stringRequest = new StringRequest(Request.Method.POST, url + "/api/CountryArea/ReceiveProvinceList", new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 response = response.replace("\\", "");

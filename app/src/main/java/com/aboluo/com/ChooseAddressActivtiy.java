@@ -79,7 +79,7 @@ public class ChooseAddressActivtiy  extends Activity {
     private void initData() {
         pdialog.setTitleText("加载中");
         pdialog.show();
-        requestlist = new StringRequest(Request.Method.POST, url + "/api/Order/GetMemberAddressListByMemberId", new Response.Listener<String>() {
+        requestlist = new StringRequest(Request.Method.POST, url + "/api/Order/ReceiveMemberAddressListByMemberId", new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 response = response.replace("\\", "");

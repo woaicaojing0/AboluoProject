@@ -116,7 +116,7 @@ private RelativeLayout change_make_sure_location;
     private void initData() {
         pdialog.setTitleText("加载中");
         pdialog.show();
-        requestlist = new StringRequest(Request.Method.POST, url + "/api/Order/GetDefaultMemberAddressByMemberId", new Response.Listener<String>() {
+        requestlist = new StringRequest(Request.Method.POST, url + "/api/Order/ReceiveDefaultMemberAddressByMemberId", new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 response = response.replace("\\", "");

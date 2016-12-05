@@ -44,16 +44,16 @@ public class MoodsFragment extends Fragment {
     private Picasso picasso;
     private Gson gson;
     private BaseConfigBean unaryConfigBean;
-    public MoodsFragment(CustomViewPager1 viewPager1)
-    {
-        this.vp = viewPager1;
-    }
+//    public MoodsFragment(CustomViewPager1 viewPager1)
+//    {
+//        this.vp = viewPager1;
+//    }
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_base_unary, null);
         init(view);
-        vp.setObjectForPosition(view,0);
+//        vp.setObjectForPosition(view,0);
         txt_fragment_unary.setText("0");
         return view;
     }

@@ -103,7 +103,7 @@ public class AddressActivity extends Activity implements View.OnClickListener {
 
     private void initdata() {
         baseaAlertDialog.show();
-        stringRequest = new StringRequest(Request.Method.POST, url + "/api/Order/GetMemberAddressListByMemberId", new Response.Listener<String>() {
+        stringRequest = new StringRequest(Request.Method.POST, url + "/api/Order/ReceiveMemberAddressListByMemberId", new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 response = response.replace("\\", "");

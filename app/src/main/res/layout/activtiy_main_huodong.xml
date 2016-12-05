@@ -3,7 +3,10 @@
               android:layout_width="match_parent"
               android:layout_height="match_parent"
               android:orientation="vertical">
-
+<ImageView
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:src="@drawable/huodongtop"/>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="191dp">
@@ -12,41 +15,50 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:background="@color/blue"
+
             android:orientation="vertical">
 
             <ImageView
+                android:scaleType="fitXY"
+                android:id="@+id/huodong_left1"
                 android:layout_width="match_parent"
                 android:layout_height="100dp"
-                android:background="@drawable/huodong_left"/>
+                />
 
             <ImageView
+                android:scaleType="fitXY"
+                android:id="@+id/huodong_left2"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@drawable/huodong_left2"/>
+                />
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:background="@color/colorPrimaryDark"
+
             android:orientation="vertical">
             <ImageView
+                android:scaleType="fitXY"
+                android:id="@+id/huodong_right1"
                 android:layout_width="match_parent"
                 android:layout_height="66dp"
-                android:background="@drawable/hudong_right1"/>
+               />
 
             <ImageView
+                android:scaleType="fitXY"
+                android:id="@+id/huodong_right2"
                 android:layout_width="match_parent"
                 android:layout_height="73dp"
-                android:background="@drawable/hudong_right2"/>
+                />
 
             <ImageView
+                android:scaleType="fitXY"
+                android:id="@+id/huodong_right3"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@drawable/hudong_right3"
-                android:id="@+id/imageView" />
+                 />
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>

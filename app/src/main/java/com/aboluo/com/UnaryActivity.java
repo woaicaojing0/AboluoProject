@@ -6,6 +6,8 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.aboluo.XUtils.CommonUtils;
@@ -17,6 +19,7 @@ import com.aboluo.fragment.UnaryFragment.MoodsFragment;
 import com.aboluo.fragment.UnaryFragment.NewFragment;
 import com.aboluo.fragment.UnaryFragment.SurplusFragment;
 import com.aboluo.model.BaseConfigBean;
+import com.aboluo.model.UnaryListBean;
 import com.aboluo.widget.CustomViewPager1;
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -27,6 +30,8 @@ import com.android.volley.toolbox.StringRequest;
 import com.google.gson.Gson;
 import com.jude.rollviewpager.RollPagerView;
 import com.squareup.picasso.Picasso;
+
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -55,6 +60,9 @@ public class UnaryActivity extends FragmentActivity {
     private BaseConfigBean unaryConfigBean;
     private BannerAdapter bannerAdapter;
     private RollPagerView unary__view_pager;
+    private ImageView unary_image_03, unary_image_02, unary_image_01;
+    private TextView unary_txt_02,unary_txt_01,unary_txt_03;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -83,7 +91,7 @@ public class UnaryActivity extends FragmentActivity {
     }
 
     private void init() {
-        mcontext= this;
+        mcontext = this;
         requestQueue = MyApplication.getRequestQueue();
         ImageUrl = CommonUtils.GetValueByKey(mcontext, "ImgUrl");
         URL = CommonUtils.GetValueByKey(mcontext, "apiurl");
@@ -93,16 +101,26 @@ public class UnaryActivity extends FragmentActivity {
         tablayout_unary_title = (TabLayout) findViewById(R.id.tablayout_unary_title);
         vp_unart_pager = (CustomViewPager1) findViewById(R.id.vp_unart_pager);
         unary__view_pager = (RollPagerView) findViewById(R.id.unary__view_pager);
+        unary_image_03 = (ImageView) findViewById(R.id.unary_image_03);
+        unary_image_02 = (ImageView) findViewById(R.id.unary_image_02);
+        unary_image_01 = (ImageView) findViewById(R.id.unary_image_01);
+        unary_txt_02 = (TextView) findViewById(R.id.unary_txt_02);
+        unary_txt_01 = (TextView) findViewById(R.id.unary_txt_01);
+        unary_txt_03 = (TextView) findViewById(R.id.unary_txt_03);
         initTabLayoutAndViewPage();
         initBannerImage();
+        initNewOpen();
     }
 
     private void initTabLayoutAndViewPage() {
         //初始化fragment
-        introduceFragment = new IntroduceFragment(vp_unart_pager);
-        moodsFragment = new MoodsFragment(vp_unart_pager);
-        newFragment = new NewFragment(vp_unart_pager);
-        surplusFragment = new SurplusFragment(vp_unart_pager);
+        introduceFragment = new IntroduceFragment();
+        moodsFragment = new MoodsFragment();
+        newFragment = new NewFragment();
+        surplusFragment = new SurplusFragment();
+//        moodsFragment = new MoodsFragment(vp_unart_pager);
+//        newFragment = new NewFragment(vp_unart_pager);
+//        surplusFragment = new SurplusFragment(vp_unart_pager);
         //将fragment装进列表中
         list_fragment = new ArrayList<>();
         list_fragment.add(moodsFragment);
@@ -133,9 +151,8 @@ public class UnaryActivity extends FragmentActivity {
         vp_unart_pager.setCurrentItem(selected);
     }
 
-    private void initBannerImage()
-    {
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, URL+"/api/ConfigApi/ReceiveHomeConfig", new Response.Listener<String>() {
+    private void initBannerImage() {
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, URL + "/api/ConfigApi/ReceiveHomeConfig", new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 response = response.replace("\\", "");
@@ -160,50 +177,63 @@ public class UnaryActivity extends FragmentActivity {
             public void onErrorResponse(VolleyError error) {
 
             }
-        }){
+        }) {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
-                Map<String,String> map = new HashMap<>();
-                map.put("ConfigModule","8");
-                map.put("APPToken",APPToken);
+                Map<String, String> map = new HashMap<>();
+                map.put("ConfigModule", "8");
+                map.put("APPToken", APPToken);
                 return map;
             }
         };
         requestQueue.add(stringRequest);
     }
-    private void initNewOpen()
-    {
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, URL+"/api/OnepurchaseApi/ReceiveOnePurchaseData", new Response.Listener<String>() {
+
+    private void initNewOpen() {
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, URL + "/api/OnepurchaseApi/ReceiveOnePurchaseData", new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 response = response.replace("\\", "");
                 response = response.substring(1, response.length() - 1);
-                unaryConfigBean = gson.fromJson(response, BaseConfigBean.class);
-                if (unaryConfigBean.isIsSuccess()) {
-                    String[] arrString = new String[unaryConfigBean.getAppConfigList().size()];
-                    for (int i = 0; i < unaryConfigBean.getAppConfigList().size(); i++) {
-                        arrString[i] = ImageUrl + unaryConfigBean.getAppConfigList().get(i).getImage();
+                UnaryListBean unaryListBean = gson.fromJson(response, UnaryListBean.class);
+                if (unaryListBean.isIsSuccess())
+                {
+                    List<UnaryListBean.ListResultBean> listResult = unaryListBean.getListResult();
+                    if(listResult.size()>=3)
+                    {
+                        picasso.load(ImageUrl+listResult.get(0).getGoodsLogo())
+                                .placeholder(UnaryActivity.this.getResources().getDrawable(R.drawable.imagviewloading))
+                                .into(unary_image_01);
+                        unary_txt_01.setText(listResult.get(0).getGoodsName());
+                        picasso.load(ImageUrl+listResult.get(1).getGoodsLogo())
+                                .placeholder(UnaryActivity.this.getResources().getDrawable(R.drawable.imagviewloading))
+                                .into(unary_image_02);
+                        unary_txt_02.setText(listResult.get(1).getGoodsName());
+                        picasso.load(ImageUrl+listResult.get(2).getGoodsLogo())
+                                .placeholder(UnaryActivity.this.getResources().getDrawable(R.drawable.imagviewloading))
+                                .into(unary_image_03);
+                        unary_txt_03.setText(listResult.get(2).getGoodsName());
                     }
-                    //头部滚动banner
-                    bannerAdapter = new BannerAdapter(mcontext, arrString, unary__view_pager);
-                    unary__view_pager.setAdapter(bannerAdapter); // 设置适配器（请求网络图片，适配器要在网络请求完成后再设置）
-                    unary__view_pager.getViewPager().getAdapter().notifyDataSetChanged();// 更新banner图片
-                    unary__view_pager.setFocusable(false);
-                } else {
-                    Toast.makeText(mcontext, unaryConfigBean.getMessage().toString(), Toast.LENGTH_SHORT).show();
                 }
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-
+                String result = new String(error.networkResponse.data);
+                Toast.makeText(mcontext, result, Toast.LENGTH_SHORT).show();
             }
-        }){
+        }) {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
-                Map<String,String> map = new HashMap<>();
-                map.put("ConfigModule","8");
-                map.put("APPToken",APPToken);
+                Map<String, String> map = new HashMap<>();
+                map.put("State", "2");
+                map.put("IsPaging", "true");
+                map.put("CurrentPage", "1");
+                map.put("PageSize", "5");
+                map.put("SortValue", "finishTime");
+                map.put("SortType", "asc");
+                map.put("TopCount", "3");
+                map.put("APPToken", APPToken);
                 return map;
             }
         };

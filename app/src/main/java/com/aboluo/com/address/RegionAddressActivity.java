@@ -86,7 +86,7 @@ public class RegionAddressActivity extends Activity{
 
     private void initdata() {
         sweetAlertDialog.show();
-        stringRequest = new StringRequest(Request.Method.POST, url + "/api/CountryArea/GetRegionList", new Response.Listener<String>() {
+        stringRequest = new StringRequest(Request.Method.POST, url + "/api/CountryArea/ReceiveRegionList", new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 response = response.replace("\\", "");

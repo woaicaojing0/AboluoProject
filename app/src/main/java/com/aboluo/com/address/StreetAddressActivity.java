@@ -81,7 +81,7 @@ public class StreetAddressActivity extends Activity{
 
     private void initdata() {
         sweetAlertDialog.show();
-        stringRequest = new StringRequest(Request.Method.POST, url + "/api/CountryArea/GetStreetList", new Response.Listener<String>() {
+        stringRequest = new StringRequest(Request.Method.POST, url + "/api/CountryArea/ReceiveStreetList", new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 response = response.replace("\\", "");

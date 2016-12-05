@@ -369,7 +369,7 @@ public class AddAddressActivity extends Activity implements TextWatcher, View.On
             toolbar_txt.setText("修改收货地址");
             sweetAlertDialog.setTitleText("加载中......");
             sweetAlertDialog.show();
-            StringRequest stringRequest = new StringRequest(Request.Method.POST, url+"/api/Order/GetMemberAddressListByMemberId", new Response.Listener<String>() {
+            StringRequest stringRequest = new StringRequest(Request.Method.POST, url+"/api/Order/ReceiveMemberAddressListByMemberId", new Response.Listener<String>() {
                 @Override
                 public void onResponse(String response) {
                     response = response.replace("\\","");

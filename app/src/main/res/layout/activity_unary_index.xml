@@ -113,12 +113,14 @@
                     android:orientation="vertical">
 
                     <ImageView
+                        android:id="@+id/unary_image_01"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
-                        android:src="@mipmap/ic_launcher" />
+                        android:src="@drawable/appstart" />
 
                     <TextView
+                        android:id="@+id/unary_txt_01"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_horizontal"
@@ -139,12 +141,14 @@
                     android:orientation="vertical">
 
                     <ImageView
+                        android:id="@+id/unary_image_02"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
-                        android:src="@mipmap/ic_launcher" />
+                        android:src="@drawable/appstart" />
 
                     <TextView
+                        android:id="@+id/unary_txt_02"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_horizontal"
@@ -160,12 +164,14 @@
                     android:orientation="vertical">
 
                     <ImageView
+                        android:id="@+id/unary_image_03"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
-                        android:src="@mipmap/ic_launcher" />
+                        android:src="@drawable/appstart" />
 
                     <TextView
+                        android:id="@+id/unary_txt_03"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_horizontal"

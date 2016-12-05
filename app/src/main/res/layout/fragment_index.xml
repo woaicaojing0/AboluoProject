@@ -458,7 +458,11 @@
                 layout="@layout/activtiy_main_huodong"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content" />
-
+            <include
+                android:id="@+id/id_ly_huodong"
+                layout="@layout/index_brand"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content" />
             <EditText
                 android:layout_width="wrap_content"
                 android:layout_height="400dp"

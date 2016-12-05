@@ -85,6 +85,7 @@
         <activity android:name=".UnaryActivity"></activity>
         <activity android:name=".UnaryDetailActivity"></activity>
         <activity android:name=".OrderOneDetailActivity"></activity>
+        《<activity android:name=".ExpressDetailActivity"></activity>
         <!--线下测试模式-->
         <activity
             android:name="cn.beecloud.BCMockPayActivity"

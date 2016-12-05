@@ -15,6 +15,7 @@ import android.widget.Toast;
 import com.aboluo.XUtils.CommonUtils;
 import com.aboluo.XUtils.MyApplication;
 import com.aboluo.adapter.AllOrderAdapter;
+import com.aboluo.com.ExpressDetailActivity;
 import com.aboluo.com.OrderPayActivity;
 import com.aboluo.com.R;
 import com.aboluo.model.SearchOrderBean;
@@ -84,11 +85,11 @@ public class AllOrderFragment extends Fragment implements View.OnClickListener {
         URL = CommonUtils.GetValueByKey(AllOrderFragment.this.getActivity(), "apiurl");
         ImageURL = CommonUtils.GetValueByKey(AllOrderFragment.this.getActivity(), "ImgUrl");
         gson = new Gson();
-        GetInfo(1);
+//        GetInfo(1);
     }
 
     private void GetInfo(final int page) {
-        stringRequest = new StringRequest(Request.Method.POST, URL + "/api/Order/GetOrderListByMemberId", new Response.Listener<String>() {
+        stringRequest = new StringRequest(Request.Method.POST, URL + "/api/Order/ReceiveOrderListByMemberId", new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 boolean IsEmpty = false;
@@ -178,6 +179,8 @@ public class AllOrderFragment extends Fragment implements View.OnClickListener {
                 if (tag != null && tag instanceof Integer) { //解决问题：如何知道你点击的按钮是哪一个列表项中的，通过Tag的position
                     final int position = (Integer) tag;
                     Toast.makeText(AllOrderFragment.this.getContext(), position + "", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(AllOrderFragment.this.getActivity(), ExpressDetailActivity.class);
+                    startActivity(intent);
                 }
                 break;
             case R.id.txt_ok: //点击确认收货按钮，执行相应的处理
@@ -192,6 +195,9 @@ public class AllOrderFragment extends Fragment implements View.OnClickListener {
                 if (tag != null && tag instanceof Integer) { //解决问题：如何知道你点击的按钮是哪一个列表项中的，通过Tag的position
                     final int position = (Integer) tag;
                     Toast.makeText(AllOrderFragment.this.getContext(), position + "", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(AllOrderFragment.this.getContext(), position + "", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(AllOrderFragment.this.getActivity(), ExpressDetailActivity.class);
+                    startActivity(intent);
                 }
                 break;
             case R.id.txt_payorder: //点击支付按钮，执行相应的处理

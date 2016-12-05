@@ -84,10 +84,10 @@ public class NoSendFragment extends Fragment implements View.OnClickListener{
         URL = CommonUtils.GetValueByKey(context, "apiurl");
         ImageURL = CommonUtils.GetValueByKey(context, "ImgUrl");
         gson = new Gson();
-        GetInfo(1);
+        //GetInfo(1);
     }
     private void GetInfo(final int page) {
-        stringRequest = new StringRequest(Request.Method.POST, URL + "/api/Order/GetOrderListByMemberId", new Response.Listener<String>() {
+        stringRequest = new StringRequest(Request.Method.POST, URL + "/api/Order/ReceiveOrderListByMemberId", new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 boolean IsEmpty = false;
@@ -214,5 +214,6 @@ public class NoSendFragment extends Fragment implements View.OnClickListener{
         super.onResume();
         InitPage = 1;
         orderBean = null;
+        GetInfo(1);
     }
 }

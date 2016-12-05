@@ -77,7 +77,7 @@
             <EditText
 
                 android:inputType="textPassword"
-                android:id="@+id/retrievepwd"
+                android:id="@+id/retrievepwd_newpwd"
                 android:background="@null"
                 android:layout_width="match_parent"
                 android:layout_height="48dp"

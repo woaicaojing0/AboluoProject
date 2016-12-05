@@ -37,7 +37,7 @@ import cn.pedant.SweetAlert.SweetAlertDialog;
 public class Retrievepwd1Activity extends Activity implements View.OnClickListener, TextWatcher {
     private TextView retrievepwd_btn_close;
     private Button retrievepwd_btn_getinfo, retrievepwd_btn_next;
-    private EditText retrievepwd_edit_yzm, retrievepwd;
+    private EditText retrievepwd_edit_yzm, retrievepwd_newpwd;
     private MessageInfo messageInfo;
     private CountDownTimer time;
     private RequestQueue requestQueue;
@@ -60,7 +60,7 @@ public class Retrievepwd1Activity extends Activity implements View.OnClickListen
                 Retrievepwd1Activity.this.finish();
             }
         });
-        retrievepwd_btn_next.addTextChangedListener(this);
+        retrievepwd_newpwd.addTextChangedListener(this);
         retrievepwd_btn_next.setOnClickListener(this);
         retrievepwd_btn_getinfo.setOnClickListener(this);
     }
@@ -69,7 +69,7 @@ public class Retrievepwd1Activity extends Activity implements View.OnClickListen
         retrievepwd_btn_getinfo = (Button) findViewById(R.id.retrievepwd_btn_getinfo);
         retrievepwd_btn_next = (Button) findViewById(R.id.retrievepwd_btn_next);
         retrievepwd_edit_yzm = (EditText) findViewById(R.id.retrievepwd_edit_yzm);
-        retrievepwd = (EditText) findViewById(R.id.retrievepwd);
+        retrievepwd_newpwd = (EditText) findViewById(R.id.retrievepwd_newpwd);
         requestQueue = MyApplication.getRequestQueue();
         time = new TimeCount(60000, 1000);//构造CountDownTimer对象
         URL = CommonUtils.GetValueByKey(this, "apiurl");
@@ -77,14 +77,15 @@ public class Retrievepwd1Activity extends Activity implements View.OnClickListen
         Intent intent = getIntent();
         Mode = intent.getStringExtra("mode");
         EmailOrPhone = intent.getStringExtra("EmailOrPhone");
-        if(EmailOrPhone !=null&&Mode!=null) {
+        if (EmailOrPhone != null && Mode != null) {
             if (Mode.equals("phone")) {
                 GetPwdByPhone(EmailOrPhone);
             } else {
                 GetPwdByEmail(EmailOrPhone);
             }
             time.start();
-        }else {}
+        } else {
+        }
     }
 
     @Override
@@ -100,7 +101,7 @@ public class Retrievepwd1Activity extends Activity implements View.OnClickListen
     @Override
     public void afterTextChanged(Editable editable) {
         boolean isok = false;
-        if (retrievepwd_edit_yzm.getText().length() > 5) {
+        if (retrievepwd_newpwd.getText().length() > 5) {
             isok = true;
         }
         retrievepwd_btn_next.setEnabled(isok);
@@ -110,7 +111,7 @@ public class Retrievepwd1Activity extends Activity implements View.OnClickListen
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.retrievepwd_btn_getinfo:
-                if (EmailOrPhone != null&&Mode !=null) {
+                if (EmailOrPhone != null && Mode != null) {
                     if (Mode == "email") {
                         GetPwdByPhone(EmailOrPhone);
                     } else {
@@ -123,16 +124,8 @@ public class Retrievepwd1Activity extends Activity implements View.OnClickListen
                 break;
             case R.id.retrievepwd_btn_next:
                 String UserYzm = retrievepwd_edit_yzm.getText().toString();
-                String newpwd = retrievepwd.getText().toString();
-                if (UserYzm.equals(yzm)) {
-                    FindPwd(newpwd, UserYzm);
-                } else {
-                    new SweetAlertDialog(Retrievepwd1Activity.this, SweetAlertDialog.ERROR_TYPE)
-                            .setTitleText("提示")
-                            .setContentText("请输入正确的验证码!")
-                            .setConfirmText("确定")
-                            .show();
-                }
+                String newpwd = retrievepwd_newpwd.getText().toString();
+                FindPwd(newpwd, UserYzm);
                 break;
 
         }
@@ -231,7 +224,7 @@ public class Retrievepwd1Activity extends Activity implements View.OnClickListen
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> map = new HashMap<>();
                 map.put("UserLoginNumber", EmailOrPhone);
-                map.put("UserPassword", newpwd);
+                map.put("UserPassword", CommonUtils.getMD5(newpwd));
                 map.put("MessageCheckNumber", UserYzm);
                 map.put("APPToken", APPToken);
                 return map;

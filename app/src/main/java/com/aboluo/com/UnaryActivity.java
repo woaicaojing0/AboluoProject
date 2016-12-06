@@ -1,26 +1,22 @@
 package com.aboluo.com;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.TabLayout;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
-import android.support.v4.view.ViewPager;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.aboluo.XUtils.CommonUtils;
 import com.aboluo.XUtils.MyApplication;
+import com.aboluo.XUtils.RBCallbkRecyclerView;
 import com.aboluo.adapter.BannerAdapter;
-import com.aboluo.adapter.OrderTabAdapter;
-import com.aboluo.fragment.UnaryFragment.IntroduceFragment;
-import com.aboluo.fragment.UnaryFragment.MoodsFragment;
-import com.aboluo.fragment.UnaryFragment.NewFragment;
-import com.aboluo.fragment.UnaryFragment.SurplusFragment;
+import com.aboluo.adapter.UnaryAdapter;
 import com.aboluo.model.BaseConfigBean;
 import com.aboluo.model.UnaryListBean;
-import com.aboluo.widget.CustomViewPager1;
+import com.aboluo.widget.FullyGridLayoutManager;
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -31,9 +27,6 @@ import com.google.gson.Gson;
 import com.jude.rollviewpager.RollPagerView;
 import com.squareup.picasso.Picasso;
 
-import org.w3c.dom.Text;
-
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -42,14 +35,7 @@ import java.util.Map;
  * Created by CJ on 2016/12/2.
  */
 
-public class UnaryActivity extends FragmentActivity {
-    private TabLayout tablayout_unary_title;
-    private CustomViewPager1 vp_unart_pager;
-    private List<Fragment> list_fragment;
-    private List<String> list_title;
-    private Fragment introduceFragment, moodsFragment, newFragment, surplusFragment;
-    private OrderTabAdapter fAdapter;
-    private int selected, status;
+public class UnaryActivity extends FragmentActivity implements UnaryAdapter.OnRecyclerViewItemClickListener {
     private RequestQueue requestQueue;
     private String ImageUrl;
     private String URL;
@@ -61,33 +47,23 @@ public class UnaryActivity extends FragmentActivity {
     private BannerAdapter bannerAdapter;
     private RollPagerView unary__view_pager;
     private ImageView unary_image_03, unary_image_02, unary_image_01;
-    private TextView unary_txt_02,unary_txt_01,unary_txt_03;
+    private TextView unary_txt_02, unary_txt_01, unary_txt_03;
+    private RBCallbkRecyclerView unary_recyclerView;
+    private UnaryAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_unary_index);
         init();
-        vp_unart_pager.removeOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+        unary_recyclerView.setReachBottomRow(4);
+        unary_recyclerView.setOnReachBottomListener(new RBCallbkRecyclerView.OnReachBottomListener() {
             @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
-            }
-
-            @Override
-            public void onPageSelected(int position) {
-                vp_unart_pager.resetHeight(position);
-
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int state) {
-
+            public void onReachBottom() {
+                //即将到达几部，进行加载更多操作
+                Toast.makeText(mcontext, "sssssssssssssssssssssssss", Toast.LENGTH_SHORT).show();
             }
         });
-        vp_unart_pager.resetHeight(0);
-
-
     }
 
     private void init() {
@@ -98,8 +74,6 @@ public class UnaryActivity extends FragmentActivity {
         APPToken = CommonUtils.GetValueByKey(mcontext, "APPToken");
         gson = new Gson();
         picasso = Picasso.with(mcontext);
-        tablayout_unary_title = (TabLayout) findViewById(R.id.tablayout_unary_title);
-        vp_unart_pager = (CustomViewPager1) findViewById(R.id.vp_unart_pager);
         unary__view_pager = (RollPagerView) findViewById(R.id.unary__view_pager);
         unary_image_03 = (ImageView) findViewById(R.id.unary_image_03);
         unary_image_02 = (ImageView) findViewById(R.id.unary_image_02);
@@ -107,49 +81,11 @@ public class UnaryActivity extends FragmentActivity {
         unary_txt_02 = (TextView) findViewById(R.id.unary_txt_02);
         unary_txt_01 = (TextView) findViewById(R.id.unary_txt_01);
         unary_txt_03 = (TextView) findViewById(R.id.unary_txt_03);
-        initTabLayoutAndViewPage();
+        unary_recyclerView = (RBCallbkRecyclerView) findViewById(R.id.unary_recyclerView);
         initBannerImage();
         initNewOpen();
     }
 
-    private void initTabLayoutAndViewPage() {
-        //初始化fragment
-        introduceFragment = new IntroduceFragment();
-        moodsFragment = new MoodsFragment();
-        newFragment = new NewFragment();
-        surplusFragment = new SurplusFragment();
-//        moodsFragment = new MoodsFragment(vp_unart_pager);
-//        newFragment = new NewFragment(vp_unart_pager);
-//        surplusFragment = new SurplusFragment(vp_unart_pager);
-        //将fragment装进列表中
-        list_fragment = new ArrayList<>();
-        list_fragment.add(moodsFragment);
-        list_fragment.add(surplusFragment);
-        list_fragment.add(newFragment);
-        list_fragment.add(introduceFragment);
-
-        //将名称加载tab名字列表，正常情况下，我们应该在values/arrays.xml中进行定义然后调用
-        list_title = new ArrayList<>();
-        list_title.add("人气");
-        list_title.add("剩余");
-        list_title.add("最新");
-        list_title.add("玩法介绍");
-        //设置TabLayout的模式
-        tablayout_unary_title.setTabMode(TabLayout.MODE_FIXED);
-        //为TabLayout添加tab名称
-        tablayout_unary_title.addTab(tablayout_unary_title.newTab().setText(list_title.get(0)), false);
-        tablayout_unary_title.addTab(tablayout_unary_title.newTab().setText(list_title.get(1)), false);
-        tablayout_unary_title.addTab(tablayout_unary_title.newTab().setText(list_title.get(2)), false);
-        tablayout_unary_title.addTab(tablayout_unary_title.newTab().setText(list_title.get(3)), true);
-        fAdapter = new OrderTabAdapter(getSupportFragmentManager(), list_fragment, list_title);
-        //viewpager加载adapter
-        vp_unart_pager.setAdapter(fAdapter);
-        //tab_FindFragment_title.setViewPager(vp_FindFragment_pager);
-        //TabLayout加载viewpager
-        tablayout_unary_title.setupWithViewPager(vp_unart_pager);
-        //tab_FindFragment_title.set
-        vp_unart_pager.setCurrentItem(selected);
-    }
 
     private void initBannerImage() {
         StringRequest stringRequest = new StringRequest(Request.Method.POST, URL + "/api/ConfigApi/ReceiveHomeConfig", new Response.Listener<String>() {
@@ -196,23 +132,25 @@ public class UnaryActivity extends FragmentActivity {
                 response = response.replace("\\", "");
                 response = response.substring(1, response.length() - 1);
                 UnaryListBean unaryListBean = gson.fromJson(response, UnaryListBean.class);
-                if (unaryListBean.isIsSuccess())
-                {
+                if (unaryListBean.isIsSuccess()) {
                     List<UnaryListBean.ListResultBean> listResult = unaryListBean.getListResult();
-                    if(listResult.size()>=3)
-                    {
-                        picasso.load(ImageUrl+listResult.get(0).getGoodsLogo())
+                    if (listResult.size() >= 3) {
+                        picasso.load(ImageUrl + listResult.get(0).getGoodsLogo())
                                 .placeholder(UnaryActivity.this.getResources().getDrawable(R.drawable.imagviewloading))
                                 .into(unary_image_01);
                         unary_txt_01.setText(listResult.get(0).getGoodsName());
-                        picasso.load(ImageUrl+listResult.get(1).getGoodsLogo())
+                        picasso.load(ImageUrl + listResult.get(1).getGoodsLogo())
                                 .placeholder(UnaryActivity.this.getResources().getDrawable(R.drawable.imagviewloading))
                                 .into(unary_image_02);
                         unary_txt_02.setText(listResult.get(1).getGoodsName());
-                        picasso.load(ImageUrl+listResult.get(2).getGoodsLogo())
+                        picasso.load(ImageUrl + listResult.get(2).getGoodsLogo())
                                 .placeholder(UnaryActivity.this.getResources().getDrawable(R.drawable.imagviewloading))
                                 .into(unary_image_03);
                         unary_txt_03.setText(listResult.get(2).getGoodsName());
+                        unary_recyclerView.setLayoutManager(new FullyGridLayoutManager(UnaryActivity.this, 2));
+                        adapter = new UnaryAdapter(unaryListBean.getListResult(), UnaryActivity.this);
+                        unary_recyclerView.setAdapter(adapter);
+                        adapter.setOnItemClickListener(UnaryActivity.this);
                     }
                 }
             }
@@ -238,5 +176,11 @@ public class UnaryActivity extends FragmentActivity {
             }
         };
         requestQueue.add(stringRequest);
+    }
+
+    @Override
+    public void onItemClick(View view, int position) {
+        Toast.makeText(mcontext, "当前点击项是：" + position, Toast.LENGTH_SHORT).show();
+        Intent intent =new Intent();
     }
 }

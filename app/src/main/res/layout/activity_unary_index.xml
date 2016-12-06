@@ -4,14 +4,16 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
+
     <android.support.v7.widget.Toolbar
-        android:layout_alignParentTop="true"
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
+        android:layout_alignParentTop="true"
         android:background="@color/white"
         app:contentInsetLeft="0dp"
         app:contentInsetStart="0dp">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -36,11 +38,12 @@
 
         </LinearLayout>
     </android.support.v7.widget.Toolbar>
+
     <com.aboluo.widget.UnaryScrollView
-        android:layout_below="@id/toolbar"
         android:layout_width="match_parent"
-        android:fillViewport="true"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_below="@id/toolbar"
+        android:fillViewport="true">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -187,25 +190,46 @@
                 android:background="#bbbbbb"></View>
 
             <LinearLayout
-                android:orientation="vertical"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="48dp"
+                android:orientation="horizontal">
+                <TextView
+                    android:gravity="center"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="match_parent"
+                    android:text="人气"/>
+                <TextView
+                    android:gravity="center"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="match_parent"
+                    android:text="剩余"/>
+                <TextView
+                    android:gravity="center"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="match_parent"
+                    android:text="最新"/>
+                <TextView
+                    android:gravity="center"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="match_parent"
+                    android:text="玩法介绍"/>
 
-                <android.support.design.widget.TabLayout
-                    android:id="@+id/tablayout_unary_title"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@color/white"
-                    app:tabIndicatorColor="@color/red"
-                    app:tabSelectedTextColor="@color/black"
-                    app:tabTextColor="@color/black" />
-
-
-                <com.aboluo.widget.CustomViewPager1
-                    android:id="@+id/vp_unart_pager"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content" />
             </LinearLayout>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="#bbbbbb"></View>
+            <com.aboluo.XUtils.RBCallbkRecyclerView
+                android:layout_marginLeft="24dp"
+                android:layout_marginRight="20dp"
+                android:id="@+id/unary_recyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"></com.aboluo.XUtils.RBCallbkRecyclerView>
+
         </LinearLayout>
     </com.aboluo.widget.UnaryScrollView>
 </RelativeLayout>

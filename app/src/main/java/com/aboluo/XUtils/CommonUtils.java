@@ -10,6 +10,7 @@ import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.text.NumberFormat;
 import java.util.Properties;
 
 /**
@@ -185,5 +186,17 @@ public class CommonUtils {
         SharedPreferences sharedPreferences = context.getSharedPreferences("aboluoInfo", Context.MODE_PRIVATE);
         String memberId = sharedPreferences.getString("UserId", "0");
         return  memberId;
+    }
+    public  static  String Getpercent(int num1,int num2)
+    {
+        // 创建一个数值格式化对象
+        NumberFormat numberFormat = NumberFormat.getInstance();
+        // 设置精确到小数点后2位
+        numberFormat.setMaximumFractionDigits(2);
+
+        String result = numberFormat.format((float) num1 / (float) num2 * 100)+"%";
+
+        //System.out.println("num1和num2的百分比为:" + result + "%");
+        return result;
     }
 }

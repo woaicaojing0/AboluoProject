@@ -6,6 +6,7 @@ import android.widget.ListView;
 
 /**
  * Created by CJ on 2016/9/27.
+ * scrollview 中嵌套listview 只显示一行问题
  */
 public class MyListview extends ListView {
 

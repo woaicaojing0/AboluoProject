@@ -4,11 +4,14 @@ import android.app.Activity;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.ListView;
 import android.widget.Toast;
 
 import com.aboluo.XUtils.CommonUtils;
 import com.aboluo.XUtils.MyApplication;
+import com.aboluo.adapter.ExpressDetailAdapter;
 import com.aboluo.model.ExpressDetailBean;
+import com.aboluo.widget.MyListview;
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -35,7 +38,8 @@ public class ExpressDetailActivity extends Activity {
     private Gson gson;
     private Picasso picasso;
     private SweetAlertDialog pdialog;
-
+    private ExpressDetailAdapter adapter;
+    private MyListview express_listview;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,6 +59,7 @@ public class ExpressDetailActivity extends Activity {
         pdialog.setTitleText("加载中");
         pdialog.setCanceledOnTouchOutside(true);
         pdialog.setCancelable(true);
+        express_listview= (MyListview) findViewById(R.id.express_listview);
         initData();
     }
 
@@ -64,7 +69,18 @@ public class ExpressDetailActivity extends Activity {
             public void onResponse(String response) {
                 response = response.replace("\\","");
                 response = response.substring(1,response.length()-1);
-                ExpressDetailBean expressDetailBean= new ExpressDetailBean();
+                ExpressDetailBean expressDetailBean=gson.fromJson(response,ExpressDetailBean.class);
+                if(expressDetailBean.isIsSuccess())
+                {
+                    if(expressDetailBean.getResult().getList().size() ==0)
+                    {
+                        Toast.makeText(ExpressDetailActivity.this, "当前没有物流状态", Toast.LENGTH_SHORT).show();
+                    }
+                    else {
+                        adapter = new ExpressDetailAdapter(expressDetailBean.getResult().getList(),ExpressDetailActivity.this);
+                        express_listview.setAdapter(adapter);
+                    }
+                }else {}
 
             }
         }, new Response.ErrorListener() {

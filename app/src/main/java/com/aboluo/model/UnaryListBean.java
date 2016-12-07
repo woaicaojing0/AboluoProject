@@ -1,5 +1,8 @@
 package com.aboluo.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.util.List;
 
 /**
@@ -107,15 +110,15 @@ public class UnaryListBean {
         this.ListResult = ListResult;
     }
 
-    public static class ListResultBean {
+    public static class ListResultBean implements  Parcelable{
         private String GoodsName;
-        private Object GoodsLogo;
-        private Object GoodsPicture;
-        private Object GoodsSub;
+        private String GoodsLogo;
+        private String GoodsPicture;
+        private String GoodsSub;
         private int ColorId;
         private int StandId;
-        private Object ColorStandName;
-        private Object ColorName;
+        private String ColorStandName;
+        private String ColorName;
         private String CreateTime;
         private String FinishTime;
         private String StartTime;
@@ -131,180 +134,248 @@ public class UnaryListBean {
         private int NeedPersonCount;
         private int State;
 
+        protected ListResultBean(Parcel in) {
+            GoodsName = in.readString();
+            GoodsLogo = in.readString();
+            GoodsPicture = in.readString();
+            GoodsSub = in.readString();
+            ColorId = in.readInt();
+            StandId = in.readInt();
+            ColorStandName = in.readString();
+            ColorName = in.readString();
+            CreateTime = in.readString();
+            FinishTime = in.readString();
+            StartTime = in.readString();
+            GoodsPrice = in.readDouble();
+            Creator = in.readInt();
+            GoodsColorId = in.readInt();
+            GoodsId = in.readInt();
+            GoodsStandColorId = in.readInt();
+            GoodsStandId = in.readInt();
+            Id = in.readInt();
+            IsDelete = in.readInt();
+            JoinCount = in.readInt();
+            NeedPersonCount = in.readInt();
+            State = in.readInt();
+        }
+
+        public static final Parcelable.Creator<ListResultBean> CREATOR = new Creator<ListResultBean>() {
+            @Override
+            public ListResultBean createFromParcel(Parcel in) {
+                return new ListResultBean(in);
+            }
+
+            @Override
+            public ListResultBean[] newArray(int size) {
+                return new ListResultBean[size];
+            }
+        };
+
         public String getGoodsName() {
             return GoodsName;
         }
 
-        public void setGoodsName(String GoodsName) {
-            this.GoodsName = GoodsName;
-        }
-
-        public Object getGoodsLogo() {
-            return GoodsLogo;
-        }
-
-        public void setGoodsLogo(Object GoodsLogo) {
-            this.GoodsLogo = GoodsLogo;
-        }
-
-        public Object getGoodsPicture() {
-            return GoodsPicture;
-        }
-
-        public void setGoodsPicture(Object GoodsPicture) {
-            this.GoodsPicture = GoodsPicture;
-        }
-
-        public Object getGoodsSub() {
-            return GoodsSub;
-        }
-
-        public void setGoodsSub(Object GoodsSub) {
-            this.GoodsSub = GoodsSub;
-        }
-
-        public int getColorId() {
-            return ColorId;
-        }
-
-        public void setColorId(int ColorId) {
-            this.ColorId = ColorId;
-        }
-
-        public int getStandId() {
-            return StandId;
-        }
-
-        public void setStandId(int StandId) {
-            this.StandId = StandId;
-        }
-
-        public Object getColorStandName() {
-            return ColorStandName;
-        }
-
-        public void setColorStandName(Object ColorStandName) {
-            this.ColorStandName = ColorStandName;
-        }
-
-        public Object getColorName() {
-            return ColorName;
-        }
-
-        public void setColorName(Object ColorName) {
-            this.ColorName = ColorName;
-        }
-
-        public String getCreateTime() {
-            return CreateTime;
-        }
-
-        public void setCreateTime(String CreateTime) {
-            this.CreateTime = CreateTime;
-        }
-
-        public String getFinishTime() {
-            return FinishTime;
-        }
-
-        public void setFinishTime(String FinishTime) {
-            this.FinishTime = FinishTime;
-        }
-
-        public String getStartTime() {
-            return StartTime;
-        }
-
-        public void setStartTime(String StartTime) {
-            this.StartTime = StartTime;
-        }
-
-        public double getGoodsPrice() {
-            return GoodsPrice;
-        }
-
-        public void setGoodsPrice(double GoodsPrice) {
-            this.GoodsPrice = GoodsPrice;
-        }
-
-        public int getCreator() {
-            return Creator;
-        }
-
-        public void setCreator(int Creator) {
-            this.Creator = Creator;
-        }
-
-        public int getGoodsColorId() {
-            return GoodsColorId;
-        }
-
-        public void setGoodsColorId(int GoodsColorId) {
-            this.GoodsColorId = GoodsColorId;
-        }
-
-        public int getGoodsId() {
-            return GoodsId;
-        }
-
-        public void setGoodsId(int GoodsId) {
-            this.GoodsId = GoodsId;
-        }
-
-        public int getGoodsStandColorId() {
-            return GoodsStandColorId;
-        }
-
-        public void setGoodsStandColorId(int GoodsStandColorId) {
-            this.GoodsStandColorId = GoodsStandColorId;
-        }
-
-        public int getGoodsStandId() {
-            return GoodsStandId;
-        }
-
-        public void setGoodsStandId(int GoodsStandId) {
-            this.GoodsStandId = GoodsStandId;
-        }
-
-        public int getId() {
-            return Id;
-        }
-
-        public void setId(int Id) {
-            this.Id = Id;
-        }
-
-        public int getIsDelete() {
-            return IsDelete;
-        }
-
-        public void setIsDelete(int IsDelete) {
-            this.IsDelete = IsDelete;
-        }
-
-        public int getJoinCount() {
-            return JoinCount;
-        }
-
-        public void setJoinCount(int JoinCount) {
-            this.JoinCount = JoinCount;
-        }
-
-        public int getNeedPersonCount() {
-            return NeedPersonCount;
-        }
-
-        public void setNeedPersonCount(int NeedPersonCount) {
-            this.NeedPersonCount = NeedPersonCount;
+        public void setGoodsName(String goodsName) {
+            GoodsName = goodsName;
         }
 
         public int getState() {
             return State;
         }
 
-        public void setState(int State) {
-            this.State = State;
+        public void setState(int state) {
+            State = state;
+        }
+
+        public String getGoodsLogo() {
+            return GoodsLogo;
+        }
+
+        public void setGoodsLogo(String goodsLogo) {
+            GoodsLogo = goodsLogo;
+        }
+
+        public String getGoodsPicture() {
+            return GoodsPicture;
+        }
+
+        public void setGoodsPicture(String goodsPicture) {
+            GoodsPicture = goodsPicture;
+        }
+
+        public String getGoodsSub() {
+            return GoodsSub;
+        }
+
+        public void setGoodsSub(String goodsSub) {
+            GoodsSub = goodsSub;
+        }
+
+        public int getColorId() {
+            return ColorId;
+        }
+
+        public void setColorId(int colorId) {
+            ColorId = colorId;
+        }
+
+        public int getStandId() {
+            return StandId;
+        }
+
+        public void setStandId(int standId) {
+            StandId = standId;
+        }
+
+        public String getColorStandName() {
+            return ColorStandName;
+        }
+
+        public void setColorStandName(String colorStandName) {
+            ColorStandName = colorStandName;
+        }
+
+        public String getColorName() {
+            return ColorName;
+        }
+
+        public void setColorName(String colorName) {
+            ColorName = colorName;
+        }
+
+        public String getCreateTime() {
+            return CreateTime;
+        }
+
+        public void setCreateTime(String createTime) {
+            CreateTime = createTime;
+        }
+
+        public String getFinishTime() {
+            return FinishTime;
+        }
+
+        public void setFinishTime(String finishTime) {
+            FinishTime = finishTime;
+        }
+
+        public String getStartTime() {
+            return StartTime;
+        }
+
+        public void setStartTime(String startTime) {
+            StartTime = startTime;
+        }
+
+        public double getGoodsPrice() {
+            return GoodsPrice;
+        }
+
+        public void setGoodsPrice(double goodsPrice) {
+            GoodsPrice = goodsPrice;
+        }
+
+        public int getCreator() {
+            return Creator;
+        }
+
+        public void setCreator(int creator) {
+            Creator = creator;
+        }
+
+        public int getGoodsColorId() {
+            return GoodsColorId;
+        }
+
+        public void setGoodsColorId(int goodsColorId) {
+            GoodsColorId = goodsColorId;
+        }
+
+        public int getGoodsId() {
+            return GoodsId;
+        }
+
+        public void setGoodsId(int goodsId) {
+            GoodsId = goodsId;
+        }
+
+        public int getGoodsStandColorId() {
+            return GoodsStandColorId;
+        }
+
+        public void setGoodsStandColorId(int goodsStandColorId) {
+            GoodsStandColorId = goodsStandColorId;
+        }
+
+        public int getGoodsStandId() {
+            return GoodsStandId;
+        }
+
+        public void setGoodsStandId(int goodsStandId) {
+            GoodsStandId = goodsStandId;
+        }
+
+        public int getId() {
+            return Id;
+        }
+
+        public void setId(int id) {
+            Id = id;
+        }
+
+        public int getIsDelete() {
+            return IsDelete;
+        }
+
+        public void setIsDelete(int isDelete) {
+            IsDelete = isDelete;
+        }
+
+        public int getJoinCount() {
+            return JoinCount;
+        }
+
+        public void setJoinCount(int joinCount) {
+            JoinCount = joinCount;
+        }
+
+        public int getNeedPersonCount() {
+            return NeedPersonCount;
+        }
+
+        public void setNeedPersonCount(int needPersonCount) {
+            NeedPersonCount = needPersonCount;
+        }
+
+        @Override
+        public int describeContents() {
+            return 0;
+        }
+
+        @Override
+        public void writeToParcel(Parcel dest, int flags) {
+            dest.writeString(GoodsName);
+            dest.writeString(GoodsLogo);
+            dest.writeString(GoodsPicture);
+            dest.writeString(GoodsSub);
+            dest.writeInt(ColorId);
+            dest.writeInt(StandId);
+            dest.writeString(ColorStandName);
+            dest.writeString(ColorName);
+            dest.writeString(CreateTime);
+            dest.writeString(FinishTime);
+            dest.writeString(StartTime);
+            dest.writeDouble(GoodsPrice);
+            dest.writeInt(Creator);
+            dest.writeInt(GoodsColorId);
+            dest.writeInt(GoodsId);
+            dest.writeInt(GoodsStandColorId);
+            dest.writeInt(GoodsStandId);
+            dest.writeInt(Id);
+            dest.writeInt(IsDelete);
+            dest.writeInt(JoinCount);
+            dest.writeInt(NeedPersonCount);
+            dest.writeInt(State);
         }
     }
 }

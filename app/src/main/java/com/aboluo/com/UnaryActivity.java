@@ -2,9 +2,13 @@ package com.aboluo.com;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.view.View;
+import android.webkit.WebSettings;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -35,7 +39,7 @@ import java.util.Map;
  * Created by CJ on 2016/12/2.
  */
 
-public class UnaryActivity extends FragmentActivity implements UnaryAdapter.OnRecyclerViewItemClickListener {
+public class UnaryActivity extends FragmentActivity implements UnaryAdapter.OnRecyclerViewItemClickListener, View.OnClickListener {
     private RequestQueue requestQueue;
     private String ImageUrl;
     private String URL;
@@ -50,6 +54,12 @@ public class UnaryActivity extends FragmentActivity implements UnaryAdapter.OnRe
     private TextView unary_txt_02, unary_txt_01, unary_txt_03;
     private RBCallbkRecyclerView unary_recyclerView;
     private UnaryAdapter adapter;
+    private UnaryListBean unaryListBean;
+    private TextView unary_popularity, unary_new, unary_introduce;
+    private int currentpage = 1;
+    private String sort = null;
+    private String sorttype = null;
+    private WebView webview_introduce;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,8 +72,17 @@ public class UnaryActivity extends FragmentActivity implements UnaryAdapter.OnRe
             public void onReachBottom() {
                 //即将到达几部，进行加载更多操作
                 Toast.makeText(mcontext, "sssssssssssssssssssssssss", Toast.LENGTH_SHORT).show();
+                if (sort == null || sorttype == null) {
+                } else {
+                    currentpage++;
+                    GetUnaryListBean("2", currentpage, sort, sorttype);
+                }
+
             }
         });
+        unary_popularity.setOnClickListener(this);
+        unary_new.setOnClickListener(this);
+        unary_introduce.setOnClickListener(this);
     }
 
     private void init() {
@@ -81,11 +100,32 @@ public class UnaryActivity extends FragmentActivity implements UnaryAdapter.OnRe
         unary_txt_02 = (TextView) findViewById(R.id.unary_txt_02);
         unary_txt_01 = (TextView) findViewById(R.id.unary_txt_01);
         unary_txt_03 = (TextView) findViewById(R.id.unary_txt_03);
+        unary_popularity = (TextView) findViewById(R.id.unary_popularity);
+        unary_new = (TextView) findViewById(R.id.unary_new);
+        unary_introduce = (TextView) findViewById(R.id.unary_introduce);
         unary_recyclerView = (RBCallbkRecyclerView) findViewById(R.id.unary_recyclerView);
+        webview_introduce = (WebView) findViewById(R.id.webview_introduce);
+        unary_popularity.setTextColor(UnaryActivity.this.getResources().getColor(R.color.btn_color));
         initBannerImage();
         initNewOpen();
+        InitUnaryListBean();
+        initWebview();
     }
 
+    private void initWebview() {
+        webview_introduce.getSettings().setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
+        webview_introduce.setVerticalScrollBarEnabled(false);
+        webview_introduce.setVerticalScrollbarOverlay(false);
+        webview_introduce.setHorizontalScrollBarEnabled(false);
+        webview_introduce.setHorizontalScrollbarOverlay(false);
+        //end
+        WebSettings webviewsetting = webview_introduce.getSettings();
+        webviewsetting.setJavaScriptEnabled(true);
+        webviewsetting.setUseWideViewPort(true);//关键点
+        webviewsetting.setLoadWithOverviewMode(true);
+        webview_introduce.loadUrl("www.ly.com");
+        webview_introduce.setWebViewClient(new WebViewClient());
+    }
 
     private void initBannerImage() {
         StringRequest stringRequest = new StringRequest(Request.Method.POST, URL + "/api/ConfigApi/ReceiveHomeConfig", new Response.Listener<String>() {
@@ -125,13 +165,16 @@ public class UnaryActivity extends FragmentActivity implements UnaryAdapter.OnRe
         requestQueue.add(stringRequest);
     }
 
+    /**
+     * 加载显示的正在揭晓的一元购
+     */
     private void initNewOpen() {
         StringRequest stringRequest = new StringRequest(Request.Method.POST, URL + "/api/OnepurchaseApi/ReceiveOnePurchaseData", new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 response = response.replace("\\", "");
                 response = response.substring(1, response.length() - 1);
-                UnaryListBean unaryListBean = gson.fromJson(response, UnaryListBean.class);
+                unaryListBean = gson.fromJson(response, UnaryListBean.class);
                 if (unaryListBean.isIsSuccess()) {
                     List<UnaryListBean.ListResultBean> listResult = unaryListBean.getListResult();
                     if (listResult.size() >= 3) {
@@ -147,10 +190,6 @@ public class UnaryActivity extends FragmentActivity implements UnaryAdapter.OnRe
                                 .placeholder(UnaryActivity.this.getResources().getDrawable(R.drawable.imagviewloading))
                                 .into(unary_image_03);
                         unary_txt_03.setText(listResult.get(2).getGoodsName());
-                        unary_recyclerView.setLayoutManager(new FullyGridLayoutManager(UnaryActivity.this, 2));
-                        adapter = new UnaryAdapter(unaryListBean.getListResult(), UnaryActivity.this);
-                        unary_recyclerView.setAdapter(adapter);
-                        adapter.setOnItemClickListener(UnaryActivity.this);
                     }
                 }
             }
@@ -163,6 +202,7 @@ public class UnaryActivity extends FragmentActivity implements UnaryAdapter.OnRe
         }) {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
+                //最先开奖的放在前面
                 Map<String, String> map = new HashMap<>();
                 map.put("State", "2");
                 map.put("IsPaging", "true");
@@ -181,6 +221,131 @@ public class UnaryActivity extends FragmentActivity implements UnaryAdapter.OnRe
     @Override
     public void onItemClick(View view, int position) {
         Toast.makeText(mcontext, "当前点击项是：" + position, Toast.LENGTH_SHORT).show();
-        Intent intent =new Intent();
+        UnaryListBean.ListResultBean listResultBean = unaryListBean.getListResult().get(position);
+        Intent intent = new Intent(UnaryActivity.this, UnaryDetailActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putParcelable("data", listResultBean);
+        intent.putExtras(bundle);
+        startActivity(intent);
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.unary_popularity: // 人气
+                CleanTxtView();
+                unary_popularity.setTextColor(this.getResources().getColor(R.color.btn_color));
+                currentpage = 1;
+                sort = "joinCount";
+                sorttype = "desc";
+                GetUnaryListBean("1", currentpage, sort, sorttype);
+                break;
+            case R.id.unary_new: //最新
+                CleanTxtView();
+                unary_new.setTextColor(this.getResources().getColor(R.color.btn_color));
+                currentpage = 1;
+                sort = "StartTime";
+                sorttype = "desc";
+                GetUnaryListBean("1", currentpage, sort, sorttype);
+                break;
+            case R.id.unary_introduce: //玩法介绍
+                CleanTxtView();
+                webview_introduce.setVisibility(View.VISIBLE);
+                unary_recyclerView.setVisibility(View.GONE);
+                unary_introduce.setTextColor(this.getResources().getColor(R.color.btn_color));
+                break;
+        }
+    }
+
+    /**
+     * @param status   四种状态：1代表正在开抢 2等待开奖 3已开奖 0 暂未开始
+     * @param page     页数，默认是每页20条数据
+     * @param sort     排序根据
+     * @param sorttype 排序方式 desc或者asc
+     */
+    private void GetUnaryListBean(final String status, final int page, final String sort, final String sorttype) {
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, URL + "/api/OnepurchaseApi/ReceiveOnePurchaseData", new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                response = response.replace("\\", "");
+                response = response.substring(1, response.length() - 1);
+                unaryListBean = gson.fromJson(response, UnaryListBean.class);
+                if (unaryListBean.isIsSuccess()) {
+                    unary_recyclerView.setLayoutManager(new FullyGridLayoutManager(UnaryActivity.this, 2));
+                    adapter.notifyDataSetChanged();
+                    adapter.setOnItemClickListener(UnaryActivity.this);
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                String result = new String(error.networkResponse.data);
+                Toast.makeText(mcontext, result, Toast.LENGTH_SHORT).show();
+            }
+        }) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                //最先开奖的放在前面
+                Map<String, String> map = new HashMap<>();
+                map.put("State", status);
+                map.put("Current", String.valueOf(page));
+                map.put("PageSize", "20");
+                map.put("SortValue", sort);
+                map.put("SortType", sorttype);
+                map.put("TopCount", "0");
+                map.put("APPToken", APPToken);
+                return map;
+            }
+        };
+        requestQueue.add(stringRequest);
+    }
+
+    /**
+     * 初始化一元购 默认是选择人气
+     */
+    private void InitUnaryListBean() {
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, URL + "/api/OnepurchaseApi/ReceiveOnePurchaseData", new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                response = response.replace("\\", "");
+                response = response.substring(1, response.length() - 1);
+                unaryListBean = gson.fromJson(response, UnaryListBean.class);
+                if (unaryListBean.isIsSuccess()) {
+                    unary_recyclerView.setLayoutManager(new FullyGridLayoutManager(UnaryActivity.this, 2));
+                    adapter = new UnaryAdapter(unaryListBean.getListResult(), UnaryActivity.this);
+                    unary_recyclerView.setAdapter(adapter);
+                    adapter.setOnItemClickListener(UnaryActivity.this);
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                String result = new String(error.networkResponse.data);
+                Toast.makeText(mcontext, result, Toast.LENGTH_SHORT).show();
+            }
+        }) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                //最先开奖的放在前面
+                Map<String, String> map = new HashMap<>();
+                map.put("State", "1");
+                map.put("Current", "1");
+                map.put("PageSize", "20");
+                map.put("SortValue", "joinCount");
+                map.put("SortType", "desc");
+                map.put("TopCount", "0");
+                map.put("APPToken", APPToken);
+                return map;
+            }
+        };
+        requestQueue.add(stringRequest);
+    }
+
+    private void CleanTxtView() {
+        webview_introduce.setVisibility(View.GONE);
+        unary_recyclerView.setVisibility(View.VISIBLE);
+        unary_popularity.setTextColor(Color.parseColor("#737373"));
+        unary_new.setTextColor(Color.parseColor("#737373"));
+        unary_introduce.setTextColor(Color.parseColor("#737373"));
     }
 }

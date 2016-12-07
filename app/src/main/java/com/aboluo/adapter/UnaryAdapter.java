@@ -14,6 +14,7 @@ import android.widget.TextView;
 import com.aboluo.XUtils.CommonUtils;
 import com.aboluo.com.R;
 import com.aboluo.model.UnaryListBean.ListResultBean;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -25,10 +26,15 @@ public class UnaryAdapter extends RecyclerView.Adapter<UnaryAdapter.MyviewHolder
 
     private List<ListResultBean> mlist;
     private Context context;
+    private Picasso picasso;
+    private String ImageURL;
     private OnRecyclerViewItemClickListener onRecyclerViewItemClickListener = null;
+
     public UnaryAdapter(List<ListResultBean> list, Context context) {
         this.mlist = list;
         this.context = context;
+        this.picasso = Picasso.with(context);
+        this.ImageURL = CommonUtils.GetValueByKey(context, "ImgUrl");
     }
 
     @Override
@@ -53,8 +59,7 @@ public class UnaryAdapter extends RecyclerView.Adapter<UnaryAdapter.MyviewHolder
                 if (i == 0) {
                     para.width = 0;
                 } else {
-                    int beishu = all / i;
-                    para.width = (holder.relative_farther.getWidth()) / beishu;
+                    para.width = ((holder.relative_farther.getWidth())* i)/all;
                 }
                 holder.linelayout_child.setLayoutParams(para);
             }
@@ -71,6 +76,8 @@ public class UnaryAdapter extends RecyclerView.Adapter<UnaryAdapter.MyviewHolder
                 }
             }
         });
+        picasso.load(ImageURL + mlist.get(position).getGoodsLogo()).placeholder(R.drawable.imagviewloading)
+                .error(R.drawable.imageview_error).into(holder.unary_listview_image);
     }
 
 
@@ -80,7 +87,7 @@ public class UnaryAdapter extends RecyclerView.Adapter<UnaryAdapter.MyviewHolder
     }
 
     class MyviewHolder extends RecyclerView.ViewHolder {
-        public TextView textView, uanry_listview_item_percent,unary_begin;
+        public TextView textView, uanry_listview_item_percent, unary_begin;
         public ImageView unary_listview_image;
         public RelativeLayout relative_farther;
         public LinearLayout linelayout_child;
@@ -108,6 +115,7 @@ public class UnaryAdapter extends RecyclerView.Adapter<UnaryAdapter.MyviewHolder
             });
         }
     }
+
     public static interface OnRecyclerViewItemClickListener {
         void onItemClick(View view, int position);
     }

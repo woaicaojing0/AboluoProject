@@ -874,15 +874,27 @@ public class GoodsDetailActivity extends Activity implements View.OnClickListene
                 initShowAnim();
                 break;
             case R.id.pop_goodsdetail_btn_buynow: //弹出popwindow的立即购买
-                if (!CheckChooseAll()) {
-                } else {
-                    BuyNow();
+                if (CommonUtils.IsLogin(GoodsDetailActivity.this)) {
+                    if (!CheckChooseAll()) {
+                    } else {
+                        BuyNow();
+                    }
+                }else {
+                    Toast.makeText(this, "请先登录！", Toast.LENGTH_SHORT).show();
+                    Intent intent1 = new Intent(GoodsDetailActivity.this, LoginActivity.class);
+                    startActivity(intent1);
                 }
                 break;
             case R.id.goodsdetail_btn_buynow:  //详情底部的立即购买
-                if (!CheckChooseAll()) {
-                } else {
-                    BuyNow();
+                if (CommonUtils.IsLogin(GoodsDetailActivity.this)) {
+                    if (!CheckChooseAll()) {
+                    } else {
+                        BuyNow();
+                    }
+                }else {
+                    Toast.makeText(this, "请先登录！", Toast.LENGTH_SHORT).show();
+                    Intent intent1 = new Intent(GoodsDetailActivity.this, LoginActivity.class);
+                    startActivity(intent1);
                 }
                 break;
         }

@@ -7,6 +7,8 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
+import android.view.View;
+import android.widget.TextView;
 
 import com.aboluo.adapter.OrderTabAdapter;
 import com.aboluo.fragment.orderfragment.AllOrderFragment;
@@ -30,7 +32,7 @@ public class OrderActivity extends FragmentActivity {
     private List<String> list_title;                                     //tab名称列表
     private OrderTabAdapter fAdapter;
     private int selected,status;
-
+    private TextView my_order_text_back;
     public OrderActivity() {
     }
 
@@ -42,11 +44,18 @@ public class OrderActivity extends FragmentActivity {
         selected = intent.getIntExtra("TAG", 0);
         status = intent.getIntExtra("status", 0);
         init();
+        my_order_text_back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
     }
 
     private void init() {
         tab_FindFragment_title = (TabLayout) findViewById(R.id.tab_FindFragment_title);
         vp_FindFragment_pager = (ViewPager) findViewById(R.id.vp_FindFragment_pager);
+        my_order_text_back = (TextView) findViewById(R.id.my_order_text_back);
         //初始化fragment
         allOrderfragment = new AllOrderFragment();
         assessmentfragment = new AssessmentFragment();

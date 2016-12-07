@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.Switch;
 import android.widget.TextView;
@@ -69,6 +70,7 @@ public class AddAddressActivity extends Activity implements TextWatcher, View.On
     private Gson gson;
     private Switch swtich_isdefult;
     private String MemberId;
+    private ImageView all_add_text_back;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -84,6 +86,7 @@ public class AddAddressActivity extends Activity implements TextWatcher, View.On
         edit_receive_zipcode.addTextChangedListener(this);
         linelayout_location.setOnClickListener(this);
         address_street.setOnClickListener(this);
+        all_add_text_back.setOnClickListener(this);
     }
 
     private void init() {
@@ -102,6 +105,7 @@ public class AddAddressActivity extends Activity implements TextWatcher, View.On
         txt_allid = (TextView) findViewById(R.id.txt_allid);
         txt_region_id = (TextView) findViewById(R.id.txt_region_id);
         swtich_isdefult = (Switch) findViewById(R.id.swtich_isdefult);
+        all_add_text_back = (ImageView) findViewById(R.id.all_add_text_back);
         if (address_name == null) {
         } else {
             add_address_txtview_location.setText(address_name);
@@ -223,6 +227,9 @@ public class AddAddressActivity extends Activity implements TextWatcher, View.On
                 break;
             case R.id.update_address_save:
                 updateAddress();
+            case R.id.all_add_text_back:
+                finish();
+                break;
         }
     }
 

@@ -3,10 +3,12 @@ package com.aboluo.com;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
+import android.media.Image;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.CheckBox;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
@@ -54,6 +56,7 @@ public class AddressActivity extends Activity implements View.OnClickListener {
     private List<AddressInfoBean.ResultBean.MemberAddressListBean> listbean;
     private boolean IsPause = false;
     private String MemberId;
+    private ImageView all_address_text_back;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -81,7 +84,7 @@ public class AddressActivity extends Activity implements View.OnClickListener {
                 startActivity(intent);
             }
         });
-
+        all_address_text_back.setOnClickListener(this);
 
     }
 
@@ -89,6 +92,7 @@ public class AddressActivity extends Activity implements View.OnClickListener {
         address_listview = (ListView) findViewById(R.id.address_listview);
         shopcar_bottom_add_address = (LinearLayout) findViewById(R.id.shopcar_bottom_add_address);
         no_address_show = (RelativeLayout) findViewById(R.id.no_address_show);
+        all_address_text_back = (ImageView) findViewById(R.id.all_address_text_back);
         url = CommonUtils.GetValueByKey(this, "apiurl");
         APPToken = CommonUtils.GetValueByKey(this, "APPToken");
         requestQueue = MyApplication.getRequestQueue();
@@ -191,6 +195,9 @@ public class AddressActivity extends Activity implements View.OnClickListener {
                     }
                 } else {
                 }
+                break;
+            case R.id.all_address_text_back:
+                finish();
                 break;
         }
     }

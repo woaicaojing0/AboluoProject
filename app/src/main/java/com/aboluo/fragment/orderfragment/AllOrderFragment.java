@@ -16,6 +16,7 @@ import com.aboluo.XUtils.CommonUtils;
 import com.aboluo.XUtils.MyApplication;
 import com.aboluo.adapter.AllOrderAdapter;
 import com.aboluo.com.ExpressDetailActivity;
+import com.aboluo.com.OrderDetailActivity;
 import com.aboluo.com.OrderPayActivity;
 import com.aboluo.com.R;
 import com.aboluo.model.SearchOrderBean;
@@ -172,6 +173,9 @@ public class AllOrderFragment extends Fragment implements View.OnClickListener {
                 if (tag != null && tag instanceof Integer) { //解决问题：如何知道你点击的按钮是哪一个列表项中的，通过Tag的position
                     final int position = (Integer) tag;
                     Toast.makeText(AllOrderFragment.this.getContext(), position + "", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(AllOrderFragment.this.getActivity(), OrderDetailActivity.class);
+                    intent.putExtra("orderid",orderBean.getResult().get(position).getOrderId());
+                    startActivity(intent);
                 }
                 break;
             case R.id.txt_findgoods: //点击查看物流按钮，执行相应的处理

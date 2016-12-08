@@ -153,8 +153,8 @@ public class AllOrderAdapter extends BaseAdapter {
             holder.txt_order_yuanprice.setText("￥" + String.valueOf(mlist.get(position).getOrderItemList().get(i).getGoodsPrice()));
             holder.txt_order_goods_num.setText(String.valueOf("X" + String.valueOf(mlist.get(position).getOrderItemList().get(i).getGoodsQuantity())));
 
-            contentView.setOnClickListener(itemOnclickListener);
-            contentView.setTag(position);
+            holder2.content_view.setOnClickListener(itemOnclickListener);
+            holder2.content_view.setTag(position);
             holder2.txt_order_status.setText(OrderStatus(mlist.get(position).getOrderStatus(), holder2));
             holder2.order_allmoney.setText(String.valueOf("￥" + String.valueOf(mlist.get(position).getTotalPrice())));
             holder2.order_goodsnum.setText(String.valueOf(String.valueOf(mlist.get(position).getOrderItemList().size())));

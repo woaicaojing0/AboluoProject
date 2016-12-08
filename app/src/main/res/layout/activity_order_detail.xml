@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:app="http://schemas.android.com/apk/res-auto"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:orientation="vertical">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
@@ -27,14 +27,14 @@
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="10dp"
                 android:src="@drawable/back"
-                android:text="返回"/>
+                android:text="返回" />
 
             <TextView
                 android:id="@+id/toolbar_txt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
-                android:text="订单详情"/>
+                android:text="订单详情" />
 
         </LinearLayout>
     </android.support.v7.widget.Toolbar>
@@ -61,36 +61,135 @@
                 android:orientation="horizontal">
 
                 <LinearLayout
-                    android:layout_width="60dp"
-                    android:layout_height="match_parent">
+                    android:layout_width="52dp"
+                    android:layout_height="match_parent"
+                    android:gravity="center">
+
+                    <ImageView
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:src="@drawable/deliver" />
                 </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_weight="1"></LinearLayout>
+                    android:layout_weight="1">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="8dp"
+                        android:orientation="vertical"
+                        android:paddingTop="8dp">
+
+                        <TextView
+                            android:id="@+id/express_item_status"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:lineSpacingExtra="6dp"
+                            android:text="[深圳新福永] [深圳市] [深圳新福永]的派件已签收 感谢使用中通快递,期待再次为您服务!"
+                            android:textColor="#25ae5f" />
+
+                        <TextView
+                            android:id="@+id/express_item_time"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="2016年10月29日 下午7:26:36"
+                            android:textColor="#25ae5f" />
+                    </LinearLayout>
+
+                </LinearLayout>
 
                 <LinearLayout
-                    android:layout_width="60dp"
-                    android:layout_height="match_parent"></LinearLayout>
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center">
+
+                    <ImageView
+                        android:layout_width="42dp"
+                        android:layout_height="42dp"
+                        android:src="@drawable/choose_addrees_go" />
+                </LinearLayout>
             </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="#eeeeee"></View>
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="140dp"
+                android:layout_height="98dp"
                 android:orientation="horizontal">
 
                 <LinearLayout
-                    android:layout_width="60dp"
-                    android:layout_height="match_parent">
+                    android:layout_width="52dp"
+                    android:layout_height="match_parent"
+                    android:gravity="center">
+
+                    <ImageView
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:src="@drawable/location" />
                 </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_weight="1"></LinearLayout>
-            </LinearLayout>
+                    android:layout_weight="1">
 
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical">
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_marginRight="16dp"
+                            android:layout_marginTop="8dp"
+                            android:layout_weight="0.5">
+
+                            <TextView
+                                android:id="@+id/address_listview_name"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentLeft="true"
+                                android:layout_centerVertical="true"
+                                android:text="某某某" />
+
+                            <TextView
+                                android:id="@+id/address_listview_phone"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentRight="true"
+                                android:layout_centerVertical="true"
+                                android:text="10009890987" />
+                        </RelativeLayout>
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_marginRight="8dp"
+                            android:layout_weight="1">
+
+                            <TextView
+                                android:id="@+id/address_listview_address"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:lineSpacingExtra="6dp"
+                                android:lines="2"
+                                android:text="江苏省淮安市枚乘东路1号 老校区:淮阴工学院北京路校区北京北路89号" />
+                        </RelativeLayout>
+                    </LinearLayout>
+
+                </LinearLayout>
+            </LinearLayout>
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="0.2dp"
+                android:background="#b8b8b8"></View>
             <View
                 android:layout_width="match_parent"
                 android:layout_height="8dp"
@@ -103,10 +202,28 @@
                 android:orientation="vertical"
                 android:paddingLeft="12dp">
 
-                <ImageView
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:src="@drawable/ic_launcher"/>
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:src="@drawable/shop" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="8dp"
+                        android:text="阿波罗自营店" />
+
+                    <ImageView
+                        android:layout_width="36dp"
+                        android:layout_height="36dp"
+                        android:src="@drawable/choose_addrees_go" />
+                </LinearLayout>
             </LinearLayout>
 
             <ListView
@@ -118,8 +235,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:paddingLeft="12dp"
-                android:paddingRight="12dp"
-                android:visibility="gone">
+                android:paddingRight="12dp">
 
                 <RelativeLayout
                     android:layout_width="match_parent"
@@ -129,14 +245,14 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="商品总价"/>
+                        android:text="商品总价" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
                         android:layout_gravity="right|center_vertical"
-                        android:text="￥0.00"/>
+                        android:text="￥0.00" />
                 </RelativeLayout>
 
                 <RelativeLayout
@@ -148,14 +264,14 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="运费"/>
+                        android:text="运费" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
                         android:layout_gravity="right|center_vertical"
-                        android:text="￥0.00"/>
+                        android:text="￥0.00" />
                 </RelativeLayout>
 
                 <RelativeLayout
@@ -169,7 +285,7 @@
                         android:layout_height="wrap_content"
                         android:text="订单总价"
                         android:textColor="@color/black"
-                        android:textSize="18sp"/>
+                        android:textSize="18sp" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -178,7 +294,7 @@
                         android:layout_gravity="right|center_vertical"
                         android:text="￥0.00"
                         android:textColor="@color/black"
-                        android:textSize="18sp"/>
+                        android:textSize="18sp" />
                 </RelativeLayout>
             </LinearLayout>
 
@@ -203,7 +319,7 @@
                     android:layout_height="wrap_content"
                     android:text="订单总价"
                     android:textColor="@color/black"
-                    android:textSize="18sp"/>
+                    android:textSize="18sp" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -212,7 +328,7 @@
                     android:layout_gravity="right|center_vertical"
                     android:text="￥0.00"
                     android:textColor="@color/black"
-                    android:textSize="18sp"/>
+                    android:textSize="18sp" />
             </RelativeLayout>
         </LinearLayout>
     </com.aboluo.widget.UnaryScrollView>
@@ -221,10 +337,12 @@
         android:layout_width="match_parent"
         android:layout_height="53dp"
         android:orientation="vertical">
-<View
-    android:layout_width="match_parent"
-    android:layout_height="0.5dp"
-    android:background="#eeeeee"></View>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:background="#eeeeee"></View>
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -232,6 +350,6 @@
             android:paddingLeft="4dp"
             android:paddingRight="4dp"
             android:paddingTop="6dp"
-            android:text="查看物流"/>
+            android:text="查看物流" />
     </LinearLayout>
 </LinearLayout>

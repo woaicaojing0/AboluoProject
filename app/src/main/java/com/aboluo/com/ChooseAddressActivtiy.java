@@ -7,7 +7,9 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.aboluo.XUtils.CommonUtils;
@@ -26,12 +28,14 @@ import java.util.HashMap;
 import java.util.Map;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
+
 import com.aboluo.model.AddressInfoBean.ResultBean.MemberAddressListBean;
+
 /**
  * Created by CJ on 2016/11/21.
  */
 
-public class ChooseAddressActivtiy  extends Activity {
+public class ChooseAddressActivtiy extends Activity implements View.OnClickListener {
     private ListView listview_choose_address;
     private SweetAlertDialog pdialog;
     private String url;
@@ -42,6 +46,9 @@ public class ChooseAddressActivtiy  extends Activity {
     private Gson gson;
     private ChooseAddressAdapter chooseAddressAdapter;
     private String MemberId;
+    private TextView detail_more;
+    private ImageView choose_address_text_back;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,19 +58,23 @@ public class ChooseAddressActivtiy  extends Activity {
         listview_choose_address.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-              MemberAddressListBean memberAddressListBean = addressInfoBean.getResult().getMemberAddressList().get(position);
+                MemberAddressListBean memberAddressListBean = addressInfoBean.getResult().getMemberAddressList().get(position);
                 Intent intent = new Intent();
-                ArrayList<MemberAddressListBean> memberAddressListBeanlist =new ArrayList<MemberAddressListBean>();
+                ArrayList<MemberAddressListBean> memberAddressListBeanlist = new ArrayList<MemberAddressListBean>();
                 memberAddressListBeanlist.add(memberAddressListBean);
                 intent.putExtra("data", memberAddressListBeanlist);
-                setResult(2,intent);
+                setResult(2, intent);
                 finish();
             }
         });
+        detail_more.setOnClickListener(this);
+        choose_address_text_back.setOnClickListener(this);
     }
 
     private void init() {
         listview_choose_address = (ListView) findViewById(R.id.listview_choose_address);
+        detail_more = (TextView) findViewById(R.id.detail_more);
+        choose_address_text_back = (ImageView) findViewById(R.id.choose_address_text_back);
         url = CommonUtils.GetValueByKey(this, "apiurl");
         APPToken = CommonUtils.GetValueByKey(this, "APPToken");
         requestQueue = MyApplication.getRequestQueue();
@@ -73,7 +84,6 @@ public class ChooseAddressActivtiy  extends Activity {
         pdialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
         pdialog.setCanceledOnTouchOutside(true);
         pdialog.setCancelable(true);
-        initData();
     }
 
     private void initData() {
@@ -86,10 +96,9 @@ public class ChooseAddressActivtiy  extends Activity {
                 response = response.substring(1, response.length() - 1);
                 addressInfoBean = gson.fromJson(response, AddressInfoBean.class);
                 if (addressInfoBean.isIsSuccess()) {
-                    chooseAddressAdapter= new ChooseAddressAdapter(ChooseAddressActivtiy.this,addressInfoBean.getResult().getMemberAddressList());
+                    chooseAddressAdapter = new ChooseAddressAdapter(ChooseAddressActivtiy.this, addressInfoBean.getResult().getMemberAddressList());
                     listview_choose_address.setAdapter(chooseAddressAdapter);
-                }
-                else {
+                } else {
                     Toast.makeText(ChooseAddressActivtiy.this, "获取默认地址出错，请重试！", Toast.LENGTH_SHORT).show();
                     Log.i("woaicaojingpay", addressInfoBean.getResult().toString());
                 }
@@ -113,5 +122,24 @@ public class ChooseAddressActivtiy  extends Activity {
             }
         };
         requestQueue.add(requestlist);
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.detail_more:
+                Intent intent = new Intent(ChooseAddressActivtiy.this, AddAddressActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.choose_address_text_back:
+                finish();
+                break;
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        initData();
     }
 }

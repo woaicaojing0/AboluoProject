@@ -90,6 +90,7 @@ public class UnaryDetailActivity extends Activity implements View.OnClickListene
         int screenWidth = ScreenUtils.getScreenWidth(this);
         unarydetail_view_pager.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, screenWidth));
         initDetailData();
+        goodsShoppingCartListBean = new ArrayList<>();
     }
 
     private void initDetailData() {
@@ -173,8 +174,10 @@ public class UnaryDetailActivity extends Activity implements View.OnClickListene
 //                hyprice
 //        );
         ShopCarBean.ResultBean.GoodsShoppingCartListBean goodsShoppingCartListBean2 = new ShopCarBean.ResultBean.GoodsShoppingCartListBean(
-                listResultBean.getGoodsId(), listResultBean.getGoodsColorId(), listResultBean.getColorName().toString(), listResultBean.getGoodsStandId()
-                , listResultBean.getColorName().toString(), 1, 0, listResultBean.getGoodsName(), listResultBean.getGoodsLogo().toString(), 1
+                listResultBean.getGoodsId(), listResultBean.getGoodsColorId(),
+                listResultBean.getColorName()==null? "0" :listResultBean.getColorName().toString(),
+                listResultBean.getGoodsStandId(), listResultBean.getColorName()==null? "0" :listResultBean.getColorName().toString(),
+                1, 0, listResultBean.getGoodsName(), listResultBean.getGoodsLogo().toString(), 1
         );
         goodsShoppingCartListBean.add(goodsShoppingCartListBean2);
         Intent intent1 = new Intent(UnaryDetailActivity.this, MakeOrderActivity.class);

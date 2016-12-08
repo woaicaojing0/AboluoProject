@@ -61,11 +61,12 @@ public class MakeOrderActivity extends Activity implements View.OnClickListener 
     private String moeny;
     private TextView order_yunfei;
     private double yunfei = 0.0;
-    private int choose_address_requestcode =2;
-    private static int AddressId =0;
-private RelativeLayout change_make_sure_location;
+    private int choose_address_requestcode = 2;
+    private static int AddressId = 0;
+    private RelativeLayout change_make_sure_location;
     private String MemberId;
     private String payfrom;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -82,6 +83,7 @@ private RelativeLayout change_make_sure_location;
         order_yunfei.setText("运费：" + String.valueOf(yunfei));
         change_make_sure_location.setOnClickListener(this);
     }
+
     private void init() {
         txt_allmoney = (TextView) findViewById(R.id.txt_allmoney);
         goods_smallallmoeny = (TextView) findViewById(R.id.goods_smallallmoeny);
@@ -174,78 +176,74 @@ private RelativeLayout change_make_sure_location;
         for (int i = 0; i < goodsShoppingCartListBean.size(); i++) {
             OrderInfoBean bean1 = new OrderInfoBean();
             bean1.setGoodsId(goodsShoppingCartListBean.get(i).getGoodsId());
-            if(goodsShoppingCartListBean.get(i).getGoodsColor().equals("无"))
-            {
+            if (goodsShoppingCartListBean.get(i).getGoodsColor().equals("无")) {
                 bean1.setGoodsColor("");
-            }else {
+            } else {
                 bean1.setGoodsColor(goodsShoppingCartListBean.get(i).getGoodsColor());
             }
             bean1.setGoodsColorId(goodsShoppingCartListBean.get(i).getGoodsColorId());
             bean1.setGoodsStandardId(goodsShoppingCartListBean.get(i).getGoodsStandardId());
-            if(goodsShoppingCartListBean.get(i).getGoodsStandard().equals("无"))
-            {
+            if (goodsShoppingCartListBean.get(i).getGoodsStandard().equals("无")) {
                 bean1.setGoodsStandard("");
-            }else {
+            } else {
                 bean1.setGoodsStandard(goodsShoppingCartListBean.get(i).getGoodsStandard());
             }
             bean1.setGoodsQuantity(goodsShoppingCartListBean.get(i).getGoodsCount());
             bean1.setFreight(goodsShoppingCartListBean.get(i).getYunfei());
             bean.add(bean1);
         }
-        if (addressDefaultBean.isIsSuccess()) {
-            if (addressDefaultBean.getResult().getReceiver() == null) {
-                Toast.makeText(this, "请选择收货地址", Toast.LENGTH_SHORT).show();
-            } else {
-                final Gson gson = new Gson();
-                final String Products = gson.toJson(bean);
-                pdialog.setTitleText("提交中");
-                pdialog.show();
-                StringRequest stringRequest = new StringRequest(Request.Method.POST, url + "/api/Order/SubOrder", new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        response = response.replace("\\", "");
-                        response = response.substring(1, response.length() - 1);
-                        BaseModel baseModel = new BaseModel();
-                        baseModel = gson.fromJson(response, BaseModel.class);
-                        if (baseModel.isIsSuccess()) {
-                            Intent intent = new Intent(MakeOrderActivity.this, OrderPayActivity.class);
-                            intent.putExtra("payMoney", lastmoney);
-                            intent.putExtra("OrderNum", baseModel.getOrderSerialId().toString());
-                            intent.putExtra("payfrom", payfrom);
-                            startActivityForResult(intent, requsetcode);
-                            pdialog.dismiss();
-                        } else {
-                        }
-                        Toast.makeText(MakeOrderActivity.this, response, Toast.LENGTH_SHORT).show();
+        if (addressDefaultBean != null || AddressId != 0) {
+            final Gson gson = new Gson();
+            final String Products = gson.toJson(bean);
+            pdialog.setTitleText("提交中");
+            pdialog.show();
+            StringRequest stringRequest = new StringRequest(Request.Method.POST, url + "/api/Order/SubOrder", new Response.Listener<String>() {
+                @Override
+                public void onResponse(String response) {
+                    response = response.replace("\\", "");
+                    response = response.substring(1, response.length() - 1);
+                    BaseModel baseModel = new BaseModel();
+                    baseModel = gson.fromJson(response, BaseModel.class);
+                    if (baseModel.isIsSuccess()) {
+                        Intent intent = new Intent(MakeOrderActivity.this, OrderPayActivity.class);
+                        intent.putExtra("payMoney", lastmoney);
+                        intent.putExtra("OrderNum", baseModel.getOrderSerialId().toString());
+                        intent.putExtra("payfrom", payfrom);
+                        startActivityForResult(intent, requsetcode);
                         pdialog.dismiss();
+                    } else {
                     }
-                }, new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(MakeOrderActivity.this, error.toString(), Toast.LENGTH_SHORT).show();
-                        byte[] htmlBodyBytes = error.networkResponse.data;
-                        Log.i("woaicaojingeorror", new String(htmlBodyBytes));
-                        pdialog.dismiss();
+                    Toast.makeText(MakeOrderActivity.this, response, Toast.LENGTH_SHORT).show();
+                    pdialog.dismiss();
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    Toast.makeText(MakeOrderActivity.this, error.toString(), Toast.LENGTH_SHORT).show();
+                    byte[] htmlBodyBytes = error.networkResponse.data;
+                    Log.i("woaicaojingeorror", new String(htmlBodyBytes));
+                    pdialog.dismiss();
+                }
+            }) {
+                @Override
+                protected Map<String, String> getParams() throws AuthFailureError {
+                    Map<String, String> map = new HashMap<>();
+                    map.put("MemberId", MemberId);
+                    map.put("TotalPrice", moeny);
+                    if (AddressId != 0) {
+                        map.put("AddressId", String.valueOf(AddressId));
+                    } else {
+                        map.put("AddressId", String.valueOf(addressDefaultBean.getResult().getId()));
                     }
-                }) {
-                    @Override
-                    protected Map<String, String> getParams() throws AuthFailureError {
-                        Map<String, String> map = new HashMap<>();
-                        map.put("MemberId", MemberId);
-                        map.put("TotalPrice", moeny);
-                        if (addressDefaultBean.isIsSuccess()) {
-                            map.put("AddressId", String.valueOf(addressDefaultBean.getResult().getId()));
-                        } else {
-                            map.put("AddressId", String.valueOf(AddressId));
-                        }
-                        map.put("Remark", edit_remark.getText().toString());
-                        map.put("Products", Products);
-                        map.put("APPToken", APPToken);
-                        return map;
-                    }
-                };
-                requestQueue.add(stringRequest);
-            }
+                    map.put("Remark", edit_remark.getText().toString());
+                    map.put("Products", Products);
+                    map.put("APPToken", APPToken);
+                    return map;
+                }
+            };
+            requestQueue.add(stringRequest);
+        } else {
+            Toast.makeText(this, "请选择收货地址", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -256,8 +254,8 @@ private RelativeLayout change_make_sure_location;
                 SubmitOrder();
                 break;
             case R.id.change_make_sure_location:
-                Intent intent = new Intent(MakeOrderActivity.this,ChooseAddressActivtiy.class);
-                startActivityForResult(intent,choose_address_requestcode);
+                Intent intent = new Intent(MakeOrderActivity.this, ChooseAddressActivtiy.class);
+                startActivityForResult(intent, choose_address_requestcode);
         }
     }
 
@@ -266,13 +264,12 @@ private RelativeLayout change_make_sure_location;
 
         switch (requestCode) {
             case 1:
-                if (resultCode ==1) {
+                if (resultCode == 1) {
                     this.finish();
                 }
-                    break;
+                break;
             case 2:
-                if(resultCode ==2)
-                {
+                if (resultCode == 2) {
                     Bundle bundle = data.getExtras();
                     List<AddressInfoBean.ResultBean.MemberAddressListBean> memberAddressListBean = bundle.getParcelableArrayList("data");
                     StringBuffer stringBuffer = new StringBuffer();

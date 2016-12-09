@@ -42,6 +42,7 @@ import com.aboluo.XUtils.MyApplication;
 import com.aboluo.XUtils.ScreenUtils;
 import com.aboluo.adapter.BannerAdapter;
 import com.aboluo.model.AddShopCarBean;
+import com.aboluo.model.BaseModel;
 import com.aboluo.model.GoodsDetailInfo;
 import com.aboluo.model.GoodsDetailInfo.ResultBean.GoodsInfoBean.GoodsColorBean;
 import com.aboluo.model.GoodsDetailInfo.ResultBean.GoodsInfoBean.GoodsColorStandardListBean;
@@ -87,8 +88,8 @@ public class GoodsDetailActivity extends Activity implements View.OnClickListene
     private View id_goods_detail_view, id_goods_pingjia_view;
     //显示详情和评价的webview
     private WebView goods_detail_webview, goods_pingjia_webview;
-    //首页最右边显示更多操作、首页最上面的购物车
-    private ImageView detail_more, detail_goods;
+    //首页最右边显示更多操作、首页最上面的购物车，收藏按钮
+    private ImageView detail_more, detail_goods, iv_menu_hot;
     //最右边的popwindows
     private PopupWindow goods_popwindow;
     //popwindows中的第一个布局 商品sub布局
@@ -142,6 +143,7 @@ public class GoodsDetailActivity extends Activity implements View.OnClickListene
         goods_type_addshopcart.setOnClickListener(this);
         pop_goodsdetail_btn_buynow.setOnClickListener(this);
         goodsdetail_btn_buynow.setOnClickListener(this);
+        iv_menu_hot.setOnClickListener(this);
         firstView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
             public void onGlobalLayout() {
@@ -308,6 +310,7 @@ public class GoodsDetailActivity extends Activity implements View.OnClickListene
         goods_pingjia_webview = (WebView) findViewById(R.id.goods_pingjia_webview);
         detail_more = (ImageView) findViewById(R.id.detail_more);
         detail_goods = (ImageView) findViewById(R.id.detail_goods);
+        iv_menu_hot = (ImageView) findViewById(R.id.iv_menu_hot);
         goods_detail_text_back = (ImageView) findViewById(R.id.goods_detail_text_back);
         goods_detail_type_imageview = (ImageView) findViewById(R.id.goods_detail_type_imageview);
         txt_goods_type = (TextView) findViewById(R.id.txt_goods_type);
@@ -797,109 +800,119 @@ public class GoodsDetailActivity extends Activity implements View.OnClickListene
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.goods_detail_layout_btn: //商品详情按钮
-                id_goods_detail_view.setVisibility(View.VISIBLE);
-                id_goods_pingjia_view.setVisibility(View.GONE);
-                goods_detail_webview.setVisibility(View.VISIBLE);
-                goods_pingjia_webview.setVisibility(View.GONE);
-                break;
-            case R.id.goods_pingjia_layout_btn: //商品评价按钮
-                id_goods_detail_view.setVisibility(View.GONE);
-                id_goods_pingjia_view.setVisibility(View.VISIBLE);
-                goods_detail_webview.setVisibility(View.GONE);
-                goods_pingjia_webview.setVisibility(View.VISIBLE);
-                break;
-            case R.id.detail_goods: //首部购物车
-                Intent intent = new Intent(GoodsDetailActivity.this, MainActivity.class);
-                intent.putExtra("id", 3);
-                startActivity(intent);
-                break;
-            case R.id.detail_more: //首部更多
-                showinfopopupwindow();
-                break;
-            case R.id.goods_detail_text_back: //返回
-                finish();
-                break;
-            case R.id.txt_goods_type: //选择商品类型
-                goods_type_ok.setVisibility(View.GONE);
-                goods_type_selected.setVisibility(View.VISIBLE);
-                initShowAnim();
-                isshowtype = true;
-                break;
-            case R.id.goods_type_pop_close:  //关闭商品类型
-                initHiddenAnim();
-                setChooseType();
-                break;
-            case R.id.first_view: //点击外部view
-                initHiddenAnim();
-                setChooseType();
-                break;
-            case R.id.btnDecrease: //数量减少按钮
-                if (Integer.valueOf(etAmount.getText().toString()) <= 1) {
-                } else {
-                    etAmount.setText(String.valueOf(Integer.valueOf(etAmount.getText().toString()) - 1));
-
-                }
-                break;
-            case R.id.btnIncrease: //数量增加按钮
-                if (Integer.valueOf(etAmount.getText().toString()) < goodsDetailInfo.getResult().getGoodsInfo().getBuyQuantity()) {
-                } else {
-                    etAmount.setText(String.valueOf(Integer.valueOf(etAmount.getText().toString()) + 1));
-
-                }
-                break;
-            case R.id.goods_type_ok: //点击底部购物车弹出view中的确定
-                if (CommonUtils.IsLogin(GoodsDetailActivity.this)) {
-                    addShopCar();
-                } else {
-                    Toast.makeText(this, "请先登录！", Toast.LENGTH_SHORT).show();
-                    Intent intent1 = new Intent(GoodsDetailActivity.this, LoginActivity.class);
-                    startActivity(intent1);
-                }
-                break;
-            case R.id.goods_type_addshopcart: //点击商品类型出现的加入购物车
-                if (CommonUtils.IsLogin(GoodsDetailActivity.this)) {
-                    addShopCar();
-
-                } else {
-                    Toast.makeText(this, "请先登录！", Toast.LENGTH_SHORT).show();
-                    Intent intent1 = new Intent(GoodsDetailActivity.this, LoginActivity.class);
-                    startActivity(intent1);
-                }
-                break;
-            case R.id.index_bottom_shopcar:
-                goods_type_ok.setVisibility(View.VISIBLE);
-                goods_type_selected.setVisibility(View.GONE);
-                initShowAnim();
-                break;
-            case R.id.pop_goodsdetail_btn_buynow: //弹出popwindow的立即购买
-                if (CommonUtils.IsLogin(GoodsDetailActivity.this)) {
-                    if (!CheckChooseAll()) {
+        if (CommonUtils.IsLogin(GoodsDetailActivity.this)) {
+            switch (v.getId()) {
+                case R.id.goods_detail_layout_btn: //商品详情按钮
+                    id_goods_detail_view.setVisibility(View.VISIBLE);
+                    id_goods_pingjia_view.setVisibility(View.GONE);
+                    goods_detail_webview.setVisibility(View.VISIBLE);
+                    goods_pingjia_webview.setVisibility(View.GONE);
+                    break;
+                case R.id.goods_pingjia_layout_btn: //商品评价按钮
+                    id_goods_detail_view.setVisibility(View.GONE);
+                    id_goods_pingjia_view.setVisibility(View.VISIBLE);
+                    goods_detail_webview.setVisibility(View.GONE);
+                    goods_pingjia_webview.setVisibility(View.VISIBLE);
+                    break;
+                case R.id.detail_goods: //首部购物车
+                    Intent intent = new Intent(GoodsDetailActivity.this, MainActivity.class);
+                    intent.putExtra("id", 3);
+                    startActivity(intent);
+                    break;
+                case R.id.detail_more: //首部更多
+                    showinfopopupwindow();
+                    break;
+                case R.id.goods_detail_text_back: //返回
+                    finish();
+                    break;
+                case R.id.txt_goods_type: //选择商品类型
+                    goods_type_ok.setVisibility(View.GONE);
+                    goods_type_selected.setVisibility(View.VISIBLE);
+                    initShowAnim();
+                    isshowtype = true;
+                    break;
+                case R.id.goods_type_pop_close:  //关闭商品类型
+                    initHiddenAnim();
+                    setChooseType();
+                    break;
+                case R.id.first_view: //点击外部view
+                    initHiddenAnim();
+                    setChooseType();
+                    break;
+                case R.id.btnDecrease: //数量减少按钮
+                    if (Integer.valueOf(etAmount.getText().toString()) <= 1) {
                     } else {
-                        BuyNow();
+                        etAmount.setText(String.valueOf(Integer.valueOf(etAmount.getText().toString()) - 1));
+
                     }
-                }else {
-                    Toast.makeText(this, "请先登录！", Toast.LENGTH_SHORT).show();
-                    Intent intent1 = new Intent(GoodsDetailActivity.this, LoginActivity.class);
-                    startActivity(intent1);
-                }
-                break;
-            case R.id.goodsdetail_btn_buynow:  //详情底部的立即购买
-                if (CommonUtils.IsLogin(GoodsDetailActivity.this)) {
-                    if (!CheckChooseAll()) {
+                    break;
+                case R.id.btnIncrease: //数量增加按钮
+                    if (Integer.valueOf(etAmount.getText().toString()) < goodsDetailInfo.getResult().getGoodsInfo().getBuyQuantity()) {
                     } else {
-                        BuyNow();
+                        etAmount.setText(String.valueOf(Integer.valueOf(etAmount.getText().toString()) + 1));
+
                     }
-                }else {
-                    Toast.makeText(this, "请先登录！", Toast.LENGTH_SHORT).show();
-                    Intent intent1 = new Intent(GoodsDetailActivity.this, LoginActivity.class);
-                    startActivity(intent1);
-                }
-                break;
+                    break;
+                case R.id.goods_type_ok: //点击底部购物车弹出view中的确定
+                    if (CommonUtils.IsLogin(GoodsDetailActivity.this)) {
+                        addShopCar();
+                    } else {
+                        Toast.makeText(this, "请先登录！", Toast.LENGTH_SHORT).show();
+                        Intent intent1 = new Intent(GoodsDetailActivity.this, LoginActivity.class);
+                        startActivity(intent1);
+                    }
+                    break;
+                case R.id.goods_type_addshopcart: //点击商品类型出现的加入购物车
+                    if (CommonUtils.IsLogin(GoodsDetailActivity.this)) {
+                        addShopCar();
+
+                    } else {
+                        Toast.makeText(this, "请先登录！", Toast.LENGTH_SHORT).show();
+                        Intent intent1 = new Intent(GoodsDetailActivity.this, LoginActivity.class);
+                        startActivity(intent1);
+                    }
+                    break;
+                case R.id.index_bottom_shopcar:
+                    goods_type_ok.setVisibility(View.VISIBLE);
+                    goods_type_selected.setVisibility(View.GONE);
+                    initShowAnim();
+                    break;
+                case R.id.pop_goodsdetail_btn_buynow: //弹出popwindow的立即购买
+                    if (CommonUtils.IsLogin(GoodsDetailActivity.this)) {
+                        if (!CheckChooseAll()) {
+                        } else {
+                            BuyNow();
+                        }
+                    } else {
+                        Toast.makeText(this, "请先登录！", Toast.LENGTH_SHORT).show();
+                        Intent intent1 = new Intent(GoodsDetailActivity.this, LoginActivity.class);
+                        startActivity(intent1);
+                    }
+                    break;
+                case R.id.goodsdetail_btn_buynow:  //详情底部的立即购买
+                    if (CommonUtils.IsLogin(GoodsDetailActivity.this)) {
+                        if (!CheckChooseAll()) {
+                        } else {
+                            BuyNow();
+                        }
+                    } else {
+                        Toast.makeText(this, "请先登录！", Toast.LENGTH_SHORT).show();
+                        Intent intent1 = new Intent(GoodsDetailActivity.this, LoginActivity.class);
+                        startActivity(intent1);
+                    }
+                    break;
+                case R.id.iv_menu_hot:
+                    AddFavor(goodsDetailInfo.getResult().getGoodsInfo().getGoodsId());
+                    break;
+            }
+        } else {
+            Toast.makeText(this, "请先登录！", Toast.LENGTH_SHORT).show();
+            Intent intent1 = new Intent(GoodsDetailActivity.this, LoginActivity.class);
+            startActivity(intent1);
         }
     }
 
+    //立即购买操作
     public void BuyNow() {
         goodsShoppingCartListBean.clear();
         int colorid = 0;
@@ -1189,4 +1202,39 @@ public class GoodsDetailActivity extends Activity implements View.OnClickListene
         }
     }
 
+    //添加收藏夹
+    private void AddFavor(final int goods_id) {
+        pdialog.show();
+        StringRequest addrequestshopcar = new StringRequest(Request.Method.POST, URL + "/api/CollectApi/ReceiveAddGoodsCollect", new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                pdialog.dismiss();
+                response = response.replace("\\", "");
+                response = response.substring(1, response.length() - 1);
+                Gson gson = new Gson();
+                BaseModel baseModel = gson.fromJson(response, BaseModel.class);
+                Toast.makeText(GoodsDetailActivity.this, baseModel.getMessage().toString(),
+                        Toast.LENGTH_SHORT).show();
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                pdialog.dismiss();
+                Toast.makeText(GoodsDetailActivity.this, error.toString(), Toast.LENGTH_SHORT).show();
+                Log.i("woaicaojingAddshopcar", error.toString());
+                Toast.makeText(GoodsDetailActivity.this, error.toString(), Toast.LENGTH_LONG).show();
+            }
+        }) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> map = new HashMap<>();
+                map.put("MemberId", MemberId);
+                map.put("GoodsId", String.valueOf(goods_id));
+                map.put("APPToken", APPToken);
+                return map;
+
+            }
+        };
+        requestQueue.add(addrequestshopcar);
+    }
 }

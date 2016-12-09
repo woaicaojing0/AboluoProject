@@ -8,7 +8,7 @@
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
+        android:layout_height="48dp"
         android:layout_alignParentTop="true"
         android:background="@color/white"
         app:contentInsetLeft="0dp"
@@ -78,20 +78,29 @@
                     android:text="最新揭晓"
                     android:textColor="@color/black" />
 
-                <TextView
+                <LinearLayout
+                    android:id="@+id/unary_publish"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="8dp"
-                    android:layout_toLeftOf="@+id/imge_right"
-                    android:text="显示全部"
-                    android:textColor="@color/btn_color" />
-
-                <ImageView
-                    android:id="@+id/imge_right"
-                    android:layout_width="16dp"
-                    android:layout_height="16dp"
                     android:layout_alignParentRight="true"
-                    android:src="@drawable/right" />
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="8dp"
+                        android:layout_toLeftOf="@+id/imge_right"
+                        android:text="显示全部"
+                        android:textColor="@color/btn_color" />
+
+                    <ImageView
+                        android:id="@+id/imge_right"
+                        android:layout_width="16dp"
+                        android:layout_height="16dp"
+                        android:layout_alignParentRight="true"
+                        android:src="@drawable/right" />
+                </LinearLayout>
+
             </RelativeLayout>
 
             <View
@@ -191,58 +200,66 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="48dp"
+                android:layout_height="36dp"
                 android:orientation="horizontal">
+
                 <TextView
                     android:id="@+id/unary_popularity"
-                    android:gravity="center"
                     android:layout_width="0dp"
-                    android:layout_weight="1"
                     android:layout_height="match_parent"
-                    android:text="人气"/>
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="人气" />
+
                 <View
                     android:layout_width="0.5dp"
                     android:layout_height="match_parent"
-                    android:layout_marginTop="4dp"
                     android:layout_marginBottom="4dp"
+                    android:layout_marginTop="4dp"
                     android:background="#bbbbbb"></View>
+
                 <TextView
                     android:id="@+id/unary_new"
-                    android:gravity="center"
                     android:layout_width="0dp"
-                    android:layout_weight="1"
                     android:layout_height="match_parent"
-                    android:text="最新"/>
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="最新" />
+
                 <View
                     android:layout_width="0.5dp"
                     android:layout_height="match_parent"
-                    android:layout_marginTop="4dp"
                     android:layout_marginBottom="4dp"
+                    android:layout_marginTop="4dp"
                     android:background="#bbbbbb"></View>
+
                 <TextView
                     android:id="@+id/unary_introduce"
-                    android:gravity="center"
                     android:layout_width="0dp"
-                    android:layout_weight="1"
                     android:layout_height="match_parent"
-                    android:text="玩法介绍"/>
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="玩法介绍" />
 
             </LinearLayout>
+
             <View
                 android:layout_width="match_parent"
                 android:layout_height="0.5dp"
                 android:background="#bbbbbb"></View>
+
             <com.aboluo.XUtils.RBCallbkRecyclerView
-                android:layout_marginLeft="24dp"
-                android:layout_marginRight="20dp"
                 android:id="@+id/unary_recyclerView"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"></com.aboluo.XUtils.RBCallbkRecyclerView>
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="24dp"
+                android:layout_marginRight="20dp"></com.aboluo.XUtils.RBCallbkRecyclerView>
+
             <WebView
                 android:id="@+id/webview_introduce"
-                android:visibility="gone"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"></WebView>
+                android:layout_height="wrap_content"
+                android:visibility="gone"></WebView>
         </LinearLayout>
     </com.aboluo.widget.UnaryScrollView>
 </RelativeLayout>

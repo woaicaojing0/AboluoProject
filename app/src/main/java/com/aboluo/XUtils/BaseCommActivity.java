@@ -35,7 +35,7 @@ public class BaseCommActivity  extends Activity{
     private Gson gson;
     private Picasso picasso;
     private SweetAlertDialog pdialog;
-
+    private String MemberId;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,6 +43,7 @@ public class BaseCommActivity  extends Activity{
         init();
     }
     private void init() {
+        MemberId = CommonUtils.GetMemberId(this);
         requestQueue = MyApplication.getRequestQueue();
         ImageUrl = CommonUtils.GetValueByKey(this, "ImgUrl");
         URL = CommonUtils.GetValueByKey(this, "apiurl");

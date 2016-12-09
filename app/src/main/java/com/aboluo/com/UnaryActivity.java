@@ -10,6 +10,7 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -60,6 +61,7 @@ public class UnaryActivity extends FragmentActivity implements UnaryAdapter.OnRe
     private String sort = null;
     private String sorttype = null;
     private WebView webview_introduce;
+    private LinearLayout unary_publish;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,6 +85,7 @@ public class UnaryActivity extends FragmentActivity implements UnaryAdapter.OnRe
         unary_popularity.setOnClickListener(this);
         unary_new.setOnClickListener(this);
         unary_introduce.setOnClickListener(this);
+        unary_publish.setOnClickListener(this);
     }
 
     private void init() {
@@ -105,6 +108,7 @@ public class UnaryActivity extends FragmentActivity implements UnaryAdapter.OnRe
         unary_introduce = (TextView) findViewById(R.id.unary_introduce);
         unary_recyclerView = (RBCallbkRecyclerView) findViewById(R.id.unary_recyclerView);
         webview_introduce = (WebView) findViewById(R.id.webview_introduce);
+        unary_publish = (LinearLayout) findViewById(R.id.unary_publish);
         unary_popularity.setTextColor(UnaryActivity.this.getResources().getColor(R.color.btn_color));
         initBannerImage();
         initNewOpen();
@@ -253,6 +257,10 @@ public class UnaryActivity extends FragmentActivity implements UnaryAdapter.OnRe
                 webview_introduce.setVisibility(View.VISIBLE);
                 unary_recyclerView.setVisibility(View.GONE);
                 unary_introduce.setTextColor(this.getResources().getColor(R.color.btn_color));
+                break;
+            case R.id.unary_publish:
+                Intent intent = new Intent(UnaryActivity.this,UnaryPublishActivity.class);
+                startActivity(intent);
                 break;
         }
     }

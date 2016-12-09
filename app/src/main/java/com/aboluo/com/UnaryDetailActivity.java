@@ -4,10 +4,13 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebSettings;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.LinearLayout;
-import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -15,8 +18,6 @@ import com.aboluo.XUtils.CommonUtils;
 import com.aboluo.XUtils.MyApplication;
 import com.aboluo.XUtils.ScreenUtils;
 import com.aboluo.adapter.BannerAdapter;
-import com.aboluo.fragment.IndexFragment;
-import com.aboluo.model.GoodsDetailInfo;
 import com.aboluo.model.ShopCarBean;
 import com.aboluo.model.UnaryListBean;
 import com.android.volley.AuthFailureError;
@@ -31,7 +32,6 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
@@ -56,6 +56,7 @@ public class UnaryDetailActivity extends Activity implements View.OnClickListene
     private LinearLayout unary_buy_now;
     private int goodsstatus = 0;
     private ArrayList<ShopCarBean.ResultBean.GoodsShoppingCartListBean> goodsShoppingCartListBean; //传入下订单的信息
+    private WebView unary_goodsdetail_webview;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,10 +88,31 @@ public class UnaryDetailActivity extends Activity implements View.OnClickListene
         unary_goods_sub = (TextView) findViewById(R.id.unary_goods_sub);
         unary_startgoods = (LinearLayout) findViewById(R.id.unary_startgoods);
         unary_buy_now = (LinearLayout) findViewById(R.id.unary_buy_now);
+        unary_goodsdetail_webview = (WebView) findViewById(R.id.unary_goodsdetail_webview);
         int screenWidth = ScreenUtils.getScreenWidth(this);
         unarydetail_view_pager.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, screenWidth));
         initDetailData();
         goodsShoppingCartListBean = new ArrayList<>();
+    }
+
+    private void initWebview() {
+        String detailurl = CommonUtils.GetValueByKey(UnaryDetailActivity.this, "backUrl")
+                + "/moblie/Index?productId=" + listResultBean.getGoodsId();
+        Log.i("woaicaojing", detailurl);
+        //详情地址
+        //解决了webview 头部空了一片白的问题
+        unary_goodsdetail_webview.getSettings().setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
+        unary_goodsdetail_webview.setVerticalScrollBarEnabled(false);
+        unary_goodsdetail_webview.setVerticalScrollbarOverlay(false);
+        unary_goodsdetail_webview.setHorizontalScrollBarEnabled(false);
+        unary_goodsdetail_webview.setHorizontalScrollbarOverlay(false);
+        //end
+        WebSettings webviewsetting = unary_goodsdetail_webview.getSettings();
+        webviewsetting.setJavaScriptEnabled(true);
+        webviewsetting.setUseWideViewPort(true);//关键点
+        webviewsetting.setLoadWithOverviewMode(true);
+        unary_goodsdetail_webview.loadUrl(detailurl);
+        unary_goodsdetail_webview.setWebViewClient(new WebViewClient());
     }
 
     private void initDetailData() {
@@ -100,6 +122,7 @@ public class UnaryDetailActivity extends Activity implements View.OnClickListene
             for (int i = 0; i < imagesurl.length; i++) {
                 imagesurl[i] = ImageUrl + imagesurl;
             }
+            initWebview();
             //头部滚动banner
             bannerAdapter = new BannerAdapter(UnaryDetailActivity.this, imagesurl, unarydetail_view_pager);
             unarydetail_view_pager.setAdapter(bannerAdapter); // 设置适配器（请求网络图片，适配器要在网络请求完成后再设置）
@@ -175,8 +198,8 @@ public class UnaryDetailActivity extends Activity implements View.OnClickListene
 //        );
         ShopCarBean.ResultBean.GoodsShoppingCartListBean goodsShoppingCartListBean2 = new ShopCarBean.ResultBean.GoodsShoppingCartListBean(
                 listResultBean.getGoodsId(), listResultBean.getGoodsColorId(),
-                listResultBean.getColorName()==null? "0" :listResultBean.getColorName().toString(),
-                listResultBean.getGoodsStandId(), listResultBean.getColorName()==null? "0" :listResultBean.getColorName().toString(),
+                listResultBean.getColorName() == null ? "0" : listResultBean.getColorName().toString(),
+                listResultBean.getGoodsStandId(), listResultBean.getColorName() == null ? "0" : listResultBean.getColorName().toString(),
                 1, 0, listResultBean.getGoodsName(), listResultBean.getGoodsLogo().toString(), 1
         );
         goodsShoppingCartListBean.add(goodsShoppingCartListBean2);

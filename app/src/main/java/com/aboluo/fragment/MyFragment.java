@@ -16,6 +16,7 @@ import android.widget.ScrollView;
 
 import com.aboluo.XUtils.CommonUtils;
 import com.aboluo.com.AddressActivity;
+import com.aboluo.com.FavorActivity;
 import com.aboluo.com.LoginActivity;
 import com.aboluo.com.MyInfoAcitvity;
 import com.aboluo.com.OrderActivity;
@@ -30,7 +31,8 @@ public class MyFragment extends Fragment implements View.OnClickListener {
     private View view;
     private Button btn, my_out;
     private ScrollView my_scrollview;
-    private LinearLayout linLayout_my_info, my_nopay, my_nosend, my_noreceive, my_assessment, feedbackInfo;
+    private LinearLayout linLayout_my_info, my_nopay, my_nosend, my_noreceive, my_assessment,
+            feedbackInfo, my_favor;
     private RelativeLayout my_allorder, my_addressinfo;
     private SharedPreferences sharedPreferences;
 
@@ -51,6 +53,7 @@ public class MyFragment extends Fragment implements View.OnClickListener {
         my_assessment.setOnClickListener(this);
         my_addressinfo.setOnClickListener(this);
         feedbackInfo.setOnClickListener(this);
+        my_favor.setOnClickListener(this);
         btn.setOnClickListener(this);
         my_out.setOnClickListener(this);
         if (CommonUtils.IsLogin(MyFragment.this.getContext())) {
@@ -73,6 +76,7 @@ public class MyFragment extends Fragment implements View.OnClickListener {
         my_nosend = (LinearLayout) view.findViewById(R.id.my_nosend);
         my_noreceive = (LinearLayout) view.findViewById(R.id.my_noreceive);
         my_assessment = (LinearLayout) view.findViewById(R.id.my_assessment);
+        my_favor = (LinearLayout) view.findViewById(R.id.my_favor);
         my_addressinfo = (RelativeLayout) view.findViewById(R.id.my_addressinfo);
         feedbackInfo = (LinearLayout) view.findViewById(R.id.feedbackInfo);
         sharedPreferences = MyFragment.this.getContext().getSharedPreferences("aboluo", Context.MODE_PRIVATE);
@@ -128,6 +132,10 @@ public class MyFragment extends Fragment implements View.OnClickListener {
             case R.id.my_btn:
                 Intent intent8 = new Intent(MyFragment.this.getActivity(), LoginActivity.class);
                 startActivity(intent8);
+                break;
+            case R.id.my_favor:
+                Intent intent9 = new Intent(MyFragment.this.getActivity(), FavorActivity.class);
+                startActivity(intent9);
                 break;
 
         }

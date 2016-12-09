@@ -63,15 +63,6 @@ public class FavorActivity extends Activity implements View.OnClickListener {
     }
 
     private void init() {
-        bottomView = new BottomView(this,
-                R.style.BottomViewTheme_Defalut, R.layout.favor_bottom);
-        bottomView.setAnimation(R.style.BottomToTopAnim);//设置动画，可选
-        un_favor = (LinearLayout) bottomView.getView().findViewById(R.id.un_favor);
-        favor_share = (LinearLayout) bottomView.getView().findViewById(R.id.favor_share);
-        favor_cancel = (LinearLayout) bottomView.getView().findViewById(R.id.favor_cancel);
-        un_favor.setOnClickListener(this);
-        favor_share.setOnClickListener(this);
-        favor_cancel.setOnClickListener(this);
         MemberId = CommonUtils.GetMemberId(this);
         requestQueue = MyApplication.getRequestQueue();
         ImageUrl = CommonUtils.GetValueByKey(this, "ImgUrl");
@@ -131,6 +122,15 @@ public class FavorActivity extends Activity implements View.OnClickListener {
                 if (tag != null && tag instanceof Integer) { //解决问题：如何知道你点击的按钮是哪一个列表项中的，通过Tag的
                     int position = (Integer) tag;
                     Toast.makeText(this, "" + position, Toast.LENGTH_SHORT).show();
+                    bottomView = new BottomView(this,
+                            R.style.BottomViewTheme_Defalut, R.layout.favor_bottom);
+                    bottomView.setAnimation(R.style.BottomToTopAnim);//设置动画，可选
+                    un_favor = (LinearLayout) bottomView.getView().findViewById(R.id.un_favor);
+                    favor_share = (LinearLayout) bottomView.getView().findViewById(R.id.favor_share);
+                    favor_cancel = (LinearLayout) bottomView.getView().findViewById(R.id.favor_cancel);
+                    un_favor.setOnClickListener(this);
+                    favor_share.setOnClickListener(this);
+                    favor_cancel.setOnClickListener(this);
                     un_favor.setTag(position);
                     favor_share.setTag(position);
                     bottomView.showBottomView(true);

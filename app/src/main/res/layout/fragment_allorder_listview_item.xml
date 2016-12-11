@@ -174,5 +174,33 @@
             android:layout_height="wrap_content"
             android:layout_marginRight="8dp"
             android:text="催催卖家"/>
+        <TextView
+            android:visibility="gone"
+            android:paddingLeft="22dp"
+            android:paddingRight="22dp"
+            android:paddingBottom="7dp"
+            android:paddingTop="7dp"
+            android:textColor="@color/btn_color"
+            android:textSize="12sp"
+            android:id="@+id/txt_evaluate"
+            android:background="@drawable/order_red_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="8dp"
+            android:text="评价"/>
+        <TextView
+            android:visibility="gone"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:paddingBottom="7dp"
+            android:paddingTop="7dp"
+            android:textColor="@color/btn_color"
+            android:textSize="12sp"
+            android:id="@+id/txt_after_sale"
+            android:background="@drawable/order_red_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="8dp"
+            android:text="申请售后"/>
     </LinearLayout>
 </LinearLayout>

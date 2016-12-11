@@ -1,6 +1,7 @@
 package com.aboluo.fragment.orderfragment;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -16,6 +17,7 @@ import com.aboluo.XUtils.CommonUtils;
 import com.aboluo.XUtils.MyApplication;
 import com.aboluo.adapter.AllOrderAdapter;
 import com.aboluo.com.R;
+import com.aboluo.com.RefundDetailActivity;
 import com.aboluo.model.SearchOrderBean;
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -131,6 +133,7 @@ public class AssessmentFragment extends Fragment implements View.OnClickListener
                         allOrderAdapter.setPayOnclickListener(AssessmentFragment.this);
                         allOrderAdapter.setSureOkOnclickListener(AssessmentFragment.this);
                         allOrderAdapter.setItemOnclickListener(AssessmentFragment.this);
+                        allOrderAdapter.setAfterSaleOrderOnClickListener(AssessmentFragment.this);
                         allorder_listview.onRefreshComplete();
                     }
                 } else {
@@ -200,6 +203,10 @@ public class AssessmentFragment extends Fragment implements View.OnClickListener
                     final int position = (Integer) tag;
                     Toast.makeText(context, position + "", Toast.LENGTH_SHORT).show();
                 }
+                break;
+            case R.id.txt_after_sale:
+                Intent intent = new Intent(AssessmentFragment.this.getContext(), RefundDetailActivity.class);
+                startActivity(intent);
                 break;
         }
     }

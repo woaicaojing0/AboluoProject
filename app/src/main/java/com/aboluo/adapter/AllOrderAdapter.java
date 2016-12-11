@@ -7,7 +7,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -35,6 +34,9 @@ public class AllOrderAdapter extends BaseAdapter {
     private View.OnClickListener SureOkOnclickListener;
     private View.OnClickListener CancelOrderOnclickListener;
     private View.OnClickListener CuicuiOrderOnClickListener;
+    private View.OnClickListener EvaluateOrderOnClickListener;
+    private View.OnClickListener AfterSaleOrderOnClickListener;
+
     public void setItemOnclickListener(View.OnClickListener itemOnclickListener) {
         this.itemOnclickListener = itemOnclickListener;
     }
@@ -57,6 +59,14 @@ public class AllOrderAdapter extends BaseAdapter {
 
     public void setCuicuiOrderOnClickListener(View.OnClickListener cuicuiOrderOnClickListener) {
         CuicuiOrderOnClickListener = cuicuiOrderOnClickListener;
+    }
+
+    public void setEvaluateOrderOnClickListener(View.OnClickListener evaluateOrderOnClickListener) {
+        EvaluateOrderOnClickListener = evaluateOrderOnClickListener;
+    }
+
+    public void setAfterSaleOrderOnClickListener(View.OnClickListener afterSaleOrderOnClickListener) {
+        AfterSaleOrderOnClickListener = afterSaleOrderOnClickListener;
     }
 
     public AllOrderAdapter(Context context, List<ResultBean> list) {
@@ -99,6 +109,8 @@ public class AllOrderAdapter extends BaseAdapter {
             holder2.txt_order_status = (TextView) convertView.findViewById(R.id.txt_order_status);
             holder2.order_allmoney = (TextView) convertView.findViewById(R.id.order_allmoney);
             holder2.order_goodsnum = (TextView) convertView.findViewById(R.id.order_goodsnum);
+            holder2.txt_after_sale = (TextView) convertView.findViewById(R.id.txt_after_sale);
+            holder2.txt_evaluate = (TextView) convertView.findViewById(R.id.txt_evaluate);
             convertView.setTag(holder2);
         } else {
             holder2 = (ViewHolder2) convertView.getTag();
@@ -128,22 +140,19 @@ public class AllOrderAdapter extends BaseAdapter {
                     .into(holder.image_order_goodsimage);
             Log.i("woaaicaojingallorder", ImageURL + "/" + mlist.get(position).getOrderItemList().get(i).getGoodsLogoUrl());
             holder.txt_order_goodsName.setText(String.valueOf(mlist.get(position).getOrderItemList().get(i).getGoodsName()));
-           //判断该商品是否有规格和颜色
-            if(mlist.get(position).getOrderItemList().get(i).getGoodsColorId() ==0)
-            {
-                if(mlist.get(position).getOrderItemList().get(i).getGoodsStandardId() ==0)
-                {
+            //判断该商品是否有规格和颜色
+            if (mlist.get(position).getOrderItemList().get(i).getGoodsColorId() == 0) {
+                if (mlist.get(position).getOrderItemList().get(i).getGoodsStandardId() == 0) {
                     holder.txt_order_standardandcolor.setText("");
-                }else {
+                } else {
                     holder.txt_order_standardandcolor.setText(String.valueOf(
                             " 规格分类：" + mlist.get(position).getOrderItemList().get(i).getGoodsStandard()));
                 }
-            }else {
-                if(mlist.get(position).getOrderItemList().get(i).getGoodsStandardId() ==0)
-                {
+            } else {
+                if (mlist.get(position).getOrderItemList().get(i).getGoodsStandardId() == 0) {
                     holder.txt_order_standardandcolor.setText(String.valueOf("颜色分类：" +
                             mlist.get(position).getOrderItemList().get(i).getGoodsColor()));
-                }else {
+                } else {
                     holder.txt_order_standardandcolor.setText(String.valueOf("颜色分类：" + mlist.get(position).getOrderItemList().get(i).getGoodsColor() +
                             " 规格分类：" + mlist.get(position).getOrderItemList().get(i).getGoodsStandard()));
                 }
@@ -163,11 +172,15 @@ public class AllOrderAdapter extends BaseAdapter {
             holder2.txt_cancelorder.setOnClickListener(CancelOrderOnclickListener);
             holder2.txt_payorder.setOnClickListener(PayOnclickListener);
             holder2.txt_cuicui.setOnClickListener(CuicuiOrderOnClickListener);
+            holder2.txt_after_sale.setOnClickListener(AfterSaleOrderOnClickListener);
+            holder2.txt_evaluate.setOnClickListener(EvaluateOrderOnClickListener);
             holder2.txt_findgoods.setTag(position);
             holder2.txt_ok.setTag(position);
             holder2.txt_cancelorder.setTag(position);
             holder2.txt_payorder.setTag(position);
             holder2.txt_cuicui.setTag(position);
+            holder2.txt_after_sale.setTag(position);
+            holder2.txt_evaluate.setTag(position);
             holder2.content_view.addView(contentView);  //
         }
 
@@ -184,8 +197,9 @@ public class AllOrderAdapter extends BaseAdapter {
     //主listview
     class ViewHolder2 {
         public LinearLayout content_view;
-        public TextView txt_findgoods, txt_ok, txt_cancelorder, txt_payorder,txt_cuicui;
-        public TextView txt_order_status, order_allmoney,order_goodsnum;
+        public TextView txt_findgoods, txt_ok, txt_cancelorder, txt_payorder, txt_cuicui,
+                txt_after_sale, txt_evaluate;
+        public TextView txt_order_status, order_allmoney, order_goodsnum;
     }
 
     public String OrderStatus(int orderStatus, ViewHolder2 holder2) {
@@ -206,8 +220,10 @@ public class AllOrderAdapter extends BaseAdapter {
                 holder2.txt_ok.setVisibility(View.VISIBLE);
                 break;
             case 40:
-                result = "已完成";
+                result = "交易成功";
                 holder2.txt_findgoods.setVisibility(View.VISIBLE);
+                holder2.txt_evaluate.setVisibility(View.VISIBLE);
+                holder2.txt_after_sale.setVisibility(View.VISIBLE);
                 break;
             default:
                 result = "暂无信息";

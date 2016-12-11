@@ -4,9 +4,12 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.widget.ListView;
+import android.widget.TextView;
 
 import com.aboluo.XUtils.CommonUtils;
 import com.aboluo.XUtils.MyApplication;
+import com.aboluo.adapter.OrderDetailItemAdpater;
 import com.aboluo.model.OrderDetailInfo;
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -37,6 +40,12 @@ public class OrderDetailActivity extends Activity {
     private int orderid;
     private String Memberid;
     private OrderDetailInfo orderDetailInfo;
+    private TextView orderdetail_express_status, orderdetail_express_time, orderdetail_address_name,
+            orderdetail_address_phone, orderdetail_address_address, orderdetail_pay_allmonney,
+            orderdetail_allmonney2, orderdetail_allmonney;
+    private ListView orderdetail_listview;
+    private OrderDetailItemAdpater adpater;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,7 +56,7 @@ public class OrderDetailActivity extends Activity {
     private void init() {
         Intent intent = getIntent();
         orderid = intent.getIntExtra("orderid", 0);
-        Memberid =CommonUtils.GetMemberId(this);
+        Memberid = CommonUtils.GetMemberId(this);
         requestQueue = MyApplication.getRequestQueue();
         ImageUrl = CommonUtils.GetValueByKey(this, "ImgUrl");
         URL = CommonUtils.GetValueByKey(this, "apiurl");
@@ -59,6 +68,15 @@ public class OrderDetailActivity extends Activity {
         pdialog.setTitleText("加载中");
         pdialog.setCanceledOnTouchOutside(true);
         pdialog.setCancelable(true);
+        orderdetail_express_status = (TextView) findViewById(R.id.orderdetail_express_status);
+        orderdetail_express_time = (TextView) findViewById(R.id.orderdetail_express_time);
+        orderdetail_address_name = (TextView) findViewById(R.id.orderdetail_address_name);
+        orderdetail_address_phone = (TextView) findViewById(R.id.orderdetail_address_phone);
+        orderdetail_address_address = (TextView) findViewById(R.id.orderdetail_address_address);
+        orderdetail_pay_allmonney = (TextView) findViewById(R.id.orderdetail_pay_allmonney);
+        orderdetail_allmonney2 = (TextView) findViewById(R.id.orderdetail_allmonney2);
+        orderdetail_allmonney = (TextView) findViewById(R.id.orderdetail_allmonney);
+        orderdetail_listview = (ListView) findViewById(R.id.orderdetail_listview);
         if (orderid == 0) {
         } else {
             initData();
@@ -71,7 +89,19 @@ public class OrderDetailActivity extends Activity {
             public void onResponse(String response) {
                 response = response.replace("\\", "");
                 response = response.substring(1, response.length() - 1);
-                orderDetailInfo = gson.fromJson(response,OrderDetailInfo.class);
+                orderDetailInfo = gson.fromJson(response, OrderDetailInfo.class);
+                orderdetail_express_status.setText(orderDetailInfo.getResult().get(0).getLocalInfo() == null ? "" :
+                        orderDetailInfo.getResult().get(0).getLocalInfo().toString());
+                orderdetail_express_time.setText("123");
+                orderdetail_address_name.setText(orderDetailInfo.getResult().get(0).getReceiver().toString());
+                orderdetail_address_phone.setText(orderDetailInfo.getResult().get(0).getMobile().toString());
+                orderdetail_address_address.setText(orderDetailInfo.getResult().get(0).getAddress().toString());
+                orderdetail_pay_allmonney.setText(String.valueOf(orderDetailInfo.getResult().get(0).getTotalPrice()));
+                orderdetail_allmonney2.setText(String.valueOf(orderDetailInfo.getResult().get(0).getTotalPrice()));
+                orderdetail_allmonney.setText(String.valueOf(orderDetailInfo.getResult().get(0).getTotalPrice()));
+                adpater = new OrderDetailItemAdpater(OrderDetailActivity.this
+                        , orderDetailInfo.getResult().get(0).getOrderItemList());
+                orderdetail_listview.setAdapter(adpater);
             }
         }, new Response.ErrorListener() {
             @Override

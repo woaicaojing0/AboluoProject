@@ -6,7 +6,12 @@
         <!-- 中间TextView的宽度 -->
         <attr name="tvWidth" format="dimension" />
         <!--<attr name="tvColor" format="color"/>-->
-        <attr name="tvTextSize" format="dimension"/>
-        <attr name="btnTextSize" format="dimension"/>
+        <attr name="tvTextSize" format="dimension" />
+        <attr name="btnTextSize" format="dimension" />
     </declare-styleable>
+    <string-array name="spingarr">
+        <item>拍错了</item>
+        <item>多拍了</item>
+        <item>不想要了</item>
+    </string-array>
 </resources>

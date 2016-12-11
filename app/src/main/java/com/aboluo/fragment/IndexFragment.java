@@ -185,8 +185,8 @@ public class IndexFragment extends Fragment implements View.OnClickListener {
                 requestQueue.add(getInfo());
             }
         });
-        Picasso.with(this.getActivity()).load("http://img.pconline.com.cn/images/upload/upc/tx/wallpaper/1309/05/c5/25283777_1378352004384_800x600.jpg").into(ceshi_imgeview);
-//            Picasso.with(this.getActivity()).setIndicatorsEnabled(true);
+//        Picasso.with(this.getActivity()).load("http://img.pconline.com.cn/images/upload/upc/tx/wallpaper/1309/05/c5/25283777_1378352004384_800x600.jpg").into(ceshi_imgeview);
+////            Picasso.with(this.getActivity()).setIndicatorsEnabled(true);
         mCvCountdownView.setOnCountdownEndListener(new CountdownView.OnCountdownEndListener() {
             @Override
             public void onEnd(CountdownView cv) {
@@ -200,16 +200,16 @@ public class IndexFragment extends Fragment implements View.OnClickListener {
 //                Toast.makeText(IndexFragment.this.getActivity(), "1", Toast.LENGTH_SHORT).show();
             }
         });
-        ceshi_imgeview.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), GoodsDetailActivity.class);
-                Intent intent1 = new Intent(getActivity(), GoodsListActivity.class);
-                intent.putExtra("info", "这是从首页中的图片跳转的");
-                startActivity(intent1);
-
-            }
-        });
+//        ceshi_imgeview.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent intent = new Intent(getActivity(), GoodsDetailActivity.class);
+//                Intent intent1 = new Intent(getActivity(), GoodsListActivity.class);
+//                intent.putExtra("info", "这是从首页中的图片跳转的");
+//                startActivity(intent1);
+//
+//            }
+//        });
         top_editsearch.setOnKeyListener(new View.OnKeyListener() {
             @Override
             public boolean onKey(View v, int keyCode, KeyEvent event) {
@@ -232,7 +232,6 @@ public class IndexFragment extends Fragment implements View.OnClickListener {
         mid_gridview.setSelector(new ColorDrawable(Color.TRANSPARENT));
         marqueeView = (MarqueeView) view.findViewById(R.id.marqueeView);
         pullToRefreshScrollView = (PullToRefreshScrollView) view.findViewById(R.id.pullToRefresh);
-        ceshi_imgeview = (ImageView) view.findViewById(R.id.ceshi_imgeview);
         seckill_imge0 = (ImageView) view.findViewById(R.id.seckill_imge0);
         seckill_imge1 = (ImageView) view.findViewById(R.id.seckill_imge1);
         seckill_imge2 = (ImageView) view.findViewById(R.id.seckill_imge2);

@@ -12,6 +12,7 @@ import android.widget.Toast;
 import com.aboluo.XUtils.CommonUtils;
 import com.aboluo.XUtils.MyApplication;
 import com.aboluo.adapter.FavorAdapter;
+import com.aboluo.model.BaseModel;
 import com.aboluo.model.FavorBean;
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -24,6 +25,7 @@ import com.handmark.pulltorefresh.library.PullToRefreshListView;
 import com.squareup.picasso.Picasso;
 import com.tandong.bottomview.view.BottomView;
 
+import java.lang.reflect.Member;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -137,23 +139,60 @@ public class FavorActivity extends Activity implements View.OnClickListener {
                 } else {
                 }
                 break;
-            case R.id.un_favor:
+            case R.id.un_favor: //取消收藏按钮
+                if (tag != null && tag instanceof Integer) { //解决问题：如何知道你点击的按钮是哪一个列表项中的，通过Tag的
+                    int position = (Integer) tag;
+                    final int id = favorBean.getResult().get(position).getCollectId();
+                    StringRequest stringRequest = new StringRequest(Request.Method.POST, URL + "/api/CollectApi/ReceiveDeleteGoodsCollect", new Response.Listener<String>() {
+                        @Override
+                        public void onResponse(String response) {
+                            response = response.replace("\\", "");
+                            response = response.substring(1, response.length() - 1);
+                            BaseModel baseModel = gson.fromJson(response, BaseModel.class);
+                            if (baseModel.isIsSuccess()) {
+                                initData();
+                                bottomView.dismissBottomView();
+                                Toast.makeText(FavorActivity.this, "取消收藏成功", Toast.LENGTH_SHORT).show();
+                            } else {
+                                Toast.makeText(FavorActivity.this, "取消收藏失败", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    }, new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            byte[] bytescode = error.networkResponse.data;
+                            Log.i("woaicaojing", bytescode.toString());
+                        }
+                    }) {
+                        @Override
+                        protected Map<String, String> getParams() throws AuthFailureError {
+                            Map<String, String> map = new HashMap<>();
+                            map.put("Ids", String.valueOf(id));
+                            map.put("MemberId", MemberId);
+                            map.put("APPToken", APPToken);
+                            return map;
+                        }
+
+                        ;
+                    };
+                    requestQueue.add(stringRequest);
+                } else {
+                }
+                break;
+            case R.id.favor_share: //返回按钮
                 if (tag != null && tag instanceof Integer) { //解决问题：如何知道你点击的按钮是哪一个列表项中的，通过Tag的
                     int position = (Integer) tag;
                     Toast.makeText(this, "" + position, Toast.LENGTH_SHORT).show();
                 } else {
                 }
                 break;
-            case R.id.favor_share:
-                if (tag != null && tag instanceof Integer) { //解决问题：如何知道你点击的按钮是哪一个列表项中的，通过Tag的
-                    int position = (Integer) tag;
-                    Toast.makeText(this, "" + position, Toast.LENGTH_SHORT).show();
-                } else {
-                }
-                break;
-            case R.id.favor_cancel:
+            case R.id.favor_cancel: //最下面退出按钮
                 bottomView.dismissBottomView();
                 break;
         }
+    }
+
+    private void DeleteFavor(int id) {
+
     }
 }

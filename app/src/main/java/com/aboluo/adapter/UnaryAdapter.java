@@ -30,6 +30,11 @@ public class UnaryAdapter extends RecyclerView.Adapter<UnaryAdapter.MyviewHolder
     private String ImageURL;
     private OnRecyclerViewItemClickListener onRecyclerViewItemClickListener = null;
 
+    public void setOnBeginClickListener(View.OnClickListener onBeginClickListener) {
+        this.onBeginClickListener = onBeginClickListener;
+    }
+
+    private View.OnClickListener  onBeginClickListener;
     public UnaryAdapter(List<ListResultBean> list, Context context) {
         this.mlist = list;
         this.context = context;
@@ -68,7 +73,9 @@ public class UnaryAdapter extends RecyclerView.Adapter<UnaryAdapter.MyviewHolder
                 mlist.get(position).getNeedPersonCount());
         holder.textView.setText(mlist.get(position).getGoodsName());
         holder.uanry_listview_item_percent.setText(result);
-        holder.unary_begin.setOnClickListener(new View.OnClickListener() {
+        holder.unary_begin.setOnClickListener(onBeginClickListener);
+        holder.unary_begin.setTag(position);
+        holder.all_linelayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (onRecyclerViewItemClickListener != null) {
@@ -90,7 +97,7 @@ public class UnaryAdapter extends RecyclerView.Adapter<UnaryAdapter.MyviewHolder
         public TextView textView, uanry_listview_item_percent, unary_begin;
         public ImageView unary_listview_image;
         public RelativeLayout relative_farther;
-        public LinearLayout linelayout_child;
+        public LinearLayout linelayout_child,all_linelayout;
 
         public MyviewHolder(View itemView) {
             super(itemView);
@@ -100,6 +107,7 @@ public class UnaryAdapter extends RecyclerView.Adapter<UnaryAdapter.MyviewHolder
             unary_listview_image = (ImageView) itemView.findViewById(R.id.unary_listview_image);
             relative_farther = (RelativeLayout) itemView.findViewById(R.id.relative_farther);
             linelayout_child = (LinearLayout) itemView.findViewById(R.id.linelayout_child);
+            all_linelayout = (LinearLayout) itemView.findViewById(R.id.all_linelayout);
             //-----------------------------------------------方法三
             ViewTreeObserver vto2 = unary_listview_image.getViewTreeObserver();
             vto2.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {

@@ -7,12 +7,14 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.support.v7.widget.Toolbar;
 
 import com.aboluo.XUtils.CommonUtils;
 import com.aboluo.XUtils.MyApplication;
@@ -20,6 +22,7 @@ import com.aboluo.XUtils.ScreenUtils;
 import com.aboluo.adapter.BannerAdapter;
 import com.aboluo.model.ShopCarBean;
 import com.aboluo.model.UnaryListBean;
+import com.aboluo.widget.VerticalScrollView;
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -57,6 +60,10 @@ public class UnaryDetailActivity extends Activity implements View.OnClickListene
     private int goodsstatus = 0;
     private ArrayList<ShopCarBean.ResultBean.GoodsShoppingCartListBean> goodsShoppingCartListBean; //传入下订单的信息
     private WebView unary_goodsdetail_webview;
+    private int height;
+    private VerticalScrollView unary_detail_scollview;
+    private TextView unarydetail_text_title;
+    private Toolbar unary_toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,6 +71,30 @@ public class UnaryDetailActivity extends Activity implements View.OnClickListene
         setContentView(R.layout.activitiy_unarydetail);
         init();
         unary_buy_now.setOnClickListener(this);
+        ViewTreeObserver vto = unarydetail_view_pager.getViewTreeObserver();
+        vto.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                unarydetail_view_pager.getViewTreeObserver().removeGlobalOnLayoutListener(
+                        this);
+                height = unarydetail_view_pager.getHeight();
+                unary_detail_scollview.setScrollViewListener(new VerticalScrollView.ScrollViewListener() {
+                    @Override
+                    public void onScrollChanged(VerticalScrollView scrollView, int x, int y, int oldx, int oldy) {
+                        //		Log.i("TAG","y--->"+y+"    height-->"+height);
+                        if (y <= height) {
+                            float scale = (float) y / height;
+                            float alpha = (255 * scale);
+                            Log.i("TAG", "alpha--->" + alpha);
+                            unarydetail_text_title.setTextColor(Color.argb((int) alpha, 0, 0, 0));
+                            //只是layout背景透明(仿知乎滑动效果)
+                            unary_toolbar.setBackgroundColor(Color.argb((int) alpha, 255, 255, 255));
+                        }
+                    }
+                });
+            }
+        });
+
     }
 
     private void init() {
@@ -86,6 +117,9 @@ public class UnaryDetailActivity extends Activity implements View.OnClickListene
         unary_shengyu_txt = (TextView) findViewById(R.id.unary_shengyu_txt);
         unary_goods_title = (TextView) findViewById(R.id.unary_goods_title);
         unary_goods_sub = (TextView) findViewById(R.id.unary_goods_sub);
+        unarydetail_text_title = (TextView) findViewById(R.id.unarydetail_text_title);
+        unary_toolbar = (Toolbar) findViewById(R.id.unary_toolbar);
+        unary_detail_scollview = (VerticalScrollView) findViewById(R.id.unary_detail_scollview);
         unary_startgoods = (LinearLayout) findViewById(R.id.unary_startgoods);
         unary_buy_now = (LinearLayout) findViewById(R.id.unary_buy_now);
         unary_goodsdetail_webview = (WebView) findViewById(R.id.unary_goodsdetail_webview);

@@ -1,371 +1,424 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    >
 
-    <android.support.v7.widget.Toolbar
-        android:id="@+id/toolbar"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:layout_alignParentTop="true"
-        android:background="@color/white"
-        app:contentInsetLeft="0dp"
-        app:contentInsetStart="0dp">
-
-        <RelativeLayout
+        android:layout_height="match_parent">
+        <com.aboluo.widget.VerticalScrollView
+            android:id="@+id/unary_detail_scollview"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:gravity="center_vertical"
-            android:orientation="horizontal">
+            android:layout_alignParentStart="true"
+            android:fillViewport="true"
+            android:scrollbars="none">
 
-            <ImageView
-                android:id="@+id/unarydetail_text_back"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="10dp"
-                android:src="@drawable/back"
-                android:text="返回" />
-
-            <TextView
-                android:id="@+id/unarydetail_text_title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:text="奖品详情" />
-
-        </RelativeLayout>
-    </android.support.v7.widget.Toolbar>
-
-    <com.aboluo.widget.UnaryScrollView
-        android:scrollbars="none"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/toolbar"
-        android:fillViewport="true">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
-            <!--pageview 轮播效果-->
-            <com.jude.rollviewpager.RollPagerView xmlns:app="http://schemas.android.com/apk/res-auto"
-                android:id="@+id/unarydetail_view_pager"
-                android:layout_width="match_parent"
-                android:layout_height="160dp"
-                app:rollviewpager_hint_gravity="right"
-                app:rollviewpager_play_delay="3000" />
-            <!--pageview 轮播效果 end -->
             <LinearLayout
-                android:paddingLeft="10dp"
-                android:paddingRight="10dp"
+
                 android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:gravity="center_vertical"
-                android:orientation="horizontal">
-                <TextView
-                    android:paddingTop="2dp"
-                    android:paddingBottom="2dp"
-                    android:paddingRight="8dp"
-                    android:paddingLeft="8dp"
-                    android:background="@drawable/unarydetail_txt_border"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="进行中"
-                    android:textColor="@color/btn_color"/>
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+                <!--pageview 轮播效果-->
+                <com.jude.rollviewpager.RollPagerView xmlns:app="http://schemas.android.com/apk/res-auto"
+                    android:id="@+id/unarydetail_view_pager"
+                    android:layout_width="match_parent"
+                    android:layout_height="160dp"
+                    app:rollviewpager_hint_gravity="center"
+                    app:rollviewpager_play_delay="3000" />
+                <!--pageview 轮播效果 end -->
                 <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:orientation="vertical"
-                    android:layout_height="wrap_content">
-                <TextView
-                    android:id="@+id/unary_goods_title"
-                    android:lines="1"
-                    android:text="问问sdasdasdasdasdad企鹅我恶趣味企鹅请问请问请问请问去委屈委屈委屈委屈请问请问"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:lineSpacingExtra="6dp"/>
-                <TextView
-                    android:id="@+id/unary_goods_sub"
-                    android:lines="1"
-                    android:text="问问sdasdasdasdasdad企鹅我恶趣味企鹅请问请问请问请问去委屈委屈委屈委屈请问请问"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:lineSpacingExtra="6dp"/>
-                </LinearLayout>
-            </LinearLayout>
-            <RelativeLayout
-                android:layout_marginBottom="10dp"
-                android:layout_marginTop="4dp"
-                android:layout_width="match_parent"
-                android:layout_height="32dp"
-                android:background="@color/btn_color"
-                android:gravity="center_vertical">
-                <TextView
-                    android:id="@+id/unary_txt_needtitle"
-                    android:textColor="@color/white"
-                    android:layout_marginLeft="12dp"
-                    android:text="需要"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-                <TextView
-                    android:id="@+id/unary_need_txt"
-                    android:layout_marginLeft="4dp"
-                    android:layout_marginRight="4dp"
-                    android:text="1232323"
-                    android:layout_toRightOf="@id/unary_txt_needtitle"
-                    android:textColor="@color/white"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-                <TextView
-                    android:layout_toRightOf="@+id/unary_need_txt"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="人次"
-                    android:textColor="@color/white"/>
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true">
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp">
+
                     <TextView
-                        android:id="@+id/unary_txt_shengyutitle"
-                        android:textColor="@color/white"
-                        android:layout_marginLeft="12dp"
-                        android:text="剩余"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/unarydetail_txt_border"
+                        android:paddingBottom="2dp"
+                        android:paddingLeft="8dp"
+                        android:paddingRight="8dp"
+                        android:paddingTop="2dp"
+                        android:text="进行中"
+                        android:textColor="@color/btn_color" />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/unary_goods_title"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:lineSpacingExtra="6dp"
+                            android:lines="1"
+                            android:text="问问sdasdasdasdasdad企鹅我恶趣味企鹅请问请问请问请问去委屈委屈委屈委屈请问请问" />
+
+                        <TextView
+                            android:id="@+id/unary_goods_sub"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:lineSpacingExtra="6dp"
+                            android:lines="1"
+                            android:text="问问sdasdasdasdasdad企鹅我恶趣味企鹅请问请问请问请问去委屈委屈委屈委屈请问请问" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="32dp"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginTop="4dp"
+                    android:background="@color/btn_color"
+                    android:gravity="center_vertical">
+
                     <TextView
-                        android:id="@+id/unary_shengyu_txt"
+                        android:id="@+id/unary_txt_needtitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="12dp"
+                        android:text="需要"
+                        android:textColor="@color/white" />
+
+                    <TextView
+                        android:id="@+id/unary_need_txt"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:layout_marginLeft="4dp"
                         android:layout_marginRight="4dp"
+                        android:layout_toRightOf="@id/unary_txt_needtitle"
                         android:text="1232323"
-                        android:layout_toRightOf="@id/unary_txt_shengyutitle"
-                        android:textColor="@color/white"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
+                        android:textColor="@color/white" />
+
                     <TextView
-                        android:layout_toRightOf="@+id/unary_shengyu_txt"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_toRightOf="@+id/unary_need_txt"
                         android:text="人次"
-                        android:paddingRight="12dp"
-                        android:textColor="@color/white"/>
+                        android:textColor="@color/white" />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true">
+
+                        <TextView
+                            android:id="@+id/unary_txt_shengyutitle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="12dp"
+                            android:text="剩余"
+                            android:textColor="@color/white" />
+
+                        <TextView
+                            android:id="@+id/unary_shengyu_txt"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="4dp"
+                            android:layout_marginRight="4dp"
+                            android:layout_toRightOf="@id/unary_txt_shengyutitle"
+                            android:text="1232323"
+                            android:textColor="@color/white" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_toRightOf="@+id/unary_shengyu_txt"
+                            android:paddingRight="12dp"
+                            android:text="人次"
+                            android:textColor="@color/white" />
+                    </LinearLayout>
+                </RelativeLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="3dp"
+                    android:background="#eeeeee"></View>
+
+                <LinearLayout
+                    android:id="@+id/unary_startgoods"
+                    android:layout_width="match_parent"
+                    android:layout_height="120dp"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="18dp"
+                            android:text="获奖者:" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="120607690" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="102dp"
+                            android:text="获奖者:" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="120607690" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="102dp"
+                            android:text="用户IP:" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="120607690" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="102dp"
+                            android:text="商品参与人数:" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="120607690" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="102dp"
+                            android:text="揭晓时间:" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="120607690" />
+                    </LinearLayout>
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="18dp"
+                        android:layout_marginTop="4dp">
+
+
+                        <TextView
+                            android:id="@+id/txt_yinyun"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="幸运号码:" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_toRightOf="@id/txt_yinyun"
+                            android:text="123232323" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentRight="true"
+                            android:layout_marginRight="33dp"
+                            android:text="计算详情" />
+                    </RelativeLayout>
                 </LinearLayout>
-            </RelativeLayout>
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="3dp"
-                android:background="#eeeeee"></View>
-            <LinearLayout
-                android:id="@+id/unary_startgoods"
-                android:layout_width="match_parent"
-                android:layout_height="120dp"
-                android:orientation="vertical">
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="3dp"
+                    android:background="#eeeeee"></View>
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-                <TextView
-                    android:layout_marginLeft="18dp"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="18dp"
+                            android:text="申明:" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="120607690" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="18dp"
+                            android:text="往期揭晓:" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="120607690" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="18dp"
+                            android:text="参与记录:" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="120607690" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="18dp"
+                            android:text="名字:" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="120607690" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="18dp"
+                            android:text="参与了1000人次" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="120607690" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <WebView
+                    android:id="@+id/unary_goodsdetail_webview"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:scrollbars="vertical"></WebView>
+            </LinearLayout>
+        </com.aboluo.widget.VerticalScrollView>
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/unary_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:layout_alignParentTop="true"
+            app:contentInsetLeft="0dp"
+            app:contentInsetStart="0dp">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <ImageView
+                    android:id="@+id/unarydetail_text_back"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="获奖者:"/>
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="120607690"/>
-                </LinearLayout>
-                <LinearLayout
-                    android:layout_marginTop="4dp"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-                    <TextView
-                        android:layout_marginLeft="102dp"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="获奖者:"/>
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="120607690"/>
-                </LinearLayout>
-                <LinearLayout
-                    android:layout_marginTop="4dp"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-                    <TextView
-                        android:layout_marginLeft="102dp"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="用户IP:"/>
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="120607690"/>
-                </LinearLayout>
-                <LinearLayout
-                    android:layout_marginTop="4dp"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-                    <TextView
-                        android:layout_marginLeft="102dp"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="商品参与人数:"/>
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="120607690"/>
-                </LinearLayout>
-                <LinearLayout
-                    android:layout_marginTop="4dp"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-                    <TextView
-                        android:layout_marginLeft="102dp"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="揭晓时间:"/>
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="120607690"/>
-                </LinearLayout>
-                <RelativeLayout
-                    android:layout_marginTop="4dp"
-                    android:layout_marginLeft="18dp"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="10dp"
+                    android:background="#00000000"
+                    android:src="@drawable/back"
+                    android:text="返回" />
 
+                <TextView
+                    android:id="@+id/unarydetail_text_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:text="奖品详情"
+                    android:textColor="#00000000" />
+            </RelativeLayout>
+        </android.support.v7.widget.Toolbar>
+    </RelativeLayout>
+    <LinearLayout
+        android:id="@+id/unary_buy_now"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:layout_alignParentBottom="true"
+        android:background="@color/btn_color"
+        android:gravity="center">
 
-                    <TextView
-                        android:id="@+id/txt_yinyun"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="幸运号码:"
-                        />
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="123232323"
-                        android:layout_toRightOf="@id/txt_yinyun"/>
-
-                    <TextView
-                        android:layout_alignParentRight="true"
-                        android:layout_marginRight="33dp"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="计算详情"/>
-                </RelativeLayout>
-            </LinearLayout>
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="3dp"
-                android:background="#eeeeee"></View>
-            <LinearLayout
-                android:orientation="vertical"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-                <LinearLayout
-                    android:layout_marginTop="4dp"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-                    <TextView
-                        android:layout_marginLeft="18dp"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="申明:"/>
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="120607690"/>
-                </LinearLayout>
-                <LinearLayout
-                    android:layout_marginTop="4dp"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-                    <TextView
-                        android:layout_marginLeft="18dp"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="往期揭晓:"/>
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="120607690"/>
-                </LinearLayout>
-                <LinearLayout
-                    android:layout_marginTop="4dp"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-                    <TextView
-                        android:layout_marginLeft="18dp"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="参与记录:"/>
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="120607690"/>
-                </LinearLayout>
-                <LinearLayout
-                    android:layout_marginTop="4dp"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-                    <TextView
-                        android:layout_marginLeft="18dp"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="名字:"/>
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="120607690"/>
-                </LinearLayout>
-                <LinearLayout
-                    android:layout_marginTop="4dp"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-                    <TextView
-                        android:layout_marginLeft="18dp"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="参与了1000人次"/>
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="120607690"/>
-                </LinearLayout>
-            </LinearLayout>
-            <WebView
-                android:id="@+id/unary_goodsdetail_webview"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:scrollbars="vertical"></WebView>
-        </LinearLayout>
-    </com.aboluo.widget.UnaryScrollView>
-<LinearLayout
-    android:id="@+id/unary_buy_now"
-    android:gravity="center"
-    android:layout_alignParentBottom="true"
-    android:background="@color/btn_color"
-    android:layout_width="match_parent"
-    android:layout_height="45dp">
-<TextView
-    android:textColor="@color/white"
-    android:textSize="20sp"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:text="立 即 购 买"/>
-</LinearLayout>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="立 即 购 买"
+            android:textColor="@color/white"
+            android:textSize="20sp" />
+    </LinearLayout>
 </RelativeLayout>

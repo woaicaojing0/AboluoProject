@@ -124,6 +124,7 @@ public class SignInActivity extends Activity implements View.OnClickListener {
             @Override
             public void onErrorResponse(VolleyError error) {
                 byte[] date = error.networkResponse.data;
+                String s = new String(date);
                 Toast.makeText(SignInActivity.this, new String(date), Toast.LENGTH_SHORT).show();
                 pdialog.dismiss();
             }
@@ -132,7 +133,7 @@ public class SignInActivity extends Activity implements View.OnClickListener {
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> map = new HashMap<>();
                 map.put("MemberId", MemberId);
-                map.put("APPToken", APPToken);
+                map.put( "APPToken", APPToken);
                 map.put("LoginCheckToken", "123");
                 map.put("LoginPhone", "123");
                 return map;
@@ -170,6 +171,7 @@ public class SignInActivity extends Activity implements View.OnClickListener {
             public void onErrorResponse(VolleyError error) {
 
                 byte[] date = error.networkResponse.data;
+                String s= new String (date);
                 Toast.makeText(SignInActivity.this, new String(date), Toast.LENGTH_SHORT).show();
                 pdialog.dismiss();
             }

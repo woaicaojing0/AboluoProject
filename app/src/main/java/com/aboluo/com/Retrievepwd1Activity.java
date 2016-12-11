@@ -150,7 +150,9 @@ public class Retrievepwd1Activity extends Activity implements View.OnClickListen
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(Retrievepwd1Activity.this, error.toString(), Toast.LENGTH_SHORT).show();
+                byte[] bute = error.networkResponse.data;
+                String s = bute.toString();
+                Toast.makeText(Retrievepwd1Activity.this, bute.toString(), Toast.LENGTH_SHORT).show();
             }
         }) {
             @Override
@@ -217,7 +219,9 @@ public class Retrievepwd1Activity extends Activity implements View.OnClickListen
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(Retrievepwd1Activity.this, error.toString(), Toast.LENGTH_SHORT).show();
+                byte[] bute = error.networkResponse.data;
+                String s =new String(bute);
+                Toast.makeText(Retrievepwd1Activity.this, s.toString(), Toast.LENGTH_SHORT).show();
             }
         }) {
             @Override

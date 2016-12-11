@@ -260,7 +260,7 @@ public class GoodsDetailActivity extends Activity implements View.OnClickListene
         webviewsetting2.setJavaScriptEnabled(true);
         webviewsetting2.setUseWideViewPort(true);//关键点
         webviewsetting2.setLoadWithOverviewMode(true);
-        goods_pingjia_webview.loadUrl(null);
+        goods_pingjia_webview.loadUrl("http://t.back.aboluomall.com/Moblie/ShowEvaluationList");
         goods_pingjia_webview.setWebViewClient(new WebViewClient());
     }
 

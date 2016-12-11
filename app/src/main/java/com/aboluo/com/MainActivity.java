@@ -20,8 +20,6 @@ import com.aboluo.fragment.MenuFragment;
 import com.aboluo.fragment.MyFragment;
 import com.aboluo.fragment.ShopCarFragment;
 
-import org.w3c.dom.Text;
-
 
 public class MainActivity extends FragmentActivity implements View.OnClickListener {
     private FragmentTransaction fragmentTransaction;
@@ -32,8 +30,9 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
     private Fragment mNowFragment;
     private LinearLayout index_linelayout, menu_linelayout, shopcar_linelayout, my_linelayout;
     private long exitTime = 0;
-    private ImageView iv_menu_home,iv_bottom_menu,iv_menu_car,iv_menu_me;
-    private TextView tv_menu_home,tv_bottom_menu,tv_menu_car,tv_menu_me;
+    private ImageView iv_menu_home, iv_bottom_menu, iv_menu_car, iv_menu_me;
+    private TextView tv_menu_home, tv_bottom_menu, tv_menu_car, tv_menu_me;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -83,18 +82,18 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
         tv_menu_home.setTextColor(getResources().getColor(R.color.btn_color));
         FristChangeFragment(indexFragment);
     }
-private void initBootomButton()
-{
-    iv_menu_home = (ImageView) findViewById(R.id.iv_menu_home);
-    iv_bottom_menu = (ImageView) findViewById(R.id.iv_bottom_menu);
-    iv_menu_car = (ImageView) findViewById(R.id.iv_menu_car);
-    iv_menu_me = (ImageView) findViewById(R.id.iv_menu_me);
-    tv_menu_home = (TextView) findViewById(R.id.tv_menu_home);
-    tv_bottom_menu = (TextView) findViewById(R.id.tv_bottom_menu);
-    tv_menu_car = (TextView) findViewById(R.id.tv_menu_car);
-    tv_menu_me = (TextView) findViewById(R.id.tv_menu_me);
 
-}
+    private void initBootomButton() {
+        iv_menu_home = (ImageView) findViewById(R.id.iv_menu_home);
+        iv_bottom_menu = (ImageView) findViewById(R.id.iv_bottom_menu);
+        iv_menu_car = (ImageView) findViewById(R.id.iv_menu_car);
+        iv_menu_me = (ImageView) findViewById(R.id.iv_menu_me);
+        tv_menu_home = (TextView) findViewById(R.id.tv_menu_home);
+        tv_bottom_menu = (TextView) findViewById(R.id.tv_bottom_menu);
+        tv_menu_car = (TextView) findViewById(R.id.tv_menu_car);
+        tv_menu_me = (TextView) findViewById(R.id.tv_menu_me);
+
+    }
 
     @Override
     public void onClick(View view) {
@@ -165,20 +164,22 @@ private void initBootomButton()
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if(keyCode == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_DOWN){
-            if((System.currentTimeMillis()-exitTime) > 2000){
+        if (keyCode == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_DOWN) {
+            if ((System.currentTimeMillis() - exitTime) > 2000) {
                 Toast.makeText(getApplicationContext(), "再按一次退出程序", Toast.LENGTH_SHORT).show();
                 exitTime = System.currentTimeMillis();
+                return true;
             } else {
                 finish();
-                System.exit(0);
+                int pid = android.os.Process.myPid();    //获取当前应用程序的PID
+                android.os.Process.killProcess(pid);    //杀死当前进程
             }
-            return true;
+
         }
         return super.onKeyDown(keyCode, event);
     }
-    private void  CleanBootomButton()
-    {
+
+    private void CleanBootomButton() {
         iv_menu_home.setBackground(getResources().getDrawable(R.drawable.home));
         iv_bottom_menu.setBackground(getResources().getDrawable(R.drawable.sort_light));
         iv_menu_car.setBackground(getResources().getDrawable(R.drawable.cart));

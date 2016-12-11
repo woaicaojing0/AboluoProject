@@ -43,6 +43,7 @@ preferences = getSharedPreferences("abolu",MODE_PRIVATE);
         {
             Intent intent = new Intent(this,MainActivity.class);
             startActivity(intent);
+            finish();
         }else {
             Init();
             btn_enter_main.setOnClickListener(this);

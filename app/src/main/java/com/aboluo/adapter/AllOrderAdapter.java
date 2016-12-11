@@ -135,9 +135,18 @@ public class AllOrderAdapter extends BaseAdapter {
             } else {
                 holder = (ViewHolder) contentView.getTag();
             }
-            picasso.load(ImageURL + "/" + mlist.get(position).getOrderItemList().get(i).getGoodsLogoUrl())
-                    .placeholder(context.getResources().getDrawable(R.drawable.imagviewloading))
-                    .into(holder.image_order_goodsimage);
+            String imageurl = mlist.get(position).getOrderItemList().get(i).getGoodsLogoUrl().toString();
+            if (imageurl == null) {
+            } else {
+                String[] imageurls = imageurl.split(";");
+                for (int i0 = 0; i0 < imageurls.length; i0++) {
+                    imageurls[i0] = ImageURL + imageurls[i0].toString();
+                }
+                Log.i("woaicaojing", imageurls[0].toString());
+                picasso.load(imageurls[0].toString()).placeholder(context.getResources()
+                        .getDrawable(R.drawable.imagviewloading)).error(context.getResources().getDrawable(R.drawable.imageview_error))
+                        .into(holder.image_order_goodsimage);
+            }
             Log.i("woaaicaojingallorder", ImageURL + "/" + mlist.get(position).getOrderItemList().get(i).getGoodsLogoUrl());
             holder.txt_order_goodsName.setText(String.valueOf(mlist.get(position).getOrderItemList().get(i).getGoodsName()));
             //判断该商品是否有规格和颜色

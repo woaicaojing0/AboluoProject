@@ -1,6 +1,7 @@
 package com.aboluo.adapter;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -70,9 +71,18 @@ public class FavorAdapter extends BaseAdapter {
         } else {
             holder = (ViewHolder) convertView.getTag();
         }
-        picasso.load(ImageUrl + list.get(position).getGoodsLogo()).placeholder(mcontext.getResources()
-                .getDrawable(R.drawable.imagviewloading)).error(mcontext.getResources().getDrawable(R.drawable.imageview_error))
-                .into(holder.favor_item_image);
+        String imageurl = list.get(position).getGoodsLogo().toString();
+        if (imageurl == null) {
+        } else {
+            String[] imageurls = imageurl.split(";");
+            for (int i = 0; i < imageurls.length; i++) {
+                imageurls[i] = ImageUrl + imageurls[i].toString();
+            }
+            Log.i("woaicaojing", imageurls[0].toString());
+            picasso.load(imageurls[0].toString()).placeholder(mcontext.getResources()
+                    .getDrawable(R.drawable.imagviewloading)).error(mcontext.getResources().getDrawable(R.drawable.imageview_error))
+                    .into(holder.favor_item_image);
+        }
         holder.favor_item_more.setOnClickListener(SetOnMoreItemClickListener);
         holder.favor_item_price.setText("￥" + String.valueOf(list.get(position).getHyPrice()));
         holder.favor_item_title.setText(String.valueOf(list.get(position).getGoodsName()));

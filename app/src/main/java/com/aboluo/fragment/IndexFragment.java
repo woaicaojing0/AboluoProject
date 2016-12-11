@@ -482,21 +482,25 @@ public class IndexFragment extends Fragment implements View.OnClickListener {
                     for (int i = 0; i < indexBannerBean.getAppConfigList().size(); i++) {
                         arrString[i] = ImageUrl + indexBannerBean.getAppConfigList().get(i).getImage();
                     }
-                    picasso.load(ImageUrl + indexBannerBean.getAppConfigList().get(0).getImage())
-                            .placeholder(IndexFragment.this.getResources().getDrawable(R.drawable.imagviewloading))
-                            .into(huodong_left1);
-                    picasso.load(ImageUrl + indexBannerBean.getAppConfigList().get(1).getImage())
-                            .placeholder(IndexFragment.this.getResources().getDrawable(R.drawable.imagviewloading))
-                            .into(huodong_left2);
-                    picasso.load(ImageUrl + indexBannerBean.getAppConfigList().get(2).getImage())
-                            .placeholder(IndexFragment.this.getResources().getDrawable(R.drawable.imagviewloading))
-                            .into(huodong_right1);
-                    picasso.load(ImageUrl + indexBannerBean.getAppConfigList().get(3).getImage())
-                            .placeholder(IndexFragment.this.getResources().getDrawable(R.drawable.imagviewloading))
-                            .into(huodong_right2);
-                    picasso.load(ImageUrl + indexBannerBean.getAppConfigList().get(4).getImage())
-                            .placeholder(IndexFragment.this.getResources().getDrawable(R.drawable.imagviewloading))
-                            .into(huodong_right3);
+                    if(arrString.length >=5) {
+                        picasso.load(ImageUrl + indexBannerBean.getAppConfigList().get(0).getImage())
+                                .placeholder(IndexFragment.this.getResources().getDrawable(R.drawable.imagviewloading))
+                                .into(huodong_left1);
+                        picasso.load(ImageUrl + indexBannerBean.getAppConfigList().get(1).getImage())
+                                .placeholder(IndexFragment.this.getResources().getDrawable(R.drawable.imagviewloading))
+                                .into(huodong_left2);
+                        picasso.load(ImageUrl + indexBannerBean.getAppConfigList().get(2).getImage())
+                                .placeholder(IndexFragment.this.getResources().getDrawable(R.drawable.imagviewloading))
+                                .into(huodong_right1);
+                        picasso.load(ImageUrl + indexBannerBean.getAppConfigList().get(3).getImage())
+                                .placeholder(IndexFragment.this.getResources().getDrawable(R.drawable.imagviewloading))
+                                .into(huodong_right2);
+                        picasso.load(ImageUrl + indexBannerBean.getAppConfigList().get(4).getImage())
+                                .placeholder(IndexFragment.this.getResources().getDrawable(R.drawable.imagviewloading))
+                                .into(huodong_right3);
+                    }else {
+
+                    }
                 } else {
                     Toast.makeText(IndexFragment.this.getContext(), indexBannerBean.getMessage().toString(), Toast.LENGTH_SHORT).show();
                 }

@@ -20,6 +20,7 @@ import com.aboluo.XUtils.RBCallbkRecyclerView;
 import com.aboluo.adapter.BannerAdapter;
 import com.aboluo.adapter.UnaryAdapter;
 import com.aboluo.model.BaseConfigBean;
+import com.aboluo.model.ShopCarBean;
 import com.aboluo.model.UnaryListBean;
 import com.aboluo.widget.FullyGridLayoutManager;
 import com.android.volley.AuthFailureError;
@@ -32,6 +33,7 @@ import com.google.gson.Gson;
 import com.jude.rollviewpager.RollPagerView;
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -62,6 +64,7 @@ public class UnaryActivity extends FragmentActivity implements UnaryAdapter.OnRe
     private String sorttype = null;
     private WebView webview_introduce;
     private LinearLayout unary_publish;
+    private ArrayList<ShopCarBean.ResultBean.GoodsShoppingCartListBean> goodsShoppingCartListBean; //传入下订单的信息
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,6 +89,7 @@ public class UnaryActivity extends FragmentActivity implements UnaryAdapter.OnRe
         unary_new.setOnClickListener(this);
         unary_introduce.setOnClickListener(this);
         unary_publish.setOnClickListener(this);
+
     }
 
     private void init() {
@@ -114,6 +118,7 @@ public class UnaryActivity extends FragmentActivity implements UnaryAdapter.OnRe
         initNewOpen();
         InitUnaryListBean();
         initWebview();
+        goodsShoppingCartListBean = new ArrayList<>();
     }
 
     private void initWebview() {
@@ -235,6 +240,8 @@ public class UnaryActivity extends FragmentActivity implements UnaryAdapter.OnRe
 
     @Override
     public void onClick(View v) {
+        Object tag = v.getTag();
+        int key = v.getId();
         switch (v.getId()) {
             case R.id.unary_popularity: // 人气
                 CleanTxtView();
@@ -259,11 +266,36 @@ public class UnaryActivity extends FragmentActivity implements UnaryAdapter.OnRe
                 unary_introduce.setTextColor(this.getResources().getColor(R.color.btn_color));
                 break;
             case R.id.unary_publish:
-                Intent intent = new Intent(UnaryActivity.this,UnaryPublishActivity.class);
+                Intent intent = new Intent(UnaryActivity.this, UnaryPublishActivity.class);
                 startActivity(intent);
                 break;
-        }
+            case R.id.unary_begin:
+                if (CommonUtils.IsLogin(UnaryActivity.this)) {
+                    if (tag != null && tag instanceof Integer) {
+                        final int position = (Integer) tag;
+                        UnaryListBean.ListResultBean listResultBean = unaryListBean.getListResult().get(position);
+                        ShopCarBean.ResultBean.GoodsShoppingCartListBean goodsShoppingCartListBean2 = new ShopCarBean.ResultBean.GoodsShoppingCartListBean(
+                                listResultBean.getGoodsId(), listResultBean.getGoodsColorId(),
+                                listResultBean.getColorName() == null ? "0" : listResultBean.getColorName().toString(),
+                                listResultBean.getGoodsStandId(), listResultBean.getColorName() == null ? "0" : listResultBean.getColorName().toString(),
+                                1, 0, listResultBean.getGoodsName(), listResultBean.getGoodsLogo().toString(), 1
+                        );
+                        goodsShoppingCartListBean.add(goodsShoppingCartListBean2);
+                        Intent intent1 = new Intent(UnaryActivity.this, MakeOrderActivity.class);
+                        intent1.putExtra("allmoney", 1);
+                        intent1.putExtra("data", goodsShoppingCartListBean);
+                        intent1.putExtra("payfrom", "4"); //代表从一元购结算的
+                        startActivity(intent1);
+                    }
+                } else {
+                    Intent intent2 = new Intent(UnaryActivity.this, LoginActivity.class);
+                    startActivity(intent2);
+                    Toast.makeText(UnaryActivity.this, "请先登录", Toast.LENGTH_SHORT).show();
+                }
+                break;
     }
+
+}
 
     /**
      * @param status   四种状态：1代表正在开抢 2等待开奖 3已开奖 0 暂未开始
@@ -282,6 +314,7 @@ public class UnaryActivity extends FragmentActivity implements UnaryAdapter.OnRe
                     unary_recyclerView.setLayoutManager(new FullyGridLayoutManager(UnaryActivity.this, 2));
                     adapter.notifyDataSetChanged();
                     adapter.setOnItemClickListener(UnaryActivity.this);
+                    adapter.setOnBeginClickListener(UnaryActivity.this);
                 }
             }
         }, new Response.ErrorListener() {
@@ -323,6 +356,7 @@ public class UnaryActivity extends FragmentActivity implements UnaryAdapter.OnRe
                     adapter = new UnaryAdapter(unaryListBean.getListResult(), UnaryActivity.this);
                     unary_recyclerView.setAdapter(adapter);
                     adapter.setOnItemClickListener(UnaryActivity.this);
+                    adapter.setOnBeginClickListener(UnaryActivity.this);
                 }
             }
         }, new Response.ErrorListener() {

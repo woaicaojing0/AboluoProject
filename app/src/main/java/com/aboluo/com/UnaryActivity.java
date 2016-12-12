@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.view.View;
+import android.view.ViewGroup;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -17,6 +18,7 @@ import android.widget.Toast;
 import com.aboluo.XUtils.CommonUtils;
 import com.aboluo.XUtils.MyApplication;
 import com.aboluo.XUtils.RBCallbkRecyclerView;
+import com.aboluo.XUtils.ScreenUtils;
 import com.aboluo.adapter.BannerAdapter;
 import com.aboluo.adapter.UnaryAdapter;
 import com.aboluo.model.BaseConfigBean;
@@ -31,6 +33,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.google.gson.Gson;
 import com.jude.rollviewpager.RollPagerView;
+import com.jude.rollviewpager.hintview.ColorPointHintView;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -89,7 +92,9 @@ public class UnaryActivity extends FragmentActivity implements UnaryAdapter.OnRe
         unary_new.setOnClickListener(this);
         unary_introduce.setOnClickListener(this);
         unary_publish.setOnClickListener(this);
-
+        int screenWidth = ScreenUtils.getScreenWidth(this);
+        unary__view_pager.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, (screenWidth)*2 / 5));
+        unary__view_pager.setHintView(new ColorPointHintView(this, Color.RED, Color.WHITE));
     }
 
     private void init() {

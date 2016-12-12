@@ -69,4 +69,8 @@ dependencies {
     //sdk解锁
     compile project(path: ':sdk')
     compile 'com.jph.takephoto:takephoto_library:4.0.2'
+    //七牛云
+    compile 'com.qiniu:qiniu-android-sdk:7.3.+'
+    compile 'com.squareup.okhttp3:okhttp:3.2.0'
+    compile 'com.squareup.okio:okio:1.7.0'
 }

@@ -80,6 +80,9 @@ public class MyInfoAcitvity extends TakePhotoActivity implements View.OnClickLis
     private CircleImageView my_info_touxiang;
     private RelativeLayout my_info_name, my_info_sex;
     private MyInfoBean myInfoBean;
+    private TextView my_inf_txt_loginName, my_inf_txt_nicheng, my_info_txt_sex, my_info_txt_phone, my_info_txt_weixin, my_info_txt_email;
+    private static int NickNameCode = 1;//昵称返回标识
+    private boolean updateimages = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -136,6 +139,12 @@ public class MyInfoAcitvity extends TakePhotoActivity implements View.OnClickLis
         pdialog.setCanceledOnTouchOutside(true);
         pdialog.setCancelable(true);
         my_info_text_back = (TextView) findViewById(R.id.my_info_text_back);
+        my_inf_txt_loginName = (TextView) findViewById(R.id.my_inf_txt_loginName);
+        my_inf_txt_nicheng = (TextView) findViewById(R.id.my_inf_txt_nicheng);
+        my_info_txt_sex = (TextView) findViewById(R.id.my_info_txt_sex);
+        my_info_txt_phone = (TextView) findViewById(R.id.my_info_txt_phone);
+        my_info_txt_email = (TextView) findViewById(R.id.my_info_txt_email);
+        my_info_txt_weixin = (TextView) findViewById(R.id.my_info_txt_weixin);
         my_info_touxiang = (CircleImageView) findViewById(R.id.my_info_touxiang);
         my_info_image = (RelativeLayout) findViewById(R.id.my_info_image);
         my_info_name = (RelativeLayout) findViewById(R.id.my_info_name);
@@ -182,11 +191,15 @@ public class MyInfoAcitvity extends TakePhotoActivity implements View.OnClickLis
 //                getTakePhoto().onPickFromGallery();
                 //customHelper.onClick(view, getTakePhoto());
                 break;
-            case R.id.my_info_name:
+            case R.id.my_info_name: //修改昵称
+                Intent intent = new Intent(MyInfoAcitvity.this, UpdateMyInfoActivity.class);
+                intent.putExtra("old", myInfoBean.getResult().getUserNickName() == null ? "" : myInfoBean.getResult()
+                        .getUserNickName().toString());
+                startActivityForResult(intent, NickNameCode);
                 break;
             case R.id.my_info_sex:
                 builder = new AlertDialog.Builder(MyInfoAcitvity.this);
-                final String[] sex = {"男", "女"};
+                final String[] sex = {"女", "男"};
                 //    设置一个单项选择下拉框
                 /**
                  * 第一个参数指定我们要显示的一组下拉单选框的数据集合
@@ -198,6 +211,9 @@ public class MyInfoAcitvity extends TakePhotoActivity implements View.OnClickLis
                     public void onClick(DialogInterface dialog, int which) {
                         Toast.makeText(MyInfoAcitvity.this, "性别为：" + sex[which], Toast.LENGTH_SHORT).show();
                         dialog.dismiss();
+                        myInfoBean.getResult().setMemberSex(which);
+                        updateimages = false;
+                        UpdateInfo();
                     }
                 }).show();
                 break;
@@ -238,6 +254,13 @@ public class MyInfoAcitvity extends TakePhotoActivity implements View.OnClickLis
             if (result == 0) {
                 gesture.setChecked(false);
             }
+            switch (requestCode) {
+                case 1:
+                    myInfoBean.getResult().setUserNickName(data.getStringExtra("nickname"));
+                    updateimages = false;
+                    UpdateInfo();
+                    break;
+            }
         }
     }
 
@@ -267,7 +290,7 @@ public class MyInfoAcitvity extends TakePhotoActivity implements View.OnClickLis
 
 
     private void UploadImage(String filepath, String key, String token) {
-        pdialog.setConfirmText("上传中......");
+        //pdialog.setTitleText("上传中......");
         Configuration config = new Configuration.Builder().zone(Zone.zone0).build();
 //  重用uploadManager。一般地，只需要创建一个uploadManager对象
         UploadManager uploadManager = new UploadManager(config);
@@ -280,8 +303,9 @@ public class MyInfoAcitvity extends TakePhotoActivity implements View.OnClickLis
                         if (info.isOK()) {
                             pdialog.dismiss();
                             Toast.makeText(MyInfoAcitvity.this, "上传成功", Toast.LENGTH_SHORT).show();
-                            picasso.load(qiNiuToken.getFileUrl() + key).placeholder(R.drawable.image_placeholder)
-                                    .error(R.drawable.imageview_error).into(my_info_touxiang);
+                            myInfoBean.getResult().setMemberLogoUrl(key);
+                            updateimages = true;
+                            UpdateInfo();
                         }
                     }
                 }, null);
@@ -322,6 +346,11 @@ public class MyInfoAcitvity extends TakePhotoActivity implements View.OnClickLis
                 response = response.replace("\\", "");
                 response = response.substring(1, response.length() - 1);
                 myInfoBean = gson.fromJson(response, MyInfoBean.class);
+                if (myInfoBean.isIsSuccess()) {
+                    LoadInfo(myInfoBean);
+                } else {
+                    Toast.makeText(MyInfoAcitvity.this, "个人信息获取失败，请重试", Toast.LENGTH_SHORT).show();
+                }
             }
         }, new Response.ErrorListener() {
             @Override
@@ -344,5 +373,84 @@ public class MyInfoAcitvity extends TakePhotoActivity implements View.OnClickLis
             ;
         };
         requestQueue.add(stringRequest);
+    }
+
+    private void LoadInfo(MyInfoBean myInfoBean) {
+        my_inf_txt_loginName.setText(myInfoBean.getResult().getMemberLoginNumber() == null ? "未填写" :
+                myInfoBean.getResult().getMemberLoginNumber().toString());
+        my_inf_txt_nicheng.setText(myInfoBean.getResult().getUserNickName() == null ? "未填写"
+                : myInfoBean.getResult().getUserNickName().toString());
+        if (myInfoBean.getResult().getMemberSex() == 0) {
+            my_info_txt_sex.setText("女");
+        } else {
+            my_info_txt_sex.setText("男");
+        }
+        my_info_txt_phone.setText(myInfoBean.getResult().getMemberMobile() == null ? "未填写"
+                : myInfoBean.getResult().getMemberMobile().toString());
+        my_info_txt_email.setText(myInfoBean.getResult().getMemberEmail() == null ? "未填写"
+                : myInfoBean.getResult().getMemberEmail().toString());
+        Log.i("MyInfoAcitivity", myInfoBean.getResult().getMemberLogoUrl());
+        picasso.load(myInfoBean.getResult().getMemberLogoUrl())
+                .placeholder(R.drawable.image_placeholder)
+                .error(R.drawable.imageview_error).into(my_info_touxiang);
+    }
+
+    private void UpdateInfo() {
+        pdialog.setTitleText("修改中");
+        pdialog.show();
+        final String newnickname = myInfoBean.getResult().getUserNickName() == null ? ""
+                : myInfoBean.getResult().getUserNickName().toString();
+        String images = "";
+        int i = myInfoBean.getResult().getMemberLogoUrl().indexOf("http");
+        if(i>0)
+        {}
+        if (updateimages) {
+            images = myInfoBean.getResult().getMemberLogoUrl();
+        } else {
+
+        }
+
+        final String sex = String.valueOf(myInfoBean.getResult().getMemberSex());
+        final String finalImages = images;
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, URL + "/api/MemberApi/EditUserInfo", new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                response = response.replace("\\", "");
+                response = response.substring(1, response.length() - 1);
+                myInfoBean = gson.fromJson(response, MyInfoBean.class);
+                if (myInfoBean.isIsSuccess()) {
+                    Toast.makeText(MyInfoAcitvity.this, "修改成功", Toast.LENGTH_SHORT).show();
+                    LoadInfo(myInfoBean);
+                } else {
+                    Toast.makeText(MyInfoAcitvity.this, "修改失败", Toast.LENGTH_SHORT).show();
+                }
+                pdialog.dismiss();
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                byte[] bytecode = error.networkResponse.data;
+                String s = new String(bytecode);
+                Toast.makeText(MyInfoAcitvity.this, s, Toast.LENGTH_SHORT).show();
+                pdialog.dismiss();
+            }
+        }) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> map = new HashMap<>();
+                map.put("MemberId", MemberId);
+                map.put("APPToken", APPToken);
+                map.put("WechatLogoUrl", finalImages);
+                map.put("WechatNickName", newnickname);
+                map.put("MemberSex", sex);
+                map.put("LoginCheckToken", "123");
+                map.put("LoginPhone", "123");
+                return map;
+            }
+
+            ;
+        };
+        requestQueue.add(stringRequest);
+
     }
 }

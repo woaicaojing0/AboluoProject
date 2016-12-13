@@ -459,7 +459,12 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content" />
             <include
-                android:id="@+id/id_ly_huodong"
+                android:id="@+id/id_ly_theme"
+                layout="@layout/index_theme"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content" />
+            <include
+                android:id="@+id/id_ly_brand"
                 layout="@layout/index_brand"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content" />

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:src="@drawable/index_theme" />
+    <!--pageview 轮播效果-->
+    <com.jude.rollviewpager.RollPagerView xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/theme_view_pager"
+        android:layout_width="match_parent"
+        android:layout_height="120dp"
+        app:rollviewpager_hint_gravity="right"
+        app:rollviewpager_play_delay="3000" />
+    <!--pageview 轮播效果 end -->
+    <GridView
+        android:id="@+id/theme_gridview"
+        android:layout_width="match_parent"
+        android:numColumns="4"
+        android:layout_height="240px"></GridView>
+</LinearLayout>

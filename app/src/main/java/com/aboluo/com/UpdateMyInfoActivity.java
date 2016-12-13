@@ -1,12 +1,14 @@
 package com.aboluo.com;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.aboluo.XUtils.CommonUtils;
 import com.aboluo.XUtils.MyApplication;
@@ -49,12 +51,23 @@ public class UpdateMyInfoActivity extends Activity {
         my_info_update_save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                String nickname  = my_info_edit.getText().toString();
+                if(nickname.length() >0)
+                {
+                    Intent intent =getIntent();
+                    intent.putExtra("nickname",nickname);
+                    setResult(RESULT_OK,intent);
+                    finish();
+                }else
+                {
+                    Toast.makeText(UpdateMyInfoActivity.this, "请填写相关信息", Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }
 
     private void init() {
+
         my_info_update_save = (Button) findViewById(R.id.my_info_update_save);
         my_info_edit = (EditText) findViewById(R.id.my_info_edit);
         update_myinfo_txt = (TextView) findViewById(R.id.update_myinfo_txt);
@@ -70,33 +83,8 @@ public class UpdateMyInfoActivity extends Activity {
         pdialog.setTitleText("加载中");
         pdialog.setCanceledOnTouchOutside(true);
         pdialog.setCancelable(true);
+        Intent intent = getIntent();
+        my_info_edit.setText(intent.getStringExtra("old"));
     }
 
-    private void save_update() {
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, URL + "", new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                response = response.replace("\\", "");
-                response = response.substring(1, response.length() - 1);
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-
-            }
-        }) {
-            @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-                Map<String, String> map = new HashMap<>();
-                map.put("MemberId", "1975");
-                map.put("OrderId", "508");
-                map.put("ExpressId", "1");
-                map.put("APPToken", APPToken);
-                return map;
-            }
-
-            ;
-        };
-        requestQueue.add(stringRequest);
-    }
 }

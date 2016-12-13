@@ -28,8 +28,7 @@ import com.aboluo.XUtils.TimeUtils;
 import com.aboluo.adapter.BannerAdapter;
 import com.aboluo.adapter.BrandGridViewAdapter;
 import com.aboluo.adapter.GridViewAdapter;
-import com.aboluo.com.GoodsDetailActivity;
-import com.aboluo.com.GoodsListActivity;
+import com.aboluo.adapter.ThemeGridViewAdapter;
 import com.aboluo.com.HeHuoRenActivity;
 import com.aboluo.com.MainActivity;
 import com.aboluo.com.R;
@@ -68,7 +67,7 @@ import cn.pedant.SweetAlert.SweetAlertDialog;
 public class IndexFragment extends Fragment implements View.OnClickListener {
     private LinearLayout linearLayout;
     private EditText top_editsearch;
-    private RollPagerView rollPagerView;
+    private RollPagerView rollPagerView, theme_view_pager;
     private GridView mid_gridview;
     private MarqueeView marqueeView;
     private View view;
@@ -91,7 +90,7 @@ public class IndexFragment extends Fragment implements View.OnClickListener {
     private BaseConfigBean indexBannerBean;
     private LinearLayout linelayout_miaosha;
     private ImageView huodong_left1, huodong_left2, huodong_right1, huodong_right2, huodong_right3;
-    private GridView brand_gridview;
+    private GridView brand_gridview, theme_gridview;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -115,8 +114,11 @@ public class IndexFragment extends Fragment implements View.OnClickListener {
 //        top_editsearch.setCompoundDrawables(drawable, null, drawable, null);
         //窗口的宽度
         int screenWidth = ScreenUtils.getScreenWidth(this.getContext());
+        //设置顶部banner 的高度 高度是宽度的1/3；
         rollPagerView.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, screenWidth / 3));
         rollPagerView.setHintView(new ColorPointHintView(this.getActivity(), Color.RED, Color.WHITE));
+        theme_view_pager.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, screenWidth / 3));
+        theme_view_pager.setHintView(new ColorPointHintView(this.getActivity(), Color.RED, Color.WHITE));
         initConfig();
         rollPagerView.setOnItemClickListener(new OnItemClickListener() {
             @Override
@@ -228,6 +230,7 @@ public class IndexFragment extends Fragment implements View.OnClickListener {
         linearLayout = (LinearLayout) view.findViewById(R.id.ALLFather);
         top_editsearch = (EditText) view.findViewById(R.id.top_editsearch);
         rollPagerView = (RollPagerView) view.findViewById(R.id.roll_view_pager);
+        theme_view_pager = (RollPagerView) view.findViewById(R.id.theme_view_pager);
         mid_gridview = (GridView) view.findViewById(R.id.mid_gridview);
         mid_gridview.setSelector(new ColorDrawable(Color.TRANSPARENT));
         marqueeView = (MarqueeView) view.findViewById(R.id.marqueeView);
@@ -241,6 +244,7 @@ public class IndexFragment extends Fragment implements View.OnClickListener {
         huodong_right2 = (ImageView) view.findViewById(R.id.huodong_right2);
         huodong_right3 = (ImageView) view.findViewById(R.id.huodong_right3);
         brand_gridview = (GridView) view.findViewById(R.id.brand_gridview);
+        theme_gridview = (GridView) view.findViewById(R.id.theme_gridview);
         mCvCountdownView = (CountdownView) view.findViewById(R.id.cv_countdownViewTest1);
         beginSecKill = (LinearLayout) view.findViewById(R.id.beginSecKill);
         linelayout_miaosha = (LinearLayout) view.findViewById(R.id.linelayout_miaosha);
@@ -422,9 +426,11 @@ public class IndexFragment extends Fragment implements View.OnClickListener {
     }
 
     private void initConfig() {
-        initBanner();
-        inithuodong();
-        initbrand();
+        initBanner(); //顶部banner
+        inithuodong(); //活动页面
+        initbrand();   //品牌图片
+        initThemeBanner(); //主题滚动banner
+        initThemeGridview(); //主题九宫格
     }
 
     //加载首页的配置
@@ -482,7 +488,7 @@ public class IndexFragment extends Fragment implements View.OnClickListener {
                     for (int i = 0; i < indexBannerBean.getAppConfigList().size(); i++) {
                         arrString[i] = ImageUrl + indexBannerBean.getAppConfigList().get(i).getImage();
                     }
-                    if(arrString.length >=5) {
+                    if (arrString.length >= 5) {
                         picasso.load(ImageUrl + indexBannerBean.getAppConfigList().get(0).getImage())
                                 .placeholder(IndexFragment.this.getResources().getDrawable(R.drawable.imagviewloading))
                                 .into(huodong_left1);
@@ -498,7 +504,7 @@ public class IndexFragment extends Fragment implements View.OnClickListener {
                         picasso.load(ImageUrl + indexBannerBean.getAppConfigList().get(4).getImage())
                                 .placeholder(IndexFragment.this.getResources().getDrawable(R.drawable.imagviewloading))
                                 .into(huodong_right3);
-                    }else {
+                    } else {
 
                     }
                 } else {
@@ -553,6 +559,83 @@ public class IndexFragment extends Fragment implements View.OnClickListener {
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> map = new HashMap<>();
                 map.put("ConfigModule", "6");
+                map.put("APPToken", APPToken);
+                return map;
+            }
+        };
+        requestQueue.add(stringRequest);
+    }
+
+    //加载主题导购banner的配置
+    private void initThemeBanner() {
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, URL + "/api/ConfigApi/ReceiveHomeConfig", new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                response = response.replace("\\", "");
+                response = response.substring(1, response.length() - 1);
+                indexBannerBean = gson.fromJson(response, BaseConfigBean.class);
+                if (indexBannerBean.isIsSuccess()) {
+                    String[] arrString = new String[indexBannerBean.getAppConfigList().size()];
+                    for (int i = 0; i < indexBannerBean.getAppConfigList().size(); i++) {
+                        arrString[i] = ImageUrl + indexBannerBean.getAppConfigList().get(i).getImage();
+                    }
+                    //头部滚动banner
+                    bannerAdapter = new BannerAdapter(IndexFragment.this.getContext(), arrString, theme_view_pager);
+                    theme_view_pager.setAdapter(bannerAdapter); // 设置适配器（请求网络图片，适配器要在网络请求完成后再设置）
+                    theme_view_pager.getViewPager().getAdapter().notifyDataSetChanged();// 更新banner图片
+                    theme_view_pager.setFocusable(false);
+                } else {
+                    Toast.makeText(IndexFragment.this.getContext(), indexBannerBean.getMessage().toString(), Toast.LENGTH_SHORT).show();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                byte[] data = error.networkResponse.data;
+                Toast.makeText(IndexFragment.this.getContext(), new String(data), Toast.LENGTH_SHORT).show();
+            }
+        }) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> map = new HashMap<>();
+                map.put("ConfigModule", "4");
+                map.put("APPToken", APPToken);
+                return map;
+            }
+        };
+        requestQueue.add(stringRequest);
+    }
+
+    //加载品牌九宫图的配置
+    private void initThemeGridview() {
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, URL + "/api/ConfigApi/ReceiveHomeConfig", new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                response = response.replace("\\", "");
+                response = response.substring(1, response.length() - 1);
+                indexBannerBean = gson.fromJson(response, BaseConfigBean.class);
+                if (indexBannerBean.isIsSuccess()) {
+                    String[] arrString = new String[indexBannerBean.getAppConfigList().size()];
+                    for (int i = 0; i < indexBannerBean.getAppConfigList().size(); i++) {
+                        arrString[i] = ImageUrl + indexBannerBean.getAppConfigList().get(i).getImage();
+                    }
+                    ThemeGridViewAdapter themeGridViewAdapter = new ThemeGridViewAdapter(IndexFragment.this.getContext(), arrString);
+                    theme_gridview.setAdapter(themeGridViewAdapter);
+                } else {
+                    Toast.makeText(IndexFragment.this.getContext(), indexBannerBean.getMessage().toString(), Toast.LENGTH_SHORT).show();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                byte[] data = error.networkResponse.data;
+                Toast.makeText(IndexFragment.this.getContext(), new String(data), Toast.LENGTH_SHORT).show();
+            }
+        }) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> map = new HashMap<>();
+                map.put("ConfigModule", "5");
                 map.put("APPToken", APPToken);
                 return map;
             }

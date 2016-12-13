@@ -9,7 +9,7 @@
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
+        android:layout_height="48dp"
         app:contentInsetLeft="0dp"
         app:contentInsetStart="0dp">
 
@@ -83,6 +83,7 @@
                 android:background="@color/white">
 
                 <TextView
+                    android:id="@+id/my_inf_txt_loginName"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
@@ -106,12 +107,14 @@
                 android:layout_height="50dp"
                 android:background="@color/white">
                 <TextView
+
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:text="用户昵称"
                     android:layout_marginLeft="10dp"/>
                 <TextView
+                    android:id="@+id/my_inf_txt_nicheng"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
@@ -137,6 +140,7 @@
                     android:layout_marginLeft="10dp"
                     android:text="性别"/>
                 <TextView
+                    android:id="@+id/my_info_txt_sex"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
@@ -155,12 +159,14 @@
                 android:layout_height="50dp"
                 android:background="@color/white">
                 <TextView
+
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="10dp"
                     android:text="联系电话"/>
                 <TextView
+                    android:id="@+id/my_info_txt_phone"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
@@ -202,17 +208,20 @@
                 android:background="@color/view_color"></View>
 
             <RelativeLayout
+                android:visibility="gone"
                 android:id="@+id/my_info_weixin"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:background="@color/white">
                 <TextView
+
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="10dp"
                     android:text="微信"/>
                 <TextView
+                    android:id="@+id/my_info_txt_weixin"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
@@ -237,6 +246,7 @@
                     android:layout_marginLeft="10dp"
                     android:text="邮箱"/>
                 <TextView
+                    android:id="@+id/my_info_txt_email"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"

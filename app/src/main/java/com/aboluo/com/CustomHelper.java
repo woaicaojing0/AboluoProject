@@ -78,7 +78,7 @@ public class CustomHelper {
         configCompress(takePhoto);
         configTakePhotoOption(takePhoto);
         switch (view.getId()){
-            case R.id.btnPickBySelect:
+            case R.id.evaluation_take_photo:
                 int limit= Integer.parseInt(etLimit.getText().toString());
                 if(limit>1){
                     if(rgCrop.getCheckedRadioButtonId()==R.id.rbCropYes){
@@ -137,6 +137,7 @@ public class CustomHelper {
                 break;
         }
     }
+    //图片配置
     private void configTakePhotoOption(TakePhoto takePhoto){
         TakePhotoOptions.Builder builder=new TakePhotoOptions.Builder();
         if(rgPickTool.getCheckedRadioButtonId()==R.id.rbPickWithOwn){
@@ -148,6 +149,7 @@ public class CustomHelper {
         takePhoto.setTakePhotoOptions(builder.create());
 
     }
+    //配置压缩
     private void configCompress(TakePhoto takePhoto){
         if(rgCompress.getCheckedRadioButtonId()!=R.id.rbCompressYes){
             takePhoto.onEnableCompress(null,false);
@@ -179,6 +181,7 @@ public class CustomHelper {
 
 
     }
+    //裁剪
     private CropOptions getCropOptions(){
         if(rgCrop.getCheckedRadioButtonId()!=R.id.rbCropYes)return null;
         int height= Integer.parseInt(etCropHeight.getText().toString());

@@ -15,6 +15,7 @@ import android.widget.Toast;
 import com.aboluo.XUtils.CommonUtils;
 import com.aboluo.XUtils.MyApplication;
 import com.aboluo.adapter.AllOrderAdapter;
+import com.aboluo.com.EvaluationActivity;
 import com.aboluo.com.ExpressDetailActivity;
 import com.aboluo.com.OrderDetailActivity;
 import com.aboluo.com.OrderPayActivity;
@@ -52,6 +53,7 @@ public class AllOrderFragment extends Fragment implements View.OnClickListener {
     private String MemberId;
     private int InitPage = 1;
     private LinearLayout allorder_empty;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -102,40 +104,39 @@ public class AllOrderFragment extends Fragment implements View.OnClickListener {
                 Log.i("woaicaojingallorder", response);
                 SearchOrderBean searchOrderBean = new SearchOrderBean();
                 searchOrderBean = gson.fromJson(response, SearchOrderBean.class);
-                if(searchOrderBean.isIsSuccess()) {
+                if (searchOrderBean.isIsSuccess()) {
                     if (orderBean == null) {
-                        if(searchOrderBean.getResult().size() == 0)
-                        {
+                        if (searchOrderBean.getResult().size() == 0) {
                             allorder_empty.setVisibility(View.VISIBLE);
                             allorder_listview.setVisibility(View.GONE);
-                            IsEmpty=true;
-                        }else {
+                            IsEmpty = true;
+                        } else {
                             orderBean = new SearchOrderBean();
                             orderBean = gson.fromJson(response, SearchOrderBean.class);
                             allOrderAdapter = new AllOrderAdapter(AllOrderFragment.this.getContext(), orderBean.getResult());
                             allorder_listview.setAdapter(allOrderAdapter);
                         }
                     } else {
-                        if(searchOrderBean.getResult().size() ==0)
-                        {
+                        if (searchOrderBean.getResult().size() == 0) {
                             Toast.makeText(AllOrderFragment.this.getContext(),
                                     "没有数据啦", Toast.LENGTH_SHORT).show();
-                        }else {
+                        } else {
                             orderBean.getResult().addAll(searchOrderBean.getResult());
                             allOrderAdapter.notifyDataSetChanged();
                         }
                     }
-                    if(IsEmpty)
-                    {}else {
+                    if (IsEmpty) {
+                    } else {
                         allOrderAdapter.setCancelOrderOnclickListener(AllOrderFragment.this);
                         allOrderAdapter.setFindGoodsOnclickListener(AllOrderFragment.this);
                         allOrderAdapter.setPayOnclickListener(AllOrderFragment.this);
                         allOrderAdapter.setSureOkOnclickListener(AllOrderFragment.this);
                         allOrderAdapter.setItemOnclickListener(AllOrderFragment.this);
                         allOrderAdapter.setCuicuiOrderOnClickListener(AllOrderFragment.this);
+                        allOrderAdapter.setEvaluateOrderOnClickListener(AllOrderFragment.this);
                         allorder_listview.onRefreshComplete();
                     }
-                }else {
+                } else {
                     Toast.makeText(AllOrderFragment.this.getContext(),
                             searchOrderBean.getMessage().toString(), Toast.LENGTH_SHORT).show();
                 }
@@ -175,7 +176,7 @@ public class AllOrderFragment extends Fragment implements View.OnClickListener {
                     final int position = (Integer) tag;
                     Toast.makeText(AllOrderFragment.this.getContext(), position + "", Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(AllOrderFragment.this.getActivity(), OrderDetailActivity.class);
-                    intent.putExtra("orderid",orderBean.getResult().get(position).getOrderId());
+                    intent.putExtra("orderid", orderBean.getResult().get(position).getOrderId());
                     startActivity(intent);
                 }
                 break;
@@ -222,6 +223,12 @@ public class AllOrderFragment extends Fragment implements View.OnClickListener {
                     Toast.makeText(AllOrderFragment.this.getContext(), "催货成功", Toast.LENGTH_SHORT).show();
                 }
                 break;
+            case R.id.txt_evaluate:
+                if (tag != null && tag instanceof Integer) { //解决问题：如何知道你点击的按钮是哪一个列表项中的，通过Tag的position
+                    Intent intent = new Intent(AllOrderFragment.this.getContext(), EvaluationActivity.class);
+                    startActivity(intent);
+                }
+                break;
             default:
                 break;
         }
@@ -230,8 +237,8 @@ public class AllOrderFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onResume() {
         super.onResume();
-        InitPage=1;
-        orderBean=null;
+        InitPage = 1;
+        orderBean = null;
         GetInfo(1);
     }
 }

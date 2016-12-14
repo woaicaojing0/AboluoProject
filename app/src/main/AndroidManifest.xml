@@ -91,6 +91,8 @@
         <activity android:name=".ReFundActivity"></activity>
         <activity android:name=".RefundDetailActivity"></activity>
         <activity android:name=".UpdateMyInfoActivity"></activity>
+        <activity android:name=".EvaluationActivity"></activity>
+        <activity android:name=".EvaluationDetailImageActivity"></activity>
         <!--线下测试模式-->
         <activity
             android:name="cn.beecloud.BCMockPayActivity"

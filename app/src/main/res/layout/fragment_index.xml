@@ -467,7 +467,11 @@
                 android:id="@+id/id_ly_brand"
                 layout="@layout/index_brand"
                 android:layout_width="fill_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="8dp"></LinearLayout>
         </LinearLayout>
     </com.handmark.pulltorefresh.library.PullToRefreshScrollView>
 </LinearLayout>

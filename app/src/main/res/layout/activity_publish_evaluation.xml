@@ -32,12 +32,12 @@
                 android:text="发表评价" />
         </RelativeLayout>
     </android.support.v7.widget.Toolbar>
-<ScrollView
+<com.aboluo.widget.UnaryScrollView
     android:background="#f4f4f4"
     android:layout_below="@+id/toolbar"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:scrollbars="none">
+    android:layout_height="wrap_content"
+    android:scrollbars="vertical">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -76,31 +76,22 @@
             android:paddingRight="12dp">
 
             <LinearLayout
+                android:orientation="horizontal"
+                android:id="@+id/store_images"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+            </LinearLayout>
+            <LinearLayout
                 android:id="@+id/evaluation_take_photo"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1">
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:background="@drawable/publish_evaluation_camerabg"
+                android:gravity="center">
 
-                <LinearLayout
-
-                    android:layout_width="80dp"
-                    android:layout_height="80dp"
-                    android:background="@drawable/publish_evaluation_camerabg"
-                    android:gravity="center">
-
-                    <ImageView
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
-                        android:src="@drawable/camera_fill" />
-                </LinearLayout>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginLeft="12dp"
-                    android:text="发照片"
-                    android:textColor="@color/view_color" />
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:src="@drawable/camera_fill" />
             </LinearLayout>
         </LinearLayout>
 
@@ -112,31 +103,23 @@
             android:paddingRight="12dp">
 
             <LinearLayout
-                android:id="@+id/evaluation_take_photo1"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1">
+                android:orientation="horizontal"
+                android:id="@+id/store_images2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+            </LinearLayout>
 
-                <LinearLayout
+            <LinearLayout
 
-                    android:layout_width="80dp"
-                    android:layout_height="80dp"
-                    android:background="@drawable/publish_evaluation_camerabg"
-                    android:gravity="center">
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:background="@drawable/publish_evaluation_camerabg"
+                android:gravity="center">
 
-                    <ImageView
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
-                        android:src="@drawable/camera_fill" />
-                </LinearLayout>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginLeft="12dp"
-                    android:text="发照片"
-                    android:textColor="@color/view_color" />
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:src="@drawable/camera_fill" />
             </LinearLayout>
         </LinearLayout>
 
@@ -199,7 +182,10 @@
             </LinearLayout>
 
         </LinearLayout>
-
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:background="@color/view_color"></View>
         <View
             android:layout_width="match_parent"
             android:layout_height="8dp"
@@ -214,15 +200,15 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="8dp"
                 android:text="店铺评分"
                 android:textColor="@color/black"
                 android:textSize="18sp" />
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="32dp"
-                android:layout_marginTop="23dp"
+                android:layout_height="40dp"
+                android:layout_marginTop="8dp"
                 android:gravity="center_vertical"
                 android:orientation="horizontal">
 
@@ -235,13 +221,13 @@
                     android:id="@+id/room_ratingbar1"
                     style="@style/roomRatingBar"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_marginLeft="50dp"
                     android:numStars="5"></RatingBar>
             </LinearLayout>
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="32dp"
+                android:layout_height="40dp"
                 android:layout_marginTop="12dp"
                 android:gravity="center_vertical"
                 android:orientation="horizontal">
@@ -255,13 +241,14 @@
                     android:id="@+id/room_ratingbar2"
                     style="@style/roomRatingBar"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_marginLeft="50dp"
                     android:numStars="5"></RatingBar>
             </LinearLayout>
             <LinearLayout
+                android:layout_marginBottom="8dp"
                 android:layout_width="match_parent"
-                android:layout_height="32dp"
+                android:layout_height="40dp"
                 android:layout_marginTop="12dp"
                 android:gravity="center_vertical"
                 android:orientation="horizontal">
@@ -272,16 +259,21 @@
                     android:text="描述相符" />
 
                 <RatingBar
+                    android:stepSize="1"
                     android:id="@+id/room_ratingbar3"
                     style="@style/roomRatingBar"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_marginLeft="50dp"
                     android:numStars="5"></RatingBar>
             </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="48dp"></LinearLayout>
         </LinearLayout>
     </LinearLayout>
-</ScrollView>
+
+</com.aboluo.widget.UnaryScrollView>
 <LinearLayout
     android:orientation="vertical"
     android:layout_alignParentBottom="true"

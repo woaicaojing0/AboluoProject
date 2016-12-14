@@ -119,6 +119,8 @@ public class IndexFragment extends Fragment implements View.OnClickListener {
         rollPagerView.setHintView(new ColorPointHintView(this.getActivity(), Color.RED, Color.WHITE));
         theme_view_pager.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, screenWidth / 3));
         theme_view_pager.setHintView(new ColorPointHintView(this.getActivity(), Color.RED, Color.WHITE));
+        brand_gridview.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, screenWidth / 2));
+        theme_gridview.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, screenWidth / 2));
         initConfig();
         rollPagerView.setOnItemClickListener(new OnItemClickListener() {
             @Override
@@ -311,7 +313,7 @@ public class IndexFragment extends Fragment implements View.OnClickListener {
                     seckill_imge1.setVisibility(View.GONE);
                     seckill_imge2.setVisibility(View.GONE);
                     mCvCountdownView.setVisibility(View.GONE);
-                    Toast.makeText(IndexFragment.this.getContext(), "暂无秒杀场次", Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(IndexFragment.this.getContext(), "暂无秒杀场次", Toast.LENGTH_SHORT).show();
                 } else {
                     linelayout_miaosha.setVisibility(View.VISIBLE);
                     listskillbean = (ArrayList<SecKillAllInfo.SkillMainListBean>) secKillAllInfo.getSkillMainList();

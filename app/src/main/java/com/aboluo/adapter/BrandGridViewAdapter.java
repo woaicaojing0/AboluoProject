@@ -6,7 +6,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 
+import com.aboluo.XUtils.ScreenUtils;
 import com.aboluo.com.R;
 import com.squareup.picasso.Picasso;
 
@@ -47,6 +49,8 @@ public class BrandGridViewAdapter extends BaseAdapter {
             holder = new ViewHolder();
             view = LayoutInflater.from(mContext).inflate(R.layout.gridview_brand_item, null);
             holder.imageView = (ImageView) view.findViewById(R.id.img_brand_gridview_item);
+            int screenWidth = ScreenUtils.getScreenWidth(mContext);
+            holder.imageView.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, screenWidth / 4));
             view.setTag(holder);
         } else {
             holder = (ViewHolder) view.getTag();

@@ -1,6 +1,7 @@
 package com.aboluo.com;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -23,6 +24,7 @@ import com.aboluo.XUtils.ScreenUtils;
 import com.aboluo.XUtils.TimeUtils;
 import com.aboluo.adapter.BannerAdapter;
 import com.aboluo.model.SecKillDetailInfo.SeckillListBean;
+import com.aboluo.model.ShopCarBean;
 import com.aboluo.widget.VerticalScrollView;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -32,6 +34,8 @@ import com.android.volley.toolbox.StringRequest;
 import com.jude.rollviewpager.OnItemClickListener;
 import com.jude.rollviewpager.RollPagerView;
 import com.jude.rollviewpager.hintview.ColorPointHintView;
+
+import java.util.ArrayList;
 
 import cn.iwgang.countdownview.CountdownView;
 
@@ -58,7 +62,7 @@ public class SecKillGoodsDetailActivity extends Activity implements View.OnClick
     private SeckillListBean seckillListBean;
     private String Seckill_endtime;
     private ImageView seckillgoods_detail_image_back;
-
+    private ArrayList<ShopCarBean.ResultBean.GoodsShoppingCartListBean> goodsShoppingCartListBean; //传入下订单的信息
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -173,6 +177,7 @@ public class SecKillGoodsDetailActivity extends Activity implements View.OnClick
         Seckill_endtime = bundle.getString("endtime");
         GetSreverTime();
         initPageViewAndWebView(seckillListBean);
+        goodsShoppingCartListBean= new ArrayList<>();
     }
 
     private void initPageViewAndWebView(SeckillListBean seckillListBean) {
@@ -225,7 +230,34 @@ public class SecKillGoodsDetailActivity extends Activity implements View.OnClick
                 break;
             case R.id.seckill_goodsdetail_bottom:
                 Toast.makeText(this, "开始付款啦", Toast.LENGTH_SHORT).show();
+                UnaryBuyNow();
                 break;
         }
+    }
+    public void UnaryBuyNow() {
+//        ShopCarBean.ResultBean.GoodsShoppingCartListBean goodsShoppingCartListBean2 = new ShopCarBean.ResultBean.GoodsShoppingCartListBean(
+//                goodsDetailInfo.getResult().getGoodsInfo().getGoodsId(),
+//                colorid,
+//                color,
+//                standardsid,
+//                standards,
+//                Integer.valueOf(etAmount.getText().toString()),
+//                (new Double(goodsDetailInfo.getResult().getGoodsInfo().getYunfei())).intValue(),
+//                goodsDetailInfo.getResult().getGoodsInfo().getGoodsName(),
+//                goodsDetailInfo.getResult().getGoodsInfo().getGoodsLogo(),
+//                hyprice
+//        );
+        ShopCarBean.ResultBean.GoodsShoppingCartListBean goodsShoppingCartListBean2 = new ShopCarBean.ResultBean.GoodsShoppingCartListBean(
+                seckillListBean.getGoodsId(), seckillListBean.getGoodsColorId(),
+                seckillListBean.getGoodsColor() == null ? "0" : seckillListBean.getGoodsColor().toString(),
+                seckillListBean.getGoodsStandardId(), seckillListBean.getGoodsStandard() == null ? "0" : seckillListBean.getGoodsStandard().toString(),
+                1,0, seckillListBean.getGoodsName(), seckillListBean.getGoodsLogo().toString(), 1
+        );
+        goodsShoppingCartListBean.add(goodsShoppingCartListBean2);
+        Intent intent1 = new Intent(SecKillGoodsDetailActivity.this, MakeOrderActivity.class);
+        intent1.putExtra("allmoney", seckillListBean.getSeckillPrice());
+        intent1.putExtra("data", goodsShoppingCartListBean);
+        intent1.putExtra("payfrom", "3"); //代表从秒杀结算的
+        startActivity(intent1);
     }
 }

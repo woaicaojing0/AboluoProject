@@ -3,6 +3,8 @@ package com.aboluo.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.google.gson.Gson;
+
 import java.util.List;
 
 /**
@@ -11,8 +13,9 @@ import java.util.List;
 
 public class SecKillDetailInfo {
 
+
     /**
-     * SeckillList : [{"SeckillId":13,"SmId":4,"GoodsId":3047,"SeckillPrice":100,"SeckillStatus":0,"SeckCount":80,"SeckRemaid":80,"GoodsColorStandardId":96,"GoodsColorStandardName":"白色 - 521 - 1011.00","GoodsName":"阿波罗研发测试商品","GoodsLogo":"/GoodsLogo/87f7222bd99d4d64b2333bb26887ee6b.jpg","GoodsPicture":"/GoodsPicture/c4915713bc494558b214ceda14b64631.jpg;/GoodsPicture/a874a9679b0a479bb71ebf14c49d8686.jpg;/GoodsPicture/a8cc79ca5cee4f828b5bec06d5eb39df.jpg;/GoodsPicture/892f84a9837c4fbdb9b28b0af36684f9.jpg;"}]
+     * SeckillList : [{"SeckillId":38,"SmId":16,"GoodsId":3053,"SeckillPrice":50,"SeckillStatus":0,"SeckCount":100,"SeckRemaid":100,"GoodsColorStandardId":0,"GoodsColorStandardName":"默认","GoodsName":"1012","GoodsLogo":"/GoodsLogo/90d4fc8e6283413faed73182447c7071.jpg","GoodsPicture":"/GoodsPicture/ead168c4862b40c088d76532ec307c5b.jpg;/GoodsPicture/856a4a7ec1b84fbbb9bbfb23ae02857b.jpg;","GoodsColorId":0,"GoodsColor":null,"GoodsStandardId":0,"GoodsStandard":null}]
      * IsSuccess : true
      * Message : 获取信息成功
      * Result : null
@@ -22,21 +25,30 @@ public class SecKillDetailInfo {
     private String Message;
     private Object Result;
     /**
-     * SeckillId : 13
-     * SmId : 4
-     * GoodsId : 3047
-     * SeckillPrice : 100
+     * SeckillId : 38
+     * SmId : 16
+     * GoodsId : 3053
+     * SeckillPrice : 50
      * SeckillStatus : 0
-     * SeckCount : 80
-     * SeckRemaid : 80
-     * GoodsColorStandardId : 96
-     * GoodsColorStandardName : 白色 - 521 - 1011.00
-     * GoodsName : 阿波罗研发测试商品
-     * GoodsLogo : /GoodsLogo/87f7222bd99d4d64b2333bb26887ee6b.jpg
-     * GoodsPicture : /GoodsPicture/c4915713bc494558b214ceda14b64631.jpg;/GoodsPicture/a874a9679b0a479bb71ebf14c49d8686.jpg;/GoodsPicture/a8cc79ca5cee4f828b5bec06d5eb39df.jpg;/GoodsPicture/892f84a9837c4fbdb9b28b0af36684f9.jpg;
+     * SeckCount : 100
+     * SeckRemaid : 100
+     * GoodsColorStandardId : 0
+     * GoodsColorStandardName : 默认
+     * GoodsName : 1012
+     * GoodsLogo : /GoodsLogo/90d4fc8e6283413faed73182447c7071.jpg
+     * GoodsPicture : /GoodsPicture/ead168c4862b40c088d76532ec307c5b.jpg;/GoodsPicture/856a4a7ec1b84fbbb9bbfb23ae02857b.jpg;
+     * GoodsColorId : 0
+     * GoodsColor : null
+     * GoodsStandardId : 0
+     * GoodsStandard : null
      */
 
     private List<SeckillListBean> SeckillList;
+
+    public static SecKillDetailInfo objectFromData(String str) {
+
+        return new Gson().fromJson(str, SecKillDetailInfo.class);
+    }
 
     public boolean isIsSuccess() {
         return IsSuccess;
@@ -83,6 +95,10 @@ public class SecKillDetailInfo {
         private String GoodsName;
         private String GoodsLogo;
         private String GoodsPicture;
+        private int GoodsColorId;
+        private Object GoodsColor;
+        private int GoodsStandardId;
+        private Object GoodsStandard;
 
         protected SeckillListBean(Parcel in) {
             SeckillId = in.readInt();
@@ -97,6 +113,8 @@ public class SecKillDetailInfo {
             GoodsName = in.readString();
             GoodsLogo = in.readString();
             GoodsPicture = in.readString();
+            GoodsColorId = in.readInt();
+            GoodsStandardId = in.readInt();
         }
 
         public static final Creator<SeckillListBean> CREATOR = new Creator<SeckillListBean>() {
@@ -110,6 +128,11 @@ public class SecKillDetailInfo {
                 return new SeckillListBean[size];
             }
         };
+
+        public static SeckillListBean objectFromData(String str) {
+
+            return new Gson().fromJson(str, SeckillListBean.class);
+        }
 
         public int getSeckillId() {
             return SeckillId;
@@ -207,6 +230,38 @@ public class SecKillDetailInfo {
             this.GoodsPicture = GoodsPicture;
         }
 
+        public int getGoodsColorId() {
+            return GoodsColorId;
+        }
+
+        public void setGoodsColorId(int GoodsColorId) {
+            this.GoodsColorId = GoodsColorId;
+        }
+
+        public Object getGoodsColor() {
+            return GoodsColor;
+        }
+
+        public void setGoodsColor(Object GoodsColor) {
+            this.GoodsColor = GoodsColor;
+        }
+
+        public int getGoodsStandardId() {
+            return GoodsStandardId;
+        }
+
+        public void setGoodsStandardId(int GoodsStandardId) {
+            this.GoodsStandardId = GoodsStandardId;
+        }
+
+        public Object getGoodsStandard() {
+            return GoodsStandard;
+        }
+
+        public void setGoodsStandard(Object GoodsStandard) {
+            this.GoodsStandard = GoodsStandard;
+        }
+
         @Override
         public int describeContents() {
             return 0;
@@ -226,6 +281,8 @@ public class SecKillDetailInfo {
             dest.writeString(GoodsName);
             dest.writeString(GoodsLogo);
             dest.writeString(GoodsPicture);
+            dest.writeInt(GoodsColorId);
+            dest.writeInt(GoodsStandardId);
         }
     }
 }

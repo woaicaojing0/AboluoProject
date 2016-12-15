@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -11,6 +12,7 @@ import com.aboluo.XUtils.CommonUtils;
 import com.aboluo.XUtils.MyApplication;
 import com.aboluo.adapter.OrderDetailItemAdpater;
 import com.aboluo.model.OrderDetailInfo;
+import com.aboluo.widget.MyListview;
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -29,7 +31,7 @@ import cn.pedant.SweetAlert.SweetAlertDialog;
  * Created by cj34920 on 2016/12/8.
  */
 
-public class OrderDetailActivity extends Activity {
+public class OrderDetailActivity extends Activity implements View.OnClickListener {
     private RequestQueue requestQueue;
     private String ImageUrl;
     private String URL;
@@ -43,7 +45,7 @@ public class OrderDetailActivity extends Activity {
     private TextView orderdetail_express_status, orderdetail_express_time, orderdetail_address_name,
             orderdetail_address_phone, orderdetail_address_address, orderdetail_pay_allmonney,
             orderdetail_allmonney2, orderdetail_allmonney;
-    private ListView orderdetail_listview;
+    private MyListview orderdetail_listview;
     private OrderDetailItemAdpater adpater;
 
     @Override
@@ -76,7 +78,7 @@ public class OrderDetailActivity extends Activity {
         orderdetail_pay_allmonney = (TextView) findViewById(R.id.orderdetail_pay_allmonney);
         orderdetail_allmonney2 = (TextView) findViewById(R.id.orderdetail_allmonney2);
         orderdetail_allmonney = (TextView) findViewById(R.id.orderdetail_allmonney);
-        orderdetail_listview = (ListView) findViewById(R.id.orderdetail_listview);
+        orderdetail_listview = (MyListview) findViewById(R.id.orderdetail_listview);
         if (orderid == 0) {
         } else {
             initData();
@@ -100,7 +102,8 @@ public class OrderDetailActivity extends Activity {
                 orderdetail_allmonney2.setText(String.valueOf(orderDetailInfo.getResult().get(0).getTotalPrice()));
                 orderdetail_allmonney.setText(String.valueOf(orderDetailInfo.getResult().get(0).getTotalPrice()));
                 adpater = new OrderDetailItemAdpater(OrderDetailActivity.this
-                        , orderDetailInfo.getResult().get(0).getOrderItemList());
+                        , orderDetailInfo.getResult().get(0).getOrderItemList(), orderDetailInfo.getResult().get(0).getOrderStatus());
+                adpater.setEvaluationOnClickListener(OrderDetailActivity.this);
                 orderdetail_listview.setAdapter(adpater);
             }
         }, new Response.ErrorListener() {
@@ -121,4 +124,26 @@ public class OrderDetailActivity extends Activity {
         requestQueue.add(stringRequest);
     }
 
+    @Override
+    public void onClick(View v) {
+
+        Object tag = v.getTag();
+        int key = v.getId();
+        switch (key) {
+            case R.id.txt_orderdetail_evaluate:
+                if (tag != null && tag instanceof Integer) {
+                    Intent intent = new Intent(this, EvaluationActivity.class);
+                    Bundle bundle = new Bundle();
+                    bundle.getString("Imageurl", orderDetailInfo.getResult().get(0).getOrderItemList()
+                            .get(((Integer) tag).intValue()).getGoodsLogoUrl());
+                    bundle.putInt("Orderid", orderid);
+                    bundle.putInt("Goodsid", orderDetailInfo.getResult().get(0).getOrderItemList()
+                            .get(((Integer) tag).intValue()).getGoodsId());
+                    intent.putExtras(bundle);
+                    startActivity(intent);
+                }
+                break;
+        }
+
+    }
 }

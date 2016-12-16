@@ -30,9 +30,14 @@ public class OrderDetailItemAdpater extends BaseAdapter {
     private int mOrderStatus;
 
     private View.OnClickListener EvaluationOnClickListener;
+    private View.OnClickListener AfterSaleOnClickListener;
 
     public void setEvaluationOnClickListener(View.OnClickListener evaluationOnClickListener) {
         EvaluationOnClickListener = evaluationOnClickListener;
+    }
+
+    public void setAfterSaleOnClickListener(View.OnClickListener afterSaleOnClickListener) {
+        AfterSaleOnClickListener = afterSaleOnClickListener;
     }
 
     public OrderDetailItemAdpater(Context context, List<OrderItemListBean> list, int OrderStatus) {
@@ -73,10 +78,13 @@ public class OrderDetailItemAdpater extends BaseAdapter {
             holder.ordetail_item__goods_num = (TextView) convertView.findViewById(R.id.ordetail_item__goods_num);
             holder.ordetail_item_goodsimage = (ImageView) convertView.findViewById(R.id.ordetail_item_goodsimage);
             holder.txt_orderdetail_evaluate = (TextView) convertView.findViewById(R.id.txt_orderdetail_evaluate);
+            holder.txt_orderdetail_after_sale = (TextView) convertView.findViewById(R.id.txt_orderdetail_after_sale);
             if (mOrderStatus == 40) {
                 holder.txt_orderdetail_evaluate.setVisibility(View.VISIBLE);
+                holder.txt_orderdetail_after_sale.setVisibility(View.VISIBLE);
             } else {
                 holder.txt_orderdetail_evaluate.setVisibility(View.GONE);
+                holder.txt_orderdetail_after_sale.setVisibility(View.GONE);
             }
             convertView.setTag(holder);
         } else {
@@ -117,12 +125,15 @@ public class OrderDetailItemAdpater extends BaseAdapter {
         holder.ordetail_item__goods_num.setText(String.valueOf("X" + String.valueOf(mlist.get(position).getGoodsQuantity())));
         holder.txt_orderdetail_evaluate.setOnClickListener(EvaluationOnClickListener);
         holder.txt_orderdetail_evaluate.setTag(position);
+        holder.txt_orderdetail_after_sale.setOnClickListener(AfterSaleOnClickListener);
+        holder.txt_orderdetail_after_sale.setTag(position);
         return convertView;
     }
 
     class ViewHolder {
         public TextView ordetail_item_goodsname, ordetail_item_hyprice, tordetail_item_yuanprice,
-                ordetail_item_standardandcolor, ordetail_item__goods_num, txt_orderdetail_evaluate;
+                ordetail_item_standardandcolor, ordetail_item__goods_num, txt_orderdetail_evaluate,
+                txt_orderdetail_after_sale;
         public ImageView ordetail_item_goodsimage;
     }
 }

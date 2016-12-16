@@ -177,6 +177,9 @@ public class AllOrderFragment extends Fragment implements View.OnClickListener {
                     Toast.makeText(AllOrderFragment.this.getContext(), position + "", Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(AllOrderFragment.this.getActivity(), OrderDetailActivity.class);
                     intent.putExtra("orderid", orderBean.getResult().get(position).getOrderId());
+                    intent.putExtra("payMoney", orderBean.getResult().get(position).getTotalPrice().toString());
+                    intent.putExtra("OrderNum", orderBean.getResult().get(position).getOrderCode().toString());
+                    intent.putExtra("payfrom", "2");
                     startActivity(intent);
                 }
                 break;
@@ -184,7 +187,7 @@ public class AllOrderFragment extends Fragment implements View.OnClickListener {
                 // 获取 Adapter 中设置的 Tag
                 if (tag != null && tag instanceof Integer) { //解决问题：如何知道你点击的按钮是哪一个列表项中的，通过Tag的position
                     final int position = (Integer) tag;
-                    Toast.makeText(AllOrderFragment.this.getContext(), position + "", Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(AllOrderFragment.this.getContext(), position + "", Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(AllOrderFragment.this.getActivity(), ExpressDetailActivity.class);
                     startActivity(intent);
                 }
@@ -225,7 +228,9 @@ public class AllOrderFragment extends Fragment implements View.OnClickListener {
                 break;
             case R.id.txt_evaluate:
                 if (tag != null && tag instanceof Integer) { //解决问题：如何知道你点击的按钮是哪一个列表项中的，通过Tag的position
-                    Intent intent = new Intent(AllOrderFragment.this.getContext(), EvaluationActivity.class);
+                    final int position = (Integer) tag;
+                    Intent intent = new Intent(AllOrderFragment.this.getActivity(), OrderDetailActivity.class);
+                    intent.putExtra("orderid", orderBean.getResult().get(position).getOrderId());
                     startActivity(intent);
                 }
                 break;

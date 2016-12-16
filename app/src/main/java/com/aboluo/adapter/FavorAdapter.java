@@ -71,17 +71,21 @@ public class FavorAdapter extends BaseAdapter {
         } else {
             holder = (ViewHolder) convertView.getTag();
         }
-        String imageurl = list.get(position).getGoodsLogo().toString();
-        if (imageurl == null) {
+
+        if (list.get(position).getGoodsLogo() == null) {
         } else {
-            String[] imageurls = imageurl.split(";");
-            for (int i = 0; i < imageurls.length; i++) {
-                imageurls[i] = ImageUrl + imageurls[i].toString();
+            String imageurl = list.get(position).getGoodsLogo().toString();
+            if (imageurl == null) {
+            } else {
+                String[] imageurls = imageurl.split(";");
+                for (int i = 0; i < imageurls.length; i++) {
+                    imageurls[i] = ImageUrl + imageurls[i].toString();
+                }
+                Log.i("woaicaojing", imageurls[0].toString());
+                picasso.load(imageurls[0].toString()).placeholder(mcontext.getResources()
+                        .getDrawable(R.drawable.imagviewloading)).error(mcontext.getResources().getDrawable(R.drawable.imageview_error))
+                        .into(holder.favor_item_image);
             }
-            Log.i("woaicaojing", imageurls[0].toString());
-            picasso.load(imageurls[0].toString()).placeholder(mcontext.getResources()
-                    .getDrawable(R.drawable.imagviewloading)).error(mcontext.getResources().getDrawable(R.drawable.imageview_error))
-                    .into(holder.favor_item_image);
         }
         holder.favor_item_more.setOnClickListener(SetOnMoreItemClickListener);
         holder.favor_item_price.setText("￥" + String.valueOf(list.get(position).getHyPrice()));

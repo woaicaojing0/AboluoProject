@@ -14,6 +14,7 @@ import android.widget.TextView;
 import com.aboluo.XUtils.CommonUtils;
 import com.aboluo.com.R;
 import com.aboluo.model.SearchOrderBean.ResultBean;
+import com.bigkoo.convenientbanner.holder.Holder;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -213,6 +214,7 @@ public class AllOrderAdapter extends BaseAdapter {
 
     public String OrderStatus(int orderStatus, ViewHolder2 holder2) {
         String result;
+        clean(holder2);
         switch (orderStatus) {
             case 10:
                 result = "待付款";
@@ -230,14 +232,22 @@ public class AllOrderAdapter extends BaseAdapter {
                 break;
             case 40:
                 result = "交易成功";
-                holder2.txt_findgoods.setVisibility(View.VISIBLE);
                 holder2.txt_evaluate.setVisibility(View.VISIBLE);
-                holder2.txt_after_sale.setVisibility(View.VISIBLE);
                 break;
             default:
                 result = "暂无信息";
                 break;
         }
         return result;
+    }
+    private  void clean(ViewHolder2 holder2)
+    {
+        holder2.txt_cancelorder.setVisibility(View.GONE);
+        holder2.txt_payorder.setVisibility(View.GONE);
+        holder2.txt_cuicui.setVisibility(View.GONE);
+        holder2.txt_findgoods.setVisibility(View.GONE);
+        holder2.txt_ok.setVisibility(View.GONE);
+        holder2.txt_after_sale.setVisibility(View.GONE);
+        holder2.txt_evaluate.setVisibility(View.GONE);
     }
 }

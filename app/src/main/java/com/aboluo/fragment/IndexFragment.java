@@ -29,6 +29,7 @@ import com.aboluo.adapter.BannerAdapter;
 import com.aboluo.adapter.BrandGridViewAdapter;
 import com.aboluo.adapter.GridViewAdapter;
 import com.aboluo.adapter.ThemeGridViewAdapter;
+import com.aboluo.com.GoodsListActivity;
 import com.aboluo.com.HeHuoRenActivity;
 import com.aboluo.com.MainActivity;
 import com.aboluo.com.R;
@@ -87,7 +88,7 @@ public class IndexFragment extends Fragment implements View.OnClickListener {
     private ArrayList<SecKillAllInfo.SkillMainListBean> listskillbean;
     private Picasso picasso;
     private SweetAlertDialog pdialog;
-    private BaseConfigBean indexBannerBean;
+    private BaseConfigBean indexBannerBean, huodongbean, brandConfigBean, themeBannerConfigBean, themeConfigBean;
     private LinearLayout linelayout_miaosha;
     private ImageView huodong_left1, huodong_left2, huodong_right1, huodong_right2, huodong_right3;
     private GridView brand_gridview, theme_gridview;
@@ -402,6 +403,62 @@ public class IndexFragment extends Fragment implements View.OnClickListener {
                 intent3.putExtra("changci", 2);
                 startActivity(intent3);
                 break;
+            case R.id.huodong_left1:
+                if (huodongbean == null) {
+                } else {
+                    Intent intent4 = new Intent(IndexFragment.this.getContext(), GoodsListActivity.class);
+                    if (huodongbean.getAppConfigList().get(0).getParams() == null) {
+                    } else {
+                        intent4.putExtra("goods_type_id", huodongbean.getAppConfigList().get(0).getParams().getChildId());
+                    }
+                    startActivity(intent4);
+                }
+                break;
+            case R.id.huodong_left2:
+                if (huodongbean == null) {
+                } else {
+                    Intent intent5 = new Intent(IndexFragment.this.getContext(), GoodsListActivity.class);
+                    if (huodongbean.getAppConfigList().get(1).getParams() == null) {
+                    } else {
+                        intent5.putExtra("goods_type_id", huodongbean.getAppConfigList().get(1).getParams().getChildId());
+                    }
+                    startActivity(intent5);
+                }
+                break;
+            case R.id.huodong_right1:
+                if (huodongbean == null) {
+                } else {
+                    Intent intent6 = new Intent(IndexFragment.this.getContext(), GoodsListActivity.class);
+                    if (huodongbean.getAppConfigList().get(2).getParams() == null) {
+                    } else {
+                        intent6.putExtra("goods_type_id", huodongbean.getAppConfigList().get(2).getParams().getChildId());
+                    }
+                    startActivity(intent6);
+                }
+                break;
+            case R.id.huodong_right2:
+                if (huodongbean == null) {
+                } else {
+                    Intent intent7 = new Intent(IndexFragment.this.getContext(), GoodsListActivity.class);
+                    if (huodongbean.getAppConfigList().get(3).getParams() == null) {
+                    } else {
+                        intent7.putExtra("goods_type_id", huodongbean.getAppConfigList().get(3).getParams().getChildId());
+                    }
+                    startActivity(intent7);
+                }
+
+                break;
+            case R.id.huodong_right3:
+                if (huodongbean == null) {
+                } else {
+                    Intent intent7 = new Intent(IndexFragment.this.getContext(), GoodsListActivity.class);
+                    if (huodongbean.getAppConfigList().get(4).getParams() == null) {
+                    } else {
+                        intent7.putExtra("goods_type_id", huodongbean.getAppConfigList().get(4).getParams().getChildId());
+                    }
+                    startActivity(intent7);
+                }
+                break;
             default:
                 break;
         }
@@ -479,38 +536,43 @@ public class IndexFragment extends Fragment implements View.OnClickListener {
 
     //加载活动的配置
     private void inithuodong() {
+        huodong_left1.setOnClickListener(this);
+        huodong_left2.setOnClickListener(this);
+        huodong_right1.setOnClickListener(this);
+        huodong_right2.setOnClickListener(this);
+        huodong_right3.setOnClickListener(this);
         StringRequest stringRequest = new StringRequest(Request.Method.POST, URL + "/api/ConfigApi/ReceiveHomeConfig", new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 response = response.replace("\\", "");
                 response = response.substring(1, response.length() - 1);
-                indexBannerBean = gson.fromJson(response, BaseConfigBean.class);
-                if (indexBannerBean.isIsSuccess()) {
-                    String[] arrString = new String[indexBannerBean.getAppConfigList().size()];
-                    for (int i = 0; i < indexBannerBean.getAppConfigList().size(); i++) {
-                        arrString[i] = ImageUrl + indexBannerBean.getAppConfigList().get(i).getImage();
+                huodongbean = gson.fromJson(response, BaseConfigBean.class);
+                if (huodongbean.isIsSuccess()) {
+                    String[] arrString = new String[huodongbean.getAppConfigList().size()];
+                    for (int i = 0; i < huodongbean.getAppConfigList().size(); i++) {
+                        arrString[i] = ImageUrl + huodongbean.getAppConfigList().get(i).getImage();
                     }
                     if (arrString.length >= 5) {
-                        picasso.load(ImageUrl + indexBannerBean.getAppConfigList().get(0).getImage())
+                        picasso.load(ImageUrl + huodongbean.getAppConfigList().get(0).getImage())
                                 .placeholder(IndexFragment.this.getResources().getDrawable(R.drawable.imagviewloading))
                                 .into(huodong_left1);
-                        picasso.load(ImageUrl + indexBannerBean.getAppConfigList().get(1).getImage())
+                        picasso.load(ImageUrl + huodongbean.getAppConfigList().get(1).getImage())
                                 .placeholder(IndexFragment.this.getResources().getDrawable(R.drawable.imagviewloading))
                                 .into(huodong_left2);
-                        picasso.load(ImageUrl + indexBannerBean.getAppConfigList().get(2).getImage())
+                        picasso.load(ImageUrl + huodongbean.getAppConfigList().get(2).getImage())
                                 .placeholder(IndexFragment.this.getResources().getDrawable(R.drawable.imagviewloading))
                                 .into(huodong_right1);
-                        picasso.load(ImageUrl + indexBannerBean.getAppConfigList().get(3).getImage())
+                        picasso.load(ImageUrl + huodongbean.getAppConfigList().get(3).getImage())
                                 .placeholder(IndexFragment.this.getResources().getDrawable(R.drawable.imagviewloading))
                                 .into(huodong_right2);
-                        picasso.load(ImageUrl + indexBannerBean.getAppConfigList().get(4).getImage())
+                        picasso.load(ImageUrl + huodongbean.getAppConfigList().get(4).getImage())
                                 .placeholder(IndexFragment.this.getResources().getDrawable(R.drawable.imagviewloading))
                                 .into(huodong_right3);
                     } else {
 
                     }
                 } else {
-                    Toast.makeText(IndexFragment.this.getContext(), indexBannerBean.getMessage().toString(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(IndexFragment.this.getContext(), huodongbean.getMessage().toString(), Toast.LENGTH_SHORT).show();
                 }
             }
         }, new Response.ErrorListener() {
@@ -538,16 +600,16 @@ public class IndexFragment extends Fragment implements View.OnClickListener {
             public void onResponse(String response) {
                 response = response.replace("\\", "");
                 response = response.substring(1, response.length() - 1);
-                indexBannerBean = gson.fromJson(response, BaseConfigBean.class);
-                if (indexBannerBean.isIsSuccess()) {
-                    String[] arrString = new String[indexBannerBean.getAppConfigList().size()];
-                    for (int i = 0; i < indexBannerBean.getAppConfigList().size(); i++) {
-                        arrString[i] = ImageUrl + indexBannerBean.getAppConfigList().get(i).getImage();
+                brandConfigBean = gson.fromJson(response, BaseConfigBean.class);
+                if (brandConfigBean.isIsSuccess()) {
+                    String[] arrString = new String[brandConfigBean.getAppConfigList().size()];
+                    for (int i = 0; i < brandConfigBean.getAppConfigList().size(); i++) {
+                        arrString[i] = ImageUrl + brandConfigBean.getAppConfigList().get(i).getImage();
                     }
                     BrandGridViewAdapter brandGridViewAdapter = new BrandGridViewAdapter(IndexFragment.this.getContext(), arrString);
                     brand_gridview.setAdapter(brandGridViewAdapter);
                 } else {
-                    Toast.makeText(IndexFragment.this.getContext(), indexBannerBean.getMessage().toString(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(IndexFragment.this.getContext(), brandConfigBean.getMessage().toString(), Toast.LENGTH_SHORT).show();
                 }
             }
         }, new Response.ErrorListener() {
@@ -575,11 +637,11 @@ public class IndexFragment extends Fragment implements View.OnClickListener {
             public void onResponse(String response) {
                 response = response.replace("\\", "");
                 response = response.substring(1, response.length() - 1);
-                indexBannerBean = gson.fromJson(response, BaseConfigBean.class);
-                if (indexBannerBean.isIsSuccess()) {
-                    String[] arrString = new String[indexBannerBean.getAppConfigList().size()];
-                    for (int i = 0; i < indexBannerBean.getAppConfigList().size(); i++) {
-                        arrString[i] = ImageUrl + indexBannerBean.getAppConfigList().get(i).getImage();
+                themeBannerConfigBean = gson.fromJson(response, BaseConfigBean.class);
+                if (themeBannerConfigBean.isIsSuccess()) {
+                    String[] arrString = new String[themeBannerConfigBean.getAppConfigList().size()];
+                    for (int i = 0; i < themeBannerConfigBean.getAppConfigList().size(); i++) {
+                        arrString[i] = ImageUrl + themeBannerConfigBean.getAppConfigList().get(i).getImage();
                     }
                     //头部滚动banner
                     bannerAdapter = new BannerAdapter(IndexFragment.this.getContext(), arrString, theme_view_pager);
@@ -587,7 +649,7 @@ public class IndexFragment extends Fragment implements View.OnClickListener {
                     theme_view_pager.getViewPager().getAdapter().notifyDataSetChanged();// 更新banner图片
                     theme_view_pager.setFocusable(false);
                 } else {
-                    Toast.makeText(IndexFragment.this.getContext(), indexBannerBean.getMessage().toString(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(IndexFragment.this.getContext(), themeBannerConfigBean.getMessage().toString(), Toast.LENGTH_SHORT).show();
                 }
             }
         }, new Response.ErrorListener() {
@@ -608,23 +670,23 @@ public class IndexFragment extends Fragment implements View.OnClickListener {
         requestQueue.add(stringRequest);
     }
 
-    //加载品牌九宫图的配置
+    //加载主题九宫图的配置
     private void initThemeGridview() {
         StringRequest stringRequest = new StringRequest(Request.Method.POST, URL + "/api/ConfigApi/ReceiveHomeConfig", new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 response = response.replace("\\", "");
                 response = response.substring(1, response.length() - 1);
-                indexBannerBean = gson.fromJson(response, BaseConfigBean.class);
-                if (indexBannerBean.isIsSuccess()) {
-                    String[] arrString = new String[indexBannerBean.getAppConfigList().size()];
-                    for (int i = 0; i < indexBannerBean.getAppConfigList().size(); i++) {
-                        arrString[i] = ImageUrl + indexBannerBean.getAppConfigList().get(i).getImage();
+                themeConfigBean = gson.fromJson(response, BaseConfigBean.class);
+                if (themeConfigBean.isIsSuccess()) {
+                    String[] arrString = new String[themeConfigBean.getAppConfigList().size()];
+                    for (int i = 0; i < themeConfigBean.getAppConfigList().size(); i++) {
+                        arrString[i] = ImageUrl + themeConfigBean.getAppConfigList().get(i).getImage();
                     }
                     ThemeGridViewAdapter themeGridViewAdapter = new ThemeGridViewAdapter(IndexFragment.this.getContext(), arrString);
                     theme_gridview.setAdapter(themeGridViewAdapter);
                 } else {
-                    Toast.makeText(IndexFragment.this.getContext(), indexBannerBean.getMessage().toString(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(IndexFragment.this.getContext(), themeConfigBean.getMessage().toString(), Toast.LENGTH_SHORT).show();
                 }
             }
         }, new Response.ErrorListener() {

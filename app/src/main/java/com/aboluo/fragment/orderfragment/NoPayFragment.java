@@ -16,6 +16,7 @@ import android.widget.Toast;
 import com.aboluo.XUtils.CommonUtils;
 import com.aboluo.XUtils.MyApplication;
 import com.aboluo.adapter.AllOrderAdapter;
+import com.aboluo.com.OrderDetailActivity;
 import com.aboluo.com.OrderPayActivity;
 import com.aboluo.com.R;
 import com.aboluo.model.SearchOrderBean;
@@ -130,9 +131,7 @@ public class NoPayFragment extends Fragment implements View.OnClickListener {
                     if(IsEmpty)
                     {}else {
                         allOrderAdapter.setCancelOrderOnclickListener(NoPayFragment.this);
-                        allOrderAdapter.setFindGoodsOnclickListener(NoPayFragment.this);
                         allOrderAdapter.setPayOnclickListener(NoPayFragment.this);
-                        allOrderAdapter.setSureOkOnclickListener(NoPayFragment.this);
                         allOrderAdapter.setItemOnclickListener(NoPayFragment.this);
                         allorder_listview.onRefreshComplete();
                     }
@@ -174,21 +173,12 @@ public class NoPayFragment extends Fragment implements View.OnClickListener {
                 // 获取 Adapter 中设置的 Tag
                 if (tag != null && tag instanceof Integer) { //解决问题：如何知道你点击的按钮是哪一个列表项中的，通过Tag的position
                     final int position = (Integer) tag;
-                    Toast.makeText(context, position + "", Toast.LENGTH_SHORT).show();
-                }
-                break;
-            case R.id.txt_findgoods: //点击添加数量按钮，执行相应的处理
-                // 获取 Adapter 中设置的 Tag
-                if (tag != null && tag instanceof Integer) { //解决问题：如何知道你点击的按钮是哪一个列表项中的，通过Tag的position
-                    final int position = (Integer) tag;
-                    Toast.makeText(context, position + "", Toast.LENGTH_SHORT).show();
-                }
-                break;
-            case R.id.txt_ok: //点击添加数量按钮，执行相应的处理
-                // 获取 Adapter 中设置的 Tag
-                if (tag != null && tag instanceof Integer) { //解决问题：如何知道你点击的按钮是哪一个列表项中的，通过Tag的position
-                    final int position = (Integer) tag;
-                    Toast.makeText(context, position + "", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(NoPayFragment.this.getActivity(), OrderDetailActivity.class);
+                    intent.putExtra("orderid", orderBean.getResult().get(position).getOrderId());
+                    intent.putExtra("payMoney", orderBean.getResult().get(position).getTotalPrice().toString());
+                    intent.putExtra("OrderNum", orderBean.getResult().get(position).getOrderCode().toString());
+                    intent.putExtra("payfrom", "2");
+                    startActivity(intent);
                 }
                 break;
             case R.id.txt_cancelorder: //点击添加数量按钮，执行相应的处理

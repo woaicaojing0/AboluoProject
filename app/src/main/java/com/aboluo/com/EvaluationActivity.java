@@ -106,9 +106,16 @@ public class EvaluationActivity extends TakePhotoActivity implements View.OnClic
 
     private void GetLastActivityInfo() {
         Bundle bundle = getIntent().getExtras();
-        GoodsImageurl = bundle.getString("Imageurl", "");
-        Orderid = bundle.getInt("Orderid", 0);
-        Goodsid = bundle.getInt("Goodsid", 0);
+        if(bundle == null)
+        {
+            GoodsImageurl = "";
+            Orderid = 0;
+            Goodsid = 0;
+        }else {
+            GoodsImageurl = bundle.getString("Imageurl", "");
+            Orderid = bundle.getInt("Orderid", 0);
+            Goodsid = bundle.getInt("Goodsid", 0);
+        }
     }
 
     private void init() {

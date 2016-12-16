@@ -1,6 +1,7 @@
 package com.aboluo.fragment.orderfragment;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -15,6 +16,7 @@ import android.widget.Toast;
 import com.aboluo.XUtils.CommonUtils;
 import com.aboluo.XUtils.MyApplication;
 import com.aboluo.adapter.AllOrderAdapter;
+import com.aboluo.com.OrderDetailActivity;
 import com.aboluo.com.R;
 import com.aboluo.model.SearchOrderBean;
 import com.android.volley.AuthFailureError;
@@ -35,7 +37,7 @@ import java.util.Map;
  * Created by cj34920 on 2016/9/30.
  */
 
-public class NoSendFragment extends Fragment implements View.OnClickListener{
+public class NoSendFragment extends Fragment implements View.OnClickListener {
     private View view;
     private Context context;
     private StringRequest stringRequest;
@@ -50,10 +52,11 @@ public class NoSendFragment extends Fragment implements View.OnClickListener{
     private String MemberId;
     private int InitPage = 1;
     private LinearLayout allorder_empty;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.fragment_allorder,null);
+        view = inflater.inflate(R.layout.fragment_allorder, null);
         init();
         allorder_listview.setOnRefreshListener(new OnRefreshListener2<ListView>() {
             @Override
@@ -74,6 +77,7 @@ public class NoSendFragment extends Fragment implements View.OnClickListener{
         });
         return view;
     }
+
     private void init() {
         context = NoSendFragment.this.getContext();
         MemberId = CommonUtils.GetMemberId(context);
@@ -86,6 +90,7 @@ public class NoSendFragment extends Fragment implements View.OnClickListener{
         gson = new Gson();
         //GetInfo(1);
     }
+
     private void GetInfo(final int page) {
         stringRequest = new StringRequest(Request.Method.POST, URL + "/api/Order/ReceiveOrderListByMemberId", new Response.Listener<String>() {
             @Override
@@ -100,12 +105,11 @@ public class NoSendFragment extends Fragment implements View.OnClickListener{
                 searchOrderBean = gson.fromJson(response, SearchOrderBean.class);
                 if (searchOrderBean.isIsSuccess()) {
                     if (orderBean == null) {
-                        if(searchOrderBean.getResult().size() == 0)
-                        {
+                        if (searchOrderBean.getResult().size() == 0) {
                             allorder_empty.setVisibility(View.VISIBLE);
                             allorder_listview.setVisibility(View.GONE);
-                            IsEmpty=true;
-                        }else {
+                            IsEmpty = true;
+                        } else {
                             orderBean = new SearchOrderBean();
                             orderBean = gson.fromJson(response, SearchOrderBean.class);
                             allOrderAdapter = new AllOrderAdapter(context, orderBean.getResult());
@@ -120,12 +124,8 @@ public class NoSendFragment extends Fragment implements View.OnClickListener{
                             allOrderAdapter.notifyDataSetChanged();
                         }
                     }
-                    if(IsEmpty)
-                    {}else {
-                        allOrderAdapter.setCancelOrderOnclickListener(NoSendFragment.this);
-                        allOrderAdapter.setFindGoodsOnclickListener(NoSendFragment.this);
-                        allOrderAdapter.setPayOnclickListener(NoSendFragment.this);
-                        allOrderAdapter.setSureOkOnclickListener(NoSendFragment.this);
+                    if (IsEmpty) {
+                    } else {
                         allOrderAdapter.setItemOnclickListener(NoSendFragment.this);
                         allOrderAdapter.setCuicuiOrderOnClickListener(NoSendFragment.this);
                         allorder_listview.onRefreshComplete();
@@ -168,36 +168,11 @@ public class NoSendFragment extends Fragment implements View.OnClickListener{
                 // 获取 Adapter 中设置的 Tag
                 if (tag != null && tag instanceof Integer) { //解决问题：如何知道你点击的按钮是哪一个列表项中的，通过Tag的position
                     final int position = (Integer) tag;
-                    Toast.makeText(context, position + "", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(NoSendFragment.this.getActivity(), OrderDetailActivity.class);
+                    intent.putExtra("orderid", orderBean.getResult().get(position).getOrderId());
+                    startActivity(intent);
                 }
                 break;
-            case R.id.txt_findgoods: //点击添加数量按钮，执行相应的处理
-                // 获取 Adapter 中设置的 Tag
-                if (tag != null && tag instanceof Integer) { //解决问题：如何知道你点击的按钮是哪一个列表项中的，通过Tag的position
-                    final int position = (Integer) tag;
-                    Toast.makeText(context, position + "", Toast.LENGTH_SHORT).show();
-                }
-                break;
-            case R.id.txt_ok: //点击添加数量按钮，执行相应的处理
-                // 获取 Adapter 中设置的 Tag
-                if (tag != null && tag instanceof Integer) { //解决问题：如何知道你点击的按钮是哪一个列表项中的，通过Tag的position
-                    final int position = (Integer) tag;
-                    Toast.makeText(context, position + "", Toast.LENGTH_SHORT).show();
-                }
-                break;
-            case R.id.txt_cancelorder: //点击添加数量按钮，执行相应的处理
-                // 获取 Adapter 中设置的 Tag
-                if (tag != null && tag instanceof Integer) { //解决问题：如何知道你点击的按钮是哪一个列表项中的，通过Tag的position
-                    final int position = (Integer) tag;
-                    Toast.makeText(context, position + "", Toast.LENGTH_SHORT).show();
-                }
-                break;
-            case R.id.txt_payorder: //点击添加数量按钮，执行相应的处理
-                // 获取 Adapter 中设置的 Tag
-                if (tag != null && tag instanceof Integer) { //解决问题：如何知道你点击的按钮是哪一个列表项中的，通过Tag的position
-                    final int position = (Integer) tag;
-                    Toast.makeText(context, position + "", Toast.LENGTH_SHORT).show();
-                }
             case R.id.txt_cuicui:
                 if (tag != null && tag instanceof Integer) { //解决问题：如何知道你点击的按钮是哪一个列表项中的，通过Tag的position
                     final int position = (Integer) tag;

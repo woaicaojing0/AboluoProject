@@ -40,6 +40,7 @@ public class ExpressDetailActivity extends Activity {
     private SweetAlertDialog pdialog;
     private ExpressDetailAdapter adapter;
     private MyListview express_listview;
+    private String MemberId;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,6 +49,7 @@ public class ExpressDetailActivity extends Activity {
     }
 
     private void init() {
+        MemberId = CommonUtils.GetMemberId(this);
         requestQueue = MyApplication.getRequestQueue();
         ImageUrl = CommonUtils.GetValueByKey(this, "ImgUrl");
         URL = CommonUtils.GetValueByKey(this, "apiurl");

@@ -172,6 +172,8 @@ public class OrderDetailActivity extends Activity implements View.OnClickListene
                     bundle.putInt("Orderid", orderid);
                     bundle.putInt("Goodsid", orderDetailInfo.getResult().get(0).getOrderItemList()
                             .get(((Integer) tag).intValue()).getGoodsId());
+                    bundle.putInt("orderItemId", orderDetailInfo.getResult().get(0).getOrderItemList()
+                            .get(((Integer) tag).intValue()).getOrderItemId());
                     intent.putExtras(bundle);
                     startActivity(intent);
                 }

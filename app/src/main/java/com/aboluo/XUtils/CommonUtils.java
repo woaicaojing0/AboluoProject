@@ -11,6 +11,7 @@ import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.text.NumberFormat;
+import java.util.List;
 import java.util.Properties;
 
 /**
@@ -173,30 +174,43 @@ public class CommonUtils {
         return editor.commit();
     }
 
-    public static boolean Login(Context context,String UserName,String UserPwd,String UserId)
-    {
+    public static boolean Login(Context context, String UserName, String UserPwd, String UserId) {
         SharedPreferences.Editor editor = context.getSharedPreferences("aboluoInfo", Context.MODE_PRIVATE).edit();
-        editor.putString("UserName",UserName);
-        editor.putString("UserPwd",UserPwd);
-        editor.putString("UserId",UserId);
+        editor.putString("UserName", UserName);
+        editor.putString("UserPwd", UserPwd);
+        editor.putString("UserId", UserId);
         return editor.commit();
     }
-    public static  String GetMemberId(Context context)
-    {
+
+    public static String GetMemberId(Context context) {
         SharedPreferences sharedPreferences = context.getSharedPreferences("aboluoInfo", Context.MODE_PRIVATE);
         String memberId = sharedPreferences.getString("UserId", "0");
-        return  memberId;
+        return memberId;
     }
-    public  static  String Getpercent(int num1,int num2)
-    {
+
+    public static String Getpercent(int num1, int num2) {
         // 创建一个数值格式化对象
         NumberFormat numberFormat = NumberFormat.getInstance();
         // 设置精确到小数点后2位
         numberFormat.setMaximumFractionDigits(2);
 
-        String result = numberFormat.format((float) num1 / (float) num2 * 100)+"%";
+        String result = numberFormat.format((float) num1 / (float) num2 * 100) + "%";
 
         //System.out.println("num1和num2的百分比为:" + result + "%");
         return result;
+    }
+
+    /**
+     *
+     * @param list 需要转化的list
+     * @param separator 分隔符
+     * @return
+     */
+    public static String listToString(List list, char separator) {
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < list.size(); i++) {
+            sb.append(list.get(i)).append(separator);
+        }
+        return sb.toString().substring(0, sb.toString().length() - 1);
     }
 }

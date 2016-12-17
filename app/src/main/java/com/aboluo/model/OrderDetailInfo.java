@@ -1,5 +1,7 @@
 package com.aboluo.model;
 
+import com.google.gson.Gson;
+
 import java.util.List;
 
 /**
@@ -11,7 +13,7 @@ public class OrderDetailInfo {
     /**
      * IsSuccess : true
      * Message : null
-     * Result : [{"orderId":613,"orderCode":"201612082006370002","memberId":1968,"addressId":0,"expressId":4,"orderStatus":10,"payTypeId":0,"tuihuo":"","payTime":"1900-01-01T00:00:00","totalPrice":400,"orderRemarks":null,"shouhuoTime":"1900-01-01T00:00:00","addTime":"2016-12-08T20:06:37","Receiver":"123","Mobile":"123","Address":"123","OrderItemList":[{"orderItemId":725,"goodsId":3067,"goodsName":"20161115测试","goodsSub":"20161115测试","goodsColorId":52,"goodsColor":"黑色1","goodsStandardId":57,"goodsStandard":"XXXXL","goodsPrice":300,"yunfei":0,"goodsLogoUrl":"123","goodsQuantity":1,"Price":300,"orderId":613}],"OrderExpress":{"Id":4,"orderId":613,"expressName":"","expressType":"","expressNumber":"","expressPrice":0,"expressTime":"2016-12-08T20:06:37"},"LocalInfo":[]}]
+     * Result : [{"orderId":621,"orderCode":"201612111402240008","memberId":1968,"addressId":68,"expressId":12,"orderStatus":40,"payTypeId":0,"tuihuo":"","payTime":"1900-01-01T00:00:00","totalPrice":250,"orderRemarks":null,"shouhuoTime":"1900-01-01T00:00:00","addTime":"2016-12-11T14:02:25","Receiver":"qw","Mobile":"18360733212","Address":"wewqfffvvvvvggtgggggggt","OrderItemList":[{"orderItemId":735,"goodsId":3067,"goodsName":"20161115测试","goodsSub":"20161115测试","goodsColorId":52,"goodsColor":"黑色1","goodsStandardId":56,"goodsStandard":"XXL","goodsPrice":300,"yunfei":0,"goodsLogoUrl":null,"goodsQuantity":1,"Price":300,"RefundStatus":0,"EvaluationStatus":18,"orderId":621}],"OrderExpress":{"Id":12,"orderId":621,"expressName":"","expressType":"","expressNumber":"","expressPrice":0,"expressTime":"2016-12-11T14:02:25"},"LocalInfo":[]}]
      * ListResult : null
      */
 
@@ -19,28 +21,33 @@ public class OrderDetailInfo {
     private Object Message;
     private Object ListResult;
     /**
-     * orderId : 613
-     * orderCode : 201612082006370002
+     * orderId : 621
+     * orderCode : 201612111402240008
      * memberId : 1968
-     * addressId : 0
-     * expressId : 4
-     * orderStatus : 10
+     * addressId : 68
+     * expressId : 12
+     * orderStatus : 40
      * payTypeId : 0
      * tuihuo :
      * payTime : 1900-01-01T00:00:00
-     * totalPrice : 400.0
+     * totalPrice : 250
      * orderRemarks : null
      * shouhuoTime : 1900-01-01T00:00:00
-     * addTime : 2016-12-08T20:06:37
-     * Receiver : 123
-     * Mobile : 123
-     * Address : 123
-     * OrderItemList : [{"orderItemId":725,"goodsId":3067,"goodsName":"20161115测试","goodsSub":"20161115测试","goodsColorId":52,"goodsColor":"黑色1","goodsStandardId":57,"goodsStandard":"XXXXL","goodsPrice":300,"yunfei":0,"goodsLogoUrl":"123","goodsQuantity":1,"Price":300,"orderId":613}]
-     * OrderExpress : {"Id":4,"orderId":613,"expressName":"","expressType":"","expressNumber":"","expressPrice":0,"expressTime":"2016-12-08T20:06:37"}
+     * addTime : 2016-12-11T14:02:25
+     * Receiver : qw
+     * Mobile : 18360733212
+     * Address : wewqfffvvvvvggtgggggggt
+     * OrderItemList : [{"orderItemId":735,"goodsId":3067,"goodsName":"20161115测试","goodsSub":"20161115测试","goodsColorId":52,"goodsColor":"黑色1","goodsStandardId":56,"goodsStandard":"XXL","goodsPrice":300,"yunfei":0,"goodsLogoUrl":null,"goodsQuantity":1,"Price":300,"RefundStatus":0,"EvaluationStatus":18,"orderId":621}]
+     * OrderExpress : {"Id":12,"orderId":621,"expressName":"","expressType":"","expressNumber":"","expressPrice":0,"expressTime":"2016-12-11T14:02:25"}
      * LocalInfo : []
      */
 
     private List<ResultBean> Result;
+
+    public static OrderDetailInfo objectFromData(String str) {
+
+        return new Gson().fromJson(str, OrderDetailInfo.class);
+    }
 
     public boolean isIsSuccess() {
         return IsSuccess;
@@ -92,35 +99,42 @@ public class OrderDetailInfo {
         private String Mobile;
         private String Address;
         /**
-         * Id : 4
-         * orderId : 613
+         * Id : 12
+         * orderId : 621
          * expressName :
          * expressType :
          * expressNumber :
-         * expressPrice : 0.0
-         * expressTime : 2016-12-08T20:06:37
+         * expressPrice : 0
+         * expressTime : 2016-12-11T14:02:25
          */
 
         private OrderExpressBean OrderExpress;
         /**
-         * orderItemId : 725
+         * orderItemId : 735
          * goodsId : 3067
          * goodsName : 20161115测试
          * goodsSub : 20161115测试
          * goodsColorId : 52
          * goodsColor : 黑色1
-         * goodsStandardId : 57
-         * goodsStandard : XXXXL
-         * goodsPrice : 300.0
-         * yunfei : 0.0
-         * goodsLogoUrl : 123
+         * goodsStandardId : 56
+         * goodsStandard : XXL
+         * goodsPrice : 300
+         * yunfei : 0
+         * goodsLogoUrl : null
          * goodsQuantity : 1
-         * Price : 300.0
-         * orderId : 613
+         * Price : 300
+         * RefundStatus : 0
+         * EvaluationStatus : 18
+         * orderId : 621
          */
 
         private List<OrderItemListBean> OrderItemList;
         private List<?> LocalInfo;
+
+        public static ResultBean objectFromData(String str) {
+
+            return new Gson().fromJson(str, ResultBean.class);
+        }
 
         public int getOrderId() {
             return orderId;
@@ -283,6 +297,11 @@ public class OrderDetailInfo {
             private double expressPrice;
             private String expressTime;
 
+            public static OrderExpressBean objectFromData(String str) {
+
+                return new Gson().fromJson(str, OrderExpressBean.class);
+            }
+
             public int getId() {
                 return Id;
             }
@@ -354,7 +373,14 @@ public class OrderDetailInfo {
             private String goodsLogoUrl;
             private int goodsQuantity;
             private double Price;
+            private int RefundStatus;
+            private int EvaluationStatus;
             private int orderId;
+
+            public static OrderItemListBean objectFromData(String str) {
+
+                return new Gson().fromJson(str, OrderItemListBean.class);
+            }
 
             public int getOrderItemId() {
                 return orderItemId;
@@ -458,6 +484,22 @@ public class OrderDetailInfo {
 
             public void setPrice(double Price) {
                 this.Price = Price;
+            }
+
+            public int getRefundStatus() {
+                return RefundStatus;
+            }
+
+            public void setRefundStatus(int RefundStatus) {
+                this.RefundStatus = RefundStatus;
+            }
+
+            public int getEvaluationStatus() {
+                return EvaluationStatus;
+            }
+
+            public void setEvaluationStatus(int EvaluationStatus) {
+                this.EvaluationStatus = EvaluationStatus;
             }
 
             public int getOrderId() {

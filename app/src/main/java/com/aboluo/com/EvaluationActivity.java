@@ -185,8 +185,6 @@ public class EvaluationActivity extends TakePhotoActivity implements View.OnClic
     @Override
     public void takeSuccess(TResult result) {
         super.takeSuccess(result);
-        ImageView imageView = new ImageView(this);
-        picasso.load(new File(result.getImages().get(0).getOriginalPath())).into(imageView);
         // store_images.addView(imageView);
         if (tImageArrayList.size() == 0) {
             for (int i = 0; i < result.getImages().size(); i++) {
@@ -288,7 +286,7 @@ public class EvaluationActivity extends TakePhotoActivity implements View.OnClic
             String anonymous = "1"; //是否匿名评价（0 不匿名，1 匿名）
             final String evaluationImage = CommonUtils.listToString(ImageUploadNameList, ';');
             final String evaluationContents = edit_evaluation_content.getText().toString();
-            final String evaluationLevel = String.valueOf(room_ratingbar3.getRating());
+            final String evaluationLevel = String.valueOf((int)(room_ratingbar3.getRating()));
             if (cb_evaluation_name.isChecked()) {
                 anonymous = "0";
             }

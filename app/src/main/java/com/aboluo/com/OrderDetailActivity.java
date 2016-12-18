@@ -24,12 +24,14 @@ import com.android.volley.toolbox.StringRequest;
 import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
 
 /**
+ * 订单详情接口
  * Created by cj34920 on 2016/12/8.
  */
 
@@ -182,7 +184,9 @@ public class OrderDetailActivity extends Activity implements View.OnClickListene
                 if (tag != null && tag instanceof Integer) {
                     Intent intent = new Intent(this, RefundDetailActivity.class);
                     Bundle bundle = new Bundle();
-                    bundle.getString("Imageurl", "123");
+                    bundle.putString("OrderCode",orderDetailInfo.getResult().get(0).getOrderCode());
+                    bundle.putParcelable("refundinfo",orderDetailInfo.getResult().get(0).
+                            getOrderItemList().get((Integer) tag));
                     intent.putExtras(bundle);
                     startActivity(intent);
                 }
@@ -257,5 +261,11 @@ public class OrderDetailActivity extends Activity implements View.OnClickListene
         oederdetail_cancelorder.setVisibility(View.GONE);
         oederdetail_payorder.setVisibility(View.GONE);
         oederdetail_cuicui.setVisibility(View.GONE);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        initData();
     }
 }

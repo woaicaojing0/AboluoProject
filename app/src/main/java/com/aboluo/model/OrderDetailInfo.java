@@ -1,5 +1,8 @@
 package com.aboluo.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.gson.Gson;
 
 import java.util.List;
@@ -359,7 +362,7 @@ public class OrderDetailInfo {
             }
         }
 
-        public static class OrderItemListBean {
+        public static class OrderItemListBean implements Parcelable{
             private int orderItemId;
             private int goodsId;
             private String goodsName;
@@ -376,6 +379,37 @@ public class OrderDetailInfo {
             private int RefundStatus;
             private int EvaluationStatus;
             private int orderId;
+
+            protected OrderItemListBean(Parcel in) {
+                orderItemId = in.readInt();
+                goodsId = in.readInt();
+                goodsName = in.readString();
+                goodsSub = in.readString();
+                goodsColorId = in.readInt();
+                goodsColor = in.readString();
+                goodsStandardId = in.readInt();
+                goodsStandard = in.readString();
+                goodsPrice = in.readDouble();
+                yunfei = in.readDouble();
+                goodsLogoUrl = in.readString();
+                goodsQuantity = in.readInt();
+                Price = in.readDouble();
+                RefundStatus = in.readInt();
+                EvaluationStatus = in.readInt();
+                orderId = in.readInt();
+            }
+
+            public static final Creator<OrderItemListBean> CREATOR = new Creator<OrderItemListBean>() {
+                @Override
+                public OrderItemListBean createFromParcel(Parcel in) {
+                    return new OrderItemListBean(in);
+                }
+
+                @Override
+                public OrderItemListBean[] newArray(int size) {
+                    return new OrderItemListBean[size];
+                }
+            };
 
             public static OrderItemListBean objectFromData(String str) {
 
@@ -508,6 +542,31 @@ public class OrderDetailInfo {
 
             public void setOrderId(int orderId) {
                 this.orderId = orderId;
+            }
+
+            @Override
+            public int describeContents() {
+                return 0;
+            }
+
+            @Override
+            public void writeToParcel(Parcel dest, int flags) {
+                dest.writeInt(orderItemId);
+                dest.writeInt(goodsId);
+                dest.writeString(goodsName);
+                dest.writeString(goodsSub);
+                dest.writeInt(goodsColorId);
+                dest.writeString(goodsColor);
+                dest.writeInt(goodsStandardId);
+                dest.writeString(goodsStandard);
+                dest.writeDouble(goodsPrice);
+                dest.writeDouble(yunfei);
+                dest.writeString(goodsLogoUrl);
+                dest.writeInt(goodsQuantity);
+                dest.writeDouble(Price);
+                dest.writeInt(RefundStatus);
+                dest.writeInt(EvaluationStatus);
+                dest.writeInt(orderId);
             }
         }
     }

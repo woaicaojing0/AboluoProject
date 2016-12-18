@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,7 +15,6 @@ import android.webkit.WebViewClient;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.support.v7.widget.Toolbar;
 
 import com.aboluo.XUtils.CommonUtils;
 import com.aboluo.XUtils.MyApplication;
@@ -69,31 +69,38 @@ public class UnaryDetailActivity extends Activity implements View.OnClickListene
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activitiy_unarydetail);
-        init();
-        unary_buy_now.setOnClickListener(this);
-        ViewTreeObserver vto = unarydetail_view_pager.getViewTreeObserver();
-        vto.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-            @Override
-            public void onGlobalLayout() {
-                unarydetail_view_pager.getViewTreeObserver().removeGlobalOnLayoutListener(
-                        this);
-                height = unarydetail_view_pager.getHeight();
-                unary_detail_scollview.setScrollViewListener(new VerticalScrollView.ScrollViewListener() {
-                    @Override
-                    public void onScrollChanged(VerticalScrollView scrollView, int x, int y, int oldx, int oldy) {
-                        //		Log.i("TAG","y--->"+y+"    height-->"+height);
-                        if (y <= height) {
-                            float scale = (float) y / height;
-                            float alpha = (255 * scale);
-                            Log.i("TAG", "alpha--->" + alpha);
-                            unarydetail_text_title.setTextColor(Color.argb((int) alpha, 0, 0, 0));
-                            //只是layout背景透明(仿知乎滑动效果)
-                            unary_toolbar.setBackgroundColor(Color.argb((int) alpha, 255, 255, 255));
+        if (CommonUtils.IsLogin(UnaryDetailActivity.this)) {
+            init();
+            unary_buy_now.setOnClickListener(this);
+            ViewTreeObserver vto = unarydetail_view_pager.getViewTreeObserver();
+            vto.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+                @Override
+                public void onGlobalLayout() {
+                    unarydetail_view_pager.getViewTreeObserver().removeGlobalOnLayoutListener(
+                            this);
+                    height = unarydetail_view_pager.getHeight();
+                    unary_detail_scollview.setScrollViewListener(new VerticalScrollView.ScrollViewListener() {
+                        @Override
+                        public void onScrollChanged(VerticalScrollView scrollView, int x, int y, int oldx, int oldy) {
+                            //		Log.i("TAG","y--->"+y+"    height-->"+height);
+                            if (y <= height) {
+                                float scale = (float) y / height;
+                                float alpha = (255 * scale);
+                                Log.i("TAG", "alpha--->" + alpha);
+                                unarydetail_text_title.setTextColor(Color.argb((int) alpha, 0, 0, 0));
+                                //只是layout背景透明(仿知乎滑动效果)
+                                unary_toolbar.setBackgroundColor(Color.argb((int) alpha, 255, 255, 255));
+                            }
                         }
-                    }
-                });
-            }
-        });
+                    });
+                }
+            });
+        } else {
+            finish();
+            Toast.makeText(this, "请先登录！", Toast.LENGTH_SHORT).show();
+            Intent intent1 = new Intent(UnaryDetailActivity.this, LoginActivity.class);
+            startActivity(intent1);
+        }
 
     }
 

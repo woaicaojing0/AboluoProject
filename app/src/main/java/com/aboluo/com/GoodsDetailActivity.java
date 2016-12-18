@@ -231,6 +231,40 @@ public class GoodsDetailActivity extends Activity implements View.OnClickListene
                 });
             }
         });
+        goods_detail_webview.setWebViewClient(new WebViewClient(){
+            @Override
+            public void onPageFinished(WebView view, String url) {
+                super.onPageFinished(view, url);
+
+                //这个是一定要加上那个的,配合scrollView和WebView的height=wrap_content属性使用
+                int w = View.MeasureSpec.makeMeasureSpec(0,
+                        View.MeasureSpec.UNSPECIFIED);
+                int h = View.MeasureSpec.makeMeasureSpec(0,
+                        View.MeasureSpec.UNSPECIFIED);
+                //重新测量
+                goods_detail_webview.measure(w, h);
+
+
+
+            }
+        });
+        goods_pingjia_webview.setWebViewClient(new WebViewClient(){
+            @Override
+            public void onPageFinished(WebView view, String url) {
+                super.onPageFinished(view, url);
+
+                //这个是一定要加上那个的,配合scrollView和WebView的height=wrap_content属性使用
+                int w = View.MeasureSpec.makeMeasureSpec(0,
+                        View.MeasureSpec.UNSPECIFIED);
+                int h = View.MeasureSpec.makeMeasureSpec(0,
+                        View.MeasureSpec.UNSPECIFIED);
+                //重新测量
+                goods_pingjia_webview.measure(w, h);
+
+
+
+            }
+        });
 
     }
 
@@ -255,13 +289,13 @@ public class GoodsDetailActivity extends Activity implements View.OnClickListene
         webviewsetting.setLoadWithOverviewMode(true);
         goods_detail_webview.loadUrl(detailurl);
         goods_detail_webview.setWebViewClient(new WebViewClient());
-        //评价地址
-        WebSettings webviewsetting2 = goods_pingjia_webview.getSettings();
-        webviewsetting2.setJavaScriptEnabled(true);
-        webviewsetting2.setUseWideViewPort(true);//关键点
-        webviewsetting2.setLoadWithOverviewMode(true);
-        goods_pingjia_webview.loadUrl("http://t.back.aboluomall.com/Moblie/ShowEvaluationList");
-        goods_pingjia_webview.setWebViewClient(new WebViewClient());
+//        //评价地址
+//        WebSettings webviewsetting2 = goods_pingjia_webview.getSettings();
+//        webviewsetting2.setJavaScriptEnabled(true);
+//        webviewsetting2.setUseWideViewPort(true);//关键点
+//        webviewsetting2.setLoadWithOverviewMode(true);
+//        goods_pingjia_webview.loadUrl("http://t.back.aboluomall.com/Moblie/ShowEvaluationList");
+//        goods_pingjia_webview.setWebViewClient(new WebViewClient());
     }
 
     /**
@@ -805,14 +839,14 @@ public class GoodsDetailActivity extends Activity implements View.OnClickListene
                 case R.id.goods_detail_layout_btn: //商品详情按钮
                     id_goods_detail_view.setVisibility(View.VISIBLE);
                     id_goods_pingjia_view.setVisibility(View.GONE);
-                    goods_detail_webview.setVisibility(View.VISIBLE);
-                    goods_pingjia_webview.setVisibility(View.GONE);
+                    String detailurl0 = CommonUtils.GetValueByKey(GoodsDetailActivity.this, "backUrl") + "/moblie/Index?productId=" + goods_id;
+                    goods_detail_webview.loadUrl(detailurl0);
                     break;
-                case R.id.goods_pingjia_layout_btn: //商品评价按钮
+                case R.id.goods_pingjia_layout_btn: //商品评价按钮Moblie/ShowEvaluation?goodsId
                     id_goods_detail_view.setVisibility(View.GONE);
                     id_goods_pingjia_view.setVisibility(View.VISIBLE);
-                    goods_detail_webview.setVisibility(View.GONE);
-                    goods_pingjia_webview.setVisibility(View.VISIBLE);
+                    String detailurl = CommonUtils.GetValueByKey(GoodsDetailActivity.this, "backUrl") + "/Moblie/ShowEvaluation?goodsId=" + goods_id;
+                    goods_detail_webview.loadUrl(detailurl);
                     break;
                 case R.id.detail_goods: //首部购物车
                     Intent intent = new Intent(GoodsDetailActivity.this, MainActivity.class);

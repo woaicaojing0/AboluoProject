@@ -124,29 +124,29 @@ public class OrderDetailItemAdpater extends BaseAdapter {
         holder.tordetail_item_yuanprice.setText("￥" + String.valueOf(mlist.get(position).getGoodsPrice()));
         holder.ordetail_item__goods_num.setText(String.valueOf("X" + String.valueOf(mlist.get(position).getGoodsQuantity())));
         if (mlist.get(position).getRefundStatus() == -1) {
-            holder.txt_orderdetail_evaluate.setOnClickListener(EvaluationOnClickListener);
-            holder.txt_orderdetail_evaluate.setTag(position);
+            holder.txt_orderdetail_after_sale.setOnClickListener(EvaluationOnClickListener);
+            holder.txt_orderdetail_after_sale.setTag(position);
         } else {
             switch (mlist.get(position).getRefundStatus()) {
                 case 0: //待审核
-                    holder.txt_orderdetail_evaluate.setText("待审核");
+                    holder.txt_orderdetail_after_sale.setText("待审核");
                     break;
                 case 1: //审核通过
-                    holder.txt_orderdetail_evaluate.setText("审核通过");
+                    holder.txt_orderdetail_after_sale.setText("审核通过");
                     break;
                 case 2: //审核未通过
-                    holder.txt_orderdetail_evaluate.setText("审核未通过");
+                    holder.txt_orderdetail_after_sale.setText("审核未通过");
                     break;
                 case 3: //已完成
-                    holder.txt_orderdetail_evaluate.setText("已完成");
+                    holder.txt_orderdetail_after_sale.setText("已完成");
                     break;
             }
         }
         if (mlist.get(position).getEvaluationStatus() > 0) {
-            holder.txt_orderdetail_after_sale.setText("已评价");
+            holder.txt_orderdetail_evaluate.setText("已评价");
         } else {
-            holder.txt_orderdetail_after_sale.setOnClickListener(AfterSaleOnClickListener);
-            holder.txt_orderdetail_after_sale.setTag(position);
+            holder.txt_orderdetail_evaluate.setOnClickListener(AfterSaleOnClickListener);
+            holder.txt_orderdetail_evaluate.setTag(position);
         }
         return convertView;
     }

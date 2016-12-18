@@ -16,6 +16,7 @@
 
         <!--中间ScrollView-->
         <com.aboluo.widget.VerticalScrollView
+            android:descendantFocusability="blocksDescendants"
             android:id="@+id/contentscrollView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

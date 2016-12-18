@@ -28,8 +28,8 @@ public class BaseApplication extends Application {
         //开启测试模式
         BeeCloud.setSandbox(false);
         //此处第二个参数是控制台的test secret
-        BeeCloud.setAppIdAndSecret("b17c4dc6-4420-44d4-8334-2e664700a189",
-                "4b4a1c8a-6d65-499a-b75f-8099099b36c3");
+        BeeCloud.setAppIdAndSecret(CommonUtils.GetValueByKey(this,"BeeClound"),
+                CommonUtils.GetValueByKey(this,"LiveSecret"));
         registerActivityLifecycleCallbacks(new ActivityLifecycleCallbacks() {
             @Override
             public void onActivityStopped(Activity activity) {

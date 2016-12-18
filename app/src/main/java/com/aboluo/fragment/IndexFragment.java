@@ -643,12 +643,18 @@ public class IndexFragment extends Fragment implements View.OnClickListener {
                     for (int i = 0; i < themeBannerConfigBean.getAppConfigList().size(); i++) {
                         arrString[i] = ImageUrl + themeBannerConfigBean.getAppConfigList().get(i).getImage();
                     }
-                    //头部滚动banner
-                    bannerAdapter = new BannerAdapter(IndexFragment.this.getContext(), arrString, theme_view_pager);
-                    theme_view_pager.setAdapter(bannerAdapter); // 设置适配器（请求网络图片，适配器要在网络请求完成后再设置）
-                    theme_view_pager.getViewPager().getAdapter().notifyDataSetChanged();// 更新banner图片
-                    theme_view_pager.setFocusable(false);
+                    if (arrString.length == 0) {
+                        theme_view_pager.setVisibility(View.GONE);
+                    } else {
+                        //头部滚动banner
+                        theme_view_pager.setVisibility(View.VISIBLE);
+                        bannerAdapter = new BannerAdapter(IndexFragment.this.getContext(), arrString, theme_view_pager);
+                        theme_view_pager.setAdapter(bannerAdapter); // 设置适配器（请求网络图片，适配器要在网络请求完成后再设置）
+                        theme_view_pager.getViewPager().getAdapter().notifyDataSetChanged();// 更新banner图片
+                        theme_view_pager.setFocusable(false);
+                    }
                 } else {
+                    theme_view_pager.setVisibility(View.GONE);
                     Toast.makeText(IndexFragment.this.getContext(), themeBannerConfigBean.getMessage().toString(), Toast.LENGTH_SHORT).show();
                 }
             }
@@ -683,9 +689,16 @@ public class IndexFragment extends Fragment implements View.OnClickListener {
                     for (int i = 0; i < themeConfigBean.getAppConfigList().size(); i++) {
                         arrString[i] = ImageUrl + themeConfigBean.getAppConfigList().get(i).getImage();
                     }
-                    ThemeGridViewAdapter themeGridViewAdapter = new ThemeGridViewAdapter(IndexFragment.this.getContext(), arrString);
-                    theme_gridview.setAdapter(themeGridViewAdapter);
+                    if (arrString.length == 0) {
+                        theme_gridview.setVisibility(View.GONE);
+                    } else {
+                        theme_gridview.setVisibility(View.VISIBLE);
+                        ThemeGridViewAdapter themeGridViewAdapter = new ThemeGridViewAdapter(IndexFragment.this.getContext(), arrString);
+                        theme_gridview.setAdapter(themeGridViewAdapter);
+                    }
+
                 } else {
+                    theme_gridview.setVisibility(View.GONE);
                     Toast.makeText(IndexFragment.this.getContext(), themeConfigBean.getMessage().toString(), Toast.LENGTH_SHORT).show();
                 }
             }

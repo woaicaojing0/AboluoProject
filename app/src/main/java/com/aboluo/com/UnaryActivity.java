@@ -276,6 +276,7 @@ public class UnaryActivity extends FragmentActivity implements UnaryAdapter.OnRe
                 break;
             case R.id.unary_begin:
                 if (CommonUtils.IsLogin(UnaryActivity.this)) {
+                    goodsShoppingCartListBean.clear();
                     if (tag != null && tag instanceof Integer) {
                         final int position = (Integer) tag;
                         UnaryListBean.ListResultBean listResultBean = unaryListBean.getListResult().get(position);

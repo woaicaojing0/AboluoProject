@@ -10,11 +10,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
+import android.widget.Toast;
 
 import com.aboluo.XUtils.CommonUtils;
+import com.aboluo.XUtils.MyApplication;
 import com.aboluo.com.AddressActivity;
 import com.aboluo.com.FavorActivity;
 import com.aboluo.com.LoginActivity;
@@ -22,7 +25,21 @@ import com.aboluo.com.MyInfoAcitvity;
 import com.aboluo.com.OrderActivity;
 import com.aboluo.com.R;
 import com.aboluo.com.ReFundActivity;
+import com.aboluo.model.MyInfoBean;
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.google.gson.Gson;
+import com.squareup.picasso.Picasso;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import cn.pedant.SweetAlert.SweetAlertDialog;
+import de.hdodenhof.circleimageview.CircleImageView;
 import me.everything.android.ui.overscroll.OverScrollDecoratorHelper;
 
 /**
@@ -36,7 +53,16 @@ public class MyFragment extends Fragment implements View.OnClickListener {
             feedbackInfo, my_favor,my_refund;
     private RelativeLayout my_allorder, my_addressinfo;
     private SharedPreferences sharedPreferences;
-
+    private RequestQueue requestQueue;
+    private String ImageUrl;
+    private String URL;
+    private String APPToken;
+    private Gson gson;
+    private Picasso picasso;
+    private SweetAlertDialog pdialog;
+    private String MemberId;
+    private MyInfoBean myInfoBean;
+    private CircleImageView my_fragment_imageview;
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         if (view == null) {
@@ -69,6 +95,13 @@ public class MyFragment extends Fragment implements View.OnClickListener {
     }
 
     private void init() {
+        MemberId = CommonUtils.GetMemberId(MyFragment.this.getContext());
+        requestQueue = MyApplication.getRequestQueue();
+        ImageUrl = CommonUtils.GetValueByKey(MyFragment.this.getContext(), "ImgUrl");
+        URL = CommonUtils.GetValueByKey(MyFragment.this.getContext(), "apiurl");
+        APPToken = CommonUtils.GetValueByKey(MyFragment.this.getContext(), "APPToken");
+        picasso = Picasso.with(MyFragment.this.getContext());
+        gson = new Gson();
         btn = (Button) view.findViewById(R.id.my_btn);
         my_out = (Button) view.findViewById(R.id.my_out);
         my_scrollview = (ScrollView) view.findViewById(R.id.my_scrollview);
@@ -83,8 +116,47 @@ public class MyFragment extends Fragment implements View.OnClickListener {
         my_refund = (LinearLayout) view.findViewById(R.id.my_refund);
         feedbackInfo = (LinearLayout) view.findViewById(R.id.feedbackInfo);
         sharedPreferences = MyFragment.this.getContext().getSharedPreferences("aboluo", Context.MODE_PRIVATE);
+        my_fragment_imageview = (CircleImageView) view.findViewById(R.id.my_fragment_imageview);
+        InitData();
     }
+    private void InitData() {
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, URL + "/api/MemberApi/ReceiveUserInfo", new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                response = response.replace("\\", "");
+                response = response.substring(1, response.length() - 1);
+                myInfoBean = gson.fromJson(response, MyInfoBean.class);
+                if (myInfoBean.isIsSuccess()) {
+                    String url = myInfoBean.getResult().getMemberLogoUrl();
+                    picasso.load(myInfoBean.getResult().getMemberLogoUrl())
+                            .placeholder(R.drawable.image_placeholder)
+                            .error(R.drawable.imageview_error).into(my_fragment_imageview);
+                } else {
+                    Toast.makeText(MyFragment.this.getContext(), "个人信息获取失败，请重试", Toast.LENGTH_SHORT).show();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                byte[] bytecode = error.networkResponse.data;
+                String s = new String(bytecode);
+                Toast.makeText(MyFragment.this.getContext(), s, Toast.LENGTH_SHORT).show();
+            }
+        }) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> map = new HashMap<>();
+                map.put("MemberId", MemberId);
+                map.put("APPToken", APPToken);
+                map.put("LoginCheckToken", "123");
+                map.put("LoginPhone", "123");
+                return map;
+            }
 
+            ;
+        };
+        requestQueue.add(stringRequest);
+    }
     @Override
     public void onClick(View v) {
         switch (v.getId()) {

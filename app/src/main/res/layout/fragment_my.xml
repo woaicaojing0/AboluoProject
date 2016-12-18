@@ -40,7 +40,7 @@
                         android:layout_height="match_parent">
                         <de.hdodenhof.circleimageview.CircleImageView
                             xmlns:app="http://schemas.android.com/apk/res-auto"
-
+                            android:id="@+id/my_fragment_imageview"
                             android:layout_width="65dp"
                             android:layout_height="65dp"
                             android:src="@drawable/logo"

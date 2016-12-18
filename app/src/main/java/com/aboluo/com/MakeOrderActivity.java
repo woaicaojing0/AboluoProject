@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -66,6 +67,7 @@ public class MakeOrderActivity extends Activity implements View.OnClickListener 
     private RelativeLayout change_make_sure_location;
     private String MemberId;
     private String payfrom;
+    private ImageView all_makeorder_text_back;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,10 +84,12 @@ public class MakeOrderActivity extends Activity implements View.OnClickListener 
         }
         order_yunfei.setText("运费：" + String.valueOf(yunfei));
         change_make_sure_location.setOnClickListener(this);
+        all_makeorder_text_back.setOnClickListener(this);
     }
 
     private void init() {
         txt_allmoney = (TextView) findViewById(R.id.txt_allmoney);
+        all_makeorder_text_back = (ImageView) findViewById(R.id.all_makeorder_text_back);
         goods_smallallmoeny = (TextView) findViewById(R.id.goods_smallallmoeny);
         txt_goods_allnum = (TextView) findViewById(R.id.txt_goods_allnum);
         address_detailaddress = (TextView) findViewById(R.id.address_detailaddress);
@@ -256,6 +260,10 @@ public class MakeOrderActivity extends Activity implements View.OnClickListener 
             case R.id.change_make_sure_location:
                 Intent intent = new Intent(MakeOrderActivity.this, ChooseAddressActivtiy.class);
                 startActivityForResult(intent, choose_address_requestcode);
+                break;
+            case R.id.all_makeorder_text_back:
+                finish();
+                break;
         }
     }
 

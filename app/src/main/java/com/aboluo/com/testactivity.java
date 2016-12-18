@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.webkit.WebView;
 import android.widget.RelativeLayout;
 
 import com.jph.takephoto.app.TakePhotoActivity;
@@ -20,14 +21,13 @@ public class testactivity extends TakePhotoActivity implements View.OnClickListe
     private View view;
     private RelativeLayout my_info_image;
     private CustomHelper customHelper;
+    private WebView webView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_my_info);
-        my_info_image = (RelativeLayout) findViewById(R.id.my_info_image);
-        view= LayoutInflater.from(this).inflate(R.layout.common_layout,null);
-        customHelper=CustomHelper.of(view);
-        my_info_image.setOnClickListener(this);
+        setContentView(R.layout.test_acticvity);
+        webView = (WebView) findViewById(R.id.test_webview);
+        webView.loadUrl("http://back.aboluomall.com/Moblie/ShowEvaluation?goodsId=12");
     }
 
     @Override

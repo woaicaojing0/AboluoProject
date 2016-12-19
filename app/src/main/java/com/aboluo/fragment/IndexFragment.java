@@ -90,7 +90,7 @@ public class IndexFragment extends Fragment implements View.OnClickListener {
     private SweetAlertDialog pdialog;
     private BaseConfigBean indexBannerBean, huodongbean, brandConfigBean, themeBannerConfigBean, themeConfigBean;
     private LinearLayout linelayout_miaosha;
-    private ImageView huodong_left1, huodong_left2, huodong_right1, huodong_right2, huodong_right3;
+    private ImageView huodong_left1, huodong_left2, huodong_right1, huodong_right2, huodong_right3, theme_imageview;
     private GridView brand_gridview, theme_gridview;
 
     @Override
@@ -246,6 +246,7 @@ public class IndexFragment extends Fragment implements View.OnClickListener {
         huodong_right1 = (ImageView) view.findViewById(R.id.huodong_right1);
         huodong_right2 = (ImageView) view.findViewById(R.id.huodong_right2);
         huodong_right3 = (ImageView) view.findViewById(R.id.huodong_right3);
+        theme_imageview = (ImageView) view.findViewById(R.id.theme_imageview);
         brand_gridview = (GridView) view.findViewById(R.id.brand_gridview);
         theme_gridview = (GridView) view.findViewById(R.id.theme_gridview);
         mCvCountdownView = (CountdownView) view.findViewById(R.id.cv_countdownViewTest1);
@@ -689,7 +690,14 @@ public class IndexFragment extends Fragment implements View.OnClickListener {
                     for (int i = 0; i < themeConfigBean.getAppConfigList().size(); i++) {
                         arrString[i] = ImageUrl + themeConfigBean.getAppConfigList().get(i).getImage();
                     }
+
                     if (arrString.length == 0) {
+                        if (themeBannerConfigBean.isIsSuccess()) {
+                            String[] arrString2 = new String[themeBannerConfigBean.getAppConfigList().size()];
+                            if (arrString2.length == 0) { //如果主题的banner 和主题的九宫格都没有，则隐藏主题导购
+                                theme_imageview.setVisibility(View.GONE);
+                            }
+                        }
                         theme_gridview.setVisibility(View.GONE);
                     } else {
                         theme_gridview.setVisibility(View.VISIBLE);
@@ -698,6 +706,7 @@ public class IndexFragment extends Fragment implements View.OnClickListener {
                     }
 
                 } else {
+                    theme_imageview.setVisibility(View.GONE);
                     theme_gridview.setVisibility(View.GONE);
                     Toast.makeText(IndexFragment.this.getContext(), themeConfigBean.getMessage().toString(), Toast.LENGTH_SHORT).show();
                 }

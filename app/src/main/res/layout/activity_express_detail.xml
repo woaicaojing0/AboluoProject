@@ -57,6 +57,7 @@
                 android:background="#dddddd"></View>
 
             <LinearLayout
+                android:id="@+id/express_top"
                 android:layout_width="match_parent"
                 android:layout_height="120dp"
                 android:orientation="horizontal">
@@ -67,6 +68,7 @@
                     android:gravity="center_vertical|right">
 
                     <ImageView
+                        android:id="@+id/express_goods_image"
                         android:layout_width="80dp"
                         android:layout_height="80dp"
                         android:src="@mipmap/ic_launcher" />
@@ -98,6 +100,7 @@
                                 android:textStyle="bold" />
 
                             <TextView
+                                android:id="@+id/express_status"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="已签收"
@@ -119,6 +122,7 @@
                                 android:textColor="#9d9d9d" />
 
                             <TextView
+                                android:id="@+id/express_company_name"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="韵达快递"
@@ -138,6 +142,7 @@
                                 android:textColor="#9d9d9d" />
 
                             <TextView
+                                android:id="@+id/express_code"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="3943606166668"
@@ -145,6 +150,7 @@
                         </LinearLayout>
 
                         <LinearLayout
+                            android:visibility="gone"
                             android:layout_width="wrap_content"
                             android:layout_height="24dp"
                             android:gravity="center_vertical"
@@ -157,6 +163,7 @@
                                 android:textColor="#9d9d9d" />
 
                             <TextView
+                                android:id="@+id/express_company_phone"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="95546"

@@ -24,7 +24,6 @@ import com.android.volley.toolbox.StringRequest;
 import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -116,6 +115,7 @@ public class OrderDetailActivity extends Activity implements View.OnClickListene
     }
 
     private void initData() {
+        pdialog.show();
         StringRequest stringRequest = new StringRequest(Request.Method.POST, URL + "/api/Order/ReceiveOrderDetailByMemberId", new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
@@ -140,11 +140,12 @@ public class OrderDetailActivity extends Activity implements View.OnClickListene
                 adpater.setAfterSaleOnClickListener(OrderDetailActivity.this);
                 orderdetail_listview.setAdapter(adpater);
                 OrderDetailStatus(orderDetailInfo.getResult().get(0).getOrderStatus());
+                pdialog.dismiss();
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-
+                pdialog.dismiss();
             }
         }) {
             @Override
@@ -184,8 +185,8 @@ public class OrderDetailActivity extends Activity implements View.OnClickListene
                 if (tag != null && tag instanceof Integer) {
                     Intent intent = new Intent(this, RefundDetailActivity.class);
                     Bundle bundle = new Bundle();
-                    bundle.putString("OrderCode",orderDetailInfo.getResult().get(0).getOrderCode());
-                    bundle.putParcelable("refundinfo",orderDetailInfo.getResult().get(0).
+                    bundle.putString("OrderCode", orderDetailInfo.getResult().get(0).getOrderCode());
+                    bundle.putParcelable("refundinfo", orderDetailInfo.getResult().get(0).
                             getOrderItemList().get((Integer) tag));
                     intent.putExtras(bundle);
                     startActivity(intent);
@@ -193,6 +194,9 @@ public class OrderDetailActivity extends Activity implements View.OnClickListene
                 break;
             case R.id.orderdetail_expressdetail:
                 Intent intent1 = new Intent(this, ExpressDetailActivity.class);
+                intent1.putExtra("OrderId", orderDetailInfo.getResult().get(0).getOrderId());
+                intent1.putExtra("ExpressId", orderDetailInfo.getResult().get(0).getExpressId());
+                intent1.putExtra("GoodsLogoUrl", orderDetailInfo.getResult().get(0).getOrderItemList().get(0).getGoodsLogoUrl());
                 startActivity(intent1);
                 break;
             case R.id.oederdetail_cancelorder:

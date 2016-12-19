@@ -10,7 +10,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
@@ -19,8 +18,10 @@ import android.widget.Toast;
 import com.aboluo.XUtils.CommonUtils;
 import com.aboluo.XUtils.MyApplication;
 import com.aboluo.com.AddressActivity;
+import com.aboluo.com.CreditInfoActivity;
 import com.aboluo.com.FavorActivity;
 import com.aboluo.com.LoginActivity;
+import com.aboluo.com.MainActivity;
 import com.aboluo.com.MyInfoAcitvity;
 import com.aboluo.com.OrderActivity;
 import com.aboluo.com.R;
@@ -50,7 +51,7 @@ public class MyFragment extends Fragment implements View.OnClickListener {
     private Button btn, my_out;
     private ScrollView my_scrollview;
     private LinearLayout linLayout_my_info, my_nopay, my_nosend, my_noreceive, my_assessment,
-            feedbackInfo, my_favor,my_refund;
+            feedbackInfo, my_favor, my_refund, creditinfodetail;
     private RelativeLayout my_allorder, my_addressinfo;
     private SharedPreferences sharedPreferences;
     private RequestQueue requestQueue;
@@ -63,6 +64,7 @@ public class MyFragment extends Fragment implements View.OnClickListener {
     private String MemberId;
     private MyInfoBean myInfoBean;
     private CircleImageView my_fragment_imageview;
+
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         if (view == null) {
@@ -84,6 +86,7 @@ public class MyFragment extends Fragment implements View.OnClickListener {
         my_refund.setOnClickListener(this);
         btn.setOnClickListener(this);
         my_out.setOnClickListener(this);
+        creditinfodetail.setOnClickListener(this);
         if (CommonUtils.IsLogin(MyFragment.this.getContext())) {
             btn.setVisibility(View.GONE);
             my_out.setVisibility(View.VISIBLE);
@@ -115,10 +118,12 @@ public class MyFragment extends Fragment implements View.OnClickListener {
         my_addressinfo = (RelativeLayout) view.findViewById(R.id.my_addressinfo);
         my_refund = (LinearLayout) view.findViewById(R.id.my_refund);
         feedbackInfo = (LinearLayout) view.findViewById(R.id.feedbackInfo);
+        creditinfodetail = (LinearLayout) view.findViewById(R.id.creditinfodetail);
         sharedPreferences = MyFragment.this.getContext().getSharedPreferences("aboluo", Context.MODE_PRIVATE);
         my_fragment_imageview = (CircleImageView) view.findViewById(R.id.my_fragment_imageview);
         InitData();
     }
+
     private void InitData() {
         StringRequest stringRequest = new StringRequest(Request.Method.POST, URL + "/api/MemberApi/ReceiveUserInfo", new Response.Listener<String>() {
             @Override
@@ -157,6 +162,7 @@ public class MyFragment extends Fragment implements View.OnClickListener {
         };
         requestQueue.add(stringRequest);
     }
+
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
@@ -201,7 +207,8 @@ public class MyFragment extends Fragment implements View.OnClickListener {
                 break;
             case R.id.my_out:
                 CommonUtils.LoginOut(MyFragment.this.getContext());
-                Intent intent7 = new Intent(MyFragment.this.getActivity(), LoginActivity.class);
+                Intent intent7 = new Intent(MyFragment.this.getActivity(), MainActivity.class);
+                intent7.putExtra("id", 1);
                 startActivity(intent7);
                 break;
             case R.id.my_btn:
@@ -215,6 +222,10 @@ public class MyFragment extends Fragment implements View.OnClickListener {
             case R.id.my_refund:
                 Intent intent10 = new Intent(MyFragment.this.getActivity(), ReFundActivity.class);
                 startActivity(intent10);
+                break;
+            case R.id.creditinfodetail:
+                Intent intent11 = new Intent(MyFragment.this.getActivity(), CreditInfoActivity.class);
+                startActivity(intent11);
                 break;
 
         }

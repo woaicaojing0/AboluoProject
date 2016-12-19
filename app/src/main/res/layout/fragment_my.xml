@@ -228,6 +228,7 @@
 
 
             <LinearLayout
+                android:id="@+id/creditinfodetail"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
                 android:layout_marginBottom="10dp"

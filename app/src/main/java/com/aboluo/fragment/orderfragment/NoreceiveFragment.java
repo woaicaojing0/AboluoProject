@@ -19,6 +19,7 @@ import com.aboluo.adapter.AllOrderAdapter;
 import com.aboluo.com.ExpressDetailActivity;
 import com.aboluo.com.OrderDetailActivity;
 import com.aboluo.com.R;
+import com.aboluo.model.BaseModel;
 import com.aboluo.model.SearchOrderBean;
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -54,6 +55,7 @@ public class NoreceiveFragment extends Fragment implements View.OnClickListener 
     private String MemberId;
     private int InitPage = 1;
     private LinearLayout allorder_empty;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -106,12 +108,11 @@ public class NoreceiveFragment extends Fragment implements View.OnClickListener 
                 searchOrderBean = gson.fromJson(response, SearchOrderBean.class);
                 if (searchOrderBean.isIsSuccess()) {
                     if (orderBean == null) {
-                        if(searchOrderBean.getResult().size() == 0)
-                        {
+                        if (searchOrderBean.getResult().size() == 0) {
                             allorder_empty.setVisibility(View.VISIBLE);
                             allorder_listview.setVisibility(View.GONE);
-                            IsEmpty=true;
-                        }else {
+                            IsEmpty = true;
+                        } else {
                             orderBean = new SearchOrderBean();
                             orderBean = gson.fromJson(response, SearchOrderBean.class);
                             allOrderAdapter = new AllOrderAdapter(context, orderBean.getResult());
@@ -126,8 +127,8 @@ public class NoreceiveFragment extends Fragment implements View.OnClickListener 
                             allOrderAdapter.notifyDataSetChanged();
                         }
                     }
-                    if(IsEmpty)
-                    {}else {
+                    if (IsEmpty) {
+                    } else {
                         allOrderAdapter.setFindGoodsOnclickListener(NoreceiveFragment.this);
                         allOrderAdapter.setSureOkOnclickListener(NoreceiveFragment.this);
                         allOrderAdapter.setItemOnclickListener(NoreceiveFragment.this);
@@ -189,7 +190,8 @@ public class NoreceiveFragment extends Fragment implements View.OnClickListener 
                 // 获取 Adapter 中设置的 Tag
                 if (tag != null && tag instanceof Integer) { //解决问题：如何知道你点击的按钮是哪一个列表项中的，通过Tag的position
                     final int position = (Integer) tag;
-                    Toast.makeText(context, position + "", Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(context, position + "", Toast.LENGTH_SHORT).show();
+                    ConfirmOrder(String.valueOf(orderBean.getResult().get(position).getOrderId()));
                 }
                 break;
         }
@@ -201,5 +203,40 @@ public class NoreceiveFragment extends Fragment implements View.OnClickListener 
         InitPage = 1;
         orderBean = null;
         GetInfo(1);
+    }
+
+    /**
+     * 确认收货
+     */
+    private void ConfirmOrder(final String OrderId) {
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, URL + "/api/Order/ReceiveConfirmReceipt", new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                response = response.replace("\\", "");
+                response = response.substring(1, response.length() - 1);
+                BaseModel baseModel = gson.fromJson(response, BaseModel.class);
+                Toast.makeText(context, baseModel.getMessage().toString(), Toast.LENGTH_SHORT).show();
+                InitPage = 1;
+                orderBean = null;
+                GetInfo(1);
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        }) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> map = new HashMap<>();
+                map.put("MemberId", MemberId);
+                map.put("OrderId", OrderId);
+                map.put("APPToken", APPToken);
+                return map;
+            }
+
+            ;
+        };
+        requestQueue.add(stringRequest);
     }
 }

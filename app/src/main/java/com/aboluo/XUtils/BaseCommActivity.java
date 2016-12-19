@@ -1,7 +1,7 @@
 package com.aboluo.XUtils;
 
 import android.app.Activity;
-import android.graphics.Color;
+
 import android.os.Bundle;
 
 import com.aboluo.com.R;
@@ -16,7 +16,7 @@ import com.squareup.picasso.Picasso;
 
 import java.util.HashMap;
 import java.util.Map;
-
+import android.graphics.Color;
 import cn.pedant.SweetAlert.SweetAlertDialog;
 
 /**

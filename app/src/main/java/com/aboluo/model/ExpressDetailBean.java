@@ -60,6 +60,7 @@ public class ExpressDetailBean {
     }
 
     public static class ResultBean {
+        private String name;
         private String number;
         private String type;
         private String deliverystatus;
@@ -92,6 +93,14 @@ public class ExpressDetailBean {
 
         public void setDeliverystatus(String deliverystatus) {
             this.deliverystatus = deliverystatus;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
         }
 
         public List<ListBean> getList() {

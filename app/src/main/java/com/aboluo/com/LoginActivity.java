@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -25,6 +26,9 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.google.gson.Gson;
+import com.tencent.mm.sdk.modelmsg.SendAuth;
+import com.tencent.mm.sdk.openapi.IWXAPI;
+import com.tencent.mm.sdk.openapi.WXAPIFactory;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -47,7 +51,9 @@ public class LoginActivity extends Activity implements View.OnClickListener, Tex
     private SharedPreferences preferences;
     private SharedPreferences.Editor editor;
     private static final int registercode = 1;
-
+    private LinearLayout weixin_login;
+    public static final String APP_ID = "wxf933769a912e1313";
+    private IWXAPI api;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,8 +63,11 @@ public class LoginActivity extends Activity implements View.OnClickListener, Tex
         txt_register.setOnClickListener(this);
         txt_retrivepwd.setOnClickListener(this);
         btn_login.setOnClickListener(this);
+        weixin_login.setOnClickListener(this);
         edit_userpwd.addTextChangedListener(this);
         edit_username.addTextChangedListener(this);
+        api = WXAPIFactory.createWXAPI(LoginActivity.this, APP_ID, true);
+        api.registerApp(APP_ID);
     }
 
     private void init() {
@@ -68,6 +77,7 @@ public class LoginActivity extends Activity implements View.OnClickListener, Tex
         btn_login = (Button) findViewById(R.id.btn_login);
         edit_username = (EditText) findViewById(R.id.edit_username);
         edit_userpwd = (EditText) findViewById(R.id.edit_userpwd);
+        weixin_login = (LinearLayout) findViewById(R.id.weixin_login);
         requestQueue = MyApplication.getRequestQueue();
         pDialog = new SweetAlertDialog(this, SweetAlertDialog.PROGRESS_TYPE);
         pDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
@@ -136,6 +146,19 @@ public class LoginActivity extends Activity implements View.OnClickListener, Tex
                     }
                 };
                 requestQueue.add(stringRequest);
+                break;
+            case R.id.weixin_login:
+                // send oauth request
+                if( !api.isWXAppInstalled()){
+                    Toast.makeText(LoginActivity.this, "请先安装微信应用", Toast.LENGTH_SHORT).show();
+                }else {
+                    final SendAuth.Req req = new SendAuth.Req();
+                    req.scope = "snsapi_userinfo";
+                    req.state = "com.aboluo.com";
+                    api.sendReq(req);
+                }
+                break;
+
         }
     }
 

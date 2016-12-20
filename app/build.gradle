@@ -1,9 +1,16 @@
 apply plugin: 'com.android.application'
 
 android {
+    signingConfigs {
+        debug {
+            keyAlias 'hxzc'
+            keyPassword '201314'
+            storeFile file('G:/cjkey.key')
+            storePassword '201314'
+        }
+    }
     compileSdkVersion 23
     buildToolsVersion "24.0.1"
-
     defaultConfig {
         applicationId "com.aboluo.com"
         minSdkVersion 17
@@ -15,6 +22,9 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+        debug {
+            signingConfig signingConfigs.debug
         }
     }
 }
@@ -67,7 +77,7 @@ dependencies {
     compile 'com.jakewharton:butterknife:7.0.1'
     compile 'com.leo.gesturelibray:GestureLibray:1.1.1'
     //sdk解锁
-    //compile project(path: ':sdk')
+    compile project(path: ':sdk')
     compile 'com.jph.takephoto:takephoto_library:4.0.2'
     //七牛云
     compile 'com.qiniu:qiniu-android-sdk:7.3.+'

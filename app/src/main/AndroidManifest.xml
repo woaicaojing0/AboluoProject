@@ -94,6 +94,8 @@
         <activity android:name=".EvaluationDetailImageActivity"></activity>
         <activity android:name=".CreditInfoActivity"></activity>
         <activity android:name=".PartnerActivity"></activity>
+        <activity android:name=".wxapi.WXEntryActivity"
+            android:exported="true"></activity>
         <!--线下测试模式-->
         <activity
             android:name="cn.beecloud.BCMockPayActivity"

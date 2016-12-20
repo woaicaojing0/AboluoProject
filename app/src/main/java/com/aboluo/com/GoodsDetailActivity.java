@@ -828,8 +828,8 @@ public class GoodsDetailActivity extends Activity implements View.OnClickListene
                 case R.id.goods_pingjia_layout_btn: //商品评价按钮Moblie/ShowEvaluation?goodsId
                     id_goods_detail_view.setVisibility(View.GONE);
                     id_goods_pingjia_view.setVisibility(View.VISIBLE);
-                    String detailurl = CommonUtils.GetValueByKey(GoodsDetailActivity.this, "backUrl") + "/Moblie/ShowEvaluation?goodsId=" + goods_id;
-                    //String detailurl1 = "http://back.aboluomall.com/Moblie/ShowEvaluation?goodsId=12";
+                   // String detailurl = CommonUtils.GetValueByKey(GoodsDetailActivity.this, "backUrl") + "/Moblie/ShowEvaluation?goodsId=" + goods_id;
+                    String detailurl = "http://back.aboluomall.com/Moblie/ShowEvaluation?goodsId=12";
                     initwebview(detailurl,null);
                     break;
                 case R.id.detail_goods: //首部购物车

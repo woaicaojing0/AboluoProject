@@ -93,6 +93,7 @@
         <activity android:name=".EvaluationActivity"></activity>
         <activity android:name=".EvaluationDetailImageActivity"></activity>
         <activity android:name=".CreditInfoActivity"></activity>
+        <activity android:name=".PartnerActivity"></activity>
         <!--线下测试模式-->
         <activity
             android:name="cn.beecloud.BCMockPayActivity"

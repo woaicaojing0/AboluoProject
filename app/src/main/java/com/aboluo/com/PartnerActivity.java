@@ -1,0 +1,244 @@
+package com.aboluo.com;
+
+import android.app.Activity;
+import android.content.Intent;
+import android.graphics.Color;
+import android.os.Bundle;
+import android.support.v4.app.ActivityOptionsCompat;
+import android.support.v7.widget.LinearLayoutManager;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.Toast;
+
+import com.aboluo.XUtils.CommonUtils;
+import com.aboluo.XUtils.MyApplication;
+import com.aboluo.XUtils.RBCallbkRecyclerView;
+import com.aboluo.XUtils.ScreenUtils;
+import com.aboluo.adapter.BannerAdapter;
+import com.aboluo.adapter.PartnerAdpater;
+import com.aboluo.adapter.RecycleViewAdapter;
+import com.aboluo.fragment.IndexFragment;
+import com.aboluo.model.BaseConfigBean;
+import com.aboluo.model.GoodsListInfo;
+import com.aboluo.widget.MyListview;
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.google.gson.Gson;
+import com.jude.rollviewpager.RollPagerView;
+import com.jude.rollviewpager.hintview.ColorPointHintView;
+import com.squareup.picasso.Picasso;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import cn.pedant.SweetAlert.SweetAlertDialog;
+
+/**
+ * Created by cj34920 on 2016/12/20.
+ * 合伙人acitivity
+ */
+
+public class PartnerActivity extends Activity implements PartnerAdpater.OnRecyclerViewItemClickListener, View.OnClickListener {
+    private RequestQueue requestQueue;
+    private String ImageUrl;
+    private String URL;
+    private String APPToken;
+    private Gson gson;
+    private Picasso picasso;
+    private SweetAlertDialog pdialog;
+    private String MemberId;
+    private RBCallbkRecyclerView parnter_RecyclerView;
+    private int currentpages = 1;
+    private int pagesize = 10;
+    private GoodsListInfo listBean;
+    private List<GoodsListInfo.ResultBean.GoodsListBean> goodsListBean;
+    private PartnerAdpater partnerAdpater;
+    private BaseConfigBean PartnerBannerBean;
+    private RollPagerView partner_view_pager;
+    private BannerAdapter bannerAdapter;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_parnter);
+        init();
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+        parnter_RecyclerView.setLayoutManager(linearLayoutManager);
+        parnter_RecyclerView.setReachBottomRow(4);
+        parnter_RecyclerView.setOnReachBottomListener(new RBCallbkRecyclerView.OnReachBottomListener() {
+            @Override
+            public void onReachBottom() {
+                //即将到达几部，进行加载更多操作
+                currentpages++;
+                initData(currentpages);
+            }
+        });
+        int screenWidth = ScreenUtils.getScreenWidth(this);
+        //设置顶部banner 的高度 高度是宽度的1/3；
+        partner_view_pager.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, screenWidth / 3));
+        partner_view_pager.setHintView(new ColorPointHintView(this, Color.RED, Color.WHITE));
+        initData(1);
+    }
+
+    private void init() {
+        MemberId = CommonUtils.GetMemberId(this);
+        requestQueue = MyApplication.getRequestQueue();
+        ImageUrl = CommonUtils.GetValueByKey(this, "ImgUrl");
+        URL = CommonUtils.GetValueByKey(this, "apiurl");
+        APPToken = CommonUtils.GetValueByKey(this, "APPToken");
+        picasso = Picasso.with(this);
+        gson = new Gson();
+        pdialog = new SweetAlertDialog(this, SweetAlertDialog.PROGRESS_TYPE);
+        pdialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
+        pdialog.setTitleText("加载中");
+        pdialog.setCanceledOnTouchOutside(true);
+        pdialog.setCancelable(true);
+        parnter_RecyclerView = (RBCallbkRecyclerView) findViewById(R.id.parnter_RecyclerView);
+        partner_view_pager = (RollPagerView) findViewById(R.id.partner_view_pager);
+        InitBanner();
+    }
+
+    /**
+     * 加载recycleview 的数据
+     * @param currentpage 当前的页数，分页使用
+     */
+    private void initData(final int currentpage) {
+        pdialog.show();
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, URL + "/api/Goods/ReceiveGoodsList", new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                response = response.replace("\\", "");
+                response = response.substring(1, response.length() - 1);
+                listBean = gson.fromJson(response, GoodsListInfo.class);
+                if (goodsListBean == null) {
+                    goodsListBean = listBean.getResult().getGoodsList();
+                    partnerAdpater = new PartnerAdpater(goodsListBean, PartnerActivity.this);
+                    parnter_RecyclerView.setAdapter(partnerAdpater);
+                    partnerAdpater.setOnItemClickListener(PartnerActivity.this);
+                } else {
+                    List<GoodsListInfo.ResultBean.GoodsListBean> goodsListBean2 = listBean.getResult().getGoodsList();
+                    goodsListBean.addAll(goodsListBean2);
+                    partnerAdpater.notifyDataSetChanged();
+                }
+                pdialog.dismiss();
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                pdialog.dismiss();
+            }
+        }) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> map = new HashMap<>();
+                map.put("APPToken", APPToken);
+                map.put("CurrentPage", String.valueOf(currentpage));
+                map.put("PageSize", String.valueOf(pagesize));
+                return map;
+            }
+
+            ;
+        };
+        requestQueue.add(stringRequest);
+    }
+
+    @Override
+    public void onClick(View v) {
+
+    }
+
+    @Override
+    public void onItemClick(View view, int position) {
+        Toast.makeText(this, position + "", Toast.LENGTH_SHORT).show();
+        int goods_id = goodsListBean.get(position).getGoodsId();
+        Intent intent = new Intent(this, GoodsDetailActivity.class);
+        intent.putExtra("goods_id", goods_id);
+        String transitionName = "detail";
+        ActivityOptionsCompat transitionActivityOptionsCompat = ActivityOptionsCompat.makeSceneTransitionAnimation(PartnerActivity.this, view.findViewById(R.id.parnter_goods_image), transitionName);
+        startActivity(intent, transitionActivityOptionsCompat.toBundle());
+    }
+
+    /**
+     * 加载合伙人首部的banner
+     */
+    private void InitBanner() {
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, URL + "/api/ConfigApi/ReceiveHomeConfig", new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                response = response.replace("\\", "");
+                response = response.substring(1, response.length() - 1);
+                PartnerBannerBean = gson.fromJson(response, BaseConfigBean.class);
+                if (PartnerBannerBean.isIsSuccess()) {
+                    String[] arrString = new String[PartnerBannerBean.getAppConfigList().size()];
+                    for (int i = 0; i < PartnerBannerBean.getAppConfigList().size(); i++) {
+                        arrString[i] = ImageUrl + PartnerBannerBean.getAppConfigList().get(i).getImage();
+                    }
+                    if (arrString.length == 0) {
+                        partner_view_pager.setVisibility(View.GONE);
+                    } else {
+                        //头部滚动banner
+                        partner_view_pager.setVisibility(View.VISIBLE);
+                        bannerAdapter = new BannerAdapter(PartnerActivity.this, arrString, partner_view_pager);
+                        partner_view_pager.setAdapter(bannerAdapter); // 设置适配器（请求网络图片，适配器要在网络请求完成后再设置）
+                        partner_view_pager.getViewPager().getAdapter().notifyDataSetChanged();// 更新banner图片
+                        partner_view_pager.setFocusable(false);
+                    }
+                } else {
+                    Toast.makeText(PartnerActivity.this, PartnerBannerBean.getMessage().toString(), Toast.LENGTH_SHORT).show();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                byte[] data = error.networkResponse.data;
+                Toast.makeText(PartnerActivity.this, new String(data), Toast.LENGTH_SHORT).show();
+            }
+        }) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> map = new HashMap<>();
+                map.put("ConfigModule", "4");
+                map.put("APPToken", APPToken);
+                return map;
+            }
+
+            ;
+        };
+        requestQueue.add(stringRequest);
+    }
+    /**
+     * 获取合伙人对应的商品的id
+     */
+    private void GetPartnerTypeId() {
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, URL + "", new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                response = response.replace("\\", "");
+                response = response.substring(1, response.length() - 1);
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                byte[] data = error.networkResponse.data;
+                Toast.makeText(PartnerActivity.this, new String(data), Toast.LENGTH_SHORT).show();
+            }
+        }) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> map = new HashMap<>();
+                map.put("ConfigModule", "4");
+                map.put("APPToken", APPToken);
+                return map;
+            }
+
+            ;
+        };
+        requestQueue.add(stringRequest);
+    }
+}

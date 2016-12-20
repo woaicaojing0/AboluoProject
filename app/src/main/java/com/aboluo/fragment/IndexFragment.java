@@ -32,6 +32,7 @@ import com.aboluo.adapter.ThemeGridViewAdapter;
 import com.aboluo.com.GoodsListActivity;
 import com.aboluo.com.HeHuoRenActivity;
 import com.aboluo.com.MainActivity;
+import com.aboluo.com.PartnerActivity;
 import com.aboluo.com.R;
 import com.aboluo.com.SecKillActivity;
 import com.aboluo.com.SignInActivity;
@@ -136,7 +137,7 @@ public class IndexFragment extends Fragment implements View.OnClickListener {
                 Toast.makeText(IndexFragment.this.getActivity(), position + "", Toast.LENGTH_SHORT).show();
                 switch (position) {
                     case 0:
-                        Intent intent = new Intent(getActivity(), HeHuoRenActivity.class);
+                        Intent intent = new Intent(getActivity(), PartnerActivity.class);
                         startActivity(intent);
                         break;
                     case 1:

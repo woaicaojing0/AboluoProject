@@ -94,8 +94,7 @@ public class CreditInfoActivity extends Activity {
                             creditInfoBean.getNickName().toString());
                     Log.i("CreditInfoActivity", (creditInfoBean.getMemberLogo() == null ? "" :
                             creditInfoBean.getMemberLogo().toString()));
-                    picasso.load((creditInfoBean.getMemberLogo() == null ? "" :
-                            creditInfoBean.getMemberLogo().toString())).placeholder(
+                    picasso.load(CommonUtils.GetLoginImageURl(CreditInfoActivity.this)).placeholder(
                             R.drawable.image_placeholder).error(R.drawable.imageview_error)
                             .into(cred_userImage);
                 } else {

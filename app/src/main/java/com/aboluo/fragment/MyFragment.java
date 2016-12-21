@@ -133,7 +133,7 @@ public class MyFragment extends Fragment implements View.OnClickListener {
                 myInfoBean = gson.fromJson(response, MyInfoBean.class);
                 if (myInfoBean.isIsSuccess()) {
                     String url = myInfoBean.getResult().getMemberLogoUrl();
-                    picasso.load(myInfoBean.getResult().getMemberLogoUrl())
+                    picasso.load(CommonUtils.GetLoginImageURl(MyFragment.this.getContext()))
                             .placeholder(R.drawable.image_placeholder)
                             .error(R.drawable.imageview_error).into(my_fragment_imageview);
                 } else {

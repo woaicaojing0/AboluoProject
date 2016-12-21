@@ -41,7 +41,7 @@
         </activity>
         <activity
             android:name=".LoginActivity"
-            android:launchMode="singleTask"></activity>
+            android:launchMode="singleInstance"></activity>
         <activity android:name=".RegisterActivity"></activity>
         <activity android:name=".Retrievepwd1Activity"></activity>
         <activity android:name=".RetrievePwd0Activity"></activity>
@@ -95,7 +95,10 @@
         <activity android:name=".CreditInfoActivity"></activity>
         <activity android:name=".PartnerActivity"></activity>
         <activity android:name=".wxapi.WXEntryActivity"
-            android:exported="true"></activity>
+            android:exported="true"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" >
+
+        </activity>
         <!--线下测试模式-->
         <activity
             android:name="cn.beecloud.BCMockPayActivity"

@@ -54,6 +54,7 @@ public class LoginActivity extends Activity implements View.OnClickListener, Tex
     private LinearLayout weixin_login;
     public static final String APP_ID = "wxf933769a912e1313";
     private IWXAPI api;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,6 +69,16 @@ public class LoginActivity extends Activity implements View.OnClickListener, Tex
         edit_username.addTextChangedListener(this);
         api = WXAPIFactory.createWXAPI(LoginActivity.this, APP_ID, true);
         api.registerApp(APP_ID);
+        Intent intent = getIntent();
+        if (intent.getExtras() == null) {
+        } else {
+            String status = intent.getStringExtra("status");
+            if (status.equals("OK")) {
+                LoginActivity.this.finish();
+            } else {
+                Toast.makeText(this, "登录失败", Toast.LENGTH_SHORT).show();
+            }
+        }
     }
 
     private void init() {
@@ -117,6 +128,11 @@ public class LoginActivity extends Activity implements View.OnClickListener, Tex
                         Toast.makeText(LoginActivity.this, loginInfo.getMessage(), Toast.LENGTH_SHORT).show();
                         if (loginInfo.isIsSuccess()) {
                             if (CommonUtils.Login(LoginActivity.this, name, pwd, String.valueOf(loginInfo.getResult().getMemberEntity().getMemberId()))) {
+                                if (CommonUtils.LoginImageURl(LoginActivity.this, loginInfo.getResult()
+                                        .getMemberEntity().getWechatLogoUrl())) {
+                                } else {
+                                    Toast.makeText(LoginActivity.this, "头像获取失败", Toast.LENGTH_SHORT).show();
+                                }
                                 LoginActivity.this.finish();
                             } else {
 
@@ -149,9 +165,9 @@ public class LoginActivity extends Activity implements View.OnClickListener, Tex
                 break;
             case R.id.weixin_login:
                 // send oauth request
-                if( !api.isWXAppInstalled()){
+                if (!api.isWXAppInstalled()) {
                     Toast.makeText(LoginActivity.this, "请先安装微信应用", Toast.LENGTH_SHORT).show();
-                }else {
+                } else {
                     final SendAuth.Req req = new SendAuth.Req();
                     req.scope = "snsapi_userinfo";
                     req.state = "com.aboluo.com";
@@ -204,5 +220,20 @@ public class LoginActivity extends Activity implements View.OnClickListener, Tex
                 break;
         }
 
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        if (intent.getExtras() == null) {
+        } else {
+            String status = intent.getStringExtra("status");
+            if (status.equals("OK")) {
+                this.finish();
+                Toast.makeText(this, "登陆成功", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(this, "登录失败", Toast.LENGTH_SHORT).show();
+            }
+        }
     }
 }

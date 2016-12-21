@@ -390,7 +390,7 @@ public class MyInfoAcitvity extends TakePhotoActivity implements View.OnClickLis
         my_info_txt_email.setText(myInfoBean.getResult().getMemberEmail() == null ? "未填写"
                 : myInfoBean.getResult().getMemberEmail().toString());
         Log.i("MyInfoAcitivity", myInfoBean.getResult().getMemberLogoUrl());
-        picasso.load(myInfoBean.getResult().getMemberLogoUrl())
+        picasso.load(CommonUtils.GetLoginImageURl(this))
                 .placeholder(R.drawable.image_placeholder)
                 .error(R.drawable.imageview_error).into(my_info_touxiang);
     }

@@ -181,7 +181,16 @@ public class CommonUtils {
         editor.putString("UserId", UserId);
         return editor.commit();
     }
-
+    public static boolean LoginImageURl(Context context, String URL) {
+        SharedPreferences.Editor editor = context.getSharedPreferences("aboluoInfo", Context.MODE_PRIVATE).edit();
+        editor.putString("LoginImageURl", URL);
+        return editor.commit();
+    }
+    public static String GetLoginImageURl(Context context) {
+        SharedPreferences sharedPreferences = context.getSharedPreferences("aboluoInfo", Context.MODE_PRIVATE);
+        String LoginImageURl = sharedPreferences.getString("LoginImageURl", "0");
+        return LoginImageURl;
+    }
     public static String GetMemberId(Context context) {
         SharedPreferences sharedPreferences = context.getSharedPreferences("aboluoInfo", Context.MODE_PRIVATE);
         String memberId = sharedPreferences.getString("UserId", "0");

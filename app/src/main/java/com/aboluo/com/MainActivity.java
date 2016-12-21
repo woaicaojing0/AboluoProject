@@ -49,6 +49,9 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
         CleanBootomButton();
         switch (id) {
             case 1:
+                iv_menu_home.setBackground(getResources().getDrawable(R.drawable.sort_light_fill));
+                tv_menu_home.setTextColor(getResources().getColor(R.color.btn_color));
+                switchContent(indexFragment);
                 break;
             case 2:
                 iv_bottom_menu.setBackground(getResources().getDrawable(R.drawable.sort_light_fill));

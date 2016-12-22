@@ -13,6 +13,7 @@ import com.aboluo.GestureUtils.Contants;
 import com.leo.gesturelibray.enums.LockMode;
 
 import cn.beecloud.BeeCloud;
+import cn.jpush.android.api.JPushInterface;
 
 /**
  * Created by CJ on 2016/11/2.
@@ -25,6 +26,8 @@ public class BaseApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        JPushInterface.setDebugMode(true);
+        JPushInterface.init(this);
         //开启测试模式
         BeeCloud.setSandbox(false);
         //此处第二个参数是控制台的test secret

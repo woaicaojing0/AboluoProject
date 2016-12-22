@@ -5,13 +5,17 @@ import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageManager;
 import android.content.res.ColorStateList;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v7.widget.Toolbar;
@@ -113,7 +117,7 @@ public class GoodsDetailActivity extends Activity implements View.OnClickListene
     private GoodsDetailInfo goodsDetailInfo;
     private static int popwith; //获取当前屏幕的宽度
     private static boolean isshowtype = false;  //当前商品类型是否显示
-    private LinearLayout index_bottom_shopcar, goods_type_addshopcart; //1底部加入购车按钮 商品列表中的加入购物车
+    private LinearLayout index_bottom_shopcar, goods_type_addshopcart,index_bottom_kefu; //1底部加入购车按钮 商品列表中的加入购物车
     private LinearLayout goods_type_selected, goods_type_ok; // 1 有加入购物车和立即购买按钮。 2 只有确定按钮\
     private LinearLayout goodsdetail_btn_buynow, pop_goodsdetail_btn_buynow;
     private Boolean hascolor = false, hasstandards = false;
@@ -145,6 +149,7 @@ public class GoodsDetailActivity extends Activity implements View.OnClickListene
         btnDecrease.setOnClickListener(this);
         btnIncrease.setOnClickListener(this);
         index_bottom_shopcar.setOnClickListener(this);
+        index_bottom_kefu.setOnClickListener(this);
         goods_type_ok.setOnClickListener(this);
         goods_type_addshopcart.setOnClickListener(this);
         pop_goodsdetail_btn_buynow.setOnClickListener(this);
@@ -276,7 +281,7 @@ public class GoodsDetailActivity extends Activity implements View.OnClickListene
         webviewsetting.setUseWideViewPort(true);//关键点
         webviewsetting.setLoadWithOverviewMode(true);
         webviewsetting.setLoadWithOverviewMode(true);
-        goods_detail_webview.loadUrl("http://t.back.aboluomall.com/Moblie/ShowEvaluationList");
+        goods_detail_webview.loadUrl("http://t.back.aboluomall.com/Moblie/ProductDescription?productId=10");
         goods_detail_webview.setWebViewClient(new WebViewClient(){
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
@@ -362,6 +367,7 @@ public class GoodsDetailActivity extends Activity implements View.OnClickListene
         goods_type_pop_close.setOnClickListener(this);
         firstView.setOnClickListener(this);
         index_bottom_shopcar = (LinearLayout) findViewById(R.id.index_bottom_shopcar);
+        index_bottom_kefu = (LinearLayout) findViewById(R.id.index_bottom_kefu);
         goods_type_addshopcart = (LinearLayout) findViewById(R.id.goods_type_addshopcart);
         goods_type_selected = (LinearLayout) findViewById(R.id.goods_type_selected);
         goods_type_ok = (LinearLayout) findViewById(R.id.goods_type_ok);
@@ -931,6 +937,17 @@ public class GoodsDetailActivity extends Activity implements View.OnClickListene
                 case R.id.iv_menu_hot:
                     AddFavor(goodsDetailInfo.getResult().getGoodsInfo().getGoodsId());
                     break;
+
+                case R.id.index_bottom_kefu:
+                    if (checkApkExist(this, "com.tencent.mobileqq")){
+                        startActivity(new Intent(Intent.ACTION_VIEW,
+                                Uri.parse("mqqwpa://im/chat?chat_type=wpa&uin="
+                                        +CommonUtils.GetValueByKey(GoodsDetailActivity.this,"QQNum")+"&version=1")));
+                    }else{
+                        Toast.makeText(this,"本机未安装QQ应用",Toast.LENGTH_SHORT).show();
+                    }
+                break;
+
             }
         } else {
             Toast.makeText(this, "请先登录！", Toast.LENGTH_SHORT).show();
@@ -1263,5 +1280,23 @@ public class GoodsDetailActivity extends Activity implements View.OnClickListene
             }
         };
         requestQueue.add(addrequestshopcar);
+    }
+
+    /**
+     * 检查当前客户是否安装qq
+     * @param context
+     * @param packageName
+     * @return
+     */
+    public boolean checkApkExist(Context context, String packageName) {
+        if (packageName == null || "".equals(packageName))
+            return false;
+        try {
+            ApplicationInfo info = context.getPackageManager().getApplicationInfo(packageName,
+                    PackageManager.GET_UNINSTALLED_PACKAGES);
+            return true;
+        } catch (PackageManager.NameNotFoundException e) {
+            return false;
+        }
     }
 }

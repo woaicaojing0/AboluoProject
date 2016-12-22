@@ -15,7 +15,12 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-
+    <!-- 自定义权限 -->
+    <permission
+        android:name="com.aboluo.com.permission.JPUSH_MESSAGE"
+        android:protectionLevel="signature" />
+    <!--用户权限请求-->
+    <uses-permission android:name="com.aboluo.com.permission.JPUSH_MESSAGE" />
     <application
         android:name="com.aboluo.XUtils.BaseApplication"
         android:allowBackup="true"
@@ -133,5 +138,17 @@
         <activity android:name=".testactivity">
 
         </activity>
+        <receiver
+            android:name="com.aboluo.broadcast.JPushReceiver"
+            android:enabled="true">
+            <intent-filter>
+                <action android:name="cn.jpush.android.intent.REGISTRATION" />
+                <action android:name="cn.jpush.android.intent.MESSAGE_RECEIVED" />
+                <action android:name="cn.jpush.android.intent.NOTIFICATION_RECEIVED" />
+                <action android:name="cn.jpush.android.intent.NOTIFICATION_OPENED" />
+
+                <category android:name="com.aboluo.com" />
+            </intent-filter>
+        </receiver>
     </application>
 </manifest>

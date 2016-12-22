@@ -109,6 +109,7 @@
                 android:layout_height="match_parent"
                 android:orientation="vertical">
             <RadioButton
+                android:clickable="false"
                 android:id="@+id/ck_zfb_pay"
                 android:checked="true"
                 android:button="@null"
@@ -144,6 +145,7 @@
                 android:layout_height="match_parent"
                 android:orientation="vertical">
                 <RadioButton
+                    android:clickable="false"
                     android:id="@+id/ck_wx_pay"
                     android:button="@null"
                     android:background="@drawable/pay_check_bg"

@@ -26,20 +26,22 @@
 >
 
                 <LinearLayout
+
                     android:layout_marginTop="4dp"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="0.6">
                     <!-- 客服 -->
                     <LinearLayout
+                        android:id="@+id/index_bottom_kefu"
+                        android:paddingBottom="2dp"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:layout_weight="1"
                         android:gravity="center"
                         android:orientation="vertical"
-                        android:paddingLeft="2dp"
-                        android:paddingTop="2dp">
+                        android:paddingLeft="2dp">
 
                         <ImageView
                             android:layout_width="30dp"
@@ -62,8 +64,7 @@
                         android:layout_weight="1"
                         android:gravity="center"
                         android:orientation="vertical"
-                        android:paddingLeft="2dp"
-                        android:paddingTop="2dp">
+                        android:paddingLeft="2dp">
 
                         <ImageView
                             android:id="@+id/iv_menu_hot"
@@ -87,8 +88,7 @@
                         android:layout_weight="1"
                         android:gravity="center"
                         android:orientation="vertical"
-                        android:paddingLeft="2dp"
-                        android:paddingTop="2dp">
+                        android:paddingLeft="2dp">
 
                         <ImageView
                             android:id="@+id/iv_menu_talk"

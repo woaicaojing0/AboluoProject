@@ -223,7 +223,9 @@ public class OrderPayActivity extends Activity implements View.OnClickListener {
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.sure_pay:
+
                 if (ck_zfb_pay.isChecked()) {
+                    pdialog.show();
                     Map<String, String> mapOptional = new HashMap<String, String>();
                     mapOptional = new HashMap<String, String>();
                     mapOptional.put("客户端支付宝", "安卓");
@@ -237,6 +239,7 @@ public class OrderPayActivity extends Activity implements View.OnClickListener {
                             mapOptional,
                             bcCallback);
                 } else if (ck_wx_pay.isChecked()) {
+                    pdialog.show();
                     Map<String, String> mapOptional = new HashMap<String, String>();
                     mapOptional = new HashMap<String, String>();
                     mapOptional.put("客户端微信", "安卓");

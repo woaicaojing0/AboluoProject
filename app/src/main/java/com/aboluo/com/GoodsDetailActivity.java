@@ -135,7 +135,12 @@ public class GoodsDetailActivity extends Activity implements View.OnClickListene
         goods_detail_layout_btn.setOnClickListener(this);
         detail_more.setOnClickListener(this);
         detail_goods.setOnClickListener(this);
-        goods_detail_text_back.setOnClickListener(this);
+        goods_detail_text_back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
         txt_goods_type.setOnClickListener(this);
         btnDecrease.setOnClickListener(this);
         btnIncrease.setOnClickListener(this);
@@ -271,7 +276,14 @@ public class GoodsDetailActivity extends Activity implements View.OnClickListene
         webviewsetting.setUseWideViewPort(true);//关键点
         webviewsetting.setLoadWithOverviewMode(true);
         webviewsetting.setLoadWithOverviewMode(true);
-        goods_detail_webview.loadUrl("http://t.back.aboluomall.com/Moblie/ProductDescription?productId=10");
+        goods_detail_webview.loadUrl("http://t.back.aboluomall.com/Moblie/ShowEvaluationList");
+        goods_detail_webview.setWebViewClient(new WebViewClient(){
+            @Override
+            public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                view.loadUrl(url);
+                return super.shouldOverrideUrlLoading(view, url);
+            }
+        });
 //        //评价地址
 //        WebSettings webviewsetting2 = goods_pingjia_webview.getSettings();
 //        webviewsetting2.setJavaScriptEnabled(true);
@@ -839,9 +851,6 @@ public class GoodsDetailActivity extends Activity implements View.OnClickListene
                     break;
                 case R.id.detail_more: //首部更多
                     showinfopopupwindow();
-                    break;
-                case R.id.goods_detail_text_back: //返回
-                    finish();
                     break;
                 case R.id.txt_goods_type: //选择商品类型
                     goods_type_ok.setVisibility(View.GONE);

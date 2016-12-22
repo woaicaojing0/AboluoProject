@@ -9,6 +9,9 @@ import android.os.Message;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.LinearLayout;
+import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -36,22 +39,37 @@ public class OrderPayActivity extends Activity implements View.OnClickListener {
     private static final String TAG = "woaicaojingpay";
     //记录一下是否是PayPal支付
     private boolean isPayPal;
-    private int  paymoney ;
+    private int paymoney;
     private String OrderNum;
     private int requsetcode = 1;
     private String payfrom;
     private TextView txt_lastpaymoeny;
+    private LinearLayout lineLayout_wx_pay, lineLayout_zfb_pay;
+    private RadioButton ck_zfb_pay, ck_wx_pay;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        // 如果用到微信支付，在用到微信支付的Activity的onCreate函数里调用以下函数.
+        // 第二个参数需要换成你自己的微信AppID.
+        String initInfo = BCPay.initWechatPay(OrderPayActivity.this, CommonUtils.GetValueByKey(this, "APP_ID"));
+        if (initInfo != null) {
+            Toast.makeText(this, "微信初始化失败：" + initInfo, Toast.LENGTH_LONG).show();
+        }
         setContentView(R.layout.activity_order_pay);
         init();
         sure_pay.setOnClickListener(this);
+        lineLayout_wx_pay.setOnClickListener(this);
+        lineLayout_zfb_pay.setOnClickListener(this);
     }
 
     private void init() {
         sure_pay = (Button) findViewById(R.id.sure_pay);
         txt_lastpaymoeny = (TextView) findViewById(R.id.txt_lastpaymoeny);
+        lineLayout_wx_pay = (LinearLayout) findViewById(R.id.lineLayout_wx_pay);
+        lineLayout_zfb_pay = (LinearLayout) findViewById(R.id.lineLayout_zfb_pay);
+        ck_zfb_pay = (RadioButton) findViewById(R.id.ck_zfb_pay);
+        ck_wx_pay = (RadioButton) findViewById(R.id.ck_wx_pay);
         pdialog = new SweetAlertDialog(this, SweetAlertDialog.PROGRESS_TYPE);
         pdialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
         pdialog.setTitleText("处理中，请稍候...");
@@ -61,11 +79,15 @@ public class OrderPayActivity extends Activity implements View.OnClickListener {
         String yuanmoney = intent.getStringExtra("payMoney");
         OrderNum = intent.getStringExtra("OrderNum");
         payfrom = intent.getStringExtra("payfrom");
-        paymoney =Integer.valueOf(CommonUtils.yuanToFen(yuanmoney));
-        txt_lastpaymoeny.setText("￥"+String.valueOf(yuanmoney));
-        Log.i("woaicaojingpay","实际支付的金额为"+paymoney);
+        paymoney = Integer.valueOf(CommonUtils.yuanToFen(yuanmoney));
+        txt_lastpaymoeny.setText("￥" + String.valueOf(yuanmoney));
+        Log.i("woaicaojingpay", "实际支付的金额为" + paymoney);
     }
 
+    private void Clean() {
+        ck_wx_pay.setChecked(false);
+        ck_zfb_pay.setChecked(false);
+    }
 
     // Defines a Handler object that's attached to the UI thread.
     // 通过Handler.Callback()可消除内存泄漏警告
@@ -82,8 +104,8 @@ public class OrderPayActivity extends Activity implements View.OnClickListener {
             switch (msg.what) {
                 case 2:
                     Intent intent = new Intent();
-                    intent.putExtra("back","OrderPay");
-                    OrderPayActivity.this.setResult(requsetcode,intent);
+                    intent.putExtra("back", "OrderPay");
+                    OrderPayActivity.this.setResult(requsetcode, intent);
                     Toast.makeText(OrderPayActivity.this, toastMsg, Toast.LENGTH_SHORT).show();
                     finish();
                     break;
@@ -201,20 +223,54 @@ public class OrderPayActivity extends Activity implements View.OnClickListener {
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.sure_pay:
-                Map<String, String> mapOptional = new HashMap<String, String>();
-                mapOptional = new HashMap<String, String>();
-                mapOptional.put("客户端", "安卓");
-                mapOptional.put("consumptioncode", "consumptionCode");
-                mapOptional.put("money", "2");
-                mapOptional.put("payfrom", payfrom);  //标识从哪边支付的，1购物车 2个人中心（待付款） 3秒杀 4一元购
+                if (ck_zfb_pay.isChecked()) {
+                    Map<String, String> mapOptional = new HashMap<String, String>();
+                    mapOptional = new HashMap<String, String>();
+                    mapOptional.put("客户端支付宝", "安卓");
+                    mapOptional.put("consumptioncode", "consumptionCode");
+                    mapOptional.put("money", "2");
+                    mapOptional.put("payfrom", payfrom);  //标识从哪边支付的，1购物车 2个人中心（待付款） 3秒杀 4一元购
+                    BCPay.getInstance(OrderPayActivity.this).reqAliPaymentAsync(
+                            "阿波罗商铺支付宝支付",
+                            paymoney,
+                            OrderNum,
+                            mapOptional,
+                            bcCallback);
+                } else if (ck_wx_pay.isChecked()) {
+                    Map<String, String> mapOptional = new HashMap<String, String>();
+                    mapOptional = new HashMap<String, String>();
+                    mapOptional.put("客户端微信", "安卓");
+                    mapOptional.put("consumptioncode", "consumptionCode");
+                    mapOptional.put("money", "2");
+                    mapOptional.put("payfrom", payfrom);  //标识从哪边支付的，1购物车 2个人中心（待付款） 3秒杀 4一元购
+                    //对于微信支付, 手机内存太小会有OutOfResourcesException造成的卡顿, 以致无法完成支付
+                    //这个是微信自身存在的问题
+                    if (BCPay.isWXAppInstalledAndSupported() &&
+                            BCPay.isWXPaySupported()) {//判断微信客户端是否安装并被支持
+                        BCPay.getInstance(OrderPayActivity.this).reqWXPaymentAsync(
+                                "阿波罗商铺微信支付",               //订单标题
+                                paymoney,                           //订单金额(分)
+                                OrderNum,                            //订单流水号
+                                mapOptional,            //扩展参数(可以null)
+                                bcCallback);            //支付完成后回调入口
 
-
-                BCPay.getInstance(OrderPayActivity.this).reqAliPaymentAsync(
-                        "阿波罗商铺",
-                        paymoney,
-                        OrderNum,
-                        mapOptional,
-                        bcCallback);
+                    } else {
+                        Toast.makeText(OrderPayActivity.this,
+                                "您尚未安装微信或者安装的微信版本不支持", Toast.LENGTH_LONG).show();
+                    }
+                    break;
+                } else {
+                    Toast.makeText(OrderPayActivity.this,
+                            "请选择支付方式", Toast.LENGTH_LONG).show();
+                }
+                break;
+            case R.id.lineLayout_zfb_pay:
+                Clean();
+                ck_zfb_pay.setChecked(true);
+                break;
+            case R.id.lineLayout_wx_pay:
+                Clean();
+                ck_wx_pay.setChecked(true);
                 break;
         }
     }

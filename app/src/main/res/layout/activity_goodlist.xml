@@ -67,7 +67,9 @@
                     android:gravity="center"
                     android:hint="搜索您喜欢的宝贝"
                     android:imeOptions="actionSearch"
-                    android:textColorHint="#858585"/>
+                    android:inputType="text"
+                    android:maxLines="1"
+                    android:textColorHint="#909090"/>
             </LinearLayout>
 
             <LinearLayout
@@ -91,6 +93,7 @@
                     android:background="@color/view_color"/>
 
                 <Button
+                    android:id="@+id/goods_detail_price"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
@@ -99,19 +102,6 @@
 
                 <View
                     android:id="@+id/top_view4"
-                    android:layout_width="0.5dp"
-                    android:layout_height="match_parent"
-                    android:background="@color/view_color"/>
-
-                <Button
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:background="@color/transparent"
-                    android:text="销量"/>
-
-                <View
-                    android:id="@+id/top_view2"
                     android:layout_width="0.5dp"
                     android:layout_height="match_parent"
                     android:background="@color/view_color"/>

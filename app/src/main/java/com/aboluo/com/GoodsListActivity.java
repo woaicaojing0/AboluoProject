@@ -78,7 +78,7 @@ public class GoodsListActivity extends Activity implements RecycleViewAdapter.On
     //搜索框
     private EditText goods_list_search;
     //切换布局按钮，筛选按钮，筛选中的重置，筛选中的确定
-    private Button buju, btn_filtrate, btn_goodslist_rest, btn_goodslist_surefiltrate;
+    private Button buju, btn_filtrate, btn_goodslist_rest, btn_goodslist_surefiltrate, goods_detail_price;
     //筛选采用的draverlayout布局
     private DrawerLayout drawer_layout;
     //屏幕的宽度，用来设置筛选界面的宽度
@@ -87,9 +87,12 @@ public class GoodsListActivity extends Activity implements RecycleViewAdapter.On
     private RelativeLayout right_shaixuan;
     private BrandBean brandBean;   //商品品牌属性
     private MyRadioGroup goods_list_brand_radiogroup;
-    private  int currentpages = 1;
+    private int currentpages = 1;
     private int pagesize = 10;
     private List<GoodsListInfo.ResultBean.GoodsListBean> goodsListBean;
+    private static String GoodsName;
+    private static int GoodsBrandId;
+    private static boolean IsPriceSort;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -104,7 +107,12 @@ public class GoodsListActivity extends Activity implements RecycleViewAdapter.On
         initdate(1);
         Intent intent = getIntent();
         goods_type_id = intent.getIntExtra("goods_type_id", -1);
+        GoodsBrandId = intent.getIntExtra("GoodsBrandId", -1);
         goods_type_name = intent.getStringExtra("goods_type_name");
+        GoodsName = intent.getStringExtra("GoodsName");
+        if (GoodsName == null) {
+            GoodsName = "";
+        }
         if (goods_type_name == null) {
         } else {
             goods_list_typeName.setText(goods_type_name);
@@ -122,6 +130,7 @@ public class GoodsListActivity extends Activity implements RecycleViewAdapter.On
             public void onFocusChange(View v, boolean hasFocus) {
                 if (hasFocus) {
                     goods_list_search.setGravity(Gravity.CENTER_VERTICAL);
+                    goods_list_search.setPadding(16,0,0,0);
                 } else {
                     goods_list_search.setGravity(Gravity.CENTER);
                 }
@@ -134,24 +143,9 @@ public class GoodsListActivity extends Activity implements RecycleViewAdapter.On
                     //隐藏软键盘
                     InputMethodManager inm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                     inm.hideSoftInputFromWindow(goods_list_back.getWindowToken(), 0);
-                    pdialog.show();
-                    StringRequest stringRequest = new StringRequest(Request.Method.POST, "", new Response.Listener<String>() {
-                        @Override
-                        public void onResponse(String response) {
-
-                        }
-                    }, new Response.ErrorListener() {
-                        @Override
-                        public void onErrorResponse(VolleyError error) {
-                            pdialog.dismiss();
-                            Toast.makeText(GoodsListActivity.this, error.toString(), Toast.LENGTH_SHORT).show();
-                        }
-                    }) {
-                        @Override
-                        protected Map<String, String> getParams() throws AuthFailureError {
-                            return super.getParams();
-                        }
-                    };
+                    Toast.makeText(GoodsListActivity.this, "wewe", Toast.LENGTH_SHORT).show();
+                    GoodsName = goods_list_search.getText().toString();
+                    initdate(1);
                     return true;
                 } else {
                     return false;
@@ -172,6 +166,7 @@ public class GoodsListActivity extends Activity implements RecycleViewAdapter.On
                 initdate(currentpages);
             }
         });
+        goods_detail_price.setOnClickListener(this);
     }
 
     private void init() {
@@ -182,6 +177,7 @@ public class GoodsListActivity extends Activity implements RecycleViewAdapter.On
         btn_filtrate = (Button) findViewById(R.id.btn_filtrate);
         btn_goodslist_rest = (Button) findViewById(R.id.btn_goodslist_rest);
         btn_goodslist_surefiltrate = (Button) findViewById(R.id.btn_goodslist_surefiltrate);
+        goods_detail_price = (Button) findViewById(R.id.goods_detail_price);
         drawer_layout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mRBCallbkRecyclerView = (RBCallbkRecyclerView) findViewById(R.id.goods_list_recycleview);
         right_shaixuan = (RelativeLayout) findViewById(R.id.right_shaixuan);
@@ -202,17 +198,25 @@ public class GoodsListActivity extends Activity implements RecycleViewAdapter.On
                 Log.i("woaicaojing", url + "/api/Goods/ReceiveGoodsList");
                 Log.i("woaicaojing", response);
                 listBean = gson.fromJson(response, GoodsListInfo.class);
-                if(goodsListBean == null) {
+                if (currentpage == 1) {
                     goodsListBean = listBean.getResult().getGoodsList();
                     recycleViewAdapter = new RecycleViewAdapter(goodsListBean, GoodsListActivity.this, 0);
                     mRBCallbkRecyclerView.setAdapter(recycleViewAdapter);
                     recycleViewAdapter.setOnItemClickListener(GoodsListActivity.this);
-                    pdialog.dismiss();
-                }else {
-                    List<GoodsListInfo.ResultBean.GoodsListBean> goodsListBean2 =listBean.getResult().getGoodsList();
-                    goodsListBean.addAll(goodsListBean2);
-                    recycleViewAdapter.notifyDataSetChanged();
+                } else {
+                    if (goodsListBean == null) {
+                        goodsListBean = listBean.getResult().getGoodsList();
+                        recycleViewAdapter = new RecycleViewAdapter(goodsListBean, GoodsListActivity.this, 0);
+                        mRBCallbkRecyclerView.setAdapter(recycleViewAdapter);
+                        recycleViewAdapter.setOnItemClickListener(GoodsListActivity.this);
+
+                    } else {
+                        List<GoodsListInfo.ResultBean.GoodsListBean> goodsListBean2 = listBean.getResult().getGoodsList();
+                        goodsListBean.addAll(goodsListBean2);
+                        recycleViewAdapter.notifyDataSetChanged();
+                    }
                 }
+                pdialog.dismiss();
 
             }
         }, new Response.ErrorListener() {
@@ -224,11 +228,22 @@ public class GoodsListActivity extends Activity implements RecycleViewAdapter.On
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> map = new HashMap<>();
-                if (goods_type_id == -1) {
+                if (GoodsName.length() == 0) { //搜索框搜素
+                } else {
+                    map.put("GoodsName", GoodsName);
+                }
+                if (goods_type_id == -1) //商品的类别
+                {
                 } else {
                     map.put("GoodsTypeId", String.valueOf(goods_type_id));
                 }
+                if (GoodsBrandId == -1) //商品的类别
+                {
+                } else {
+                    map.put("GoodsBrandId", String.valueOf(GoodsBrandId));
+                }
                 map.put("APPToken", APPToken);
+                map.put("IsPriceSort", String.valueOf(IsPriceSort));
                 map.put("CurrentPage", String.valueOf(currentpage));
                 map.put("PageSize", String.valueOf(pagesize));
                 return map;
@@ -249,6 +264,9 @@ public class GoodsListActivity extends Activity implements RecycleViewAdapter.On
 //        startActivity(intent);
     }
 
+    /**
+     * 根据传入的商品的类别的id获取品牌的信息
+     */
     private void initfiltrate() {
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url + "/api/GoodsType/ReceiveGoodsBrandListByGoodsTypeId", new Response.Listener<String>() {
             @Override
@@ -284,11 +302,18 @@ public class GoodsListActivity extends Activity implements RecycleViewAdapter.On
                             button.setLayoutParams(layoutParams);
                             button.setText(listBrand.get(i).getBrandName());
                             button.setId(i);
+                            button.setTag(listBrand.get(i).getId());
                             final int finalI = i;
                             button.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
-                                    Toast.makeText(GoodsListActivity.this, button.getText().toString(), Toast.LENGTH_SHORT).show();
+                                    Object tag = v.getTag();
+                                    if (tag != null && tag instanceof Integer) { //解决问题：如何知道你点击的按钮是哪一个列表项中的，通过Tag的position
+                                        GoodsBrandId = (Integer) tag;
+                                        Toast.makeText(GoodsListActivity.this, GoodsBrandId + "", Toast.LENGTH_SHORT).show();
+                                        initdate(1);
+                                        drawer_layout.closeDrawers();
+                                    }
                                 }
                             });
                             linearLayout.addView(button);
@@ -353,11 +378,19 @@ public class GoodsListActivity extends Activity implements RecycleViewAdapter.On
             button.setLayoutParams(layoutParams);
             button.setText(listBrand.get(i * 3 + i2).getBrandName().trim());
             button.setId(i * 3 + i2);
+            button.setTag(listBrand.get(i * 3 + i2).getId());
             final int finalI = i;
             button.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Toast.makeText(GoodsListActivity.this, button.getText().toString(), Toast.LENGTH_SHORT).show();
+                    Object tag = v.getTag();
+                    if (tag != null && tag instanceof Integer) { //解决问题：如何知道你点击的按钮是哪一个列表项中的，通过Tag的position
+                        GoodsBrandId = (Integer) tag;
+                        Toast.makeText(GoodsListActivity.this, GoodsBrandId + "", Toast.LENGTH_SHORT).show();
+                        initdate(1);
+                        drawer_layout.closeDrawers();
+                    }
                 }
             });
             linearLayout.addView(button);
@@ -394,10 +427,16 @@ public class GoodsListActivity extends Activity implements RecycleViewAdapter.On
                 finish();
                 break;
             case R.id.btn_goodslist_rest:
-                drawer_layout.closeDrawers();
+                goods_list_brand_radiogroup.clearCheck();
+                GoodsBrandId = -1;
+                initdate(1);
                 break;
             case R.id.btn_goodslist_surefiltrate:
                 drawer_layout.closeDrawers();
+                break;
+            case R.id.goods_detail_price:
+                IsPriceSort = !IsPriceSort;
+                initdate(1);
                 break;
         }
     }

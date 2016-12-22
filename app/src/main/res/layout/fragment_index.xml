@@ -48,6 +48,7 @@
                 android:layout_toRightOf="@id/top_left">
 
                 <EditText
+                    android:inputType="text"
                     android:id="@+id/top_editsearch"
                     android:layout_width="match_parent"
                     android:layout_height="38dp"

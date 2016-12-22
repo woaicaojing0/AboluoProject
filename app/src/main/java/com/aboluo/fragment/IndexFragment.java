@@ -1,5 +1,6 @@
 package com.aboluo.fragment;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -11,6 +12,8 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.GridView;
@@ -62,6 +65,8 @@ import java.util.Map;
 
 import cn.iwgang.countdownview.CountdownView;
 import cn.pedant.SweetAlert.SweetAlertDialog;
+
+import static com.aboluo.com.R.id.goods_list_back;
 
 /**
  * Created by cj34920 on 2016/9/8.
@@ -216,15 +221,60 @@ public class IndexFragment extends Fragment implements View.OnClickListener {
 //
 //            }
 //        });
-        top_editsearch.setOnKeyListener(new View.OnKeyListener() {
+        top_editsearch.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
-            public boolean onKey(View v, int keyCode, KeyEvent event) {
-                if (keyCode == KeyEvent.KEYCODE_ENTER) {
-                    String s = top_editsearch.getText().toString().trim();
-                    Toast.makeText(IndexFragment.this.getContext(), s, Toast.LENGTH_LONG).show();
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                    if (top_editsearch.getText().length() == 0) {
+                        Toast.makeText(IndexFragment.this.getContext(), "请输入搜索内容", Toast.LENGTH_SHORT).show();
+                    } else {
+                        //隐藏软键盘
+                        InputMethodManager inm = (InputMethodManager) IndexFragment.this.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+                        inm.hideSoftInputFromWindow(top_editsearch.getWindowToken(), 0);
+                        Intent intent = new Intent(IndexFragment.this.getContext(), GoodsListActivity.class);
+                        intent.putExtra("GoodsName", top_editsearch.getText().toString());
+                        startActivity(intent);
+                    }
                     return true;
+                } else {
+                    return false;
                 }
-                return false;
+            }
+        });
+        brand_gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                if (brandConfigBean == null) {
+                } else {
+                    Intent intent4 = new Intent(IndexFragment.this.getContext(), GoodsListActivity.class);
+                    if (brandConfigBean.getAppConfigList().get(position).getParams() == null) {
+                        Toast.makeText(IndexFragment.this.getContext(),
+                                "ChildId is NULL", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(IndexFragment.this.getContext(),
+                                brandConfigBean.getAppConfigList().get(position).getParams().getChildId(), Toast.LENGTH_SHORT).show();
+                        intent4.putExtra("GoodsBrandId", brandConfigBean.getAppConfigList().get(position).getParams().getChildId());
+                    }
+                    startActivity(intent4);
+                }
+            }
+        });
+        theme_gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                if (themeConfigBean == null) {
+                } else {
+                    Intent intent4 = new Intent(IndexFragment.this.getContext(), GoodsListActivity.class);
+                    if (themeConfigBean.getAppConfigList().get(position).getParams() == null) {
+                        Toast.makeText(IndexFragment.this.getContext(),
+                                "ChildId is NULL", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(IndexFragment.this.getContext(),
+                                themeConfigBean.getAppConfigList().get(position).getParams().getChildId(), Toast.LENGTH_SHORT).show();
+                        intent4.putExtra("goods_type_id", themeConfigBean.getAppConfigList().get(position).getParams().getChildId());
+                    }
+                    startActivity(intent4);
+                }
             }
         });
         return view;

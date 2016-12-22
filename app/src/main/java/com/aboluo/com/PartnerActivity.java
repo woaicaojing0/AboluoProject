@@ -159,6 +159,7 @@ public class PartnerActivity extends Activity implements PartnerAdpater.OnRecycl
         int goods_id = goodsListBean.get(position).getGoodsId();
         Intent intent = new Intent(this, GoodsDetailActivity.class);
         intent.putExtra("goods_id", goods_id);
+        intent.putExtra("goods_type_id", "商品类型也就是合伙人");
         String transitionName = "detail";
         ActivityOptionsCompat transitionActivityOptionsCompat = ActivityOptionsCompat.makeSceneTransitionAnimation(PartnerActivity.this, view.findViewById(R.id.parnter_goods_image), transitionName);
         startActivity(intent, transitionActivityOptionsCompat.toBundle());
@@ -203,7 +204,7 @@ public class PartnerActivity extends Activity implements PartnerAdpater.OnRecycl
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> map = new HashMap<>();
-                map.put("ConfigModule", "4");
+                map.put("ConfigModule", "9");
                 map.put("APPToken", APPToken);
                 return map;
             }

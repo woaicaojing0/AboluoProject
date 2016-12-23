@@ -177,7 +177,7 @@
                     android:textSize="18sp"/>
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="40dp"
+                    android:layout_height="46dp"
                     android:layout_marginBottom="8dp"
                     android:layout_marginTop="12dp"
                     android:gravity="center_vertical"
@@ -192,7 +192,7 @@
                         android:id="@+id/room_ratingbar3"
                         style="@style/roomRatingBar"
                         android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
+                        android:layout_height="wrap_content"
                         android:layout_marginLeft="50dp"
                         android:numStars="5"
                         android:stepSize="1"></RatingBar>

@@ -93,7 +93,7 @@ public class GoodsListActivity extends Activity implements RecycleViewAdapter.On
     private static String GoodsName;
     private static int GoodsBrandId;
     private static boolean IsPriceSort;
-
+    private static boolean LineType =true;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -200,7 +200,17 @@ public class GoodsListActivity extends Activity implements RecycleViewAdapter.On
                 listBean = gson.fromJson(response, GoodsListInfo.class);
                 if (currentpage == 1) {
                     goodsListBean = listBean.getResult().getGoodsList();
-                    recycleViewAdapter = new RecycleViewAdapter(goodsListBean, GoodsListActivity.this, 0);
+                    if(!LineType)
+                    {
+                        //2列垂直布局
+                        mRBCallbkRecyclerView.setLayoutManager(new GridLayoutManager(GoodsListActivity.this, 2));//设置RecyclerView布局管理器为2列垂直排布
+                        recycleViewAdapter = new RecycleViewAdapter(goodsListBean, GoodsListActivity.this, 1);
+                    }else
+                    {
+                        //线性布局水平布局
+                        mRBCallbkRecyclerView.setLayoutManager(new LinearLayoutManager(GoodsListActivity.this));
+                        recycleViewAdapter = new RecycleViewAdapter(goodsListBean, GoodsListActivity.this, 0);
+                    }
                     mRBCallbkRecyclerView.setAdapter(recycleViewAdapter);
                     recycleViewAdapter.setOnItemClickListener(GoodsListActivity.this);
                 } else {
@@ -405,6 +415,7 @@ public class GoodsListActivity extends Activity implements RecycleViewAdapter.On
                 drawer_layout.openDrawer(Gravity.RIGHT);
                 break;
             case R.id.buju:
+                LineType = !LineType;
                 if (v.getTag() == null) {
                     mRBCallbkRecyclerView.setLayoutManager(new GridLayoutManager(GoodsListActivity.this, 2));//设置RecyclerView布局管理器为2列垂直排布
                     recycleViewAdapter = new RecycleViewAdapter(goodsListBean, GoodsListActivity.this, 1);

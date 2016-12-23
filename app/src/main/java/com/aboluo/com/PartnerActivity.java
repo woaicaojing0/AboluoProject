@@ -157,7 +157,7 @@ public class PartnerActivity extends Activity implements PartnerAdpater.OnRecycl
     public void onItemClick(View view, int position) {
         Toast.makeText(this, position + "", Toast.LENGTH_SHORT).show();
         int goods_id = goodsListBean.get(position).getGoodsId();
-        Intent intent = new Intent(this, GoodsDetailActivity.class);
+        Intent intent = new Intent(this, PartnerGoodsDetailActivity.class);
         intent.putExtra("goods_id", goods_id);
         intent.putExtra("goods_type_id", "商品类型也就是合伙人");
         String transitionName = "detail";

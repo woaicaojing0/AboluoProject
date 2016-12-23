@@ -100,6 +100,7 @@ public class CreditInfoActivity extends Activity {
                 } else {
 
                 }
+                pdialog.dismiss();
 
             }
         }, new Response.ErrorListener() {

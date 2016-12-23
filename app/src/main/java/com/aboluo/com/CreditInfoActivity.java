@@ -1,13 +1,18 @@
 package com.aboluo.com;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.aboluo.XUtils.CommonUtils;
 import com.aboluo.XUtils.MyApplication;
+import com.aboluo.com.WebActivity.CapitalActivity;
+import com.aboluo.com.WebActivity.IntegralActivity;
 import com.aboluo.model.CreditInfoBean;
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -41,12 +46,27 @@ public class CreditInfoActivity extends Activity {
     private TextView totalmoney, memberlevel, totalscore, freeMoney, CanUserMoney, totalscore2,
             CanUserScore, cred_nickName;
     private CircleImageView cred_userImage;
+    private LinearLayout creditinfo_individual, creditinfo_capital;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_creditinfo);
         init();
+        creditinfo_individual.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(CreditInfoActivity.this, IntegralActivity.class);
+                startActivity(intent);
+            }
+        });
+        creditinfo_capital.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(CreditInfoActivity.this, CapitalActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     private void init() {
@@ -71,6 +91,8 @@ public class CreditInfoActivity extends Activity {
         CanUserScore = (TextView) findViewById(R.id.CanUserScore);
         cred_nickName = (TextView) findViewById(R.id.cred_nickName);
         cred_userImage = (CircleImageView) findViewById(R.id.cred_userImage);
+        creditinfo_individual = (LinearLayout) findViewById(R.id.creditinfo_individual);
+        creditinfo_capital = (LinearLayout) findViewById(R.id.creditinfo_capital);
         initData();
     }
 

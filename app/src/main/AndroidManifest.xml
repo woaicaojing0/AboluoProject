@@ -99,6 +99,10 @@
         <activity android:name=".EvaluationDetailImageActivity"></activity>
         <activity android:name=".CreditInfoActivity"></activity>
         <activity android:name=".PartnerActivity"></activity>
+        <activity android:name=".PartnerGoodsDetailActivity"></activity>
+        <activity android:name=".WebActivity.CapitalActivity"></activity>
+        <activity android:name=".WebActivity.IntegralActivity"></activity>
+        <activity android:name=".WebActivity.FeedBackActivity"></activity>
         <activity android:name=".wxapi.WXEntryActivity"
             android:exported="true"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" >

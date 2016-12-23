@@ -278,6 +278,7 @@
                 </LinearLayout>
 
                 <WebView
+                    android:minHeight="60dp"
                     android:id="@+id/goods_detail_webview"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -354,7 +355,7 @@
         android:id="@+id/id_goodsdetail_bottom"
         layout="@layout/activity_goodsdetail_bootm"
         android:layout_width="fill_parent"
-        android:layout_height="50dp"
+        android:layout_height="56dp"
         android:layout_alignParentBottom="true"/>
 
     //弹出框，默认不显示

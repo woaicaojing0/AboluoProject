@@ -26,6 +26,7 @@ import com.aboluo.com.MyInfoAcitvity;
 import com.aboluo.com.OrderActivity;
 import com.aboluo.com.R;
 import com.aboluo.com.ReFundActivity;
+import com.aboluo.com.WebActivity.FeedBackActivity;
 import com.aboluo.model.MyInfoBean;
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -204,6 +205,8 @@ public class MyFragment extends Fragment implements View.OnClickListener {
                 startActivity(intent6);
                 break;
             case R.id.feedbackInfo:
+                Intent intent12 = new Intent(MyFragment.this.getActivity(), FeedBackActivity.class);
+                startActivity(intent12);
                 break;
             case R.id.my_out:
                 CommonUtils.LoginOut(MyFragment.this.getContext());

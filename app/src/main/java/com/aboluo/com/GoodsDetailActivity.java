@@ -25,7 +25,6 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
@@ -117,7 +116,7 @@ public class GoodsDetailActivity extends Activity implements View.OnClickListene
     private GoodsDetailInfo goodsDetailInfo;
     private static int popwith; //获取当前屏幕的宽度
     private static boolean isshowtype = false;  //当前商品类型是否显示
-    private LinearLayout index_bottom_shopcar, goods_type_addshopcart,index_bottom_kefu; //1底部加入购车按钮 商品列表中的加入购物车
+    private LinearLayout index_bottom_shopcar, goods_type_addshopcart, index_bottom_kefu; //1底部加入购车按钮 商品列表中的加入购物车
     private LinearLayout goods_type_selected, goods_type_ok; // 1 有加入购物车和立即购买按钮。 2 只有确定按钮\
     private LinearLayout goodsdetail_btn_buynow, pop_goodsdetail_btn_buynow;
     private Boolean hascolor = false, hasstandards = false;
@@ -242,22 +241,6 @@ public class GoodsDetailActivity extends Activity implements View.OnClickListene
                 });
             }
         });
-        goods_pingjia_webview.setWebViewClient(new WebViewClient(){
-            @Override
-            public void onPageFinished(WebView view, String url) {
-                super.onPageFinished(view, url);
-                //这个是一定要加上那个的,配合scrollView和WebView的height=wrap_content属性使用
-                int w = View.MeasureSpec.makeMeasureSpec(0,
-                        View.MeasureSpec.UNSPECIFIED);
-                int h = View.MeasureSpec.makeMeasureSpec(0,
-                        View.MeasureSpec.UNSPECIFIED);
-                //重新测量
-                goods_pingjia_webview.measure(w, h);
-
-
-
-            }
-        });
 
     }
 
@@ -277,16 +260,29 @@ public class GoodsDetailActivity extends Activity implements View.OnClickListene
         goods_detail_webview.setHorizontalScrollbarOverlay(false);
         //end
         WebSettings webviewsetting = goods_detail_webview.getSettings();
+        webviewsetting.setDomStorageEnabled(true);
         webviewsetting.setJavaScriptEnabled(true);
         webviewsetting.setUseWideViewPort(true);//关键点
         webviewsetting.setLoadWithOverviewMode(true);
         webviewsetting.setLoadWithOverviewMode(true);
-        goods_detail_webview.loadUrl("http://t.back.aboluomall.com/Moblie/ProductDescription?productId=10");
-        goods_detail_webview.setWebViewClient(new WebViewClient(){
+        goods_detail_webview.loadUrl(detailurl);
+        goods_detail_webview.setWebViewClient(new WebViewClient() {
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
                 view.loadUrl(url);
                 return super.shouldOverrideUrlLoading(view, url);
+            }
+
+            @Override
+            public void onPageFinished(WebView view, String url) {
+                super.onPageFinished(view, url);
+                //这个是一定要加上那个的,配合scrollView和WebView的height=wrap_content属性使用
+                int w = View.MeasureSpec.makeMeasureSpec(0,
+                        View.MeasureSpec.UNSPECIFIED);
+                int h = View.MeasureSpec.makeMeasureSpec(0,
+                        View.MeasureSpec.UNSPECIFIED);
+                //重新测量
+                goods_detail_webview.measure(w, h);
             }
         });
 //        //评价地址
@@ -841,14 +837,14 @@ public class GoodsDetailActivity extends Activity implements View.OnClickListene
                     id_goods_detail_view.setVisibility(View.VISIBLE);
                     id_goods_pingjia_view.setVisibility(View.GONE);
                     String detailurl0 = CommonUtils.GetValueByKey(GoodsDetailActivity.this, "backUrl") + "/moblie/Index?productId=" + goods_id;
-                    initwebview(detailurl0,null);
+                    initwebview(detailurl0, null);
                     break;
                 case R.id.goods_pingjia_layout_btn: //商品评价按钮Moblie/ShowEvaluation?goodsId
                     id_goods_detail_view.setVisibility(View.GONE);
                     id_goods_pingjia_view.setVisibility(View.VISIBLE);
-                   // String detailurl = CommonUtils.GetValueByKey(GoodsDetailActivity.this, "backUrl") + "/Moblie/ShowEvaluation?goodsId=" + goods_id;
-                    String detailurl = "http://back.aboluomall.com/Moblie/ShowEvaluation?goodsId=12";
-                    initwebview(detailurl,null);
+                    String detailurl = CommonUtils.GetValueByKey(GoodsDetailActivity.this, "backUrl") + "/Moblie/ShowEvaluation?goodsId=" + goods_id;
+                    //String detailurl = "http://back.aboluomall.com/Moblie/ShowEvaluation?goodsId=12";
+                    initwebview(detailurl, null);
                     break;
                 case R.id.detail_goods: //首部购物车
                     Intent intent = new Intent(GoodsDetailActivity.this, MainActivity.class);
@@ -939,14 +935,14 @@ public class GoodsDetailActivity extends Activity implements View.OnClickListene
                     break;
 
                 case R.id.index_bottom_kefu:
-                    if (checkApkExist(this, "com.tencent.mobileqq")){
+                    if (checkApkExist(this, "com.tencent.mobileqq")) {
                         startActivity(new Intent(Intent.ACTION_VIEW,
                                 Uri.parse("mqqwpa://im/chat?chat_type=wpa&uin="
-                                        +CommonUtils.GetValueByKey(GoodsDetailActivity.this,"QQNum")+"&version=1")));
-                    }else{
-                        Toast.makeText(this,"本机未安装QQ应用",Toast.LENGTH_SHORT).show();
+                                        + CommonUtils.GetValueByKey(GoodsDetailActivity.this, "QQNum") + "&version=1")));
+                    } else {
+                        Toast.makeText(this, "本机未安装QQ应用", Toast.LENGTH_SHORT).show();
                     }
-                break;
+                    break;
 
             }
         } else {
@@ -1284,6 +1280,7 @@ public class GoodsDetailActivity extends Activity implements View.OnClickListene
 
     /**
      * 检查当前客户是否安装qq
+     *
      * @param context
      * @param packageName
      * @return

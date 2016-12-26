@@ -40,8 +40,8 @@ public class IntegralActivity extends Activity {
         webviewsetting.setUseWideViewPort(true);//关键点
         webviewsetting.setLoadWithOverviewMode(true);
         webviewsetting.setLoadWithOverviewMode(true);
-        Log.i("integral>>", CommonUtils.GetValueByKey(this, "backUrl") + "/Moblie/MoneyLog?memberId=" + MemberId);
-        integral_webiview.loadUrl(CommonUtils.GetValueByKey(this, "backUrl") + "/Moblie/MoneyLog?memberId=" + MemberId);
+        Log.i("capitalurl>>", CommonUtils.GetValueByKey(this, "backUrl")+"/Moblie/ScoreLog?memberId=" + MemberId);
+        integral_webiview.loadUrl(CommonUtils.GetValueByKey(this, "backUrl")+"/Moblie/ScoreLog?memberId=" + MemberId);
         integral_webiview.setWebViewClient(new WebViewClient() {
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {

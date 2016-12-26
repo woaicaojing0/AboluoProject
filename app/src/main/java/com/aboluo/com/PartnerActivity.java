@@ -140,6 +140,7 @@ public class PartnerActivity extends Activity implements PartnerAdpater.OnRecycl
                 map.put("APPToken", APPToken);
                 map.put("CurrentPage", String.valueOf(currentpage));
                 map.put("PageSize", String.valueOf(pagesize));
+                map.put("GoodsTypeId","238");
                 return map;
             }
 

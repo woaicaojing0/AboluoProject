@@ -22,6 +22,7 @@ import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RelativeLayout;
@@ -74,7 +75,8 @@ public class GoodsListActivity extends Activity implements RecycleViewAdapter.On
     //商品类别的名称
     private String goods_type_name;
     //商品名称和返回按钮
-    private TextView goods_list_typeName, goods_list_back;
+    private TextView goods_list_typeName;
+    private ImageView goods_list_back;
     //搜索框
     private EditText goods_list_search;
     //切换布局按钮，筛选按钮，筛选中的重置，筛选中的确定
@@ -143,7 +145,7 @@ public class GoodsListActivity extends Activity implements RecycleViewAdapter.On
                     //隐藏软键盘
                     InputMethodManager inm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                     inm.hideSoftInputFromWindow(goods_list_back.getWindowToken(), 0);
-                    Toast.makeText(GoodsListActivity.this, "wewe", Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(GoodsListActivity.this, "wewe", Toast.LENGTH_SHORT).show();
                     GoodsName = goods_list_search.getText().toString();
                     initdate(1);
                     return true;
@@ -171,7 +173,7 @@ public class GoodsListActivity extends Activity implements RecycleViewAdapter.On
 
     private void init() {
         goods_list_typeName = (TextView) findViewById(R.id.goods_list_typeName);
-        goods_list_back = (TextView) findViewById(R.id.goods_list_back);
+        goods_list_back = (ImageView) findViewById(R.id.goods_list_back);
         goods_list_search = (EditText) findViewById(R.id.goods_list_search);
         buju = (Button) findViewById(R.id.buju);
         btn_filtrate = (Button) findViewById(R.id.btn_filtrate);
@@ -264,7 +266,7 @@ public class GoodsListActivity extends Activity implements RecycleViewAdapter.On
 
     @Override
     public void onItemClick(View view, int position) {
-        Toast.makeText(this, position + "", Toast.LENGTH_SHORT).show();
+        //Toast.makeText(this, position + "", Toast.LENGTH_SHORT).show();
         int goods_id = goodsListBean.get(position).getGoodsId();
         Intent intent = new Intent(this, GoodsDetailActivity.class);
         intent.putExtra("goods_id", goods_id);
@@ -320,7 +322,7 @@ public class GoodsListActivity extends Activity implements RecycleViewAdapter.On
                                     Object tag = v.getTag();
                                     if (tag != null && tag instanceof Integer) { //解决问题：如何知道你点击的按钮是哪一个列表项中的，通过Tag的position
                                         GoodsBrandId = (Integer) tag;
-                                        Toast.makeText(GoodsListActivity.this, GoodsBrandId + "", Toast.LENGTH_SHORT).show();
+                                        //Toast.makeText(GoodsListActivity.this, GoodsBrandId + "", Toast.LENGTH_SHORT).show();
                                         initdate(1);
                                         drawer_layout.closeDrawers();
                                     }
@@ -393,11 +395,11 @@ public class GoodsListActivity extends Activity implements RecycleViewAdapter.On
             button.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Toast.makeText(GoodsListActivity.this, button.getText().toString(), Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(GoodsListActivity.this, button.getText().toString(), Toast.LENGTH_SHORT).show();
                     Object tag = v.getTag();
                     if (tag != null && tag instanceof Integer) { //解决问题：如何知道你点击的按钮是哪一个列表项中的，通过Tag的position
                         GoodsBrandId = (Integer) tag;
-                        Toast.makeText(GoodsListActivity.this, GoodsBrandId + "", Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(GoodsListActivity.this, GoodsBrandId + "", Toast.LENGTH_SHORT).show();
                         initdate(1);
                         drawer_layout.closeDrawers();
                     }

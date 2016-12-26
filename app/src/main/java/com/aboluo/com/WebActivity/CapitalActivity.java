@@ -40,8 +40,8 @@ public class CapitalActivity extends Activity {
         webviewsetting.setUseWideViewPort(true);//关键点
         webviewsetting.setLoadWithOverviewMode(true);
         webviewsetting.setLoadWithOverviewMode(true);
-        Log.i("capitalurl>>", CommonUtils.GetValueByKey(this, "backUrl")+"/Moblie/ScoreLog?memberId=" + MemberId);
-        capital_webiview.loadUrl(CommonUtils.GetValueByKey(this, "backUrl")+"/Moblie/ScoreLog?memberId=" + MemberId);
+        Log.i("integral>>", CommonUtils.GetValueByKey(this, "backUrl") + "/Moblie/MoneyLog?memberId=" + MemberId);
+        capital_webiview.loadUrl(CommonUtils.GetValueByKey(this, "backUrl") + "/Moblie/MoneyLog?memberId=" + MemberId);
         //capital_webiview.loadUrl("http://t.back.aboluomall.com/Moblie/ScoreLog?memberId" + MemberId);
         capital_webiview.setWebViewClient(new WebViewClient() {
             @Override

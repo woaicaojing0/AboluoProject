@@ -35,6 +35,7 @@ import com.aboluo.adapter.ThemeGridViewAdapter;
 import com.aboluo.com.GoodsListActivity;
 import com.aboluo.com.HeHuoRenActivity;
 import com.aboluo.com.MainActivity;
+import com.aboluo.com.MessageActivity;
 import com.aboluo.com.PartnerActivity;
 import com.aboluo.com.R;
 import com.aboluo.com.SecKillActivity;
@@ -95,7 +96,7 @@ public class IndexFragment extends Fragment implements View.OnClickListener {
     private Picasso picasso;
     private SweetAlertDialog pdialog;
     private BaseConfigBean indexBannerBean, huodongbean, brandConfigBean, themeBannerConfigBean, themeConfigBean;
-    private LinearLayout linelayout_miaosha;
+    private LinearLayout linelayout_miaosha,index_message;
     private ImageView huodong_left1, huodong_left2, huodong_right1, huodong_right2, huodong_right3, theme_imageview;
     private GridView brand_gridview, theme_gridview;
 
@@ -277,6 +278,7 @@ public class IndexFragment extends Fragment implements View.OnClickListener {
                 }
             }
         });
+        index_message.setOnClickListener(this);
         return view;
     }
 
@@ -302,6 +304,7 @@ public class IndexFragment extends Fragment implements View.OnClickListener {
         theme_gridview = (GridView) view.findViewById(R.id.theme_gridview);
         mCvCountdownView = (CountdownView) view.findViewById(R.id.cv_countdownViewTest1);
         beginSecKill = (LinearLayout) view.findViewById(R.id.beginSecKill);
+        index_message = (LinearLayout) view.findViewById(R.id.index_message);
         linelayout_miaosha = (LinearLayout) view.findViewById(R.id.linelayout_miaosha);
         requestQueue = MyApplication.getRequestQueue();
         ImageUrl = CommonUtils.GetValueByKey(IndexFragment.this.getContext(), "ImgUrl");
@@ -511,6 +514,10 @@ public class IndexFragment extends Fragment implements View.OnClickListener {
                     startActivity(intent7);
                 }
                 break;
+            case  R.id.index_message:
+                Intent intent8 = new Intent(IndexFragment.this.getContext(), MessageActivity.class);
+                startActivity(intent8);
+                break;
             default:
                 break;
         }
@@ -630,8 +637,8 @@ public class IndexFragment extends Fragment implements View.OnClickListener {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                byte[] data = error.networkResponse.data;
-                Toast.makeText(IndexFragment.this.getContext(), new String(data), Toast.LENGTH_SHORT).show();
+                //byte[] data = error.networkResponse.data;
+                //Toast.makeText(IndexFragment.this.getContext(), new String(data), Toast.LENGTH_SHORT).show();
             }
         }) {
             @Override
@@ -667,8 +674,8 @@ public class IndexFragment extends Fragment implements View.OnClickListener {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                byte[] data = error.networkResponse.data;
-                Toast.makeText(IndexFragment.this.getContext(), new String(data), Toast.LENGTH_SHORT).show();
+                //byte[] data = error.networkResponse.data;
+                //Toast.makeText(IndexFragment.this.getContext(), new String(data), Toast.LENGTH_SHORT).show();
             }
         }) {
             @Override
@@ -713,8 +720,8 @@ public class IndexFragment extends Fragment implements View.OnClickListener {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                byte[] data = error.networkResponse.data;
-                Toast.makeText(IndexFragment.this.getContext(), new String(data), Toast.LENGTH_SHORT).show();
+                //byte[] data = error.networkResponse.data;
+                //Toast.makeText(IndexFragment.this.getContext(), new String(data), Toast.LENGTH_SHORT).show();
             }
         }) {
             @Override
@@ -765,8 +772,8 @@ public class IndexFragment extends Fragment implements View.OnClickListener {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                byte[] data = error.networkResponse.data;
-                Toast.makeText(IndexFragment.this.getContext(), new String(data), Toast.LENGTH_SHORT).show();
+                //byte[] data = error.networkResponse.data;
+                //Toast.makeText(IndexFragment.this.getContext(), new String(data), Toast.LENGTH_SHORT).show();
             }
         }) {
             @Override

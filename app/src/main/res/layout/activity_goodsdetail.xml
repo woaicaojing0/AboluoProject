@@ -16,6 +16,7 @@
 
         <!--中间ScrollView-->
         <com.aboluo.widget.VerticalScrollView
+            android:descendantFocusability="blocksDescendants"
             android:fillViewport="true"
             android:id="@+id/contentscrollView"
             android:layout_width="match_parent"
@@ -281,8 +282,8 @@
                     android:minHeight="60dp"
                     android:id="@+id/goods_detail_webview"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:scrollbars="none"></WebView>
+                    android:layout_height="match_parent"
+                    android:scrollbars="none"/>
 
                 <WebView
                     android:id="@+id/goods_pingjia_webview"

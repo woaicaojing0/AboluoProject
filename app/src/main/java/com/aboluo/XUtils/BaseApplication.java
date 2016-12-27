@@ -14,6 +14,7 @@ import com.leo.gesturelibray.enums.LockMode;
 
 import cn.beecloud.BeeCloud;
 import cn.jpush.android.api.JPushInterface;
+import cn.sharesdk.framework.ShareSDK;
 
 /**
  * Created by CJ on 2016/11/2.
@@ -26,6 +27,9 @@ public class BaseApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        //分享初始化
+        ShareSDK.initSDK(this);
+        //极光推送
         JPushInterface.setDebugMode(true);
         JPushInterface.init(this);
         //开启测试模式

@@ -425,9 +425,9 @@ public class MyInfoAcitvity extends TakePhotoActivity implements View.OnClickLis
                 if (myInfoBean.isIsSuccess()) {
                     Toast.makeText(MyInfoAcitvity.this, "修改成功", Toast.LENGTH_SHORT).show();
                     if (updateimages) {
-                        Log.i("UploadImage", "http://oi0lhaaeo.bkt.clouddn.com" + myInfoBean.getResult().getMemberLogoUrl());
+                        Log.i("UploadImage", myInfoBean.getResult().getMemberLogoUrl());
                         CommonUtils.LoginImageURl(MyInfoAcitvity.this,
-                                "http://oi0lhaaeo.bkt.clouddn.com" + myInfoBean.getResult().getMemberLogoUrl());
+                                myInfoBean.getResult().getMemberLogoUrl());
                     } else {
                     }
                     LoadInfo(myInfoBean);

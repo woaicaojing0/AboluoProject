@@ -81,18 +81,32 @@
 
                     <LinearLayout
                         android:id="@+id/favor_item_more"
-                        android:layout_width="wrap_content"
+                        android:layout_width="60dp"
                         android:layout_height="match_parent"
                         android:layout_alignParentRight="true"
                         android:focusable="false"
                         android:gravity="center"
                         android:paddingLeft="16dp"
-                        android:paddingRight="8dp">
+                        android:layout_marginRight="48dp">
 
                         <ImageView
                             android:layout_width="24dp"
                             android:layout_height="24dp"
                             android:src="@drawable/more_gray" />
+                    </LinearLayout>
+                    <LinearLayout
+                        android:id="@+id/favor_item_share"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_alignParentRight="true"
+                        android:focusable="false"
+                        android:gravity="center"
+                        android:paddingRight="8dp">
+                        <ImageView
+                            android:layout_marginLeft="16dp"
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:src="@drawable/share" />
                     </LinearLayout>
                 </RelativeLayout>
             </LinearLayout>

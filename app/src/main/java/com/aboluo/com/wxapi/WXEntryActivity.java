@@ -20,6 +20,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.baidu.paysdk.login.LoginActivity;
 import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
+import com.tencent.mm.sdk.constants.ConstantsAPI;
 import com.tencent.mm.sdk.modelbase.BaseReq;
 import com.tencent.mm.sdk.modelbase.BaseResp;
 import com.tencent.mm.sdk.modelmsg.SendAuth;
@@ -31,6 +32,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
+
+import static com.tencent.mm.sdk.constants.ConstantsAPI.COMMAND_SENDAUTH;
+import static com.tencent.mm.sdk.constants.ConstantsAPI.COMMAND_SENDMESSAGE_TO_WX;
 
 /**
  * Created by CJ on 2016/12/20.
@@ -81,8 +85,21 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler {
     public void onResp(BaseResp baseResp) {
         switch (baseResp.errCode) {
             case BaseResp.ErrCode.ERR_OK:
-                String code = ((SendAuth.Resp) baseResp).code; //即为所需的code
-                GetAsses_Token(code);
+                switch (baseResp.getType()) {
+                    case COMMAND_SENDAUTH:
+                        //登录回调,处理登录成功的逻辑
+                        String code = ((SendAuth.Resp) baseResp).code; //即为所需的code
+                        GetAsses_Token(code);
+                        break;
+                    case COMMAND_SENDMESSAGE_TO_WX:
+                        //分享回调,处理分享成功后的逻辑
+                        Toast.makeText(this, "分享成功", Toast.LENGTH_SHORT).show();
+                        finish();
+                        break;
+                    default:
+                        break;
+                }
+
                 break;
             default:
                 finish();

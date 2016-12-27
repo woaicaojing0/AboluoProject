@@ -110,11 +110,20 @@
         <activity android:name=".WebActivity.IntegralActivity"></activity>
         <activity android:name=".WebActivity.FeedBackActivity"></activity>
         <activity android:name=".MessageActivity"></activity>
+        <activity android:name=".WebActivity.InvitationActivity"></activity>
         <activity android:name=".wxapi.WXEntryActivity"
             android:exported="true"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" >
 
         </activity>
+
+        <!--分享-->
+        <activity
+            android:name="com.mob.tools.MobUIShell"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustResize" />
         <!--线下测试模式-->
         <activity
             android:name="cn.beecloud.BCMockPayActivity"

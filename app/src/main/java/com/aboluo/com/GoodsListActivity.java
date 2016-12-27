@@ -80,7 +80,7 @@ public class GoodsListActivity extends Activity implements RecycleViewAdapter.On
     //搜索框
     private EditText goods_list_search;
     //切换布局按钮，筛选按钮，筛选中的重置，筛选中的确定
-    private Button buju, btn_filtrate, btn_goodslist_rest, btn_goodslist_surefiltrate, goods_detail_price;
+    private Button buju, btn_filtrate, btn_goodslist_rest, btn_goodslist_surefiltrate, goods_detail_price,btn_default;
     //筛选采用的draverlayout布局
     private DrawerLayout drawer_layout;
     //屏幕的宽度，用来设置筛选界面的宽度
@@ -169,6 +169,7 @@ public class GoodsListActivity extends Activity implements RecycleViewAdapter.On
             }
         });
         goods_detail_price.setOnClickListener(this);
+        btn_default.setOnClickListener(this);
     }
 
     private void init() {
@@ -178,6 +179,7 @@ public class GoodsListActivity extends Activity implements RecycleViewAdapter.On
         buju = (Button) findViewById(R.id.buju);
         btn_filtrate = (Button) findViewById(R.id.btn_filtrate);
         btn_goodslist_rest = (Button) findViewById(R.id.btn_goodslist_rest);
+        btn_default = (Button) findViewById(R.id.btn_default);
         btn_goodslist_surefiltrate = (Button) findViewById(R.id.btn_goodslist_surefiltrate);
         goods_detail_price = (Button) findViewById(R.id.goods_detail_price);
         drawer_layout = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -247,9 +249,9 @@ public class GoodsListActivity extends Activity implements RecycleViewAdapter.On
                 if (goods_type_id == -1) //商品的类别
                 {
                 } else {
-                    map.put("GoodsTypeId", String.valueOf(goods_type_id));
+                    map.put(" ", String.valueOf(goods_type_id));
                 }
-                if (GoodsBrandId == -1) //商品的类别
+                if (GoodsBrandId == -1) //商品的品牌
                 {
                 } else {
                     map.put("GoodsBrandId", String.valueOf(GoodsBrandId));
@@ -449,6 +451,11 @@ public class GoodsListActivity extends Activity implements RecycleViewAdapter.On
                 break;
             case R.id.goods_detail_price:
                 IsPriceSort = !IsPriceSort;
+                initdate(1);
+                break;
+            case R.id.btn_default:
+                IsPriceSort = false;
+                LineType= true;
                 initdate(1);
                 break;
         }

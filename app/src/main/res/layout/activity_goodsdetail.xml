@@ -5,11 +5,34 @@
                 android:layout_height="match_parent"
                 android:background="@color/white">
 
+    <include
+        android:id="@+id/id_goodsdetail_bottom"
+        layout="@layout/activity_goodsdetail_bootm"
+        android:layout_width="fill_parent"
+        android:layout_height="56dp"
+        android:layout_alignParentBottom="true"/>
+
+    //弹出框，默认不显示
+
+    <include
+
+        android:id="@+id/second_view"
+        layout="@layout/goods_type_popupwindow"
+        android:layout_width="match_parent"
+        android:layout_height="500dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true"
+        android:background="@color/blue"
+        android:orientation="vertical"
+        android:visibility="invisible"></include>
+
     <LinearLayout
         android:id="@+id/first_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true">
 <RelativeLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -324,13 +347,13 @@
 
             <ImageView
                 android:id="@+id/detail_more"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
                 android:background="#00000000"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:layout_marginRight="20dp"
-                android:src="@drawable/detail_more"/>
+                android:src="@drawable/share"/>
 
             <ImageView
                 android:background="#00000000"
@@ -351,25 +374,4 @@
         <!--android:background="@color/view_color"/>-->
 </RelativeLayout>
     </LinearLayout>
-
-    <include
-        android:id="@+id/id_goodsdetail_bottom"
-        layout="@layout/activity_goodsdetail_bootm"
-        android:layout_width="fill_parent"
-        android:layout_height="56dp"
-        android:layout_alignParentBottom="true"/>
-
-    //弹出框，默认不显示
-
-    <include
-
-        android:id="@+id/second_view"
-        layout="@layout/goods_type_popupwindow"
-        android:layout_width="match_parent"
-        android:layout_height="500dp"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentStart="true"
-        android:background="@color/blue"
-        android:orientation="vertical"
-        android:visibility="invisible"></include>
 </RelativeLayout>

@@ -27,12 +27,15 @@ public class FavorAdapter extends BaseAdapter {
     private List<FavorBean.ResultBean> list;
     private LayoutInflater layoutInflater;
     private String ImageUrl;
-
+    private View.OnClickListener SetOnMoreItemClickListener;
+    private View.OnClickListener SetOnShareItemClickListener;
     public void setSetOnMoreItemClickListener(View.OnClickListener setOnMoreItemClickListener) {
         SetOnMoreItemClickListener = setOnMoreItemClickListener;
     }
 
-    private View.OnClickListener SetOnMoreItemClickListener;
+    public void setSetOnShareItemClickListener(View.OnClickListener setOnShareItemClickListener) {
+        SetOnShareItemClickListener = setOnShareItemClickListener;
+    }
 
     public FavorAdapter(Context context, List<FavorBean.ResultBean> list, String imageurl) {
         this.mcontext = context;
@@ -65,6 +68,7 @@ public class FavorAdapter extends BaseAdapter {
             convertView = layoutInflater.inflate(R.layout.activity_favor_item, null);
             holder.favor_item_image = (ImageView) convertView.findViewById(R.id.favor_item_image);
             holder.favor_item_more = (LinearLayout) convertView.findViewById(R.id.favor_item_more);
+            holder.favor_item_share = (LinearLayout) convertView.findViewById(R.id.favor_item_share);
             holder.favor_item_title = (TextView) convertView.findViewById(R.id.favor_item_title);
             holder.favor_item_price = (TextView) convertView.findViewById(R.id.favor_item_price);
             convertView.setTag(holder);
@@ -88,15 +92,17 @@ public class FavorAdapter extends BaseAdapter {
             }
         }
         holder.favor_item_more.setOnClickListener(SetOnMoreItemClickListener);
+        holder.favor_item_share.setOnClickListener(SetOnShareItemClickListener);
         holder.favor_item_price.setText("￥" + String.valueOf(list.get(position).getHyPrice()));
         holder.favor_item_title.setText(String.valueOf(list.get(position).getGoodsName()));
         holder.favor_item_more.setTag(position);
+        holder.favor_item_share.setTag(position);
         return convertView;
     }
 
     class ViewHolder {
         public TextView favor_item_title, favor_item_price;
         public ImageView favor_item_image;
-        public LinearLayout favor_item_more; //imageview相应的控件太小了，换个大的
+        public LinearLayout favor_item_more,favor_item_share; //imageview相应的控件太小了，换个大的
     }
 }

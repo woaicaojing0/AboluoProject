@@ -27,6 +27,7 @@ import com.aboluo.com.OrderActivity;
 import com.aboluo.com.R;
 import com.aboluo.com.ReFundActivity;
 import com.aboluo.com.WebActivity.FeedBackActivity;
+import com.aboluo.com.WebActivity.InvitationActivity;
 import com.aboluo.model.MyInfoBean;
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -52,7 +53,7 @@ public class MyFragment extends Fragment implements View.OnClickListener {
     private Button btn, my_out;
     private ScrollView my_scrollview;
     private LinearLayout linLayout_my_info, my_nopay, my_nosend, my_noreceive, my_assessment,
-            feedbackInfo, my_favor, my_refund, creditinfodetail;
+            feedbackInfo, my_favor, my_refund, creditinfodetail,my_invitation;
     private RelativeLayout my_allorder, my_addressinfo;
     private SharedPreferences sharedPreferences;
     private RequestQueue requestQueue;
@@ -87,6 +88,7 @@ public class MyFragment extends Fragment implements View.OnClickListener {
         my_refund.setOnClickListener(this);
         btn.setOnClickListener(this);
         my_out.setOnClickListener(this);
+        my_invitation.setOnClickListener(this);
         creditinfodetail.setOnClickListener(this);
         if (CommonUtils.IsLogin(MyFragment.this.getContext())) {
             btn.setVisibility(View.GONE);
@@ -120,6 +122,7 @@ public class MyFragment extends Fragment implements View.OnClickListener {
         my_refund = (LinearLayout) view.findViewById(R.id.my_refund);
         feedbackInfo = (LinearLayout) view.findViewById(R.id.feedbackInfo);
         creditinfodetail = (LinearLayout) view.findViewById(R.id.creditinfodetail);
+        my_invitation = (LinearLayout) view.findViewById(R.id.my_invitation);
         sharedPreferences = MyFragment.this.getContext().getSharedPreferences("aboluo", Context.MODE_PRIVATE);
         my_fragment_imageview = (CircleImageView) view.findViewById(R.id.my_fragment_imageview);
         InitData();
@@ -230,6 +233,10 @@ public class MyFragment extends Fragment implements View.OnClickListener {
                 Intent intent11 = new Intent(MyFragment.this.getActivity(), CreditInfoActivity.class);
                 startActivity(intent11);
                 break;
+            case  R.id.my_invitation:
+                Intent intent13 = new Intent(MyFragment.this.getActivity(), InvitationActivity.class);
+                startActivity(intent13);
+                break;
 
         }
 
@@ -245,5 +252,6 @@ public class MyFragment extends Fragment implements View.OnClickListener {
             btn.setVisibility(View.VISIBLE);
             my_out.setVisibility(View.GONE);
         }
+        InitData();
     }
 }

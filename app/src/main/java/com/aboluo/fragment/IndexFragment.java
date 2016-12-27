@@ -253,7 +253,7 @@ public class IndexFragment extends Fragment implements View.OnClickListener {
                                 "ChildId is NULL", Toast.LENGTH_SHORT).show();
                     } else {
                         Toast.makeText(IndexFragment.this.getContext(),
-                                brandConfigBean.getAppConfigList().get(position).getParams().getChildId(), Toast.LENGTH_SHORT).show();
+                                brandConfigBean.getAppConfigList().get(position).getParams().getChildId()+"", Toast.LENGTH_SHORT).show();
                         intent4.putExtra("GoodsBrandId", brandConfigBean.getAppConfigList().get(position).getParams().getChildId());
                     }
                     startActivity(intent4);

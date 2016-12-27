@@ -25,11 +25,11 @@ import com.handmark.pulltorefresh.library.PullToRefreshListView;
 import com.squareup.picasso.Picasso;
 import com.tandong.bottomview.view.BottomView;
 
-import java.lang.reflect.Member;
 import java.util.HashMap;
 import java.util.Map;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
+import cn.sharesdk.onekeyshare.OnekeyShare;
 
 /**
  * Created by CJ on 2016/12/9.
@@ -90,6 +90,7 @@ public class FavorActivity extends Activity implements View.OnClickListener {
                 favorBean = gson.fromJson(response, FavorBean.class);
                 favorAdapter = new FavorAdapter(FavorActivity.this, favorBean.getResult(), ImageUrl);
                 favorAdapter.setSetOnMoreItemClickListener(FavorActivity.this);
+                favorAdapter.setSetOnShareItemClickListener(FavorActivity.this);
                 favor_listview.setAdapter(favorAdapter);
 
             }
@@ -137,6 +138,47 @@ public class FavorActivity extends Activity implements View.OnClickListener {
                     favor_share.setTag(position);
                     bottomView.showBottomView(true);
                 } else {
+                }
+                break;
+            case R.id.favor_item_share: //sharesdk
+                if (tag != null && tag instanceof Integer) { //解决问题：如何知道你点击的按钮是哪一个列表项中的，通过Tag的
+                    int position2 = (Integer) tag;
+                    String detailurl0 = CommonUtils.GetValueByKey(FavorActivity.this, "backUrl")
+                            + "/moblie/Index?productId=" + favorBean.getResult().get(position2).getGoodsId();
+                    String imageurl = favorBean.getResult().get(position2).getGoodsLogo().toString();
+                    if (imageurl == null) {
+                    } else {
+                        String[] imageurls = imageurl.split(";");
+                        for (int i = 0; i < imageurls.length; i++) {
+                            imageurls[i] = ImageUrl + imageurls[i].toString();
+                        }
+                        Log.i("ShareSDKImageUrl", imageurls[0].toString());
+                        Log.i("ShareSDKURLDetail", detailurl0);
+                        OnekeyShare oks = new OnekeyShare();
+                        //关闭sso授权
+                        oks.disableSSOWhenAuthorize();
+// 分享时Notification的图标和文字  2.5.9以后的版本不调用此方法
+                        //oks.setNotification(R.drawable.ic_launcher, getString(R.string.app_name));
+                        // title标题，印象笔记、邮箱、信息、微信、人人网和QQ空间使用
+                        oks.setTitle("阿波罗分享");
+                        // titleUrl是标题的网络链接，仅在人人网和QQ空间使用
+                        oks.setTitleUrl(detailurl0);
+                        // text是分享文本，所有平台都需要这个字段
+                        oks.setText(favorBean.getResult().get(position2).getGoodsName().toString());
+                        // imagePath是图片的本地路径，Linked-In以外的平台都支持此参数
+                        //oks.setImagePath(imageurls[0].toString());//确保SDcard下面存在此张图片
+                        oks.setImageUrl(imageurls[0].toString());
+                        // url仅在微信（包括好友和朋友圈）中使用
+                        oks.setUrl(detailurl0);
+                        // comment是我对这条分享的评论，仅在人人网和QQ空间使用
+                        oks.setComment("这个商品不错哦");
+                        // site是分享此内容的网站名称，仅在QQ空间使用
+                        oks.setSite(getString(R.string.app_name));
+                        // siteUrl是分享此内容的网站地址，仅在QQ空间使用
+                        oks.setSiteUrl(detailurl0);
+                        // 启动分享GUI
+                        oks.show(this);
+                    }
                 }
                 break;
             case R.id.un_favor: //取消收藏按钮

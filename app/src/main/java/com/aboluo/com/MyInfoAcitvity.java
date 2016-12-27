@@ -283,6 +283,10 @@ public class MyInfoAcitvity extends TakePhotoActivity implements View.OnClickLis
         String key = "memberLogo/android/" + UUID.randomUUID().toString();
         if (qiNiuToken == null) {
         } else {
+            File file = new File(filepath);
+            picasso.load(file)
+                    .placeholder(R.drawable.image_placeholder)
+                    .error(R.drawable.imageview_error).into(my_info_touxiang);
             String token = qiNiuToken.getFileUploadToken();
             UploadImage(filepath, key, token);
         }
@@ -401,9 +405,9 @@ public class MyInfoAcitvity extends TakePhotoActivity implements View.OnClickLis
         final String newnickname = myInfoBean.getResult().getUserNickName() == null ? ""
                 : myInfoBean.getResult().getUserNickName().toString();
         String images = "";
-        int i = myInfoBean.getResult().getMemberLogoUrl().indexOf("http");
-        if(i>0)
-        {}
+//        int i = myInfoBean.getResult().getMemberLogoUrl().indexOf("http");
+//        if(i>0)
+//        {}
         if (updateimages) {
             images = myInfoBean.getResult().getMemberLogoUrl();
         } else {
@@ -420,6 +424,12 @@ public class MyInfoAcitvity extends TakePhotoActivity implements View.OnClickLis
                 myInfoBean = gson.fromJson(response, MyInfoBean.class);
                 if (myInfoBean.isIsSuccess()) {
                     Toast.makeText(MyInfoAcitvity.this, "修改成功", Toast.LENGTH_SHORT).show();
+                    if (updateimages) {
+                        Log.i("UploadImage", "http://oi0lhaaeo.bkt.clouddn.com" + myInfoBean.getResult().getMemberLogoUrl());
+                        CommonUtils.LoginImageURl(MyInfoAcitvity.this,
+                                "http://oi0lhaaeo.bkt.clouddn.com" + myInfoBean.getResult().getMemberLogoUrl());
+                    } else {
+                    }
                     LoadInfo(myInfoBean);
                 } else {
                     Toast.makeText(MyInfoAcitvity.this, "修改失败", Toast.LENGTH_SHORT).show();

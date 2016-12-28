@@ -54,8 +54,8 @@
             >
             <ImageView
                 android:id="@+id/iv_bottom_menu"
-                android:layout_width="28dp"
-                android:layout_height="28dp"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
                 android:background="@drawable/sort_light"
                 android:contentDescription="@string/app_name"/>
             <TextView

@@ -77,6 +77,7 @@
                         android:src="@drawable/search" />
 
                     <ImageView
+                        android:visibility="gone"
                         android:layout_marginRight="6dp"
                         android:id="@+id/imageView4"
                         android:layout_width="24dp"
@@ -251,7 +252,7 @@
                             android:id="@+id/seckill_imge0"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:src="@drawable/index_limit_bg" />
+                            android:src="@drawable/imagviewloading" />
                     </LinearLayout>
 
                     <View
@@ -272,7 +273,7 @@
                             android:id="@+id/seckill_imge1"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:src="@drawable/index_limit_bg" />
+                            android:src="@drawable/imagviewloading" />
                     </LinearLayout>
 
                     <View
@@ -292,7 +293,7 @@
                             android:id="@+id/seckill_imge2"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:src="@drawable/index_limit_bg" />
+                            android:src="@drawable/imagviewloading" />
                     </LinearLayout>
                 </LinearLayout>
 

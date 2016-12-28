@@ -20,8 +20,10 @@ import com.aboluo.XUtils.MyApplication;
 import com.aboluo.com.AddressActivity;
 import com.aboluo.com.CreditInfoActivity;
 import com.aboluo.com.FavorActivity;
+import com.aboluo.com.InvitationCodeActivity;
 import com.aboluo.com.LoginActivity;
 import com.aboluo.com.MainActivity;
+import com.aboluo.com.MyAgentActivity;
 import com.aboluo.com.MyInfoAcitvity;
 import com.aboluo.com.OrderActivity;
 import com.aboluo.com.R;
@@ -53,7 +55,7 @@ public class MyFragment extends Fragment implements View.OnClickListener {
     private Button btn, my_out;
     private ScrollView my_scrollview;
     private LinearLayout linLayout_my_info, my_nopay, my_nosend, my_noreceive, my_assessment,
-            feedbackInfo, my_favor, my_refund, creditinfodetail,my_invitation;
+            feedbackInfo, my_favor, my_refund, creditinfodetail, my_invitation, invitation_code, my_agent;
     private RelativeLayout my_allorder, my_addressinfo;
     private SharedPreferences sharedPreferences;
     private RequestQueue requestQueue;
@@ -90,6 +92,8 @@ public class MyFragment extends Fragment implements View.OnClickListener {
         my_out.setOnClickListener(this);
         my_invitation.setOnClickListener(this);
         creditinfodetail.setOnClickListener(this);
+        invitation_code.setOnClickListener(this);
+        my_agent.setOnClickListener(this);
         if (CommonUtils.IsLogin(MyFragment.this.getContext())) {
             btn.setVisibility(View.GONE);
             my_out.setVisibility(View.VISIBLE);
@@ -123,6 +127,8 @@ public class MyFragment extends Fragment implements View.OnClickListener {
         feedbackInfo = (LinearLayout) view.findViewById(R.id.feedbackInfo);
         creditinfodetail = (LinearLayout) view.findViewById(R.id.creditinfodetail);
         my_invitation = (LinearLayout) view.findViewById(R.id.my_invitation);
+        invitation_code = (LinearLayout) view.findViewById(R.id.invitation_code);
+        my_agent = (LinearLayout) view.findViewById(R.id.my_agent);
         sharedPreferences = MyFragment.this.getContext().getSharedPreferences("aboluo", Context.MODE_PRIVATE);
         my_fragment_imageview = (CircleImageView) view.findViewById(R.id.my_fragment_imageview);
         InitData();
@@ -233,9 +239,17 @@ public class MyFragment extends Fragment implements View.OnClickListener {
                 Intent intent11 = new Intent(MyFragment.this.getActivity(), CreditInfoActivity.class);
                 startActivity(intent11);
                 break;
-            case  R.id.my_invitation:
+            case R.id.my_invitation:
                 Intent intent13 = new Intent(MyFragment.this.getActivity(), InvitationActivity.class);
                 startActivity(intent13);
+                break;
+            case R.id.invitation_code:
+                Intent intent14 = new Intent(MyFragment.this.getActivity(), InvitationCodeActivity.class);
+                startActivity(intent14);
+                break;
+            case R.id.my_agent:
+                Intent intent15 = new Intent(MyFragment.this.getActivity(), MyAgentActivity.class);
+                startActivity(intent15);
                 break;
 
         }

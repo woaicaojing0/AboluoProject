@@ -39,19 +39,54 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="36dp"
+        android:layout_height="42dp"
         android:focusable="true"
-        android:focusableInTouchMode="true">
-        <EditText
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@drawable/bg_edittext"/>
+        android:focusableInTouchMode="true"
+        android:gravity="center_vertical">
+        <RelativeLayout
+            android:layout_weight="5"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true">
+
+            <EditText
+                android:inputType="text"
+                android:id="@+id/parnter_top_editsearch"
+                android:layout_width="match_parent"
+                android:layout_height="38dp"
+                android:background="@drawable/edit_bg"
+                android:hint="请输入您要搜索的商品"
+                android:imeOptions="actionSearch"
+                android:maxLines="1"
+                android:minLines="1"
+                android:paddingLeft="30dp"
+                android:paddingRight="30dp"
+                android:textColorHint="#909090"
+                android:textSize="14sp" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true">
+
+                <ImageView
+                    android:id="@+id/imageView3"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_alignParentStart="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="6dp"
+                    android:src="@drawable/search" />
+
+            </RelativeLayout>
+
+        </RelativeLayout>
     </LinearLayout>
-    <!--pageview 轮播效果-->
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-
+        <!--pageview 轮播效果-->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -65,7 +100,41 @@
                 app:rollviewpager_hint_gravity="right"
                 app:rollviewpager_play_delay="3000"/>
             <!--pageview 轮播效果 end -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="32dp"
+                android:background="@drawable/goods_list_type"
+                android:orientation="horizontal">
 
+                <Button
+                    android:id="@+id/btn_default"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@color/transparent"
+                    android:text="默认"/>
+
+                <View
+                    android:id="@+id/top_view1"
+                    android:layout_width="0.5dp"
+                    android:layout_height="match_parent"
+                    android:background="@color/view_color"/>
+
+                <Button
+                    android:id="@+id/parnter_goods_detail_price"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@color/transparent"
+                    android:text="价格"/>
+
+                <View
+                    android:id="@+id/top_view4"
+                    android:layout_width="0.5dp"
+                    android:layout_height="match_parent"
+                    android:background="@color/view_color"/>
+
+            </LinearLayout>
             <com.aboluo.XUtils.RBCallbkRecyclerView
                 android:id="@+id/parnter_RecyclerView"
                 android:layout_width="match_parent"

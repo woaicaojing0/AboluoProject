@@ -106,7 +106,6 @@ public class GoodsListActivity extends Activity implements RecycleViewAdapter.On
         pdialog.setTitleText("加载中");
         pdialog.setCanceledOnTouchOutside(true);
         pdialog.setCancelable(true);
-        initdate(1);
         Intent intent = getIntent();
         goods_type_id = intent.getIntExtra("goods_type_id", -1);
         GoodsBrandId = intent.getIntExtra("GoodsBrandId", -1);
@@ -170,6 +169,7 @@ public class GoodsListActivity extends Activity implements RecycleViewAdapter.On
         });
         goods_detail_price.setOnClickListener(this);
         btn_default.setOnClickListener(this);
+        initdate(1);
     }
 
     private void init() {
@@ -249,7 +249,7 @@ public class GoodsListActivity extends Activity implements RecycleViewAdapter.On
                 if (goods_type_id == -1) //商品的类别
                 {
                 } else {
-                    map.put(" ", String.valueOf(goods_type_id));
+                    map.put("GoodsTypeId", String.valueOf(goods_type_id));
                 }
                 if (GoodsBrandId == -1) //商品的品牌
                 {

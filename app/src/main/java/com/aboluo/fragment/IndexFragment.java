@@ -764,9 +764,20 @@ public class IndexFragment extends Fragment implements View.OnClickListener {
                     }
 
                 } else {
-                    theme_imageview.setVisibility(View.GONE);
-                    theme_gridview.setVisibility(View.GONE);
-                    Toast.makeText(IndexFragment.this.getContext(), themeConfigBean.getMessage().toString(), Toast.LENGTH_SHORT).show();
+                    if (themeBannerConfigBean.isIsSuccess()) {
+                        String[] arrString2 = new String[themeBannerConfigBean.getAppConfigList().size()];
+                        if (arrString2.length == 0) { //如果主题的banner 和主题的九宫格都没有，则隐藏主题导购
+                            theme_imageview.setVisibility(View.GONE);
+                        }
+                        else
+                        {
+                            theme_imageview.setVisibility(View.VISIBLE);
+                        }
+                    }else {
+                        theme_imageview.setVisibility(View.GONE);
+                        theme_gridview.setVisibility(View.GONE);
+                        Toast.makeText(IndexFragment.this.getContext(), themeConfigBean.getMessage().toString(), Toast.LENGTH_SHORT).show();
+                    }
                 }
             }
         }, new Response.ErrorListener() {

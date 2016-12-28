@@ -3,11 +3,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/mybg"
     android:orientation="vertical">
 
     <ScrollView
         android:id="@+id/my_scrollview"
+        android:scrollbars="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="#ededed">
@@ -461,7 +461,7 @@
             <Button
                 android:id="@+id/my_btn"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="42dp"
                 android:background="@drawable/myinfo_btn_login"
                 android:layout_marginTop="20dp"
                 android:textColor="@color/white"
@@ -471,12 +471,15 @@
                 android:visibility="gone"
                 android:id="@+id/my_out"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="42dp"
                 android:background="@drawable/myinfo_btn_login"
                 android:layout_marginTop="20dp"
                 android:textColor="@color/white"
                 android:textSize="16sp"
                 android:text="注销" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="42dp"></LinearLayout>
         </LinearLayout>
     </ScrollView>
 

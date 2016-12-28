@@ -5,26 +5,6 @@
                 android:layout_height="match_parent"
                 android:background="@color/white">
 
-    <include
-        android:id="@+id/id_goodsdetail_bottom"
-        layout="@layout/activity_goodsdetail_bootm"
-        android:layout_width="fill_parent"
-        android:layout_height="56dp"
-        android:layout_alignParentBottom="true"/>
-
-    //弹出框，默认不显示
-
-    <include
-
-        android:id="@+id/second_view"
-        layout="@layout/goods_type_popupwindow"
-        android:layout_width="match_parent"
-        android:layout_height="500dp"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentStart="true"
-        android:background="@color/blue"
-        android:orientation="vertical"
-        android:visibility="invisible"></include>
 
     <LinearLayout
         android:id="@+id/first_view"
@@ -373,5 +353,26 @@
         <!--android:layout_alignBottom="@+id/toolbar"-->
         <!--android:background="@color/view_color"/>-->
 </RelativeLayout>
+
     </LinearLayout>
+    <include
+        android:id="@+id/id_goodsdetail_bottom"
+        layout="@layout/activity_goodsdetail_bootm"
+        android:layout_width="fill_parent"
+        android:layout_height="54dp"
+        android:layout_alignParentBottom="true"/>
+
+    //弹出框，默认不显示
+
+    <include
+
+        android:id="@+id/second_view"
+        layout="@layout/goods_type_popupwindow"
+        android:layout_width="match_parent"
+        android:layout_height="500dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true"
+        android:background="@color/blue"
+        android:orientation="vertical"
+        android:visibility="invisible"></include>
 </RelativeLayout>

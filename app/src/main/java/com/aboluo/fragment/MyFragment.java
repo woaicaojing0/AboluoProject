@@ -75,7 +75,7 @@ public class MyFragment extends Fragment implements View.OnClickListener {
         }
         init();
 
-        OverScrollDecoratorHelper.setUpStaticOverScroll(my_scrollview, OverScrollDecoratorHelper.ORIENTATION_VERTICAL);
+//        OverScrollDecoratorHelper.setUpStaticOverScroll(my_scrollview, OverScrollDecoratorHelper.ORIENTATION_VERTICAL);
         linLayout_my_info.setOnClickListener(this);
         my_allorder.setOnClickListener(this);
         my_nopay.setOnClickListener(this);

@@ -82,7 +82,7 @@ public class InvitationActivity extends Activity {
     }
 
     private void ShareSdk() throws PackageManager.NameNotFoundException {
-        String detailurl0 = "http://t.back.aboluomall.com"
+        String detailurl0 = CommonUtils.GetValueByKey(this, "backUrl")
                 + "/moblie/PersonShare?memberId=" + MemberId;
         Log.i("detailurl0",detailurl0);
         OnekeyShare oks = new OnekeyShare();

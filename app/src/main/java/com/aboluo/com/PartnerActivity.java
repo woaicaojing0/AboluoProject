@@ -149,8 +149,12 @@ public class PartnerActivity extends Activity implements PartnerAdpater.OnRecycl
                 response = response.replace("\\", "");
                 response = response.substring(1, response.length() - 1);
                 listBean = gson.fromJson(response, GoodsListInfo.class);
-                if(currentpage ==1)
-                {}else {
+                if (currentpage == 1) {
+                    goodsListBean = listBean.getResult().getGoodsList();
+                    partnerAdpater = new PartnerAdpater(goodsListBean, PartnerActivity.this);
+                    parnter_RecyclerView.setAdapter(partnerAdpater);
+                    partnerAdpater.setOnItemClickListener(PartnerActivity.this);
+                } else {
                     if (goodsListBean == null) {
                         goodsListBean = listBean.getResult().getGoodsList();
                         partnerAdpater = new PartnerAdpater(goodsListBean, PartnerActivity.this);

@@ -1,14 +1,21 @@
 package com.aboluo.com;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v7.widget.LinearLayoutManager;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.aboluo.XUtils.CommonUtils;
@@ -62,6 +69,11 @@ public class PartnerActivity extends Activity implements PartnerAdpater.OnRecycl
     private BaseConfigBean PartnerBannerBean;
     private RollPagerView partner_view_pager;
     private BannerAdapter bannerAdapter;
+    private Button parnter_goods_detail_price, btn_default;
+    private boolean ispricesort;
+    private boolean isdefault = true;
+    private EditText parnter_top_editsearch;
+    private String GoodsName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,7 +95,24 @@ public class PartnerActivity extends Activity implements PartnerAdpater.OnRecycl
         //设置顶部banner 的高度 高度是宽度的1/3；
         partner_view_pager.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, screenWidth / 3));
         partner_view_pager.setHintView(new ColorPointHintView(this, Color.RED, Color.WHITE));
+        parnter_goods_detail_price.setOnClickListener(this);
+        btn_default.setOnClickListener(this);
         initData(1);
+        parnter_top_editsearch.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                    //隐藏软键盘
+                    InputMethodManager inm = (InputMethodManager) PartnerActivity.this.getSystemService(Context.INPUT_METHOD_SERVICE);
+                    inm.hideSoftInputFromWindow(parnter_top_editsearch.getWindowToken(), 0);
+                    GoodsName = parnter_top_editsearch.getText().toString();
+                    initData(1);
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+        });
     }
 
     private void init() {
@@ -101,11 +130,15 @@ public class PartnerActivity extends Activity implements PartnerAdpater.OnRecycl
         pdialog.setCancelable(true);
         parnter_RecyclerView = (RBCallbkRecyclerView) findViewById(R.id.parnter_RecyclerView);
         partner_view_pager = (RollPagerView) findViewById(R.id.partner_view_pager);
+        parnter_goods_detail_price = (Button) findViewById(R.id.parnter_goods_detail_price);
+        btn_default = (Button) findViewById(R.id.btn_default);
+        parnter_top_editsearch = (EditText) findViewById(R.id.parnter_top_editsearch);
         InitBanner();
     }
 
     /**
      * 加载recycleview 的数据
+     *
      * @param currentpage 当前的页数，分页使用
      */
     private void initData(final int currentpage) {
@@ -116,15 +149,19 @@ public class PartnerActivity extends Activity implements PartnerAdpater.OnRecycl
                 response = response.replace("\\", "");
                 response = response.substring(1, response.length() - 1);
                 listBean = gson.fromJson(response, GoodsListInfo.class);
-                if (goodsListBean == null) {
-                    goodsListBean = listBean.getResult().getGoodsList();
-                    partnerAdpater = new PartnerAdpater(goodsListBean, PartnerActivity.this);
-                    parnter_RecyclerView.setAdapter(partnerAdpater);
-                    partnerAdpater.setOnItemClickListener(PartnerActivity.this);
-                } else {
-                    List<GoodsListInfo.ResultBean.GoodsListBean> goodsListBean2 = listBean.getResult().getGoodsList();
-                    goodsListBean.addAll(goodsListBean2);
-                    partnerAdpater.notifyDataSetChanged();
+                if(currentpage ==1)
+                {}else {
+                    if (goodsListBean == null) {
+                        goodsListBean = listBean.getResult().getGoodsList();
+                        partnerAdpater = new PartnerAdpater(goodsListBean, PartnerActivity.this);
+                        parnter_RecyclerView.setAdapter(partnerAdpater);
+                        partnerAdpater.setOnItemClickListener(PartnerActivity.this);
+                    } else {
+                        List<GoodsListInfo.ResultBean.GoodsListBean> goodsListBean2 = listBean.getResult().getGoodsList();
+                        goodsListBean.addAll(goodsListBean2);
+                        partnerAdpater.notifyDataSetChanged();
+                    }
+
                 }
                 pdialog.dismiss();
             }
@@ -139,8 +176,21 @@ public class PartnerActivity extends Activity implements PartnerAdpater.OnRecycl
                 Map<String, String> map = new HashMap<>();
                 map.put("APPToken", APPToken);
                 map.put("CurrentPage", String.valueOf(currentpage));
+                if (isdefault) {
+                } else {
+                    if (ispricesort) {
+                        map.put("IsPriceSort", "true");
+                    } else {
+                        map.put("IsPriceSort", "false");
+                    }
+                }
+                if (GoodsName == null) {
+                } else if (GoodsName.length() == 0) {
+                } else {
+                    map.put("GoodsName", GoodsName);
+                }
                 map.put("PageSize", String.valueOf(pagesize));
-                map.put("GoodsTypeId","238");
+                map.put("GoodsTypeId", "238"); //合伙人商品的id
                 return map;
             }
 
@@ -151,7 +201,17 @@ public class PartnerActivity extends Activity implements PartnerAdpater.OnRecycl
 
     @Override
     public void onClick(View v) {
-
+        switch (v.getId()) {
+            case R.id.btn_default:
+                isdefault = true;
+                initData(1);
+                break;
+            case R.id.parnter_goods_detail_price:
+                isdefault = false;
+                ispricesort = !ispricesort;
+                initData(1);
+                break;
+        }
     }
 
     @Override
@@ -210,10 +270,10 @@ public class PartnerActivity extends Activity implements PartnerAdpater.OnRecycl
                 return map;
             }
 
-            ;
         };
         requestQueue.add(stringRequest);
     }
+
     /**
      * 获取合伙人对应的商品的id
      */
@@ -238,8 +298,6 @@ public class PartnerActivity extends Activity implements PartnerAdpater.OnRecycl
                 map.put("APPToken", APPToken);
                 return map;
             }
-
-            ;
         };
         requestQueue.add(stringRequest);
     }

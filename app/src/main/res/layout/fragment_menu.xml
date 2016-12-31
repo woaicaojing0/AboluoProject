@@ -81,19 +81,19 @@
                             android:layout_weight="1"
                             android:numColumns="3"></com.aboluo.widget.MyGridView>
 
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:gravity="center"
-                            android:orientation="horizontal">
+                        <!--<LinearLayout-->
+                            <!--android:layout_width="match_parent"-->
+                            <!--android:layout_height="wrap_content"-->
+                            <!--android:gravity="center"-->
+                            <!--android:orientation="horizontal">-->
 
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="猜你喜欢"
-                                android:textColor="@color/register_color"
-                                android:textSize="18dp"/>
-                        </LinearLayout>
+                            <!--<TextView-->
+                                <!--android:layout_width="wrap_content"-->
+                                <!--android:layout_height="wrap_content"-->
+                                <!--android:text="猜你喜欢"-->
+                                <!--android:textColor="@color/register_color"-->
+                                <!--android:textSize="18dp"/>-->
+                        <!--</LinearLayout>-->
 
                         <com.aboluo.widget.MyGridView
                             android:id="@+id/menu_gridview_youlove"

@@ -108,11 +108,13 @@
                         android:layout_marginLeft="8dp">
 
                         <TextView
+                            android:textColor="@color/red"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="￥"/>
 
                         <TextView
+                            android:textSize="24sp"
                             android:id="@+id/txt_new_money"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -200,7 +202,7 @@
                         android:layout_marginTop="6dp"
                         android:gravity="center_vertical"
                         android:lines="1"
-                        android:text="请选择商品类型"/>
+                        android:text="请选择商品规格"/>
 
                     <ImageView
                         android:layout_width="20dp"

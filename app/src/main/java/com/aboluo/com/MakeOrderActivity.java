@@ -217,7 +217,7 @@ public class MakeOrderActivity extends Activity implements View.OnClickListener 
                         pdialog.dismiss();
                     } else {
                     }
-                    Toast.makeText(MakeOrderActivity.this, response, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MakeOrderActivity.this,baseModel.getMessage().toString(), Toast.LENGTH_SHORT).show();
                     pdialog.dismiss();
                 }
             }, new Response.ErrorListener() {

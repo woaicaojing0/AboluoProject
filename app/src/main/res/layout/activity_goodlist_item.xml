@@ -34,10 +34,10 @@
             </LinearLayout>
 
             <LinearLayout
-                android:layout_marginLeft="2dp"
-                android:layout_marginRight="2dp"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
+                android:layout_marginLeft="2dp"
+                android:layout_marginRight="2dp"
                 android:layout_weight="2.5"
                 android:orientation="vertical">
 
@@ -48,31 +48,32 @@
                     android:orientation="vertical">
 
                     <TextView
-                        android:gravity="center_vertical"
-                        android:layout_marginTop="2dp"
                         android:id="@+id/goods_name"
-                        android:layout_weight="1"
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
+                        android:layout_marginTop="2dp"
+                        android:layout_weight="1"
                         android:ellipsize="end"
+                        android:gravity="center_vertical"
                         android:lines="1" />
 
                     <TextView
-                        android:gravity="center_vertical"
-                        android:layout_weight="2"
                         android:id="@+id/goods_sub"
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
+                        android:layout_weight="2"
                         android:ellipsize="end"
+                        android:gravity="center_vertical"
                         android:lines="2" />
+
                     <TextView
-                        android:text="数量：20件"
-                        android:gravity="right"
                         android:id="@+id/goods_quantity"
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
                         android:layout_weight="1"
-                        android:lines="1" />
+                        android:gravity="right"
+                        android:lines="1"
+                        android:text="数量：20件" />
                 </LinearLayout>
 
                 <RelativeLayout
@@ -82,43 +83,54 @@
                     android:gravity="center_vertical">
 
                     <LinearLayout
-                        android:id="@+id/linearLayout"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="原价:￥" />
-
-                        <TextView
-                            android:id="@+id/old_money"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:lines="1"
-                            android:text="123元"
-                            android:textColor="#cccccc" />
-                    </LinearLayout>
-
-                    <LinearLayout
                         android:id="@+id/linelayout_now"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
+
                         android:orientation="horizontal">
+
+                        <!--<TextView-->
+                            <!--android:layout_width="wrap_content"-->
+                            <!--android:layout_height="wrap_content"-->
+                            <!--android:text="会员价:" />-->
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="会员价:￥" />
+                            android:text="￥"
+                            android:textColor="@color/red" />
 
                         <TextView
                             android:id="@+id/new_money"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="77元"
-                            android:textColor="@color/red" />
+                            android:text="77"
+                            android:textColor="@color/red"
+                            android:textSize="18sp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/linearLayout"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:orientation="horizontal">
+
+                        <!--<TextView-->
+                            <!--android:layout_width="wrap_content"-->
+                            <!--android:layout_height="wrap_content"-->
+                            <!--android:text="原价:￥" />-->
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="￥" />
+                        <TextView
+                            android:id="@+id/old_money"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:lines="1"
+                            android:text="123"
+                            android:textColor="#cccccc" />
                     </LinearLayout>
                 </RelativeLayout>
             </LinearLayout>

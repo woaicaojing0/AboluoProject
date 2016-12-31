@@ -91,15 +91,17 @@
                         android:orientation="horizontal">
 
                         <TextView
+                            android:textColor="@color/red"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="￥"/>
 
                         <TextView
+                            android:textSize="18sp"
                             android:id="@+id/new_money"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="77元"
+                            android:text="77"
                             android:textColor="@color/red"/>
                     </LinearLayout>
 
@@ -120,7 +122,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:lines="1"
-                            android:text="123元"
+                            android:text="123"
                             android:textColor="#cccccc"/>
                     </LinearLayout>
 

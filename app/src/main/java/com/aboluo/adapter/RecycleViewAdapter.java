@@ -54,7 +54,7 @@ public class RecycleViewAdapter extends RecyclerView.Adapter<RecycleViewAdapter.
     public void onBindViewHolder(MyViewHolder holder, final int position) {
         holder.goods_name.setText(mgoodGoodsListBean.get(position).getGoodsName());
         holder.old_money.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG);
-        holder.old_money.setText(mgoodGoodsListBean.get(position).getGoodsPrice() + "元");
+        holder.old_money.setText(String.valueOf(mgoodGoodsListBean.get(position).getGoodsPrice()));
         holder.goods_quantity.setText("数量:" + mgoodGoodsListBean.get(position).getGoodsQuantity() + "件");
         String imageurl = mgoodGoodsListBean.get(position).getGoodsLogo();
         if (imageurl == null) {
@@ -68,7 +68,7 @@ public class RecycleViewAdapter extends RecyclerView.Adapter<RecycleViewAdapter.
                     .error(mcontext.getResources().getDrawable(R.drawable.imageview_error)).into(holder.goods_image);
 
         }
-        holder.new_money.setText(mgoodGoodsListBean.get(position).getHyPrice() + "元");
+        holder.new_money.setText(String.valueOf(mgoodGoodsListBean.get(position).getHyPrice()));
         holder.goods_sub.setText(mgoodGoodsListBean.get(position).getGoodsSub() + "");
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override

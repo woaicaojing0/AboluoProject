@@ -385,9 +385,9 @@ public class MyInfoAcitvity extends TakePhotoActivity implements View.OnClickLis
         my_inf_txt_nicheng.setText(myInfoBean.getResult().getUserNickName() == null ? "未填写"
                 : myInfoBean.getResult().getUserNickName().toString());
         if (myInfoBean.getResult().getMemberSex() == 0) {
-            my_info_txt_sex.setText("女");
-        } else {
             my_info_txt_sex.setText("男");
+        } else {
+            my_info_txt_sex.setText("女");
         }
         my_info_txt_phone.setText(myInfoBean.getResult().getMemberMobile() == null ? "未填写"
                 : myInfoBean.getResult().getMemberMobile().toString());

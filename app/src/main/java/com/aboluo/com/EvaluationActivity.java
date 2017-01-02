@@ -358,10 +358,10 @@ public class EvaluationActivity extends TakePhotoActivity implements View.OnClic
 
     private boolean ValidateEvaluation() {
         boolean IsOk = true;
-        if (ImageUploadNameList.size() == 0) {
-            IsOk = false;
-            Toast.makeText(this, "请先上传图片", Toast.LENGTH_SHORT).show();
-        }
+//        if (ImageUploadNameList.size() == 0) {
+//            IsOk = false;
+//            Toast.makeText(this, "请先上传图片", Toast.LENGTH_SHORT).show();
+//        }
         if (edit_evaluation_content.getText().length() == 0) {
             IsOk = false;
             Toast.makeText(this, "请输入评价内容", Toast.LENGTH_SHORT).show();

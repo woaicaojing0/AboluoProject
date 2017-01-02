@@ -49,36 +49,35 @@ public class OrderSureListViewAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        ViewHolder holder =null;
-        if(convertView == null)
-        {
+        ViewHolder holder = null;
+        if (convertView == null) {
             holder = new ViewHolder();
-            convertView = layoutInflater.inflate(R.layout.orderlist_item,null);
+            convertView = layoutInflater.inflate(R.layout.orderlist_item, null);
             holder.order_image = (ImageView) convertView.findViewById(R.id.order_image);
             holder.order_txt_desc = (TextView) convertView.findViewById(R.id.order_txt_desc);
-            holder.order_txt_colorStandards = (TextView) convertView.findViewById(R.id.order_txt_colorStandards);
             holder.order_txt_num = (TextView) convertView.findViewById(R.id.order_txt_num);
             holder.order_txt_money = (TextView) convertView.findViewById(R.id.order_txt_money);
+            holder.order_txt_standards = (TextView) convertView.findViewById(R.id.order_txt_standards);
+            holder.order_color = (TextView) convertView.findViewById(R.id.order_color);
             convertView.setTag(holder);
-        }
-        else {
+        } else {
             holder = (ViewHolder) convertView.getTag();
         }
         String result = String.valueOf(mlist.get(position).getGoodsCount());
-        holder.order_txt_num.setText("X"+String.valueOf(mlist.get(position).getGoodsCount()));
+        holder.order_txt_num.setText("X" + String.valueOf(mlist.get(position).getGoodsCount()));
         holder.order_txt_desc.setText(mlist.get(position).getGoodsName().toString());
-        holder.order_txt_money.setText("￥"+String.valueOf(mlist.get(position).getHyPrice()));
+        holder.order_txt_money.setText("￥" + String.valueOf(mlist.get(position).getHyPrice()));
         String guige = null;
         if (mlist.get(position).getGoodsStandard() != null) {
-            guige = "尺寸：" + mlist.get(position).getGoodsStandard();
+            holder.order_txt_standards.setText("" + String.valueOf(mlist.get(position).getGoodsStandard()));
+        } else {
+            holder.order_txt_standards.setText("无");
         }
         if (mlist.get(position).getGoodsColor() != null) {
-            guige = guige + " " + "颜色：" + mlist.get(position).getGoodsColor();
-        }
-        if (guige == null) {
-            holder.order_txt_colorStandards.setText("无");
+            holder.order_color.setText("" + String.valueOf(mlist.get(position).getGoodsColor()));
+            holder.order_color.setText("无");
         } else {
-            holder.order_txt_colorStandards.setText(guige);
+
         }
         if (mlist.get(position).getGoodsLogo() == null) {
         } else {
@@ -87,7 +86,7 @@ public class OrderSureListViewAdapter extends BaseAdapter {
                 ImgeURL = CommonUtils.GetValueByKey(mcontext, "ImgUrl");
             } else {
             }
-        Log.i("woaicaojingshopimg",ImgeURL+imges[0]);
+            Log.i("woaicaojingshopimg", ImgeURL + imges[0]);
             Picasso.with(mcontext).load(ImgeURL + imges[0]).placeholder(mcontext.getResources().getDrawable(R.drawable.imagviewloading))
                     .error(mcontext.getResources().getDrawable(R.drawable.imageview_error))
                     .into(holder.order_image);
@@ -96,7 +95,7 @@ public class OrderSureListViewAdapter extends BaseAdapter {
     }
 
     class ViewHolder {
-        TextView order_txt_desc, order_txt_colorStandards, order_txt_num, order_txt_money;
+        TextView order_txt_desc, order_txt_num, order_txt_money, order_txt_standards, order_color;
         ImageView order_image;
     }
 }

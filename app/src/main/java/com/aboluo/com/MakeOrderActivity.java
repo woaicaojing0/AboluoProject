@@ -82,7 +82,7 @@ public class MakeOrderActivity extends Activity implements View.OnClickListener 
         for (int i = 0; i < goodsShoppingCartListBean.size(); i++) {
             yunfei = yunfei + goodsShoppingCartListBean.get(i).getYunfei();
         }
-        order_yunfei.setText("运费：" + String.valueOf(yunfei));
+        order_yunfei.setText("" + String.valueOf(yunfei));
         change_make_sure_location.setOnClickListener(this);
         all_makeorder_text_back.setOnClickListener(this);
     }

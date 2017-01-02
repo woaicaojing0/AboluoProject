@@ -12,7 +12,6 @@ import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;
@@ -27,7 +26,6 @@ import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.aboluo.XUtils.CommonUtils;
 import com.aboluo.XUtils.MyApplication;
@@ -80,7 +78,9 @@ public class GoodsListActivity extends Activity implements RecycleViewAdapter.On
     //搜索框
     private EditText goods_list_search;
     //切换布局按钮，筛选按钮，筛选中的重置，筛选中的确定
-    private Button buju, btn_filtrate, btn_goodslist_rest, btn_goodslist_surefiltrate, goods_detail_price,btn_default;
+    private Button btn_goodslist_rest, btn_goodslist_surefiltrate, btn_goodsdetail_defalut, btn_goodsdetail_price;
+    private LinearLayout line_filtrate, line_buju, line_goods_detail_price, line_default;
+    private ImageView goods_detail_price_img, line_buju_img;
     //筛选采用的draverlayout布局
     private DrawerLayout drawer_layout;
     //屏幕的宽度，用来设置筛选界面的宽度
@@ -95,7 +95,8 @@ public class GoodsListActivity extends Activity implements RecycleViewAdapter.On
     private static String GoodsName;
     private static int GoodsBrandId;
     private static boolean IsPriceSort;
-    private static boolean LineType =true;
+    private static boolean LineType = true;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -131,7 +132,7 @@ public class GoodsListActivity extends Activity implements RecycleViewAdapter.On
             public void onFocusChange(View v, boolean hasFocus) {
                 if (hasFocus) {
                     goods_list_search.setGravity(Gravity.CENTER_VERTICAL);
-                    goods_list_search.setPadding(16,0,0,0);
+                    goods_list_search.setPadding(16, 0, 0, 0);
                 } else {
                     goods_list_search.setGravity(Gravity.CENTER);
                 }
@@ -153,8 +154,8 @@ public class GoodsListActivity extends Activity implements RecycleViewAdapter.On
                 }
             }
         });
-        btn_filtrate.setOnClickListener(this);
-        buju.setOnClickListener(this);
+        line_filtrate.setOnClickListener(this);
+        line_buju.setOnClickListener(this);
         btn_goodslist_rest.setOnClickListener(this);
         btn_goodslist_surefiltrate.setOnClickListener(this);
         initfiltrate();
@@ -167,8 +168,8 @@ public class GoodsListActivity extends Activity implements RecycleViewAdapter.On
                 initdate(currentpages);
             }
         });
-        goods_detail_price.setOnClickListener(this);
-        btn_default.setOnClickListener(this);
+        line_goods_detail_price.setOnClickListener(this);
+        line_default.setOnClickListener(this);
         initdate(1);
     }
 
@@ -176,12 +177,17 @@ public class GoodsListActivity extends Activity implements RecycleViewAdapter.On
         goods_list_typeName = (TextView) findViewById(R.id.goods_list_typeName);
         goods_list_back = (ImageView) findViewById(R.id.goods_list_back);
         goods_list_search = (EditText) findViewById(R.id.goods_list_search);
-        buju = (Button) findViewById(R.id.buju);
-        btn_filtrate = (Button) findViewById(R.id.btn_filtrate);
+        line_buju = (LinearLayout) findViewById(R.id.line_buju);
+        line_filtrate = (LinearLayout) findViewById(R.id.line_filtrate);
         btn_goodslist_rest = (Button) findViewById(R.id.btn_goodslist_rest);
-        btn_default = (Button) findViewById(R.id.btn_default);
+        btn_goodsdetail_defalut = (Button) findViewById(R.id.btn_goodsdetail_defalut);
+        goods_detail_price_img = (ImageView) findViewById(R.id.goods_detail_price_img);
+        line_buju_img = (ImageView) findViewById(R.id.line_buju_img);
+
+        btn_goodsdetail_price = (Button) findViewById(R.id.btn_goodsdetail_price);
+        line_default = (LinearLayout) findViewById(R.id.line_default);
         btn_goodslist_surefiltrate = (Button) findViewById(R.id.btn_goodslist_surefiltrate);
-        goods_detail_price = (Button) findViewById(R.id.goods_detail_price);
+        line_goods_detail_price = (LinearLayout) findViewById(R.id.line_goods_detail_price);
         drawer_layout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mRBCallbkRecyclerView = (RBCallbkRecyclerView) findViewById(R.id.goods_list_recycleview);
         right_shaixuan = (RelativeLayout) findViewById(R.id.right_shaixuan);
@@ -204,13 +210,11 @@ public class GoodsListActivity extends Activity implements RecycleViewAdapter.On
                 listBean = gson.fromJson(response, GoodsListInfo.class);
                 if (currentpage == 1) {
                     goodsListBean = listBean.getResult().getGoodsList();
-                    if(!LineType)
-                    {
+                    if (!LineType) {
                         //2列垂直布局
                         mRBCallbkRecyclerView.setLayoutManager(new GridLayoutManager(GoodsListActivity.this, 2));//设置RecyclerView布局管理器为2列垂直排布
                         recycleViewAdapter = new RecycleViewAdapter(goodsListBean, GoodsListActivity.this, 1);
-                    }else
-                    {
+                    } else {
                         //线性布局水平布局
                         mRBCallbkRecyclerView.setLayoutManager(new LinearLayoutManager(GoodsListActivity.this));
                         recycleViewAdapter = new RecycleViewAdapter(goodsListBean, GoodsListActivity.this, 0);
@@ -415,11 +419,18 @@ public class GoodsListActivity extends Activity implements RecycleViewAdapter.On
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.btn_filtrate:
+            case R.id.line_filtrate:
+                //line_filtrate.setTextColor(getResources().getColor(R.color.btn_color));
                 drawer_layout.openDrawer(Gravity.RIGHT);
                 break;
-            case R.id.buju:
+            case R.id.line_buju:
+                btn_goodsdetail_defalut.setTextColor(Color.BLACK);
                 LineType = !LineType;
+                if (LineType) {
+                    line_buju_img.setImageResource(R.drawable.list);
+                } else {
+                    line_buju_img.setImageResource(R.drawable.cascades);
+                }
                 if (v.getTag() == null) {
                     mRBCallbkRecyclerView.setLayoutManager(new GridLayoutManager(GoodsListActivity.this, 2));//设置RecyclerView布局管理器为2列垂直排布
                     recycleViewAdapter = new RecycleViewAdapter(goodsListBean, GoodsListActivity.this, 1);
@@ -449,15 +460,32 @@ public class GoodsListActivity extends Activity implements RecycleViewAdapter.On
             case R.id.btn_goodslist_surefiltrate:
                 drawer_layout.closeDrawers();
                 break;
-            case R.id.goods_detail_price:
+            case R.id.line_goods_detail_price:
+                btn_goodsdetail_defalut.setTextColor(Color.BLACK);
+                btn_goodsdetail_price.setTextColor(getResources().getColor(R.color.btn_color));
                 IsPriceSort = !IsPriceSort;
+                if (IsPriceSort) {
+                    goods_detail_price_img.setImageResource(R.drawable.triangle_down_fill_color);
+                } else {
+                    goods_detail_price_img.setImageResource(R.drawable.triangle_up_fill_color);
+                }
                 initdate(1);
                 break;
-            case R.id.btn_default:
+            case R.id.line_default:
+                CleanBtnColor();
+                btn_goodsdetail_defalut.setTextColor(getResources()
+                        .getColor(R.color.btn_color));
                 IsPriceSort = false;
-                LineType= true;
+                LineType = true;
                 initdate(1);
                 break;
         }
+    }
+
+    private void CleanBtnColor() {
+        btn_goodsdetail_price.setTextColor(Color.BLACK);
+        btn_goodsdetail_defalut.setTextColor(Color.BLACK);
+        goods_detail_price_img.setImageResource(R.drawable.triangle_down_fill);
+        line_buju_img.setImageResource(R.drawable.list);
     }
 }

@@ -923,6 +923,10 @@ public class GoodsDetailActivity extends Activity implements View.OnClickListene
                 case R.id.goodsdetail_btn_buynow:  //详情底部的立即购买
                     if (CommonUtils.IsLogin(GoodsDetailActivity.this)) {
                         if (!CheckChooseAll()) {
+                            goods_type_ok.setVisibility(View.GONE);
+                            goods_type_selected.setVisibility(View.VISIBLE);
+                            initShowAnim();
+                            isshowtype = true;
                         } else {
                             BuyNow();
                         }

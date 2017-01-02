@@ -172,6 +172,7 @@ public class LoginActivity extends Activity implements View.OnClickListener, Tex
                     req.scope = "snsapi_userinfo";
                     req.state = "com.aboluo.com";
                     api.sendReq(req);
+                    pDialog.show();
                 }
                 break;
 
@@ -229,6 +230,7 @@ public class LoginActivity extends Activity implements View.OnClickListener, Tex
         } else {
             String status = intent.getStringExtra("status");
             if (status.equals("OK")) {
+                pDialog.dismiss();
                 this.finish();
                 Toast.makeText(this, "登陆成功", Toast.LENGTH_SHORT).show();
             } else {

@@ -192,21 +192,35 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@color/white">
-
-                    <TextView
-                        android:id="@+id/order_yunfei"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                    <LinearLayout
+                        android:id="@+id/order_Line_yunfei"
                         android:layout_alignParentRight="true"
                         android:layout_marginRight="16dp"
                         android:layout_marginTop="21dp"
-                        android:text="运费：0" />
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        >
+                        <TextView
+
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="运费：" />
+                        <TextView
+                            android:id="@+id/order_yunfei"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="0"
+                            android:textColor="@color/btn_color"
+                            android:textSize="20sp"/>
+                    </LinearLayout>
+
 
                     <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
-                        android:layout_below="@+id/order_yunfei"
+                        android:layout_below="@+id/order_Line_yunfei"
                         android:layout_marginBottom="16dp"
                         android:layout_marginRight="16dp"
                         android:layout_marginTop="12dp"
@@ -225,6 +239,7 @@
                             android:text="合计:" />
 
                         <TextView
+                            android:textSize="20sp"
                             android:id="@+id/goods_smallallmoeny"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"

@@ -33,7 +33,6 @@ import com.aboluo.adapter.BrandGridViewAdapter;
 import com.aboluo.adapter.GridViewAdapter;
 import com.aboluo.adapter.ThemeGridViewAdapter;
 import com.aboluo.com.GoodsListActivity;
-import com.aboluo.com.HeHuoRenActivity;
 import com.aboluo.com.MainActivity;
 import com.aboluo.com.MessageActivity;
 import com.aboluo.com.PartnerActivity;
@@ -67,15 +66,13 @@ import java.util.Map;
 import cn.iwgang.countdownview.CountdownView;
 import cn.pedant.SweetAlert.SweetAlertDialog;
 
-import static com.aboluo.com.R.id.goods_list_back;
-
 /**
  * Created by cj34920 on 2016/9/8.
  */
 public class IndexFragment extends Fragment implements View.OnClickListener {
     private LinearLayout linearLayout;
     private EditText top_editsearch;
-    private RollPagerView rollPagerView, theme_view_pager;
+    private RollPagerView rollPagerView, theme_view_pager, special_view_pager;
     private GridView mid_gridview;
     private MarqueeView marqueeView;
     private View view;
@@ -95,8 +92,9 @@ public class IndexFragment extends Fragment implements View.OnClickListener {
     private ArrayList<SecKillAllInfo.SkillMainListBean> listskillbean;
     private Picasso picasso;
     private SweetAlertDialog pdialog;
-    private BaseConfigBean indexBannerBean, huodongbean, brandConfigBean, themeBannerConfigBean, themeConfigBean;
-    private LinearLayout linelayout_miaosha,index_message;
+    private BaseConfigBean indexBannerBean, huodongbean, brandConfigBean,
+            themeBannerConfigBean, themeConfigBean, specialConfigBean;
+    private LinearLayout linelayout_miaosha, index_message;
     private ImageView huodong_left1, huodong_left2, huodong_right1, huodong_right2, huodong_right3, theme_imageview;
     private GridView brand_gridview, theme_gridview;
 
@@ -127,6 +125,8 @@ public class IndexFragment extends Fragment implements View.OnClickListener {
         rollPagerView.setHintView(new ColorPointHintView(this.getActivity(), Color.RED, Color.WHITE));
         theme_view_pager.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, screenWidth / 3));
         theme_view_pager.setHintView(new ColorPointHintView(this.getActivity(), Color.RED, Color.WHITE));
+        special_view_pager.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, screenWidth / 3));
+        special_view_pager.setHintView(new ColorPointHintView(this.getActivity(), Color.RED, Color.WHITE));
         brand_gridview.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, screenWidth / 2));
         theme_gridview.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, screenWidth / 2));
         initConfig();
@@ -253,7 +253,7 @@ public class IndexFragment extends Fragment implements View.OnClickListener {
                                 "ChildId is NULL", Toast.LENGTH_SHORT).show();
                     } else {
                         Toast.makeText(IndexFragment.this.getContext(),
-                                brandConfigBean.getAppConfigList().get(position).getParams().getChildId()+"", Toast.LENGTH_SHORT).show();
+                                brandConfigBean.getAppConfigList().get(position).getParams().getChildId() + "", Toast.LENGTH_SHORT).show();
                         intent4.putExtra("GoodsBrandId", brandConfigBean.getAppConfigList().get(position).getParams().getChildId());
                     }
                     startActivity(intent4);
@@ -279,6 +279,24 @@ public class IndexFragment extends Fragment implements View.OnClickListener {
             }
         });
         index_message.setOnClickListener(this);
+        theme_view_pager.setOnItemClickListener(new OnItemClickListener() {
+            @Override
+            public void onItemClick(int position) {
+                Toast.makeText(IndexFragment.this.getActivity(),(""+position), Toast.LENGTH_SHORT).show();
+            }
+        });
+        rollPagerView.setOnItemClickListener(new OnItemClickListener() {
+            @Override
+            public void onItemClick(int position) {
+                Toast.makeText(IndexFragment.this.getActivity(),(""+position), Toast.LENGTH_SHORT).show();
+            }
+        });
+        special_view_pager.setOnItemClickListener(new OnItemClickListener() {
+            @Override
+            public void onItemClick(int position) {
+                Toast.makeText(IndexFragment.this.getActivity(),(""+position), Toast.LENGTH_SHORT).show();
+            }
+        });
         return view;
     }
 
@@ -287,6 +305,7 @@ public class IndexFragment extends Fragment implements View.OnClickListener {
         top_editsearch = (EditText) view.findViewById(R.id.top_editsearch);
         rollPagerView = (RollPagerView) view.findViewById(R.id.roll_view_pager);
         theme_view_pager = (RollPagerView) view.findViewById(R.id.theme_view_pager);
+        special_view_pager = (RollPagerView) view.findViewById(R.id.special_view_pager);
         mid_gridview = (GridView) view.findViewById(R.id.mid_gridview);
         mid_gridview.setSelector(new ColorDrawable(Color.TRANSPARENT));
         marqueeView = (MarqueeView) view.findViewById(R.id.marqueeView);
@@ -514,7 +533,7 @@ public class IndexFragment extends Fragment implements View.OnClickListener {
                     startActivity(intent7);
                 }
                 break;
-            case  R.id.index_message:
+            case R.id.index_message:
                 Intent intent8 = new Intent(IndexFragment.this.getContext(), MessageActivity.class);
                 startActivity(intent8);
                 break;
@@ -549,6 +568,7 @@ public class IndexFragment extends Fragment implements View.OnClickListener {
         initbrand();   //品牌图片
         initThemeBanner(); //主题滚动banner
         initThemeGridview(); //主题九宫格
+        initSpecial(); //推荐专享banner
     }
 
     //加载首页的配置
@@ -768,12 +788,10 @@ public class IndexFragment extends Fragment implements View.OnClickListener {
                         String[] arrString2 = new String[themeBannerConfigBean.getAppConfigList().size()];
                         if (arrString2.length == 0) { //如果主题的banner 和主题的九宫格都没有，则隐藏主题导购
                             theme_imageview.setVisibility(View.GONE);
-                        }
-                        else
-                        {
+                        } else {
                             theme_imageview.setVisibility(View.VISIBLE);
                         }
-                    }else {
+                    } else {
                         theme_imageview.setVisibility(View.GONE);
                         theme_gridview.setVisibility(View.GONE);
                         Toast.makeText(IndexFragment.this.getContext(), themeConfigBean.getMessage().toString(), Toast.LENGTH_SHORT).show();
@@ -791,6 +809,52 @@ public class IndexFragment extends Fragment implements View.OnClickListener {
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> map = new HashMap<>();
                 map.put("ConfigModule", "5");
+                map.put("APPToken", APPToken);
+                return map;
+            }
+        };
+        requestQueue.add(stringRequest);
+    }
+
+    //加载推荐专享配置
+    private void initSpecial() {
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, URL + "/api/ConfigApi/ReceiveHomeConfig", new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                response = response.replace("\\", "");
+                response = response.substring(1, response.length() - 1);
+                specialConfigBean = gson.fromJson(response, BaseConfigBean.class);
+                if (specialConfigBean.isIsSuccess()) {
+                    String[] arrString = new String[specialConfigBean.getAppConfigList().size()];
+                    for (int i = 0; i < specialConfigBean.getAppConfigList().size(); i++) {
+                        arrString[i] = ImageUrl + specialConfigBean.getAppConfigList().get(i).getImage();
+                    }
+                    if (arrString.length == 0) {
+                        theme_view_pager.setVisibility(View.GONE);
+                    } else {
+                        //头部滚动banner
+                        special_view_pager.setVisibility(View.VISIBLE);
+                        bannerAdapter = new BannerAdapter(IndexFragment.this.getContext(), arrString, special_view_pager);
+                        special_view_pager.setAdapter(bannerAdapter); // 设置适配器（请求网络图片，适配器要在网络请求完成后再设置）
+                        special_view_pager.getViewPager().getAdapter().notifyDataSetChanged();// 更新banner图片
+                        special_view_pager.setFocusable(false);
+                    }
+                } else {
+                    special_view_pager.setVisibility(View.GONE);
+                    Toast.makeText(IndexFragment.this.getContext(), specialConfigBean.getMessage().toString(), Toast.LENGTH_SHORT).show();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                //byte[] data = error.networkResponse.data;
+                //Toast.makeText(IndexFragment.this.getContext(), new String(data), Toast.LENGTH_SHORT).show();
+            }
+        }) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> map = new HashMap<>();
+                map.put("ConfigModule", "7");
                 map.put("APPToken", APPToken);
                 return map;
             }

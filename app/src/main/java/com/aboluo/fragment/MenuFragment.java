@@ -5,18 +5,21 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
-import android.widget.Switch;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.aboluo.XUtils.CommonUtils;
@@ -35,9 +38,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.google.gson.Gson;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
@@ -63,6 +64,7 @@ public class MenuFragment extends Fragment implements View.OnClickListener {
     private LinearLayout menu_content; //有网络显示布局
     private RelativeLayout no_network; //没有网络时显示布局
     private Button reloading; //重新加载按钮
+    private EditText menu_search;
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable final ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -72,7 +74,26 @@ public class MenuFragment extends Fragment implements View.OnClickListener {
 
         }
         init();
-
+        menu_search.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                    if (menu_search.getText().length() == 0) {
+                        Toast.makeText(MenuFragment.this.getContext(), "请输入搜索内容", Toast.LENGTH_SHORT).show();
+                    } else {
+                        //隐藏软键盘
+                        InputMethodManager inm = (InputMethodManager) MenuFragment.this.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+                        inm.hideSoftInputFromWindow(menu_search.getWindowToken(), 0);
+                        Intent intent = new Intent(MenuFragment.this.getContext(), GoodsListActivity.class);
+                        intent.putExtra("GoodsName", menu_search.getText().toString());
+                        startActivity(intent);
+                    }
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+        });
         menu_listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -211,6 +232,7 @@ public class MenuFragment extends Fragment implements View.OnClickListener {
         no_network = (RelativeLayout) view.findViewById(R.id.no_network);
         menu_content = (LinearLayout) view.findViewById(R.id.menu_content);
         reloading = (Button) view.findViewById(R.id.reloading);
+        menu_search = (EditText) view.findViewById(R.id.menu_search);
         reloading.setOnClickListener(this);
         isConnected();
     }

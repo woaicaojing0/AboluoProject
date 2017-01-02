@@ -56,20 +56,32 @@ public class AgentDetailActivity extends Activity {
         AgentLevel(i);
     }
 
+    //http://t.back.aboluomall.com/Moblie/ShowPersonReferents?memberid=1976&referrerId=1&pageindex=1
     private void AgentLevel(int level) {
         switch (level) {
             case 1:
-                Log.i("agentdetail>>" + level, CommonUtils.GetValueByKey(this, "backUrl") + "/Moblie/MoneyLog?memberId=" + MemberId);
-                agentdetail_webiview.loadUrl(CommonUtils.GetValueByKey(this, "backUrl") + "/Moblie/MoneyLog?memberId=" + MemberId);
-
+                Log.i("agentdetail>>" + level,
+                        CommonUtils.GetValueByKey(this, "backUrl") + "Moblie/ShowPersonReferents?memberid=" + MemberId
+                                + "&referrerId=" + 1 + "&pageindex=1");
+                agentdetail_webiview.loadUrl(
+                        CommonUtils.GetValueByKey(this, "backUrl") + "Moblie/ShowPersonReferents?memberid=" + MemberId
+                                + "&referrerId=" + 1 + "&pageindex=1");
                 break;
             case 2:
-                Log.i("agentdetail>>" + level, CommonUtils.GetValueByKey(this, "backUrl") + "/Moblie/MoneyLog?memberId=" + MemberId);
-                agentdetail_webiview.loadUrl(CommonUtils.GetValueByKey(this, "backUrl") + "/Moblie/MoneyLog?memberId=" + MemberId);
+                Log.i("agentdetail>>" + level,
+                        CommonUtils.GetValueByKey(this, "backUrl") + "Moblie/ShowPersonReferents?memberid=" + MemberId
+                                + "&referrerId=" + 2 + "&pageindex=1");
+                agentdetail_webiview.loadUrl(
+                        CommonUtils.GetValueByKey(this, "backUrl") + "Moblie/ShowPersonReferents?memberid=" + MemberId
+                                + "&referrerId=" + 2 + "&pageindex=1");
                 break;
             case 3:
-                Log.i("agentdetail>>" + level, CommonUtils.GetValueByKey(this, "backUrl") + "/Moblie/MoneyLog?memberId=" + MemberId);
-                agentdetail_webiview.loadUrl(CommonUtils.GetValueByKey(this, "backUrl") + "/Moblie/MoneyLog?memberId=" + MemberId);
+                Log.i("agentdetail>>" + level,
+                        CommonUtils.GetValueByKey(this, "backUrl") + "Moblie/ShowPersonReferents?memberid=" + MemberId
+                                + "&referrerId=" + 3 + "&pageindex=1");
+                agentdetail_webiview.loadUrl(
+                        CommonUtils.GetValueByKey(this, "backUrl") + "Moblie/ShowPersonReferents?memberid=" + MemberId
+                                + "&referrerId=" + 3 + "&pageindex=1");
                 break;
             default:
                 Log.d("AgentDetailActivity", "当前代理等级" + level + "");

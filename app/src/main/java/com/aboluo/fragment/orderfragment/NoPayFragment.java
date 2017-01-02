@@ -19,6 +19,7 @@ import com.aboluo.adapter.AllOrderAdapter;
 import com.aboluo.com.OrderDetailActivity;
 import com.aboluo.com.OrderPayActivity;
 import com.aboluo.com.R;
+import com.aboluo.model.BaseModel;
 import com.aboluo.model.SearchOrderBean;
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -108,12 +109,11 @@ public class NoPayFragment extends Fragment implements View.OnClickListener {
                 searchOrderBean = gson.fromJson(response, SearchOrderBean.class);
                 if (searchOrderBean.isIsSuccess()) {
                     if (orderBean == null) {
-                        if(searchOrderBean.getResult().size() == 0)
-                        {
+                        if (searchOrderBean.getResult().size() == 0) {
                             allorder_empty.setVisibility(View.VISIBLE);
                             allorder_listview.setVisibility(View.GONE);
-                            IsEmpty=true;
-                        }else {
+                            IsEmpty = true;
+                        } else {
                             orderBean = new SearchOrderBean();
                             orderBean = gson.fromJson(response, SearchOrderBean.class);
                             allOrderAdapter = new AllOrderAdapter(context, orderBean.getResult());
@@ -128,8 +128,8 @@ public class NoPayFragment extends Fragment implements View.OnClickListener {
                             allOrderAdapter.notifyDataSetChanged();
                         }
                     }
-                    if(IsEmpty)
-                    {}else {
+                    if (IsEmpty) {
+                    } else {
                         allOrderAdapter.setCancelOrderOnclickListener(NoPayFragment.this);
                         allOrderAdapter.setPayOnclickListener(NoPayFragment.this);
                         allOrderAdapter.setItemOnclickListener(NoPayFragment.this);
@@ -185,7 +185,7 @@ public class NoPayFragment extends Fragment implements View.OnClickListener {
                 // 获取 Adapter 中设置的 Tag
                 if (tag != null && tag instanceof Integer) { //解决问题：如何知道你点击的按钮是哪一个列表项中的，通过Tag的position
                     final int position = (Integer) tag;
-                    Toast.makeText(context, position + "", Toast.LENGTH_SHORT).show();
+                    CancelOrder(String.valueOf(orderBean.getResult().get(position).getOrderId()));
                 }
                 break;
             case R.id.txt_payorder: //点击添加数量按钮，执行相应的处理
@@ -209,5 +209,41 @@ public class NoPayFragment extends Fragment implements View.OnClickListener {
         InitPage = 1;
         orderBean = null;
         GetInfo(1);
+    }
+
+    /**
+     * 取消订单
+     */
+    private void CancelOrder(final String OrderId) {
+        StringRequest stringRequest = new StringRequest(Request.Method.POST,
+                URL + "/api/Order/ReceiveCancelOrder", new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                response = response.replace("\\", "");
+                response = response.substring(1, response.length() - 1);
+                BaseModel baseModel = gson.fromJson(response, BaseModel.class);
+                Toast.makeText(NoPayFragment.this.getContext(), baseModel.getMessage().toString(), Toast.LENGTH_SHORT).show();
+                InitPage = 1;
+                orderBean = null;
+                GetInfo(1);
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        }) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> map = new HashMap<>();
+                map.put("MemberId", MemberId);
+                map.put("OrderId", OrderId);
+                map.put("APPToken", APPToken);
+                return map;
+            }
+
+            ;
+        };
+        requestQueue.add(stringRequest);
     }
 }

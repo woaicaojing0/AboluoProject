@@ -102,6 +102,7 @@ public class AllOrderAdapter extends BaseAdapter {
             holder2 = new ViewHolder2();
             convertView = layoutInflater.inflate(R.layout.fragment_allorder_listview_item, null);
             holder2.content_view = (LinearLayout) convertView.findViewById(R.id.content_view);
+            holder2.order_operation = (LinearLayout) convertView.findViewById(R.id.order_operation);
             holder2.txt_findgoods = (TextView) convertView.findViewById(R.id.txt_findgoods);
             holder2.txt_ok = (TextView) convertView.findViewById(R.id.txt_ok);
             holder2.txt_cancelorder = (TextView) convertView.findViewById(R.id.txt_cancelorder);
@@ -206,7 +207,7 @@ public class AllOrderAdapter extends BaseAdapter {
 
     //主listview
     class ViewHolder2 {
-        public LinearLayout content_view;
+        public LinearLayout content_view,order_operation;
         public TextView txt_findgoods, txt_ok, txt_cancelorder, txt_payorder, txt_cuicui,
                 txt_after_sale, txt_evaluate;
         public TextView txt_order_status, order_allmoney, order_goodsnum;
@@ -234,8 +235,13 @@ public class AllOrderAdapter extends BaseAdapter {
                 result = "交易成功";
                 holder2.txt_evaluate.setVisibility(View.VISIBLE);
                 break;
+            case 50:
+                result = "交易关闭";
+                holder2.order_operation.setVisibility(View.GONE);
+                break;
             default:
                 result = "暂无信息";
+                holder2.order_operation.setVisibility(View.GONE);
                 break;
         }
         return result;

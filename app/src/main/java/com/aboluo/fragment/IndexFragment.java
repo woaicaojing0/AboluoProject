@@ -194,7 +194,8 @@ public class IndexFragment extends Fragment implements View.OnClickListener {
             @Override
             public void onRefresh(PullToRefreshBase<ScrollView> refreshView) {
                 bannerAdapter.notifyDataSetChanged();
-                requestQueue.add(getInfo());
+                initSecKill();
+                initConfig();
             }
         });
 //        Picasso.with(this.getActivity()).load("http://img.pconline.com.cn/images/upload/upc/tx/wallpaper/1309/05/c5/25283777_1378352004384_800x600.jpg").into(ceshi_imgeview);

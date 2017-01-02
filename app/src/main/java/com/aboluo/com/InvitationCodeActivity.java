@@ -2,7 +2,6 @@ package com.aboluo.com;
 
 import android.app.Activity;
 import android.graphics.Color;
-import android.media.Image;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -12,6 +11,7 @@ import android.widget.Toast;
 
 import com.aboluo.XUtils.CommonUtils;
 import com.aboluo.XUtils.MyApplication;
+import com.aboluo.model.BaseModel;
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -43,6 +43,7 @@ public class InvitationCodeActivity extends Activity implements View.OnClickList
     private Button btn_invitationsubmit;
     private EditText invitation_code_detail;
     private ImageView invitation_code_back;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -72,18 +73,25 @@ public class InvitationCodeActivity extends Activity implements View.OnClickList
     }
 
     private void initData() {
-        String result = invitation_code_detail.getText().toString();
+        final String result = invitation_code_detail.getText().toString();
         if (result.length() == 0) {
             Toast.makeText(this, "请输入邀请码", Toast.LENGTH_SHORT).show();
         } else {
             pdialog.show();
-            StringRequest stringRequest = new StringRequest(Request.Method.POST, URL + "", new Response.Listener<String>() {
+            StringRequest stringRequest = new StringRequest(Request.Method.POST,
+                    URL + "/api/MemberApi/BingdingInvitedCode", new Response.Listener<String>() {
                 @Override
                 public void onResponse(String response) {
                     response = response.replace("\\", "");
                     response = response.substring(1, response.length() - 1);
+                    BaseModel baseModel = gson.fromJson(response, BaseModel.class);
+                    if (baseModel.isIsSuccess()) {
+                        finish();
+                    } else {
+                    }
                     pdialog.dismiss();
-                    finish();
+                    Toast.makeText(InvitationCodeActivity.this, baseModel.getMessage()
+                            .toString(), Toast.LENGTH_SHORT).show();
                 }
             }, new Response.ErrorListener() {
                 @Override
@@ -94,10 +102,12 @@ public class InvitationCodeActivity extends Activity implements View.OnClickList
                 @Override
                 protected Map<String, String> getParams() throws AuthFailureError {
                     Map<String, String> map = new HashMap<>();
-                    map.put("MemberId", "1975");
-                    map.put("OrderId", "508");
+                    map.put("MemberId", MemberId);
+                    map.put("InvitedCode", result);
                     map.put("ExpressId", "1");
                     map.put("APPToken", APPToken);
+                    map.put("LoginCheckToken", "123");
+                    map.put("LoginPhone", "123");
                     return map;
                 }
 

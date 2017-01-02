@@ -93,5 +93,6 @@ public class OrderActivity extends FragmentActivity {
         tab_FindFragment_title.setupWithViewPager(vp_FindFragment_pager);
         //tab_FindFragment_title.set
         vp_FindFragment_pager.setCurrentItem(selected);
+        vp_FindFragment_pager.setOffscreenPageLimit(1);
     }
 }

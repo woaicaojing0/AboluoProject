@@ -123,17 +123,18 @@ public class OrderDetailActivity extends Activity implements View.OnClickListene
                 response = response.substring(1, response.length() - 1);
                 orderDetailInfo = gson.fromJson(response, OrderDetailInfo.class);
                 orderdetail_express_status.setText(orderDetailInfo.getResult().get(0).getLocalInfo() == null ? "" :
-                        orderDetailInfo.getResult().get(0).getLocalInfo().toString());
-                orderdetail_express_time.setText("123");
+                        orderDetailInfo.getResult().get(0).getLocalInfo().get(0).getStatus().toString());
+                orderdetail_express_time.setText(orderDetailInfo.getResult().get(0).getLocalInfo() == null ? "" :
+                        orderDetailInfo.getResult().get(0).getLocalInfo().get(0).getTime().toString());
                 orderdetail_address_name.setText(orderDetailInfo.getResult().get(0).getReceiver()
                         == null ? "" : orderDetailInfo.getResult().get(0).getReceiver().toString());
                 orderdetail_address_phone.setText(orderDetailInfo.getResult().get(0).getMobile()
                         == null ? "" : orderDetailInfo.getResult().get(0).getMobile().toString());
                 orderdetail_address_address.setText(orderDetailInfo.getResult().get(0).getAddress()
                         == null ? "" : orderDetailInfo.getResult().get(0).getAddress().toString());
-                orderdetail_pay_allmonney.setText(String.valueOf(orderDetailInfo.getResult().get(0).getTotalPrice()));
-                orderdetail_allmonney2.setText(String.valueOf(orderDetailInfo.getResult().get(0).getTotalPrice()));
-                orderdetail_allmonney.setText(String.valueOf(orderDetailInfo.getResult().get(0).getTotalPrice()));
+                orderdetail_pay_allmonney.setText("￥"+String.valueOf(orderDetailInfo.getResult().get(0).getTotalPrice()));
+                orderdetail_allmonney2.setText("￥"+String.valueOf(orderDetailInfo.getResult().get(0).getTotalPrice()));
+                orderdetail_allmonney.setText("￥"+String.valueOf(orderDetailInfo.getResult().get(0).getTotalPrice()));
                 adpater = new OrderDetailItemAdpater(OrderDetailActivity.this
                         , orderDetailInfo.getResult().get(0).getOrderItemList(), orderDetailInfo.getResult().get(0).getOrderStatus());
                 adpater.setEvaluationOnClickListener(OrderDetailActivity.this);
@@ -218,6 +219,9 @@ public class OrderDetailActivity extends Activity implements View.OnClickListene
                 break;
             case R.id.oederdetail_findgoods:
                 Intent intent2 = new Intent(this, ExpressDetailActivity.class);
+                intent2.putExtra("OrderId", orderDetailInfo.getResult().get(0).getOrderId());
+                intent2.putExtra("ExpressId", orderDetailInfo.getResult().get(0).getExpressId());
+                intent2.putExtra("GoodsLogoUrl", orderDetailInfo.getResult().get(0).getOrderItemList().get(0).getGoodsLogoUrl());
                 startActivity(intent2);
                 break;
             case R.id.oederdetail_ok:

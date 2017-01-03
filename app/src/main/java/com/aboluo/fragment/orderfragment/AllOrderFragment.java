@@ -1,6 +1,10 @@
 package com.aboluo.fragment.orderfragment;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -189,8 +193,11 @@ public class AllOrderFragment extends Fragment implements View.OnClickListener {
                 if (tag != null && tag instanceof Integer) { //解决问题：如何知道你点击的按钮是哪一个列表项中的，通过Tag的position
                     final int position = (Integer) tag;
                     //Toast.makeText(AllOrderFragment.this.getContext(), position + "", Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(AllOrderFragment.this.getActivity(), ExpressDetailActivity.class);
-                    startActivity(intent);
+                    Intent intent2 = new Intent(AllOrderFragment.this.getActivity(), ExpressDetailActivity.class);
+                    intent2.putExtra("OrderId", orderBean.getResult().get(0).getOrderId());
+                    intent2.putExtra("ExpressId", orderBean.getResult().get(0).getExpressId());
+                    intent2.putExtra("GoodsLogoUrl", orderBean.getResult().get(0).getOrderItemList().get(0).getGoodsLogoUrl().toString());
+                    startActivity(intent2);
                 }
                 break;
             case R.id.txt_ok: //点击确认收货按钮，执行相应的处理
@@ -221,8 +228,15 @@ public class AllOrderFragment extends Fragment implements View.OnClickListener {
                 }
             case R.id.txt_cuicui:
                 if (tag != null && tag instanceof Integer) { //解决问题：如何知道你点击的按钮是哪一个列表项中的，通过Tag的position
-                    final int position = (Integer) tag;
-                    Toast.makeText(AllOrderFragment.this.getContext(), "催货成功", Toast.LENGTH_SHORT).show();
+                    if (checkApkExist(AllOrderFragment.this.getContext(), "com.tencent.mobileqq")) {
+                        startActivity(new Intent(Intent.ACTION_VIEW,
+                                Uri.parse("mqqwpa://im/chat?chat_type=wpa&uin="
+                                        + CommonUtils.GetValueByKey(AllOrderFragment.this.getContext(),
+                                        "QQNum") + "&version=1")));
+                    } else {
+                        Toast.makeText(AllOrderFragment.this.getContext(),
+                                "本机未安装QQ应用", Toast.LENGTH_SHORT).show();
+                    }
                 }
                 break;
             case R.id.txt_evaluate:
@@ -313,5 +327,23 @@ public class AllOrderFragment extends Fragment implements View.OnClickListener {
             ;
         };
         requestQueue.add(stringRequest);
+    }
+    /**
+     * 检查当前客户是否安装qq
+     *
+     * @param context
+     * @param packageName
+     * @return
+     */
+    public boolean checkApkExist(Context context, String packageName) {
+        if (packageName == null || "".equals(packageName))
+            return false;
+        try {
+            ApplicationInfo info = context.getPackageManager().getApplicationInfo(packageName,
+                    PackageManager.GET_UNINSTALLED_PACKAGES);
+            return true;
+        } catch (PackageManager.NameNotFoundException e) {
+            return false;
+        }
     }
 }

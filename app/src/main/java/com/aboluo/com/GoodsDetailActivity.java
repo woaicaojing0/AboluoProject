@@ -401,7 +401,7 @@ public class GoodsDetailActivity extends Activity implements View.OnClickListene
                 txt_new_money.setText(String.valueOf(goodsDetailInfo.getResult().getGoodsInfo().getHyPrice()));
                 txt_old_money.setText(String.valueOf(goodsDetailInfo.getResult().getGoodsInfo().getGoodsPrice()));
                 txt_old_money.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG);
-                txt_goods_num.setText(String.valueOf(goodsDetailInfo.getResult().getGoodsInfo().getGoodsQuantity()));
+                txt_goods_num.setText(String.valueOf(goodsDetailInfo.getResult().getGoodsInfo().getSaleCount()));
                 goods_detail_type_txtmoney.setText("￥" + String.valueOf(goodsDetailInfo.getResult().getGoodsInfo().getHyPrice()) + "元");
                 goods_detail_type_txtnum.setText("" + String.valueOf(goodsDetailInfo.getResult().getGoodsInfo().getGoodsQuantity()) + "件");
                 goods_detail_jifen.setText("送" + String.valueOf(goodsDetailInfo.getResult().getGoodsInfo().getIsJifen()));

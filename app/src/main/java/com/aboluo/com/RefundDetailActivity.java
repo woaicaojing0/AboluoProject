@@ -6,8 +6,11 @@ import android.os.Bundle;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.util.Log;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.LinearLayout;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -71,12 +74,13 @@ public class RefundDetailActivity extends TakePhotoActivity implements View.OnCl
     private CompressConfig compressConfig;
     private OrderDetailInfo.ResultBean.OrderItemListBean orderItemListBean;
     private TextView refundetail_time, refund_price, refunddetail_number;
-    private Spinner spinner_refundreson;
+    private EditText edit_refundreson;
     private String OrderCode;
     private int num = 0;
     private ArrayList<String> ImageUploadNameList; //图片的上传保存的文件名
     private QiNiuToken qiNiuToken;
-
+    private RadioGroup tuikuan_type;
+    private RadioButton goodsAndmoney,only_huanhuo;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -92,6 +96,18 @@ public class RefundDetailActivity extends TakePhotoActivity implements View.OnCl
             refund_price.setText(String.valueOf(orderItemListBean.getGoodsPrice()));
             refunddetail_number.setText(OrderCode);
         }
+        tuikuan_type.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                // TODO Auto-generated method stub
+                if(goodsAndmoney.getId() == checkedId){
+                    refund_price.setText(String.valueOf(orderItemListBean.getGoodsPrice()));
+                }
+                else if(only_huanhuo.getId() == checkedId){
+                    refund_price.setText("0");
+                }
+            }
+        });
     }
 
     private void init() {
@@ -114,7 +130,10 @@ public class RefundDetailActivity extends TakePhotoActivity implements View.OnCl
         refundetail_time = (TextView) findViewById(R.id.refundetail_time);
         refund_price = (TextView) findViewById(R.id.refund_price);
         refunddetail_number = (TextView) findViewById(R.id.refunddetail_number);
-        spinner_refundreson = (Spinner) findViewById(R.id.spinner_refundreson);
+        edit_refundreson = (EditText) findViewById(R.id.edit_refundreson);
+        tuikuan_type = (RadioGroup) findViewById(R.id.tuikuan_type);
+        goodsAndmoney = (RadioButton) findViewById(R.id.goodsAndmoney);
+        only_huanhuo = (RadioButton) findViewById(R.id.only_huanhuo);
         imageViewsurl = new ArrayList<>();
         tImageArrayList = new ArrayList<>();
         ImageUploadNameList = new ArrayList<>();
@@ -204,8 +223,19 @@ public class RefundDetailActivity extends TakePhotoActivity implements View.OnCl
                 }
                 break;
             case R.id.begin_refund:
-                String token = qiNiuToken.getFileUploadToken();
-                UploadImage(imageViewsurl, token);
+                if(edit_refundreson.getText().length() ==0)
+                {
+                    Toast.makeText(this, "请先填写退款原因", Toast.LENGTH_SHORT).show();
+                }else {
+
+                    if(imageViewsurl.size() ==0)
+                    {
+                        Toast.makeText(this, "请先上传图片", Toast.LENGTH_SHORT).show();
+                    }else {
+                        String token = qiNiuToken.getFileUploadToken();
+                        UploadImage(imageViewsurl, token);
+                    }
+                }
                 break;
             default:
                 break;
@@ -337,7 +367,7 @@ public class RefundDetailActivity extends TakePhotoActivity implements View.OnCl
                 map.put("orderItemId", String.valueOf(orderItemListBean.getOrderItemId()));
                 map.put("goodsId", String.valueOf(orderItemListBean.getGoodsId()));
                 map.put("goodsName", String.valueOf(orderItemListBean.getGoodsName()));
-                map.put("refundReson", spinner_refundreson.getSelectedItem().toString());
+                map.put("refundReson",edit_refundreson.getText().toString());
                 map.put("refundImage", refundImage);
                 map.put("MemberId", MemberId);
                 map.put("APPToken", APPToken);

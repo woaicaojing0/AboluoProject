@@ -8,7 +8,6 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
-import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -24,7 +23,6 @@ import com.aboluo.com.address.ProvinceAddressActivity;
 import com.aboluo.com.address.StreetAddressActivity;
 import com.aboluo.model.AddressInfoBean;
 import com.aboluo.model.BaseModel;
-import com.aboluo.model.PickerViewData;
 import com.aboluo.model.ProvinceBean22;
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -39,7 +37,6 @@ import com.google.gson.Gson;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.TooManyListenersException;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
 
@@ -48,7 +45,7 @@ import cn.pedant.SweetAlert.SweetAlertDialog;
  */
 
 public class AddAddressActivity extends Activity implements TextWatcher, View.OnClickListener {
-    private Button add_address_save,update_address_save;//新增按钮，更新按钮
+    private Button add_address_save, update_address_save;//新增按钮，更新按钮
     private EditText edit_receive_name, edit_receive_phone, edit_receive_address, edit_receive_zipcode;
     private OptionsPickerView pvOptions;
     private RelativeLayout linelayout_location, address_street; //选择收货地址,街道
@@ -56,7 +53,7 @@ public class AddAddressActivity extends Activity implements TextWatcher, View.On
     private ArrayList<ArrayList<String>> options2Items = new ArrayList<>();
     private ArrayList<ArrayList<ArrayList<IPickerViewData>>> options3Items = new ArrayList<>();
     //显示联动的地址,选择的地址,选择街道,头部表示修改还是新增默认是新增
-    private TextView add_address_txtview_location, add_address_txtview_jiedao,toolbar_txt;
+    private TextView add_address_txtview_location, add_address_txtview_jiedao, toolbar_txt;
     private int address_id = 0, streetid = 0; //选择地址结束后，选择街道需要的id，街道的id
     private String address_name = null, streetname = null, allid = null; //选择地址结束后，地址名称，街道名称
     private TextView txt_allid, txt_region_id, txt_street_id; //都是影藏的 保存数据用的
@@ -65,12 +62,13 @@ public class AddAddressActivity extends Activity implements TextWatcher, View.On
     private String url = null;
     private String APPToken = null;
     private SweetAlertDialog sweetAlertDialog;
-    private int model=0;// 默认是保存模式，1代表是编辑模式
-    private AddressInfoBean.ResultBean.MemberAddressListBean  memberAddressListBean;
+    private int model = 0;// 默认是保存模式，1代表是编辑模式
+    private AddressInfoBean.ResultBean.MemberAddressListBean memberAddressListBean;
     private Gson gson;
     private Switch swtich_isdefult;
     private String MemberId;
     private ImageView all_add_text_back;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -115,11 +113,11 @@ public class AddAddressActivity extends Activity implements TextWatcher, View.On
         url = CommonUtils.GetValueByKey(AddAddressActivity.this, "apiurl");
         APPToken = CommonUtils.GetValueByKey(AddAddressActivity.this, "APPToken");
         requestQueue = MyApplication.getRequestQueue();
-        sweetAlertDialog= new SweetAlertDialog(this,SweetAlertDialog.PROGRESS_TYPE);
+        sweetAlertDialog = new SweetAlertDialog(this, SweetAlertDialog.PROGRESS_TYPE);
         sweetAlertDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
         sweetAlertDialog.setCancelable(false);
         Intent intent = getIntent();
-       model = intent.getIntExtra("model",0);
+        model = intent.getIntExtra("model", 0);
         gson = new Gson();
         initdata(model);
     }
@@ -141,7 +139,7 @@ public class AddAddressActivity extends Activity implements TextWatcher, View.On
             isok = true;
             if (ValidateUtils.Zipcode(edit_receive_zipcode.getText().toString())) {
                 isok = true;
-                if (edit_receive_name.length() >=2) {
+                if (edit_receive_name.length() >= 2) {
                     isok = true;
                     if (edit_receive_address.length() > 0) {
                         isok = true;
@@ -199,8 +197,7 @@ public class AddAddressActivity extends Activity implements TextWatcher, View.On
         if (streetname != null) {
             add_address_txtview_jiedao.setText(streetname);
         }
-        if(streetid !=0)
-        {
+        if (streetid != 0) {
             txt_street_id.setText(String.valueOf(streetid));
         }
     }
@@ -235,8 +232,8 @@ public class AddAddressActivity extends Activity implements TextWatcher, View.On
 
     private void saveAddress() {
         final String Receiver = edit_receive_name.getText().toString();
-        final String Mobile =edit_receive_phone.getText().toString();
-        final String ZipCode =edit_receive_zipcode.getText().toString();
+        final String Mobile = edit_receive_phone.getText().toString();
+        final String ZipCode = edit_receive_zipcode.getText().toString();
         final String name = add_address_txtview_location.getText().toString();
         final String allsid = txt_allid.getText().toString();
         final String streename = add_address_txtview_jiedao.getText().toString();
@@ -244,11 +241,11 @@ public class AddAddressActivity extends Activity implements TextWatcher, View.On
         final String allids[] = allsid.split(";");
         final String allname[] = name.split(" ");
         final String address = edit_receive_address.getText().toString();
-        String IsDefault="0";
-        if(swtich_isdefult.isChecked())
-        {
+        String IsDefault = "0";
+        if (swtich_isdefult.isChecked()) {
             IsDefault = "1";
-        }else{}
+        } else {
+        }
         sweetAlertDialog.setTitleText("新增中......");
         sweetAlertDialog.show();
         final String finalIsDefault = IsDefault;
@@ -258,14 +255,13 @@ public class AddAddressActivity extends Activity implements TextWatcher, View.On
                 response = response.replace("\\", "");
                 response = response.substring(1, response.length() - 1);
                 BaseModel basemodel = new BaseModel();
-                basemodel =gson.fromJson(response,BaseModel.class);
-                if(basemodel.isIsSuccess())
-                {
+                basemodel = gson.fromJson(response, BaseModel.class);
+                if (basemodel.isIsSuccess()) {
                     Toast.makeText(AddAddressActivity.this, basemodel.getMessage().toString(), Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(AddAddressActivity.this,AddressActivity.class);
+                    Intent intent = new Intent(AddAddressActivity.this, AddressActivity.class);
                     startActivity(intent);
                     finish();
-                }else {
+                } else {
                     Toast.makeText(AddAddressActivity.this, basemodel.getMessage().toString(), Toast.LENGTH_SHORT).show();
                 }
                 sweetAlertDialog.dismiss();
@@ -274,8 +270,8 @@ public class AddAddressActivity extends Activity implements TextWatcher, View.On
             @Override
             public void onErrorResponse(VolleyError error) {
                 byte[] htmlBodyBytes = error.networkResponse.data;
-                Toast.makeText(AddAddressActivity.this,  error.toString(), Toast.LENGTH_SHORT).show();
-                Log.i("woaiocaojingerroe",new String(htmlBodyBytes));
+                Toast.makeText(AddAddressActivity.this, error.toString(), Toast.LENGTH_SHORT).show();
+                Log.i("woaiocaojingerroe", new String(htmlBodyBytes));
                 sweetAlertDialog.dismiss();
             }
         }) {
@@ -283,7 +279,7 @@ public class AddAddressActivity extends Activity implements TextWatcher, View.On
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> map = new HashMap<>();
                 map.put("Id", "0");
-                map.put("MemberId",MemberId);
+                map.put("MemberId", MemberId);
                 map.put("Receiver", Receiver);
                 map.put("Mobile", Mobile);
                 map.put("Province", allname[0]);
@@ -304,10 +300,10 @@ public class AddAddressActivity extends Activity implements TextWatcher, View.On
         requestQueue.add(stringRequest);
     }
 
-    private void updateAddress(){
+    private void updateAddress() {
         final String Receiver = edit_receive_name.getText().toString();
-        final String Mobile =edit_receive_phone.getText().toString();
-        final String ZipCode =edit_receive_zipcode.getText().toString();
+        final String Mobile = edit_receive_phone.getText().toString();
+        final String ZipCode = edit_receive_zipcode.getText().toString();
         final String name = add_address_txtview_location.getText().toString();
         final String allsid = txt_allid.getText().toString();
         final String streename = add_address_txtview_jiedao.getText().toString();
@@ -315,22 +311,25 @@ public class AddAddressActivity extends Activity implements TextWatcher, View.On
         final String allids[] = allsid.split(";");
         final String allname[] = name.split(" ");
         final String address = edit_receive_address.getText().toString();
+        String IsDefault = "0";
+        if (swtich_isdefult.isChecked()) {
+            IsDefault = "1";
+        } else {
+        }
         sweetAlertDialog.setTitleText("修改中......");
         sweetAlertDialog.show();
+        final String finalIsDefault = IsDefault;
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url + "/api/Order/AddOrUpdateMemeberAddress", new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 response = response.replace("\\", "");
                 response = response.substring(1, response.length() - 1);
                 BaseModel basemodel = new BaseModel();
-                basemodel =gson.fromJson(response,BaseModel.class);
-                if(basemodel.isIsSuccess())
-                {
+                basemodel = gson.fromJson(response, BaseModel.class);
+                if (basemodel.isIsSuccess()) {
                     Toast.makeText(AddAddressActivity.this, basemodel.getMessage().toString(), Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(AddAddressActivity.this,AddressActivity.class);
-                    startActivity(intent);
                     finish();
-                }else {
+                } else {
                     Toast.makeText(AddAddressActivity.this, basemodel.getMessage().toString(), Toast.LENGTH_SHORT).show();
                 }
                 sweetAlertDialog.dismiss();
@@ -358,7 +357,7 @@ public class AddAddressActivity extends Activity implements TextWatcher, View.On
                 map.put("Street", streename);
                 map.put("StreetId", String.valueOf(streeId));
                 map.put("Address", address);
-                map.put("IsDefault", "0");
+                map.put("IsDefault", finalIsDefault);
                 map.put("ZipCode", ZipCode);
                 map.put("APPToken", APPToken);
                 return map;
@@ -367,34 +366,39 @@ public class AddAddressActivity extends Activity implements TextWatcher, View.On
         requestQueue.add(stringRequest);
 
     }
-    private void initdata(final int model)
-    {
 
-        if(model != 0) {
+    private void initdata(final int model) {
+
+        if (model != 0) {
             add_address_save.setVisibility(View.GONE);
             update_address_save.setVisibility(View.VISIBLE);
             toolbar_txt.setText("修改收货地址");
             sweetAlertDialog.setTitleText("加载中......");
             sweetAlertDialog.show();
-            StringRequest stringRequest = new StringRequest(Request.Method.POST, url+"/api/Order/ReceiveMemberAddressListByMemberId", new Response.Listener<String>() {
+            StringRequest stringRequest = new StringRequest(Request.Method.POST, url + "/api/Order/ReceiveMemberAddressListByMemberId", new Response.Listener<String>() {
                 @Override
                 public void onResponse(String response) {
-                    response = response.replace("\\","");
-                    response =response.substring(1,response.length()-1);
-                    Log.i("woaicaojingone",response);
-                    AddressInfoBean addressInfoBean2= gson.fromJson(response, AddressInfoBean.class);
+                    response = response.replace("\\", "");
+                    response = response.substring(1, response.length() - 1);
+                    Log.i("woaicaojingone", response);
+                    AddressInfoBean addressInfoBean2 = gson.fromJson(response, AddressInfoBean.class);
                     memberAddressListBean = addressInfoBean2.getResult().getMemberAddressList().get(0);
                     edit_receive_phone.setText(memberAddressListBean.getMobile());
                     edit_receive_address.setText(memberAddressListBean.getAddress());
                     edit_receive_name.setText(memberAddressListBean.getReceiver());
                     edit_receive_zipcode.setText(memberAddressListBean.getZipCode());
-                    add_address_txtview_location.setText(memberAddressListBean.getProvince()+" "+
-                    memberAddressListBean.getCity()+" "+memberAddressListBean.getRegion()+" ");
+                    add_address_txtview_location.setText(memberAddressListBean.getProvince() + " " +
+                            memberAddressListBean.getCity() + " " + memberAddressListBean.getRegion() + " ");
                     add_address_txtview_jiedao.setText(memberAddressListBean.getStreet());
                     txt_street_id.setText(String.valueOf(memberAddressListBean.getStreetId()));
-                    txt_allid.setText(memberAddressListBean.getProvinceId()+";"+
-                    memberAddressListBean.getCityId()+";"+memberAddressListBean.getRegionId());
+                    txt_allid.setText(memberAddressListBean.getProvinceId() + ";" +
+                            memberAddressListBean.getCityId() + ";" + memberAddressListBean.getRegionId());
                     txt_region_id.setText(String.valueOf(memberAddressListBean.getRegionId()));
+                    if (memberAddressListBean.getIsDefault() == 0) {
+                        swtich_isdefult.setChecked(false);
+                    } else {
+                        swtich_isdefult.setChecked(true);
+                    }
                     sweetAlertDialog.dismiss();
                 }
             }, new Response.ErrorListener() {
@@ -406,16 +410,17 @@ public class AddAddressActivity extends Activity implements TextWatcher, View.On
             }) {
                 @Override
                 protected Map<String, String> getParams() throws AuthFailureError {
-                   Map<String,String> map = new HashMap<>();
-                    map.put("Id",String.valueOf(model));
-                    map.put("MemberId",MemberId);
-                    map.put("APPToken",APPToken);
-                    return  map;
+                    Map<String, String> map = new HashMap<>();
+                    map.put("Id", String.valueOf(model));
+                    map.put("MemberId", MemberId);
+                    map.put("APPToken", APPToken);
+                    return map;
                 }
             };
             requestQueue.add(stringRequest);
-        }else {
+        } else {
             update_address_save.setVisibility(View.GONE);
-            add_address_save.setVisibility(View.VISIBLE);}
+            add_address_save.setVisibility(View.VISIBLE);
+        }
     }
 }

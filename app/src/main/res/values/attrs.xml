@@ -14,4 +14,8 @@
         <item>多拍了</item>
         <item>不想要了</item>
     </string-array>
+    <string-array name="spingarr2">
+        <item>仅退款</item>
+        <item>退款+退货</item>
+    </string-array>
 </resources>

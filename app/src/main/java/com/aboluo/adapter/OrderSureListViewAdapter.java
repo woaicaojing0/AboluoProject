@@ -75,9 +75,8 @@ public class OrderSureListViewAdapter extends BaseAdapter {
         }
         if (mlist.get(position).getGoodsColor() != null) {
             holder.order_color.setText("" + String.valueOf(mlist.get(position).getGoodsColor()));
-            holder.order_color.setText("无");
         } else {
-
+            holder.order_color.setText("无");
         }
         if (mlist.get(position).getGoodsLogo() == null) {
         } else {

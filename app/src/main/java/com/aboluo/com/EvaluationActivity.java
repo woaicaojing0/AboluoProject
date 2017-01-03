@@ -249,34 +249,39 @@ public class EvaluationActivity extends TakePhotoActivity implements View.OnClic
      * @param filepath 文件的地址
      */
     private void UploadImage(final ArrayList<String> filepath, String token) {
-        num = 0;
-        ImageUploadNameList.clear();
-        //pdialog.setTitleText("上传中......");
-        Configuration config = new Configuration.Builder().zone(Zone.zone0).build();
+        if(filepath.size() ==0)
+        {
+            UploadEvaluation();
+        }else {
+            num = 0;
+            ImageUploadNameList.clear();
+            //pdialog.setTitleText("上传中......");
+            Configuration config = new Configuration.Builder().zone(Zone.zone0).build();
 //  重用uploadManager。一般地，只需要创建一个uploadManager对象
-        UploadManager uploadManager = new UploadManager(config);
-        for (int i = 0; i < filepath.size(); i++) {
-            String key = "evaluateImage/android/" + UUID.randomUUID().toString();
-            uploadManager.put(filepath.get(i).toString(), key, token,
-                    new UpCompletionHandler() {
-                        @Override
-                        public void complete(String key, ResponseInfo info, JSONObject res) {
-                            //res包含hash、key等信息，具体字段取决于上传策略的设置
-                            Log.i("qiniu", key + ",\r\n " + info + ",\r\n " + res);
-                            if (info.isOK()) {
-                                ImageUploadNameList.add(key);
-                                num++;
-                                if (num == filepath.size()) {
-                                    pdialog.dismiss();
-                                    Toast.makeText(EvaluationActivity.this, "图片上传成功", Toast.LENGTH_SHORT).show();
-                                    UploadEvaluation();
-                                } else {
-                                    Toast.makeText(EvaluationActivity.this, "图片上传失败，请重试", Toast.LENGTH_SHORT).show();
-                                }
+            UploadManager uploadManager = new UploadManager(config);
+            for (int i = 0; i < filepath.size(); i++) {
+                String key = "evaluateImage/android/" + UUID.randomUUID().toString();
+                uploadManager.put(filepath.get(i).toString(), key, token,
+                        new UpCompletionHandler() {
+                            @Override
+                            public void complete(String key, ResponseInfo info, JSONObject res) {
+                                //res包含hash、key等信息，具体字段取决于上传策略的设置
+                                Log.i("qiniu", key + ",\r\n " + info + ",\r\n " + res);
+                                if (info.isOK()) {
+                                    ImageUploadNameList.add(key);
+                                    num++;
+                                    if (num == filepath.size()) {
+                                        pdialog.dismiss();
+                                        Toast.makeText(EvaluationActivity.this, "图片上传成功", Toast.LENGTH_SHORT).show();
+                                        UploadEvaluation();
+                                    } else {
+                                        Toast.makeText(EvaluationActivity.this, "图片上传失败，请重试", Toast.LENGTH_SHORT).show();
+                                    }
 
+                                }
                             }
-                        }
-                    }, null);
+                        }, null);
+            }
         }
 
     }
@@ -284,13 +289,21 @@ public class EvaluationActivity extends TakePhotoActivity implements View.OnClic
     private void UploadEvaluation() {
         if (ValidateEvaluation()) {
             String anonymous = "1"; //是否匿名评价（0 不匿名，1 匿名）
-            final String evaluationImage = CommonUtils.listToString(ImageUploadNameList, ';');
+            String evaluationImage =null;
+            if(ImageUploadNameList.size() ==0)
+            {
+                evaluationImage=";";
+            }else {
+                evaluationImage = CommonUtils.listToString(ImageUploadNameList, ';');
+            }
+
             final String evaluationContents = edit_evaluation_content.getText().toString();
             final String evaluationLevel = String.valueOf((int)(room_ratingbar3.getRating()));
             if (cb_evaluation_name.isChecked()) {
                 anonymous = "0";
             }
             final String finalAnonymous = anonymous;
+            final String finalEvaluationImage = evaluationImage;
             StringRequest stringRequest = new StringRequest(Request.Method.POST,
                     URL + "/api/Order/ReceiveAddOrUpdateOrderEvaluation", new Response.Listener<String>() {
                 @Override
@@ -319,7 +332,7 @@ public class EvaluationActivity extends TakePhotoActivity implements View.OnClic
                     map.put("goodsId", String.valueOf(Goodsid));
                     map.put("evaluationLevel", evaluationLevel);
                     map.put("evaluationContents", evaluationContents);
-                    map.put("evaluationImage", evaluationImage);
+                    map.put("evaluationImage", finalEvaluationImage);
                     map.put("anonymous", finalAnonymous);
                     map.put("APPToken", APPToken);
                     return map;

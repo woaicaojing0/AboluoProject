@@ -132,7 +132,7 @@ public class OrderDetailInfo {
          */
 
         private List<OrderItemListBean> OrderItemList;
-        private List<?> LocalInfo;
+        private List<ListBean> LocalInfo;
 
         public static ResultBean objectFromData(String str) {
 
@@ -283,11 +283,11 @@ public class OrderDetailInfo {
             this.OrderItemList = OrderItemList;
         }
 
-        public List<?> getLocalInfo() {
+        public List<ListBean> getLocalInfo() {
             return LocalInfo;
         }
 
-        public void setLocalInfo(List<?> LocalInfo) {
+        public void setLocalInfo(List<ListBean> LocalInfo) {
             this.LocalInfo = LocalInfo;
         }
 
@@ -361,7 +361,26 @@ public class OrderDetailInfo {
                 this.expressTime = expressTime;
             }
         }
+        public static class ListBean {
+            private String time;
+            private String status;
 
+            public String getTime() {
+                return time;
+            }
+
+            public void setTime(String time) {
+                this.time = time;
+            }
+
+            public String getStatus() {
+                return status;
+            }
+
+            public void setStatus(String status) {
+                this.status = status;
+            }
+        }
         public static class OrderItemListBean implements Parcelable{
             private int orderItemId;
             private int goodsId;

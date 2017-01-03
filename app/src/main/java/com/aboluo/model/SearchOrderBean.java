@@ -69,6 +69,7 @@ public class SearchOrderBean {
     }
 
     public static class ResultBean {
+        private int expressId;
         private int orderId;
         private String orderCode;
         private int memberId;
@@ -98,6 +99,14 @@ public class SearchOrderBean {
          */
 
         private List<OrderItemListBean> OrderItemList;
+
+        public int getExpressId() {
+            return expressId;
+        }
+
+        public void setExpressId(int expressId) {
+            this.expressId = expressId;
+        }
 
         public int getOrderId() {
             return orderId;

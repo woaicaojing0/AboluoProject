@@ -97,7 +97,7 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="申请将会达成并退款至您的支付宝或银行卡"
+                        android:text="申请将会达成并退款至您的支付宝或微信"
                         android:textColor="#979797" />
                 </LinearLayout>
 
@@ -224,6 +224,7 @@
             </LinearLayout>
 
             <LinearLayout
+                android:orientation="horizontal"
                 android:layout_width="match_parent"
                 android:layout_height="36dp"
                 android:layout_marginLeft="25dp"
@@ -237,12 +238,26 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="退款类型：" />
-
-                <TextView
+                <RadioGroup
+                    android:id="@+id/tuikuan_type"
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+                <RadioButton
+                    android:id="@+id/only_huanhuo"
+                    android:layout_marginRight="16dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="仅退款"
+                    android:text="换货"
                     android:textColor="@color/black" />
+
+                    <RadioButton
+                        android:id="@+id/goodsAndmoney"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="退货退款"
+                        android:textColor="@color/black" />
+                </RadioGroup>
             </LinearLayout>
 
             <LinearLayout
@@ -281,8 +296,8 @@
                     android:layout_height="wrap_content"
                     android:text="退款原因：" />
 
-                <Spinner
-                    android:id="@+id/spinner_refundreson"
+                <EditText
+                    android:id="@+id/edit_refundreson"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:entries="@array/spingarr"

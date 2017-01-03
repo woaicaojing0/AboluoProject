@@ -178,7 +178,7 @@ public class CommonUtils {
         SharedPreferences.Editor editor = context.getSharedPreferences("aboluoInfo", Context.MODE_PRIVATE).edit();
         editor.putString("UserName", UserName);
         editor.putString("UserPwd", UserPwd);
-        editor.putString("UserId", UserId);
+        editor.putString("UserId", "18");
         return editor.commit();
     }
     public static boolean LoginImageURl(Context context, String URL) {

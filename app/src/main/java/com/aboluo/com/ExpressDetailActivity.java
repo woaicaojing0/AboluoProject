@@ -50,7 +50,7 @@ public class ExpressDetailActivity extends Activity {
     private String GoodsLogoUrl;
     private ImageView express_goods_image;
     private TextView express_status, express_company_name, express_code;
-    private LinearLayout back_last_choose,express_top;
+    private LinearLayout back_last_choose, express_top;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -107,16 +107,21 @@ public class ExpressDetailActivity extends Activity {
                 response = response.substring(1, response.length() - 1);
                 ExpressDetailBean expressDetailBean = gson.fromJson(response, ExpressDetailBean.class);
                 if (expressDetailBean.isIsSuccess()) {
-                    if (expressDetailBean.getResult().getList().size() == 0) {
-                        express_top.setVisibility(View.GONE);
+
+                    if (expressDetailBean.getResult().getList() == null) {
                         Toast.makeText(ExpressDetailActivity.this, "当前没有物流状态", Toast.LENGTH_SHORT).show();
                     } else {
-                        express_top.setVisibility(View.VISIBLE);
-                        ChangeExpressStatus(Integer.valueOf(expressDetailBean.getResult().getDeliverystatus()));
-                        express_company_name.setText(expressDetailBean.getResult().getName().toString());
-                        express_code.setText(expressDetailBean.getResult().getNumber());
-                        adapter = new ExpressDetailAdapter(expressDetailBean.getResult().getList(), ExpressDetailActivity.this);
-                        express_listview.setAdapter(adapter);
+                        if (expressDetailBean.getResult().getList().size() == 0) {
+                            express_top.setVisibility(View.GONE);
+                            Toast.makeText(ExpressDetailActivity.this, "当前没有物流状态", Toast.LENGTH_SHORT).show();
+                        } else {
+                            express_top.setVisibility(View.VISIBLE);
+                            ChangeExpressStatus(Integer.valueOf(expressDetailBean.getResult().getDeliverystatus()));
+                            express_company_name.setText(expressDetailBean.getResult().getName().toString());
+                            express_code.setText(expressDetailBean.getResult().getNumber());
+                            adapter = new ExpressDetailAdapter(expressDetailBean.getResult().getList(), ExpressDetailActivity.this);
+                            express_listview.setAdapter(adapter);
+                        }
                     }
                 } else {
                     Toast.makeText(ExpressDetailActivity.this, "当前没有物流状态", Toast.LENGTH_SHORT).show();

@@ -147,6 +147,7 @@ public class ShopCarAdapter extends BaseAdapter {
             holder.maxnum = (TextView) convertView.findViewById(R.id.maxnum);
             holder.shopcar_standards = (TextView) convertView.findViewById(R.id.shopcar_standards);
             holder.shopcar_old_price = (TextView) convertView.findViewById(R.id.shopcar_old_price);
+            holder.shopcar_color = (TextView) convertView.findViewById(R.id.shopcar_color);
             holder.shopcar_image = (ImageView) convertView.findViewById(R.id.shopcar_image);
 
             holder.ck_by_linelayout.setOnClickListener(mck_by_linelayout);
@@ -196,19 +197,20 @@ public class ShopCarAdapter extends BaseAdapter {
         holder.moeny.setText(String.valueOf(mlist.get(position).getHyPrice()));
         String guige = null;
         if (mlist.get(position).getGoodsColor() != null) {
-            guige = "颜色：" + mlist.get(position).getGoodsColor();
+            holder.shopcar_color.setText(mlist.get(position).getGoodsColor());
+        }
+        else
+        {
+            holder.shopcar_color.setText("无");
         }
         if (mlist.get(position).getGoodsStandard() != null) {
-            guige = guige + " " +"尺寸：" + mlist.get(position).getGoodsStandard();
-        }
-        if (guige == null) {
+            holder.shopcar_standards.setText( mlist.get(position).getGoodsStandard());
+        }else {
             holder.shopcar_standards.setText("无");
-        } else {
-            holder.shopcar_standards.setText(guige);
         }
         //   holder.old_money.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG);
         holder.shopcar_old_price.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG);
-        holder.shopcar_old_price.setText("￥" + String.valueOf(mlist.get(position).getHyPrice()));
+        holder.shopcar_old_price.setText("￥" + String.valueOf(mlist.get(position).getGoodsPrice()));
         if (mlist.get(position).getGoodsLogo() == null) {
         } else {
             String[] imges = mlist.get(position).getGoodsLogo().toString().split(";");
@@ -234,7 +236,7 @@ public class ShopCarAdapter extends BaseAdapter {
         public CheckBox ck_buy;
         public AmountView numberButton;
         public LinearLayout ck_by_linelayout, linearLayout_standard;
-        public TextView moeny, maxnum, shopcar_standards, shopcar_old_price;
+        public TextView moeny, maxnum, shopcar_standards, shopcar_old_price,shopcar_color;
         public EditText etAmount;
         private Button btnDecrease;
         private Button btnIncrease;

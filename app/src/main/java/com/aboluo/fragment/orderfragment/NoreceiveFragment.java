@@ -183,6 +183,10 @@ public class NoreceiveFragment extends Fragment implements View.OnClickListener 
                     final int position = (Integer) tag;
                     Toast.makeText(context, position + "", Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(NoreceiveFragment.this.getActivity(), ExpressDetailActivity.class);
+                    intent.putExtra("OrderId", orderBean.getResult().get(0).getOrderId());
+                    intent.putExtra("ExpressId", orderBean.getResult().get(0).getExpressId());
+                    intent.putExtra("GoodsLogoUrl", orderBean.getResult().get(0).getOrderItemList().get(0).getGoodsLogoUrl().toString());
+                    startActivity(intent);
                     startActivity(intent);
                 }
                 break;

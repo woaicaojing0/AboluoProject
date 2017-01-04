@@ -99,9 +99,9 @@
         <activity android:name=".UnaryPublishActivity"></activity>
         <activity android:name=".FavorActivity"></activity>
         <activity android:name=".ReFundActivity"></activity>
-        <activity android:name=".RefundDetailActivity"></activity>
+        <activity android:name=".RefundDetailActivity" android:windowSoftInputMode="adjustPan|stateHidden"></activity>
         <activity android:name=".UpdateMyInfoActivity"></activity>
-        <activity android:name=".EvaluationActivity"></activity>
+        <activity android:name=".EvaluationActivity" android:windowSoftInputMode="adjustPan|stateHidden"></activity>
         <activity android:name=".EvaluationDetailImageActivity"></activity>
         <activity android:name=".CreditInfoActivity"></activity>
         <activity android:name=".PartnerActivity"></activity>
@@ -114,6 +114,7 @@
         <activity android:name=".InvitationCodeActivity"></activity>
         <activity android:name=".MyAgentActivity"></activity>
         <activity android:name=".WebActivity.AgentDetailActivity"></activity>
+        <activity android:name=".CouponsActivity"></activity>
         <activity android:name=".wxapi.WXEntryActivity"
             android:exported="true"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" >

@@ -15,6 +15,9 @@
     <style name="LocationCheckBoxTheme" parent="@android:style/Widget.CompoundButton.CheckBox">
         <item name="android:button">@drawable/location_check</item>
     </style>
+    <style name="PayUseJiFengCheckBoxTheme" parent="@android:style/Widget.CompoundButton.CheckBox">
+        <item name="android:button">@drawable/jifeng_check</item>
+    </style>
 
     <style name="AnimationPreview" parent="android:Animation">
         <item name="android:windowEnterAnimation">@anim/fade_in</item>

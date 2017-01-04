@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="#F5F5F5"
-    android:focusableInTouchMode="true">
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="#F5F5F5"
+                android:focusableInTouchMode="true">
 
     <LinearLayout
         android:id="@+id/order_toobar"
@@ -30,13 +30,13 @@
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="18dp"
                     android:src="@drawable/back"
-                    android:text="返回" />
+                    android:text="返回"/>
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
-                    android:text="订单确认" />
+                    android:text="订单确认"/>
             </RelativeLayout>
 
         </android.support.v7.widget.Toolbar>
@@ -89,14 +89,14 @@
                                 android:id="@+id/address_name"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="姓名" />
+                                android:text="姓名"/>
 
                             <TextView
                                 android:id="@+id/address_phone"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginLeft="20dp"
-                                android:text="电话号码" />
+                                android:text="电话号码"/>
                         </LinearLayout>
 
                         <LinearLayout
@@ -111,7 +111,7 @@
                                 android:layout_height="wrap_content"
                                 android:ellipsize="end"
                                 android:lines='1'
-                                android:text="详细地址" />
+                                android:text="详细地址"/>
                         </LinearLayout>
                     </LinearLayout>
 
@@ -121,14 +121,14 @@
                         android:layout_alignParentRight="true"
                         android:layout_centerVertical="true"
                         android:layout_marginRight="8dp"
-                        android:src="@drawable/go" />
+                        android:src="@drawable/right"/>
                 </RelativeLayout>
 
                 <ImageView
                     android:layout_width="match_parent"
                     android:layout_height="10dp"
                     android:layout_marginBottom="8dp"
-                    android:src="@drawable/order_image" />
+                    android:src="@drawable/order_image"/>
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -140,7 +140,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="16dp"
-                        android:text="阿波罗自营店" />
+                        android:text="阿波罗自营店"/>
                 </LinearLayout>
 
                 <View
@@ -161,6 +161,40 @@
                     android:layout_height="24dp"
                     android:background="@color/white"></LinearLayout>
 
+                <RelativeLayout
+                    android:id="@+id/rl_makeorder_usecoupons"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_marginBottom="6dp"
+                    android:layout_marginTop="6dp"
+                    android:background="@color/white"
+                    >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="16dp"
+                        android:text="优惠券:"/>
+
+                    <ImageView
+                        android:id="@+id/image_right"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="8dp"
+                        android:src="@drawable/right"/>
+
+                    <TextView
+                        android:id="@+id/textView13"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_toStartOf="@+id/image_right"
+                        android:text="请选择优惠券"/>
+                </RelativeLayout>
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
@@ -171,16 +205,17 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="买家留言:" />
+                        android:layout_marginLeft="16dp"
+                        android:text="买家留言:"/>
 
                     <EditText
                         android:id="@+id/edit_remark"
-                        android:layout_marginLeft="8dp"
                         android:layout_width="200dp"
                         android:layout_height="wrap_content"
+                        android:layout_marginLeft="8dp"
                         android:background="@null"
                         android:hint="给卖家留个言吧"
-                        android:maxLines="2" />
+                        />
                 </LinearLayout>
 
                 <View
@@ -192,20 +227,23 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@color/white">
+
                     <LinearLayout
                         android:id="@+id/order_Line_yunfei"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
                         android:layout_marginRight="16dp"
                         android:layout_marginTop="21dp"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
                         android:orientation="horizontal"
                         >
+
                         <TextView
 
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="运费：" />
+                            android:text="运费："/>
+
                         <TextView
                             android:id="@+id/order_yunfei"
                             android:layout_width="wrap_content"
@@ -230,24 +268,73 @@
                             android:id="@+id/txt_goods_allnum"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="共计12件商品" />
+                            android:text="共计12件商品"/>
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="8dp"
-                            android:text="合计:" />
+                            android:text="合计:"/>
 
                         <TextView
-                            android:textSize="20sp"
                             android:id="@+id/goods_smallallmoeny"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="￥180.0"
-                            android:textColor="@color/btn_color" />
+                            android:textColor="@color/btn_color"
+                            android:textSize="20sp"/>
                     </LinearLayout>
                 </RelativeLayout>
 
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_marginBottom="6dp"
+                    android:layout_marginTop="6dp"
+                    android:background="@color/white"
+                    >
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:layout_marginLeft="16dp"
+                            android:text="可用"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:text="20"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="积分抵扣"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="8dp"
+                            android:text="￥0.2元"
+                            android:textColor="@color/btn_color"/>
+                    </LinearLayout>
+
+                    <CheckBox
+                        style="@style/PayUseJiFengCheckBoxTheme"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="8dp"/>
+
+                </RelativeLayout>
             </LinearLayout>
 
 
@@ -267,17 +354,17 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_marginLeft="16dp"
-            android:text="合计:" />
+            android:text="合计:"/>
 
         <TextView
-            android:layout_marginLeft="8dp"
             android:id="@+id/txt_allmoney"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
+            android:layout_marginLeft="8dp"
             android:layout_toEndOf="@+id/order_heji"
             android:text="￥108.00"
-            android:textColor="@color/btn_color" />
+            android:textColor="@color/btn_color"/>
 
         <Button
             android:id="@+id/Submit_Order"
@@ -287,6 +374,6 @@
             android:background="@color/btn_color"
             android:gravity="center"
             android:text="提交订单"
-            android:textColor="@color/white" />
+            android:textColor="@color/white"/>
     </RelativeLayout>
 </RelativeLayout>

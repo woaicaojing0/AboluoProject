@@ -143,6 +143,8 @@ public class OrderDetailItemAdpater extends BaseAdapter {
             }
         }
         if (mlist.get(position).getEvaluationStatus() > 0) {
+            //评价完成后，不可以申请售后
+            //holder.txt_orderdetail_after_sale.setVisibility(View.GONE);
             holder.txt_orderdetail_evaluate.setText("已评价");
         } else {
             holder.txt_orderdetail_evaluate.setOnClickListener(AfterSaleOnClickListener);

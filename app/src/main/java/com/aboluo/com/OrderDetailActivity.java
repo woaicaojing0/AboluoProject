@@ -122,10 +122,13 @@ public class OrderDetailActivity extends Activity implements View.OnClickListene
                 response = response.replace("\\", "");
                 response = response.substring(1, response.length() - 1);
                 orderDetailInfo = gson.fromJson(response, OrderDetailInfo.class);
-                orderdetail_express_status.setText(orderDetailInfo.getResult().get(0).getLocalInfo() == null ? "" :
-                        orderDetailInfo.getResult().get(0).getLocalInfo().get(0).getStatus().toString());
-                orderdetail_express_time.setText(orderDetailInfo.getResult().get(0).getLocalInfo() == null ? "" :
-                        orderDetailInfo.getResult().get(0).getLocalInfo().get(0).getTime().toString());
+                if(orderDetailInfo.getResult().get(0).getLocalInfo() == null)
+                {}else {
+                    orderdetail_express_status.setText(orderDetailInfo.getResult().get(0).getLocalInfo().size()==0  ? "" :
+                            orderDetailInfo.getResult().get(0).getLocalInfo().get(0).getStatus().toString());
+                    orderdetail_express_time.setText(orderDetailInfo.getResult().get(0).getLocalInfo().size()==0 ? "" :
+                            orderDetailInfo.getResult().get(0).getLocalInfo().get(0).getTime().toString());
+                }
                 orderdetail_address_name.setText(orderDetailInfo.getResult().get(0).getReceiver()
                         == null ? "" : orderDetailInfo.getResult().get(0).getReceiver().toString());
                 orderdetail_address_phone.setText(orderDetailInfo.getResult().get(0).getMobile()
@@ -171,7 +174,7 @@ public class OrderDetailActivity extends Activity implements View.OnClickListene
                 if (tag != null && tag instanceof Integer) {
                     Intent intent = new Intent(this, EvaluationActivity.class);
                     Bundle bundle = new Bundle();
-                    bundle.getString("Imageurl", orderDetailInfo.getResult().get(0).getOrderItemList()
+                    bundle.putString("Imageurl", orderDetailInfo.getResult().get(0).getOrderItemList()
                             .get(((Integer) tag).intValue()).getGoodsLogoUrl());
                     bundle.putInt("Orderid", orderid);
                     bundle.putInt("Goodsid", orderDetailInfo.getResult().get(0).getOrderItemList()

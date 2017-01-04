@@ -40,7 +40,7 @@ import cn.pedant.SweetAlert.SweetAlertDialog;
 public class RegisterActivity extends Activity implements View.OnClickListener, TextWatcher {
     private Button btn_getinfo; // 获取验证码的按钮
     private SMSBroadcastReceiver mSMSBroadcastReceiver;  //短信的广播监听
-    private EditText register_edit_auth, register_edit_phone, register_edit_pwd;
+    private EditText register_edit_auth, register_edit_phone, register_edit_pwd,register_edit_invitedNumber;
     private static final String ACTION = "android.provider.Telephony.SMS_RECEIVED";
     private RequestQueue requestQueue;
     private Button btn_register;    //注册按钮
@@ -68,6 +68,7 @@ public class RegisterActivity extends Activity implements View.OnClickListener, 
         register_edit_auth = (EditText) findViewById(R.id.register_edit_auth);
         register_edit_phone = (EditText) findViewById(R.id.register_edit_phone);
         register_edit_pwd = (EditText) findViewById(R.id.register_edit_pwd);
+        register_edit_invitedNumber = (EditText) findViewById(R.id.register_edit_invitedNumber);
         btn_register = (Button) findViewById(R.id.btn_register);
         requestQueue = MyApplication.getRequestQueue();
         URL = CommonUtils.GetValueByKey(this, "apiurl");
@@ -226,8 +227,14 @@ public class RegisterActivity extends Activity implements View.OnClickListener, 
                                 map.put("UserLoginPassword", CommonUtils.getMD5(pwd));
                                 map.put("MessageCheckNumber", yanzhengma);
                                 map.put("APPToken", APPToken);
-                                map.put("LoginCheckToken", "");
+                                map.put("LoginCheckToken", "123123");
                                 map.put("LoginPhone", number2);
+                                if(register_edit_invitedNumber.getText().length() ==0)
+                                {}else
+                                {
+                                    Log.i("RegisterActivity",register_edit_invitedNumber.getText().toString());
+                                    map.put("InvitedNumber", register_edit_invitedNumber.getText().toString());
+                                }
                                 return map;
                             }
                         };

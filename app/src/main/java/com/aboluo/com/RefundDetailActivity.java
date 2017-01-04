@@ -108,6 +108,7 @@ public class RefundDetailActivity extends TakePhotoActivity implements View.OnCl
                 }
             }
         });
+        only_huanhuo.setChecked(true);
     }
 
     private void init() {

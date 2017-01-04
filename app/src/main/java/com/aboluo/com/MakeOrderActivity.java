@@ -68,6 +68,8 @@ public class MakeOrderActivity extends Activity implements View.OnClickListener 
     private String MemberId;
     private String payfrom;
     private ImageView all_makeorder_text_back;
+    private RelativeLayout rl_makeorder_usecoupons;
+    private int MakeOrderRequestCode = 3;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,10 +87,12 @@ public class MakeOrderActivity extends Activity implements View.OnClickListener 
         order_yunfei.setText("" + String.valueOf(yunfei));
         change_make_sure_location.setOnClickListener(this);
         all_makeorder_text_back.setOnClickListener(this);
+        rl_makeorder_usecoupons.setOnClickListener(this);
     }
 
     private void init() {
         txt_allmoney = (TextView) findViewById(R.id.txt_allmoney);
+        rl_makeorder_usecoupons = (RelativeLayout) findViewById(R.id.rl_makeorder_usecoupons);
         all_makeorder_text_back = (ImageView) findViewById(R.id.all_makeorder_text_back);
         goods_smallallmoeny = (TextView) findViewById(R.id.goods_smallallmoeny);
         txt_goods_allnum = (TextView) findViewById(R.id.txt_goods_allnum);
@@ -217,7 +221,7 @@ public class MakeOrderActivity extends Activity implements View.OnClickListener 
                         pdialog.dismiss();
                     } else {
                     }
-                    Toast.makeText(MakeOrderActivity.this,baseModel.getMessage().toString(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MakeOrderActivity.this, baseModel.getMessage().toString(), Toast.LENGTH_SHORT).show();
                     pdialog.dismiss();
                 }
             }, new Response.ErrorListener() {
@@ -264,6 +268,10 @@ public class MakeOrderActivity extends Activity implements View.OnClickListener 
             case R.id.all_makeorder_text_back:
                 finish();
                 break;
+            case R.id.rl_makeorder_usecoupons:
+                Intent intent1 = new Intent(MakeOrderActivity.this, CouponsActivity.class);
+                intent1.putExtra("allmoney", moeny);
+                startActivityForResult(intent1, MakeOrderRequestCode);
         }
     }
 
@@ -294,6 +302,9 @@ public class MakeOrderActivity extends Activity implements View.OnClickListener 
                     address_phone.setText(memberAddressListBean.get(0).getMobile().toString());
                     AddressId = memberAddressListBean.get(0).getId();
                 }
+                break;
+            case 3:
+                Toast.makeText(this, "这是从选择优惠码页面跳转的", Toast.LENGTH_SHORT).show();
                 break;
             default:
                 break;

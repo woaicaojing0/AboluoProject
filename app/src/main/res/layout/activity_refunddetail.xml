@@ -244,6 +244,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
                 <RadioButton
+                    android:scaleX="0.8"
+                    android:scaleY="0.8"
                     android:id="@+id/only_huanhuo"
                     android:layout_marginRight="16dp"
                     android:layout_width="wrap_content"
@@ -252,6 +254,8 @@
                     android:textColor="@color/black" />
 
                     <RadioButton
+                        android:scaleX="0.8"
+                        android:scaleY="0.8"
                         android:id="@+id/goodsAndmoney"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -283,6 +287,8 @@
             </LinearLayout>
 
             <LinearLayout
+                android:focusable="true"
+                android:focusableInTouchMode="true"
                 android:layout_width="match_parent"
                 android:layout_height="36dp"
                 android:layout_marginLeft="25dp"
@@ -300,8 +306,7 @@
                     android:id="@+id/edit_refundreson"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:entries="@array/spingarr"
-                    android:text="￥188"
+                    android:hint="请填写退款原因"
                     android:textColor="@color/black" />
             </LinearLayout>
 

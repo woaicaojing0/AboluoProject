@@ -8,6 +8,8 @@ import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -68,8 +70,9 @@ public class MakeOrderActivity extends Activity implements View.OnClickListener 
     private String MemberId;
     private String payfrom;
     private ImageView all_makeorder_text_back;
-    private RelativeLayout rl_makeorder_usecoupons;
+    private RelativeLayout rl_makeorder_usecoupons, rl_makerorder_jifeng;
     private int MakeOrderRequestCode = 3;
+    private CheckBox ck_makerorder_jifeng;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,11 +91,26 @@ public class MakeOrderActivity extends Activity implements View.OnClickListener 
         change_make_sure_location.setOnClickListener(this);
         all_makeorder_text_back.setOnClickListener(this);
         rl_makeorder_usecoupons.setOnClickListener(this);
+        rl_makerorder_jifeng.setOnClickListener(this);
+        ck_makerorder_jifeng.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView,
+                                         boolean isChecked) {
+                // TODO Auto-generated method stub 
+                if (isChecked) {
+                    Toast.makeText(MakeOrderActivity.this, "选中", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(MakeOrderActivity.this, "取消选中", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
     }
 
     private void init() {
         txt_allmoney = (TextView) findViewById(R.id.txt_allmoney);
+        ck_makerorder_jifeng = (CheckBox) findViewById(R.id.ck_makerorder_jifeng);
         rl_makeorder_usecoupons = (RelativeLayout) findViewById(R.id.rl_makeorder_usecoupons);
+        rl_makerorder_jifeng = (RelativeLayout) findViewById(R.id.rl_makerorder_jifeng);
         all_makeorder_text_back = (ImageView) findViewById(R.id.all_makeorder_text_back);
         goods_smallallmoeny = (TextView) findViewById(R.id.goods_smallallmoeny);
         txt_goods_allnum = (TextView) findViewById(R.id.txt_goods_allnum);
@@ -272,6 +290,19 @@ public class MakeOrderActivity extends Activity implements View.OnClickListener 
                 Intent intent1 = new Intent(MakeOrderActivity.this, CouponsActivity.class);
                 intent1.putExtra("allmoney", moeny);
                 startActivityForResult(intent1, MakeOrderRequestCode);
+                break;
+            case R.id.rl_makerorder_jifeng:
+                if (payfrom.equals("1"))//正常的商品
+                {
+                    if (ck_makerorder_jifeng.isChecked()) {
+                        ck_makerorder_jifeng.setChecked(false);
+                    } else {
+                        ck_makerorder_jifeng.setChecked(true);
+                    }
+                } else {
+                    Toast.makeText(this, "当前你商品不支持使用积分", Toast.LENGTH_SHORT).show();
+                }
+
         }
     }
 
@@ -304,6 +335,7 @@ public class MakeOrderActivity extends Activity implements View.OnClickListener 
                 }
                 break;
             case 3:
+                rl_makerorder_jifeng.setClickable(false);
                 Toast.makeText(this, "这是从选择优惠码页面跳转的", Toast.LENGTH_SHORT).show();
                 break;
             default:

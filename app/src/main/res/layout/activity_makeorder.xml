@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:app="http://schemas.android.com/apk/res-auto"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="#F5F5F5"
-                android:focusableInTouchMode="true">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F5F5F5"
+    android:focusableInTouchMode="true">
 
     <LinearLayout
         android:id="@+id/order_toobar"
@@ -30,13 +30,13 @@
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="18dp"
                     android:src="@drawable/back"
-                    android:text="返回"/>
+                    android:text="返回" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
-                    android:text="订单确认"/>
+                    android:text="订单确认" />
             </RelativeLayout>
 
         </android.support.v7.widget.Toolbar>
@@ -90,14 +90,14 @@
                                 android:id="@+id/address_name"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="姓名"/>
+                                android:text="姓名" />
 
                             <TextView
                                 android:id="@+id/address_phone"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginLeft="20dp"
-                                android:text="电话号码"/>
+                                android:text="电话号码" />
                         </LinearLayout>
 
                         <LinearLayout
@@ -112,7 +112,7 @@
                                 android:layout_height="wrap_content"
                                 android:ellipsize="end"
                                 android:lines='1'
-                                android:text="详细地址"/>
+                                android:text="详细地址" />
                         </LinearLayout>
                     </LinearLayout>
 
@@ -122,13 +122,13 @@
                         android:layout_alignParentRight="true"
                         android:layout_centerVertical="true"
                         android:layout_marginRight="8dp"
-                        android:src="@drawable/right"/>
+                        android:src="@drawable/right" />
                 </RelativeLayout>
 
                 <ImageView
                     android:layout_width="match_parent"
                     android:layout_height="10dp"
-                    android:src="@drawable/order_image"/>
+                    android:src="@drawable/order_image" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -140,7 +140,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="16dp"
-                        android:text="阿波罗自营店"/>
+                        android:text="阿波罗自营店" />
                 </LinearLayout>
 
 
@@ -163,8 +163,7 @@
                     android:layout_height="40dp"
                     android:layout_marginBottom="6dp"
                     android:layout_marginTop="6dp"
-                    android:background="@color/white"
-                    >
+                    android:background="@color/white">
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -172,7 +171,7 @@
                         android:layout_centerVertical="true"
                         android:layout_marginLeft="16dp"
                         android:layout_marginRight="4dp"
-                        android:text="代金券:"/>
+                        android:text="代金券:" />
 
                     <ImageView
                         android:id="@+id/image_right"
@@ -181,16 +180,17 @@
                         android:layout_alignParentRight="true"
                         android:layout_centerVertical="true"
                         android:layout_marginRight="8dp"
-                        android:src="@drawable/right"/>
+                        android:src="@drawable/right" />
 
                     <TextView
+                        android:gravity="right"
                         android:id="@+id/tv_makeorder_showcoupons"
-                        android:layout_width="wrap_content"
+                        android:layout_width="240dp"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
                         android:layout_toStartOf="@+id/image_right"
                         android:ellipsize="end"
-                        android:text="请选择代金券"/>
+                        android:text="请选择代金券" />
                 </RelativeLayout>
 
                 <LinearLayout
@@ -204,7 +204,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="16dp"
-                        android:text="买家留言:"/>
+                        android:text="买家留言:" />
 
                     <EditText
                         android:id="@+id/edit_remark"
@@ -213,8 +213,7 @@
                         android:layout_marginLeft="8dp"
                         android:background="@null"
                         android:hint="给卖家留个言吧"
-                        android:textSize="15sp"
-                        />
+                        android:textSize="15sp" />
                 </LinearLayout>
 
                 <View
@@ -234,14 +233,13 @@
                         android:layout_alignParentRight="true"
                         android:layout_marginRight="16dp"
                         android:layout_marginTop="8dp"
-                        android:orientation="horizontal"
-                        >
+                        android:orientation="horizontal">
 
                         <TextView
 
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="运费："/>
+                            android:text="运费：" />
 
                         <TextView
                             android:id="@+id/order_yunfei"
@@ -249,7 +247,7 @@
                             android:layout_height="wrap_content"
 
                             android:textColor="@color/btn_color"
-                            android:textSize="20sp"/>
+                            android:textSize="20sp" />
                     </LinearLayout>
 
 
@@ -267,13 +265,13 @@
                             android:id="@+id/txt_goods_allnum"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="共计12件商品"/>
+                            android:text="共计12件商品" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="8dp"
-                            android:text="合计:"/>
+                            android:text="合计:" />
 
                         <TextView
                             android:id="@+id/goods_smallallmoeny"
@@ -281,7 +279,7 @@
                             android:layout_height="wrap_content"
 
                             android:textColor="@color/btn_color"
-                            android:textSize="20sp"/>
+                            android:textSize="20sp" />
                     </LinearLayout>
                 </RelativeLayout>
 
@@ -292,8 +290,7 @@
                     android:layout_marginBottom="6dp"
                     android:layout_marginTop="6dp"
                     android:background="@color/white"
-                    android:descendantFocusability="blocksDescendants"
-                    >
+                    android:descendantFocusability="blocksDescendants">
 
                     <LinearLayout
                         android:id="@+id/ll_makerorder_jifeng"
@@ -308,26 +305,25 @@
                             android:layout_height="wrap_content"
                             android:layout_centerVertical="true"
                             android:layout_marginLeft="16dp"
-                            android:text="可用"/>
+                            android:text="可用" />
 
                         <TextView
                             android:id="@+id/tv_makerorder_IntegralCount"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_centerVertical="true"
-                           />
+                            android:layout_centerVertical="true" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="积分抵扣"/>
+                            android:text="积分抵扣" />
 
                         <TextView
                             android:id="@+id/tv_makerorder_IntegralPrice"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="8dp"
-                            android:textColor="@color/btn_color"/>
+                            android:textColor="@color/btn_color" />
 
                     </LinearLayout>
 
@@ -339,16 +335,16 @@
                         android:layout_alignParentRight="true"
                         android:layout_centerVertical="true"
                         android:layout_marginRight="8dp"
-                        android:clickable="false"/>
+                        android:clickable="false" />
 
                     <TextView
-                        android:layout_marginLeft="16dp"
                         android:id="@+id/tv_makerorder_isuserintegral"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
+                        android:layout_marginLeft="16dp"
                         android:layout_toEndOf="@+id/ll_makerorder_jifeng"
-                        android:textColor="@color/red"/>
+                        android:textColor="@color/red" />
 
                 </RelativeLayout>
 
@@ -363,7 +359,7 @@
                         android:gravity="center_vertical"
                         android:paddingLeft="16dp"
                         android:text="请注意：积分和优惠券不能同时使用"
-                        android:textColor="@color/btn_color"/>
+                        android:textColor="@color/btn_color" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -388,7 +384,15 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_marginLeft="16dp"
-            android:text="实付:"/>
+            android:text="实付:" />
+
+        <TextView
+            android:id="@+id/order_fuhao"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toEndOf="@+id/order_heji"
+            android:text="￥" />
 
         <TextView
             android:id="@+id/txt_allmoney"
@@ -396,8 +400,8 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_marginLeft="8dp"
-            android:layout_toEndOf="@+id/order_heji"
-            android:textColor="@color/btn_color"/>
+            android:layout_toEndOf="@+id/order_fuhao"
+            android:textColor="@color/btn_color" />
 
         <Button
             android:id="@+id/Submit_Order"
@@ -407,6 +411,6 @@
             android:background="@color/btn_color"
             android:gravity="center"
             android:text="提交订单"
-            android:textColor="@color/white"/>
+            android:textColor="@color/white" />
     </RelativeLayout>
 </RelativeLayout>

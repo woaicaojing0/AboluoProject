@@ -203,10 +203,6 @@ public class RegisterActivity extends Activity implements View.OnClickListener, 
                                 response = response.substring(1, response.length() - 1); //去掉头尾引号。
                                 RegisterInfo registerInfo = gson.fromJson(response, RegisterInfo.class);
                                 if (registerInfo.isIsSuccess()) {
-                                    Intent intent = new Intent();
-                                    intent.putExtra("LoginName", number2);
-                                    intent.putExtra("LoginPwd", pwd);
-                                    setResult(RESULT_OK, intent);
                                     finish();
                                 } else {
                                 }
@@ -230,7 +226,9 @@ public class RegisterActivity extends Activity implements View.OnClickListener, 
                                 map.put("LoginCheckToken", "123123");
                                 map.put("LoginPhone", number2);
                                 if(register_edit_invitedNumber.getText().length() ==0)
-                                {}else
+                                {
+                                    map.put("InvitedNumber", "");
+                                }else
                                 {
                                     Log.i("RegisterActivity",register_edit_invitedNumber.getText().toString());
                                     map.put("InvitedNumber", register_edit_invitedNumber.getText().toString());

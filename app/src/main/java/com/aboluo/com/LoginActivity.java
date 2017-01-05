@@ -105,7 +105,7 @@ public class LoginActivity extends Activity implements View.OnClickListener, Tex
         switch (v.getId()) {
             case R.id.txt_register:
                 Intent intent = new Intent(this, RegisterActivity.class);
-                startActivityForResult(intent, registercode);
+                startActivity(intent);
                 break;
             case R.id.txt_retrivepwd:
                 Intent intent2 = new Intent(this, RetrievePwd0Activity.class);

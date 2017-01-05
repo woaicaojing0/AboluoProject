@@ -156,7 +156,7 @@ public class MakeOrderActivity extends Activity implements View.OnClickListener 
         goodsShoppingCartListBean = bundle.getParcelableArrayList("data");
         moeny = bundle.get("allmoney").toString();
         payfrom = bundle.get("payfrom").toString();
-        txt_allmoney.setText("￥" + bundle.get("allmoney").toString());
+        txt_allmoney.setText(bundle.get("allmoney").toString());
         goods_smallallmoeny.setText("￥" + bundle.get("allmoney").toString());
         txt_goods_allnum.setText("共计" + goodsShoppingCartListBean.size() + "件商品");
         Submit_Order.setOnClickListener(this);
@@ -278,7 +278,7 @@ public class MakeOrderActivity extends Activity implements View.OnClickListener 
                 protected Map<String, String> getParams() throws AuthFailureError {
                     Map<String, String> map = new HashMap<>();
                     map.put("MemberId", MemberId);
-                    map.put("TotalPrice", moeny);
+                    map.put("TotalPrice", txt_allmoney.getText().toString());
                     if (AddressId != 0) {
                         map.put("AddressId", String.valueOf(AddressId));
                     } else {
@@ -291,23 +291,23 @@ public class MakeOrderActivity extends Activity implements View.OnClickListener 
                     switch (discountType) {
                         case "0":
                             map.put("DeductionType", "0");
-                            map.put("JifenPrice", "0");
+                            map.put("IntegralPrice", "0");
                             map.put("IntegralCount", "0");
-                            map.put("YouhuiPrice", "0");
-                            map.put("YouhuiId", "0");
+                            map.put("CouponPrice", "0");
+                            map.put("CouponId", "0");
                             break;
                         case "1":
-                            map.put("JifenPrice", String.valueOf(makerOrderIntergralBean.getResult().getIntegralPrice()));
+                            map.put("IntegralPrice", String.valueOf(makerOrderIntergralBean.getResult().getIntegralPrice()));
                             map.put("IntegralCount", String.valueOf(makerOrderIntergralBean.getResult().getIntegralCount()));
-                            map.put("YouhuiPrice", "0");
-                            map.put("YouhuiId", "0");
+                            map.put("CouponPrice", "0");
+                            map.put("CouponId", "0");
                             map.put("DeductionType", "1");
                             break;
                         case "2":
-                            map.put("JifenPrice", "0");
+                            map.put("IntegralPrice", "0");
                             map.put("IntegralCount", "0");
-                            map.put("YouhuiPrice", CouponMoney);
-                            map.put("YouhuiId", CouponId);
+                            map.put("CouponPrice", CouponMoney);
+                            map.put("CouponId", CouponId);
                             map.put("DeductionType", "2");
                             break;
                     }
@@ -399,8 +399,8 @@ public class MakeOrderActivity extends Activity implements View.OnClickListener 
                                     - Double.valueOf(CouponMoney);
                             Log.i("MakeOrderActivity", "选择代金券了，代金券金额"
                                     + String.valueOf(CouponMoney) + "总金额为" + String.valueOf(result));
-                            txt_allmoney.setText("￥"+String.valueOf(result));
-                            goods_smallallmoeny.setText("￥"+String.valueOf(result));
+                            txt_allmoney.setText(String.valueOf(result));
+                            goods_smallallmoeny.setText("￥" + String.valueOf(result));
                         }
                     }
                 } else if (resultCode == RESULT_CANCELED) {
@@ -410,8 +410,8 @@ public class MakeOrderActivity extends Activity implements View.OnClickListener 
                         tv_makeorder_showcoupons.setText("请选择优惠券");
                         rl_makerorder_jifeng.setClickable(true);
                         discountType = "0";
-                        txt_allmoney.setText("￥"+moeny);
-                        goods_smallallmoeny.setText("￥"+moeny);
+                        txt_allmoney.setText(moeny);
+                        goods_smallallmoeny.setText("￥" + moeny);
                     }
                 } else {
                 }
@@ -424,6 +424,7 @@ public class MakeOrderActivity extends Activity implements View.OnClickListener 
 
     private void getIntergralAndFreight() {
         rl_makerorder_jifeng.setClickable(false);
+        ck_makerorder_jifeng.setClickable(false);
         StringRequest stringRequest = new StringRequest(Request.Method.POST,
                 url + "/api/Order/ReceiveGetIntegralInfoByMemberId", new Response.Listener<String>() {
             @Override
@@ -431,7 +432,7 @@ public class MakeOrderActivity extends Activity implements View.OnClickListener 
                 response = response.replace("\\", "");
                 response = response.substring(1, response.length() - 1);
                 makerOrderIntergralBean = gson.fromJson(response, MakerOrderIntergralBean.class);
-                if (!makerOrderIntergralBean.isIsSuccess()) {
+                if (makerOrderIntergralBean.isIsSuccess()) {
                     if (makerOrderIntergralBean.getResult().getIsUserIntegral() > 0) {
                         rl_makerorder_jifeng.setClickable(true);
                         tv_makerorder_IntegralCount.setText(makerOrderIntergralBean.getResult()
@@ -446,8 +447,8 @@ public class MakeOrderActivity extends Activity implements View.OnClickListener 
                     order_yunfei.setText("￥" + makerOrderIntergralBean.getResult().getExpressPrice());
                     moeny = String.valueOf(Double.valueOf(moeny)
                             + makerOrderIntergralBean.getResult().getExpressPrice());
-                    goods_smallallmoeny.setText("￥"+moeny);
-                    txt_allmoney.setText("￥"+moeny);
+                    goods_smallallmoeny.setText("￥" + moeny);
+                    txt_allmoney.setText(moeny);
                 } else {
                     rl_makerorder_jifeng.setClickable(false);
                     rl_makeorder_usecoupons.setClickable(false);
@@ -458,7 +459,8 @@ public class MakeOrderActivity extends Activity implements View.OnClickListener 
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-
+                rl_makerorder_jifeng.setClickable(false);
+                ck_makerorder_jifeng.setClickable(false);
             }
         }) {
             @Override

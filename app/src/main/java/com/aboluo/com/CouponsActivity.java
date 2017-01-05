@@ -24,6 +24,7 @@ import com.google.gson.Gson;
 import com.handmark.pulltorefresh.library.PullToRefreshListView;
 import com.squareup.picasso.Picasso;
 
+import java.lang.reflect.Member;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -127,6 +128,7 @@ public class CouponsActivity extends Activity implements View.OnClickListener {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> map = new HashMap<>();
+                //map.put("MemberId", MemberId);
                 map.put("MemberId", MemberId);
                 map.put("TotalMoney", TotalMoney);
                 map.put("APPToken", APPToken);

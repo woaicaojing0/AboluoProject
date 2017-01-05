@@ -11,7 +11,6 @@ import android.widget.GridView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -80,7 +79,8 @@ public class RefundDetailActivity extends TakePhotoActivity implements View.OnCl
     private ArrayList<String> ImageUploadNameList; //图片的上传保存的文件名
     private QiNiuToken qiNiuToken;
     private RadioGroup tuikuan_type;
-    private RadioButton goodsAndmoney,only_huanhuo;
+    private RadioButton goodsAndmoney, only_huanhuo;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -100,10 +100,9 @@ public class RefundDetailActivity extends TakePhotoActivity implements View.OnCl
 
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 // TODO Auto-generated method stub
-                if(goodsAndmoney.getId() == checkedId){
+                if (goodsAndmoney.getId() == checkedId) {
                     refund_price.setText(String.valueOf(orderItemListBean.getGoodsPrice()));
-                }
-                else if(only_huanhuo.getId() == checkedId){
+                } else if (only_huanhuo.getId() == checkedId) {
                     refund_price.setText("0");
                 }
             }
@@ -224,15 +223,13 @@ public class RefundDetailActivity extends TakePhotoActivity implements View.OnCl
                 }
                 break;
             case R.id.begin_refund:
-                if(edit_refundreson.getText().length() ==0)
-                {
+                if (edit_refundreson.getText().length() == 0) {
                     Toast.makeText(this, "请先填写退款原因", Toast.LENGTH_SHORT).show();
-                }else {
+                } else {
 
-                    if(imageViewsurl.size() ==0)
-                    {
+                    if (imageViewsurl.size() == 0) {
                         Toast.makeText(this, "请先上传图片", Toast.LENGTH_SHORT).show();
-                    }else {
+                    } else {
                         String token = qiNiuToken.getFileUploadToken();
                         UploadImage(imageViewsurl, token);
                     }
@@ -368,10 +365,16 @@ public class RefundDetailActivity extends TakePhotoActivity implements View.OnCl
                 map.put("orderItemId", String.valueOf(orderItemListBean.getOrderItemId()));
                 map.put("goodsId", String.valueOf(orderItemListBean.getGoodsId()));
                 map.put("goodsName", String.valueOf(orderItemListBean.getGoodsName()));
-                map.put("refundReson",edit_refundreson.getText().toString());
+                map.put("refundReson", edit_refundreson.getText().toString());
                 map.put("refundImage", refundImage);
                 map.put("MemberId", MemberId);
                 map.put("APPToken", APPToken);
+                //申请售后类型（0 退货 1 退款）
+                if (only_huanhuo.isChecked()) {
+                    map.put("orderRefundType", "0");
+                } else {
+                    map.put("APPToken", "1");
+                }
                 return map;
             }
 

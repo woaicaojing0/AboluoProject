@@ -18,6 +18,7 @@ import android.widget.Toast;
 import com.aboluo.XUtils.CommonUtils;
 import com.aboluo.XUtils.MyApplication;
 import com.aboluo.com.AddressActivity;
+import com.aboluo.com.CouponsActivity;
 import com.aboluo.com.CreditInfoActivity;
 import com.aboluo.com.FavorActivity;
 import com.aboluo.com.InvitationCodeActivity;
@@ -55,7 +56,8 @@ public class MyFragment extends Fragment implements View.OnClickListener {
     private Button btn, my_out;
     private ScrollView my_scrollview;
     private LinearLayout linLayout_my_info, my_nopay, my_nosend, my_noreceive, my_assessment,
-            feedbackInfo, my_favor, my_refund, creditinfodetail, my_invitation, invitation_code, my_agent;
+            feedbackInfo, my_favor, my_refund, creditinfodetail, my_invitation,
+            invitation_code, my_agent,my_coupons_center;
     private RelativeLayout my_allorder, my_addressinfo;
     private SharedPreferences sharedPreferences;
     private RequestQueue requestQueue;
@@ -94,6 +96,7 @@ public class MyFragment extends Fragment implements View.OnClickListener {
         creditinfodetail.setOnClickListener(this);
         invitation_code.setOnClickListener(this);
         my_agent.setOnClickListener(this);
+        my_coupons_center.setOnClickListener(this);
         if (CommonUtils.IsLogin(MyFragment.this.getContext())) {
             btn.setVisibility(View.GONE);
             my_out.setVisibility(View.VISIBLE);
@@ -129,6 +132,7 @@ public class MyFragment extends Fragment implements View.OnClickListener {
         my_invitation = (LinearLayout) view.findViewById(R.id.my_invitation);
         invitation_code = (LinearLayout) view.findViewById(R.id.invitation_code);
         my_agent = (LinearLayout) view.findViewById(R.id.my_agent);
+        my_coupons_center = (LinearLayout) view.findViewById(R.id.my_coupons_center);
         sharedPreferences = MyFragment.this.getContext().getSharedPreferences("aboluo", Context.MODE_PRIVATE);
         my_fragment_imageview = (CircleImageView) view.findViewById(R.id.my_fragment_imageview);
         InitData();
@@ -250,6 +254,11 @@ public class MyFragment extends Fragment implements View.OnClickListener {
             case R.id.my_agent:
                 Intent intent15 = new Intent(MyFragment.this.getActivity(), MyAgentActivity.class);
                 startActivity(intent15);
+                break;
+            case R.id.my_coupons_center:
+                Intent intent16 = new Intent(MyFragment.this.getActivity(), CouponsActivity.class);
+                intent16.putExtra("allmoney", "0");
+                startActivity(intent16);
                 break;
 
         }

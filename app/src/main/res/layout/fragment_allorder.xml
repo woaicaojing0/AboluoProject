@@ -5,12 +5,12 @@
     android:orientation="vertical">
 
     <com.handmark.pulltorefresh.library.PullToRefreshListView xmlns:ptr="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/allorder_listview"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="#ededed"
-        ptr:ptrMode="pullFromEnd"
-        />
+                                                                        android:id="@+id/allorder_listview"
+                                                                        android:layout_width="match_parent"
+                                                                        android:layout_height="match_parent"
+                                                                        android:background="#ededed"
+                                                                        ptr:ptrMode="pullFromEnd"
+    />
     <include
         layout="@layout/fragment_orderdetail_empty"
         android:layout_height="match_parent"

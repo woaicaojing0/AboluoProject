@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="120dp">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:orientation="vertical"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+            <LinearLayout
+                android:paddingLeft="16dp"
+                android:gravity="left|center_vertical"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1.2">
+
+                <TextView
+                    android:id="@+id/tv_coupons_CouponMoney"
+                    android:textSize="26sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="￥10.00"/>
+            </LinearLayout>
+            <LinearLayout
+                android:paddingLeft="16dp"
+                android:orientation="horizontal"
+                android:gravity="center_vertical|left"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="代金券："/>
+                <TextView
+                    android:lineSpacingExtra="4dp"
+                    android:id="@+id/tv_coupons_remark"
+                    android:layout_marginLeft="15dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="1.消费满20元可用.\n2不可与其他优惠券叠加"/>
+            </LinearLayout>
+            <LinearLayout
+                android:paddingLeft="16dp"
+                android:orientation="horizontal"
+                android:gravity="center_vertical|left"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="有效期限："/>
+                <TextView
+                    android:id="@+id/tv_coupons_starttime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="2016-11-17"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=" - "/>
+                <TextView
+                    android:id="@+id/tv_coupons_endtime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="2016-11-17"/>
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <ImageView
+            android:layout_width="70dp"
+            android:layout_height="wrap_content"
+            android:src="@drawable/coupons_bg"
+            />
+    </LinearLayout>
+</LinearLayout>

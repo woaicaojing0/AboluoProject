@@ -403,7 +403,7 @@ public class IndexFragment extends Fragment implements View.OnClickListener {
             public void onErrorResponse(VolleyError error) {
 //                byte[] bytes = error.networkResponse.data;
 //                Log.i("woaicaojingseckill", new String(bytes));
-                Toast.makeText(IndexFragment.this.getContext(), error.toString(), Toast.LENGTH_SHORT).show();
+               // Toast.makeText(IndexFragment.this.getContext(), error.toString(), Toast.LENGTH_SHORT).show();
             }
         }) {
             @Override

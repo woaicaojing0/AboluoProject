@@ -437,28 +437,29 @@
                     </LinearLayout>
                 </RelativeLayout>
                 <RelativeLayout
-                    android:visibility="invisible"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:gravity="center">
 
                     <LinearLayout
+                        android:id="@+id/my_coupons_center"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:orientation="vertical">
 
 
                         <ImageView
-                            android:layout_width="wrap_content"
-                            android:layout_height="45dp"
-                            android:src="@drawable/my_email" />
+                            android:layout_width="match_parent"
+                            android:layout_height="36dp"
+                            android:src="@drawable/coupons" />
 
                         <TextView
+                            android:layout_marginTop="8dp"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:gravity="center"
-                            android:text="意见反馈" />
+                            android:text="代金券" />
                     </LinearLayout>
                 </RelativeLayout>
             </LinearLayout>

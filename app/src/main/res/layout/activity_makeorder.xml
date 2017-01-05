@@ -47,10 +47,11 @@
             android:background="#BDBDBD"></View>
     </LinearLayout>
 
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/order_bottom"
+        android:layout_alignParentStart="true"
         android:layout_below="@+id/order_toobar">
 
         <RelativeLayout
@@ -127,7 +128,6 @@
                 <ImageView
                     android:layout_width="match_parent"
                     android:layout_height="10dp"
-                    android:layout_marginBottom="8dp"
                     android:src="@drawable/order_image"/>
 
                 <LinearLayout
@@ -143,10 +143,6 @@
                         android:text="阿波罗自营店"/>
                 </LinearLayout>
 
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="#BDBDBD"></View>
 
                 <com.aboluo.widget.MyListview
                     android:id="@+id/orderlist"
@@ -175,7 +171,8 @@
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
                         android:layout_marginLeft="16dp"
-                        android:text="优惠券:"/>
+                        android:layout_marginRight="4dp"
+                        android:text="代金券:"/>
 
                     <ImageView
                         android:id="@+id/image_right"
@@ -187,12 +184,13 @@
                         android:src="@drawable/right"/>
 
                     <TextView
-                        android:id="@+id/textView13"
+                        android:id="@+id/tv_makeorder_showcoupons"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
                         android:layout_toStartOf="@+id/image_right"
-                        android:text="请选择优惠券"/>
+                        android:ellipsize="end"
+                        android:text="请选择代金券"/>
                 </RelativeLayout>
 
                 <LinearLayout
@@ -209,13 +207,13 @@
                         android:text="买家留言:"/>
 
                     <EditText
-                        android:textSize="15sp"
                         android:id="@+id/edit_remark"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="8dp"
                         android:background="@null"
                         android:hint="给卖家留个言吧"
+                        android:textSize="15sp"
                         />
                 </LinearLayout>
 
@@ -249,7 +247,7 @@
                             android:id="@+id/order_yunfei"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="0"
+
                             android:textColor="@color/btn_color"
                             android:textSize="20sp"/>
                     </LinearLayout>
@@ -281,7 +279,7 @@
                             android:id="@+id/goods_smallallmoeny"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="￥180.0"
+
                             android:textColor="@color/btn_color"
                             android:textSize="20sp"/>
                     </LinearLayout>
@@ -289,19 +287,20 @@
 
                 <RelativeLayout
                     android:id="@+id/rl_makerorder_jifeng"
-                    android:descendantFocusability="blocksDescendants"
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
                     android:layout_marginBottom="6dp"
                     android:layout_marginTop="6dp"
                     android:background="@color/white"
+                    android:descendantFocusability="blocksDescendants"
                     >
 
                     <LinearLayout
-                        android:descendantFocusability="blocksDescendants"
+                        android:id="@+id/ll_makerorder_jifeng"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
+                        android:descendantFocusability="blocksDescendants"
                         android:orientation="horizontal">
 
                         <TextView
@@ -312,10 +311,11 @@
                             android:text="可用"/>
 
                         <TextView
+                            android:id="@+id/tv_makerorder_IntegralCount"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_centerVertical="true"
-                            android:text="20"/>
+                           />
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -323,11 +323,12 @@
                             android:text="积分抵扣"/>
 
                         <TextView
+                            android:id="@+id/tv_makerorder_IntegralPrice"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="8dp"
-                            android:text="￥0.2元"
                             android:textColor="@color/btn_color"/>
+
                     </LinearLayout>
 
                     <CheckBox
@@ -337,9 +338,37 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
                         android:layout_centerVertical="true"
-                        android:layout_marginRight="8dp"/>
+                        android:layout_marginRight="8dp"
+                        android:clickable="false"/>
+
+                    <TextView
+                        android:layout_marginLeft="16dp"
+                        android:id="@+id/tv_makerorder_isuserintegral"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_toEndOf="@+id/ll_makerorder_jifeng"
+                        android:textColor="@color/red"/>
 
                 </RelativeLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:gravity="center_vertical"
+                        android:paddingLeft="16dp"
+                        android:text="请注意：积分和优惠券不能同时使用"
+                        android:textColor="@color/btn_color"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"></LinearLayout>
             </LinearLayout>
 
 
@@ -359,7 +388,7 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_marginLeft="16dp"
-            android:text="合计:"/>
+            android:text="实付:"/>
 
         <TextView
             android:id="@+id/txt_allmoney"
@@ -368,7 +397,6 @@
             android:layout_centerVertical="true"
             android:layout_marginLeft="8dp"
             android:layout_toEndOf="@+id/order_heji"
-            android:text="￥108.00"
             android:textColor="@color/btn_color"/>
 
         <Button

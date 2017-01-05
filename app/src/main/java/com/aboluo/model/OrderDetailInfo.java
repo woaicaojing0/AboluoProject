@@ -40,6 +40,11 @@ public class OrderDetailInfo {
      * Receiver : qw
      * Mobile : 18360733212
      * Address : wewqfffvvvvvggtgggggggt
+     * integralPrice: 2,
+     * integralCount: 200,
+     * couponPrice: 0,
+     * couponId: 0,
+     "expressPrice": 0,
      * OrderItemList : [{"orderItemId":735,"goodsId":3067,"goodsName":"20161115测试","goodsSub":"20161115测试","goodsColorId":52,"goodsColor":"黑色1","goodsStandardId":56,"goodsStandard":"XXL","goodsPrice":300,"yunfei":0,"goodsLogoUrl":null,"goodsQuantity":1,"Price":300,"RefundStatus":0,"EvaluationStatus":18,"orderId":621}]
      * OrderExpress : {"Id":12,"orderId":621,"expressName":"","expressType":"","expressNumber":"","expressPrice":0,"expressTime":"2016-12-11T14:02:25"}
      * LocalInfo : []
@@ -101,6 +106,10 @@ public class OrderDetailInfo {
         private String Receiver;
         private String Mobile;
         private String Address;
+        private double integralPrice;
+        private int integralCount;
+        private  double couponPrice;
+        private  double expressPrice;
         /**
          * Id : 12
          * orderId : 621
@@ -265,6 +274,38 @@ public class OrderDetailInfo {
 
         public void setAddress(String Address) {
             this.Address = Address;
+        }
+
+        public double getIntegralPrice() {
+            return integralPrice;
+        }
+
+        public void setIntegralPrice(double integralPrice) {
+            this.integralPrice = integralPrice;
+        }
+
+        public int getIntegralCount() {
+            return integralCount;
+        }
+
+        public void setIntegralCount(int integralCount) {
+            this.integralCount = integralCount;
+        }
+
+        public double getCouponPrice() {
+            return couponPrice;
+        }
+
+        public void setCouponPrice(double couponPrice) {
+            this.couponPrice = couponPrice;
+        }
+
+        public double getExpressPrice() {
+            return expressPrice;
+        }
+
+        public void setExpressPrice(double expressPrice) {
+            this.expressPrice = expressPrice;
         }
 
         public OrderExpressBean getOrderExpress() {

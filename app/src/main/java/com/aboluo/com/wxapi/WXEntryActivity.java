@@ -175,7 +175,9 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler {
                 LoginInfo loginInfo = gson.fromJson(response, LoginInfo.class);
                 if (loginInfo.isIsSuccess()) {
                     Intent intent = new Intent(WXEntryActivity.this, com.aboluo.com.LoginActivity.class);
-                    if (CommonUtils.Login(WXEntryActivity.this, "", "", String.valueOf(loginInfo.getResult().getMemberEntity().getMemberId()))) {
+                    if (CommonUtils.Login(WXEntryActivity.this, "", "",
+                            String.valueOf(loginInfo.getResult().getMemberEntity().getMemberId()),
+                            String.valueOf(loginInfo.getResult().getMemberEntity().getIsDealer()))) {
                         //使用哪边的头像，是微信的还是七牛云的
                         if (loginInfo.getResult().getMemberEntity().getWechatLogoUrl() == null) {
                             CommonUtils.LoginImageURl(WXEntryActivity.this, wxUserBean.getHeadimgurl());

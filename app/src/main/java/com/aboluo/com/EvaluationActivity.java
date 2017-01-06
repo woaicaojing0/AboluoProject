@@ -261,6 +261,7 @@ public class EvaluationActivity extends TakePhotoActivity implements View.OnClic
             UploadManager uploadManager = new UploadManager(config);
             for (int i = 0; i < filepath.size(); i++) {
                 String key = "evaluateImage/android/" + UUID.randomUUID().toString();
+                final int finalI = i;
                 uploadManager.put(filepath.get(i).toString(), key, token,
                         new UpCompletionHandler() {
                             @Override
@@ -275,7 +276,9 @@ public class EvaluationActivity extends TakePhotoActivity implements View.OnClic
                                         Toast.makeText(EvaluationActivity.this, "图片上传成功", Toast.LENGTH_SHORT).show();
                                         UploadEvaluation();
                                     } else {
-                                        Toast.makeText(EvaluationActivity.this, "图片上传失败，请重试", Toast.LENGTH_SHORT).show();
+                                        if(finalI +1==filepath.size()) {
+                                            Toast.makeText(EvaluationActivity.this, "图片上传失败，请重试", Toast.LENGTH_SHORT).show();
+                                        }
                                     }
 
                                 }

@@ -6,6 +6,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
 import com.aboluo.model.MessageBean;
+import com.aboluo.model.UserSqlInfo;
 
 /**
  * Created by CJ on 2016/12/26.
@@ -13,6 +14,7 @@ import com.aboluo.model.MessageBean;
 
 public class SqliteHelper extends SQLiteOpenHelper {
     public static final String TB_NAME = "MESSAGE";
+    public static final String TB_NAME2 = "UserInfo";
 
     public SqliteHelper(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
         super(context, name, factory, version);
@@ -26,7 +28,15 @@ public class SqliteHelper extends SQLiteOpenHelper {
                 MessageBean.MESSAGEINFO + " varchar," +
                 MessageBean.CREATIME + " varchar" +
                 ")";
+        String sql2  = "CREATE TABLE IF NOT EXISTS " +
+                TB_NAME2 + "(" +
+                UserSqlInfo.ID + " integer primary key autoincrement," +
+                UserSqlInfo.MemberId + " varchar," +
+                UserSqlInfo.GESTURE + " varchar" +
+                UserSqlInfo.ISUSE + " varchar" +
+                ")";
         db.execSQL(sql);
+        db.execSQL(sql2);
         Log.e("Database", "onCreate"+sql);
     }
 

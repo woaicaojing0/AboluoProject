@@ -29,6 +29,7 @@
                 <EditText
                     android:id="@+id/menu_search"
                     android:inputType="text"
+                    android:paddingLeft="4dp"
                     android:hint="请输入您要搜索的商品"
                     android:imeOptions="actionSearch"
                     android:maxLines="1"
@@ -39,6 +40,7 @@
                     android:background="@drawable/menu_edit_bg"/>
 
                 <ImageView
+                    android:visibility="gone"
                     android:layout_width="25dp"
                     android:layout_height="25dp"
                     android:layout_marginLeft="6dp"

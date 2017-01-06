@@ -310,6 +310,7 @@ public class RefundDetailActivity extends TakePhotoActivity implements View.OnCl
         UploadManager uploadManager = new UploadManager(config);
         for (int i = 0; i < filepath.size(); i++) {
             String key = "refundImage/android/" + UUID.randomUUID().toString();
+            final int finalI = i;
             uploadManager.put(filepath.get(i).toString(), key, token,
                     new UpCompletionHandler() {
                         @Override
@@ -320,12 +321,12 @@ public class RefundDetailActivity extends TakePhotoActivity implements View.OnCl
                                 ImageUploadNameList.add(key);
                                 num++;
                                 if (num == filepath.size()) {
-
                                     Toast.makeText(RefundDetailActivity.this, "图片上传成功", Toast.LENGTH_SHORT).show();
                                     UploadRefund();
                                 } else {
-                                    pdialog.dismiss();
-                                    Toast.makeText(RefundDetailActivity.this, "图片上传失败，请重试", Toast.LENGTH_SHORT).show();
+                                    if(finalI +1==filepath.size()) {
+                                        Toast.makeText(RefundDetailActivity.this, "图片上传失败，请重试", Toast.LENGTH_SHORT).show();
+                                    }
                                 }
 
                             }
@@ -373,7 +374,7 @@ public class RefundDetailActivity extends TakePhotoActivity implements View.OnCl
                 if (only_huanhuo.isChecked()) {
                     map.put("orderRefundType", "0");
                 } else {
-                    map.put("APPToken", "1");
+                    map.put("orderRefundType", "1");
                 }
                 return map;
             }

@@ -93,7 +93,7 @@ public class IndexFragment extends Fragment implements View.OnClickListener {
     private Picasso picasso;
     private SweetAlertDialog pdialog;
     private BaseConfigBean indexBannerBean, huodongbean, brandConfigBean,
-            themeBannerConfigBean, themeConfigBean, specialConfigBean;
+            themeBannerConfigBean, themeConfigBean, specialConfigBean, newsConfigBean;
     private LinearLayout linelayout_miaosha, index_message;
     private ImageView huodong_left1, huodong_left2, huodong_right1, huodong_right2, huodong_right3, theme_imageview;
     private GridView brand_gridview, theme_gridview;
@@ -269,19 +269,19 @@ public class IndexFragment extends Fragment implements View.OnClickListener {
         theme_view_pager.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
-                Toast.makeText(IndexFragment.this.getActivity(),(""+position), Toast.LENGTH_SHORT).show();
+                Toast.makeText(IndexFragment.this.getActivity(), ("" + position), Toast.LENGTH_SHORT).show();
             }
         });
         rollPagerView.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
-                Toast.makeText(IndexFragment.this.getActivity(),(""+position), Toast.LENGTH_SHORT).show();
+                Toast.makeText(IndexFragment.this.getActivity(), ("" + position), Toast.LENGTH_SHORT).show();
             }
         });
         special_view_pager.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
-                Toast.makeText(IndexFragment.this.getActivity(),(""+position), Toast.LENGTH_SHORT).show();
+                Toast.makeText(IndexFragment.this.getActivity(), ("" + position), Toast.LENGTH_SHORT).show();
             }
         });
         return view;
@@ -389,7 +389,7 @@ public class IndexFragment extends Fragment implements View.OnClickListener {
             public void onErrorResponse(VolleyError error) {
 //                byte[] bytes = error.networkResponse.data;
 //                Log.i("woaicaojingseckill", new String(bytes));
-               // Toast.makeText(IndexFragment.this.getContext(), error.toString(), Toast.LENGTH_SHORT).show();
+                // Toast.makeText(IndexFragment.this.getContext(), error.toString(), Toast.LENGTH_SHORT).show();
             }
         }) {
             @Override
@@ -558,6 +558,7 @@ public class IndexFragment extends Fragment implements View.OnClickListener {
         initThemeGridview(); //主题九宫格
         initSpecial(); //推荐专享banner
     }
+
     //加载阿波罗头条
     private void initNews() {
         StringRequest stringRequest = new StringRequest(Request.Method.POST, URL + "/api/ConfigApi/ReceiveHomeConfig", new Response.Listener<String>() {
@@ -565,13 +566,15 @@ public class IndexFragment extends Fragment implements View.OnClickListener {
             public void onResponse(String response) {
                 response = response.replace("\\", "");
                 response = response.substring(1, response.length() - 1);
+                newsConfigBean = gson.fromJson(response, BaseConfigBean.class);
                 final List<String> info = new ArrayList<>();
-                info.add("1. 大家好，我是曹晶 \n 2.欢迎大家关注我哦！");
-                info.add("2. 欢迎大家关注我哦！");
-                info.add("3. GitHub帐号：woaicaojing0");
-                info.add("4. 新浪微博：曹晶微博");
-                info.add("5. 个人博客：caojing.com");
-                info.add("6. 微信公众号：woaiocajing0");
+                for (BaseConfigBean.AppConfigListBean listBean : newsConfigBean.getAppConfigList()) {
+                    info.add(listBean.getName().toString());
+                }
+                if(info.size() ==0)
+                {
+                    info.add("暂无新闻");
+                }
                 marqueeView.startWithList(info);
                 marqueeView.setOnItemClickListener(new MarqueeView.OnItemClickListener() {
                     @Override
@@ -869,10 +872,12 @@ public class IndexFragment extends Fragment implements View.OnClickListener {
                     special_view_pager.setVisibility(View.GONE);
                     Toast.makeText(IndexFragment.this.getContext(), specialConfigBean.getMessage().toString(), Toast.LENGTH_SHORT).show();
                 }
+                pullToRefreshScrollView.onRefreshComplete();
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
+                pullToRefreshScrollView.onRefreshComplete();
                 //byte[] data = error.networkResponse.data;
                 //Toast.makeText(IndexFragment.this.getContext(), new String(data), Toast.LENGTH_SHORT).show();
             }

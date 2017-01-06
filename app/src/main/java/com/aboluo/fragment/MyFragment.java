@@ -13,6 +13,7 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.aboluo.XUtils.CommonUtils;
@@ -46,7 +47,6 @@ import java.util.Map;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
 import de.hdodenhof.circleimageview.CircleImageView;
-import me.everything.android.ui.overscroll.OverScrollDecoratorHelper;
 
 /**
  * Created by cj34920 on 2016/9/8.
@@ -57,7 +57,7 @@ public class MyFragment extends Fragment implements View.OnClickListener {
     private ScrollView my_scrollview;
     private LinearLayout linLayout_my_info, my_nopay, my_nosend, my_noreceive, my_assessment,
             feedbackInfo, my_favor, my_refund, creditinfodetail, my_invitation,
-            invitation_code, my_agent,my_coupons_center;
+            invitation_code, my_agent, my_coupons_center;
     private RelativeLayout my_allorder, my_addressinfo;
     private SharedPreferences sharedPreferences;
     private RequestQueue requestQueue;
@@ -70,6 +70,7 @@ public class MyFragment extends Fragment implements View.OnClickListener {
     private String MemberId;
     private MyInfoBean myInfoBean;
     private CircleImageView my_fragment_imageview;
+    private TextView tv_my_huiyuan;
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -135,7 +136,13 @@ public class MyFragment extends Fragment implements View.OnClickListener {
         my_coupons_center = (LinearLayout) view.findViewById(R.id.my_coupons_center);
         sharedPreferences = MyFragment.this.getContext().getSharedPreferences("aboluo", Context.MODE_PRIVATE);
         my_fragment_imageview = (CircleImageView) view.findViewById(R.id.my_fragment_imageview);
+        tv_my_huiyuan = (TextView) view.findViewById(R.id.tv_my_huiyuan);
         InitData();
+        if (CommonUtils.GetisDealer(MyFragment.this.getContext()).equals("0")) {
+            tv_my_huiyuan.setText("普通会员");
+        } else {
+            tv_my_huiyuan.setText("合伙人");
+        }
     }
 
     private void InitData() {

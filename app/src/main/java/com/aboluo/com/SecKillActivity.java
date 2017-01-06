@@ -54,53 +54,57 @@ public class SecKillActivity extends FragmentActivity {
 
     private void inintValue() {
         list_title = new ArrayList<>();
-        for (int i = 0; i < listseckillbean.size(); i++) {
-            if (listseckillbean.get(i).getStartTime().length() > 18) {
-                list_title.add(listseckillbean.get(i).getStartTime().substring(11, 16));
+        if(listseckillbean ==null)
+        {
+            Toast.makeText(this, "listseckillbean is null ", Toast.LENGTH_SHORT).show();}else {
+            for (int i = 0; i < listseckillbean.size(); i++) {
+                if (listseckillbean.get(i).getStartTime().length() > 18) {
+                    list_title.add(listseckillbean.get(i).getStartTime().substring(11, 16));
+                }
             }
-        }
-        //初始化fragment
-        leftfragment = new LeftFragment();
-        rightfragment = new RightFragment();
-        centerfragment = new CenterFragment();
-        if (listseckillbean.size() >= 3) {
-            Bundle bundle0 = new Bundle();
-            bundle0.putParcelable("data", listseckillbean.get(2));
-            rightfragment.setArguments(bundle0);
+            //初始化fragment
+            leftfragment = new LeftFragment();
+            rightfragment = new RightFragment();
+            centerfragment = new CenterFragment();
+            if (listseckillbean.size() >= 3) {
+                Bundle bundle0 = new Bundle();
+                bundle0.putParcelable("data", listseckillbean.get(2));
+                rightfragment.setArguments(bundle0);
 
-            Bundle bundle1 = new Bundle();
-            bundle1.putParcelable("data", listseckillbean.get(0));
-            leftfragment.setArguments(bundle1);
+                Bundle bundle1 = new Bundle();
+                bundle1.putParcelable("data", listseckillbean.get(0));
+                leftfragment.setArguments(bundle1);
 
-            Bundle bundle2 = new Bundle();
-            bundle2.putParcelable("data", listseckillbean.get(1));
-            centerfragment.setArguments(bundle2);
-            //将fragment装进列表中
-            list_fragment = new ArrayList<>();
-            list_fragment.add(leftfragment);
-            list_fragment.add(centerfragment);
-            list_fragment.add(rightfragment);
-            //将名称加载tab名字列表，正常情况下，我们应该在values/arrays.xml中进行定义然后调用
+                Bundle bundle2 = new Bundle();
+                bundle2.putParcelable("data", listseckillbean.get(1));
+                centerfragment.setArguments(bundle2);
+                //将fragment装进列表中
+                list_fragment = new ArrayList<>();
+                list_fragment.add(leftfragment);
+                list_fragment.add(centerfragment);
+                list_fragment.add(rightfragment);
+                //将名称加载tab名字列表，正常情况下，我们应该在values/arrays.xml中进行定义然后调用
 //        list_title.add("11:00");
 //        list_title.add("12:00");
 //        list_title.add("13:00");
-            //设置TabLayout的模式
-            tabLayout_seckilldetail.setTabMode(TabLayout.MODE_FIXED);
-            //为TabLayout添加tab名称
-            tabLayout_seckilldetail.addTab(tabLayout_seckilldetail.newTab().setText(list_title.get(0)), false);
-            tabLayout_seckilldetail.addTab(tabLayout_seckilldetail.newTab().setText(list_title.get(1)), false);
-            tabLayout_seckilldetail.addTab(tabLayout_seckilldetail.newTab().setText(list_title.get(2)), false);
-            fAdapter = new SecKillDetailAdapter(getSupportFragmentManager(), list_fragment, list_title);
-            //viewpager加载adapter
-            viewpage_seckilldetail.setAdapter(fAdapter);
-            //tab_FindFragment_title.setViewPager(vp_FindFragment_pager);
-            //TabLayout加载viewpager
-            tabLayout_seckilldetail.setupWithViewPager(viewpage_seckilldetail);
-            //tab_FindFragment_title.set
-            viewpage_seckilldetail.setCurrentItem(selected);
-            setupTabIcons();
-        } else {
-            Toast.makeText(this, "当前场次没有三场", Toast.LENGTH_SHORT).show();
+                //设置TabLayout的模式
+                tabLayout_seckilldetail.setTabMode(TabLayout.MODE_FIXED);
+                //为TabLayout添加tab名称
+                tabLayout_seckilldetail.addTab(tabLayout_seckilldetail.newTab().setText(list_title.get(0)), false);
+                tabLayout_seckilldetail.addTab(tabLayout_seckilldetail.newTab().setText(list_title.get(1)), false);
+                tabLayout_seckilldetail.addTab(tabLayout_seckilldetail.newTab().setText(list_title.get(2)), false);
+                fAdapter = new SecKillDetailAdapter(getSupportFragmentManager(), list_fragment, list_title);
+                //viewpager加载adapter
+                viewpage_seckilldetail.setAdapter(fAdapter);
+                //tab_FindFragment_title.setViewPager(vp_FindFragment_pager);
+                //TabLayout加载viewpager
+                tabLayout_seckilldetail.setupWithViewPager(viewpage_seckilldetail);
+                //tab_FindFragment_title.set
+                viewpage_seckilldetail.setCurrentItem(selected);
+                setupTabIcons();
+            } else {
+                Toast.makeText(this, "当前场次没有三场", Toast.LENGTH_SHORT).show();
+            }
         }
     }
 

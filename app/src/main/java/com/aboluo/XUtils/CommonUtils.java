@@ -2,8 +2,10 @@ package com.aboluo.XUtils;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.util.Log;
 
+import com.aboluo.GestureUtils.Contants;
 import com.aboluo.com.R;
 
 import java.io.InputStream;
@@ -171,14 +173,20 @@ public class CommonUtils {
         editor.remove("UserName");
         editor.remove("UserPwd");
         editor.remove("UserId");
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences.Editor editor2 = sharedPreferences.edit();
+        editor2.remove(Contants.PASS_KEY);
+        editor2.remove("isstartgesture");
+        editor2.commit();
         return editor.commit();
     }
 
-    public static boolean Login(Context context, String UserName, String UserPwd, String UserId) {
+    public static boolean Login(Context context, String UserName, String UserPwd, String UserId,String isDealer) {
         SharedPreferences.Editor editor = context.getSharedPreferences("aboluoInfo", Context.MODE_PRIVATE).edit();
         editor.putString("UserName", UserName);
         editor.putString("UserPwd", UserPwd);
-        editor.putString("UserId", "18");
+        editor.putString("UserId", UserId);
+        editor.putString("isDealer", isDealer);
         return editor.commit();
     }
     public static boolean LoginImageURl(Context context, String URL) {
@@ -196,7 +204,11 @@ public class CommonUtils {
         String memberId = sharedPreferences.getString("UserId", "0");
         return memberId;
     }
-
+    public static String GetisDealer(Context context) {
+        SharedPreferences sharedPreferences = context.getSharedPreferences("aboluoInfo", Context.MODE_PRIVATE);
+        String isDealer = sharedPreferences.getString("isDealer", "0");
+        return isDealer;
+    }
     public static String Getpercent(int num1, int num2) {
         // 创建一个数值格式化对象
         NumberFormat numberFormat = NumberFormat.getInstance();

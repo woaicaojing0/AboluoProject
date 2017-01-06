@@ -26,6 +26,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.google.gson.Gson;
+import com.squareup.picasso.Picasso;
 import com.tencent.mm.sdk.modelmsg.SendAuth;
 import com.tencent.mm.sdk.openapi.IWXAPI;
 import com.tencent.mm.sdk.openapi.WXAPIFactory;
@@ -34,6 +35,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
+import de.hdodenhof.circleimageview.CircleImageView;
 
 /**
  * Created by CJ on 2016/9/21.
@@ -54,6 +56,7 @@ public class LoginActivity extends Activity implements View.OnClickListener, Tex
     private LinearLayout weixin_login;
     public static final String APP_ID = "wxf933769a912e1313";
     private IWXAPI api;
+    private CircleImageView iv_login_touxiang;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,6 +92,7 @@ public class LoginActivity extends Activity implements View.OnClickListener, Tex
         edit_username = (EditText) findViewById(R.id.edit_username);
         edit_userpwd = (EditText) findViewById(R.id.edit_userpwd);
         weixin_login = (LinearLayout) findViewById(R.id.weixin_login);
+        iv_login_touxiang = (CircleImageView) findViewById(R.id.iv_login_touxiang);
         requestQueue = MyApplication.getRequestQueue();
         pDialog = new SweetAlertDialog(this, SweetAlertDialog.PROGRESS_TYPE);
         pDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
@@ -98,6 +102,8 @@ public class LoginActivity extends Activity implements View.OnClickListener, Tex
         APPToken = CommonUtils.GetValueByKey(this, "APPToken");
         preferences = getSharedPreferences("aboluoInfo", MODE_PRIVATE);
         editor = preferences.edit();
+        Picasso.with(this).load(CommonUtils.GetLoginImageURl(this)).error(R.drawable.appstart)
+                .into(iv_login_touxiang);
     }
 
     @Override
@@ -127,7 +133,10 @@ public class LoginActivity extends Activity implements View.OnClickListener, Tex
                         pDialog.dismiss();
                         Toast.makeText(LoginActivity.this, loginInfo.getMessage(), Toast.LENGTH_SHORT).show();
                         if (loginInfo.isIsSuccess()) {
-                            if (CommonUtils.Login(LoginActivity.this, name, pwd, String.valueOf(loginInfo.getResult().getMemberEntity().getMemberId()))) {
+                            if (CommonUtils.Login(LoginActivity.this,
+                                    name, pwd,
+                                    String.valueOf(loginInfo.getResult().getMemberEntity().getMemberId()),
+                                    String.valueOf(loginInfo.getResult().getMemberEntity().getIsDealer()))) {
                                 if (CommonUtils.LoginImageURl(LoginActivity.this, loginInfo.getResult()
                                         .getMemberEntity().getWechatLogoUrl())) {
                                 } else {

@@ -14,6 +14,7 @@ import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -24,11 +25,8 @@ import com.aboluo.XUtils.RBCallbkRecyclerView;
 import com.aboluo.XUtils.ScreenUtils;
 import com.aboluo.adapter.BannerAdapter;
 import com.aboluo.adapter.PartnerAdpater;
-import com.aboluo.adapter.RecycleViewAdapter;
-import com.aboluo.fragment.IndexFragment;
 import com.aboluo.model.BaseConfigBean;
 import com.aboluo.model.GoodsListInfo;
-import com.aboluo.widget.MyListview;
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -74,6 +72,7 @@ public class PartnerActivity extends Activity implements PartnerAdpater.OnRecycl
     private boolean isdefault = true;
     private EditText parnter_top_editsearch;
     private String GoodsName;
+    private ImageView iv_partner_back;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,6 +96,7 @@ public class PartnerActivity extends Activity implements PartnerAdpater.OnRecycl
         partner_view_pager.setHintView(new ColorPointHintView(this, Color.RED, Color.WHITE));
         parnter_goods_detail_price.setOnClickListener(this);
         btn_default.setOnClickListener(this);
+        iv_partner_back.setOnClickListener(this);
         initData(1);
         parnter_top_editsearch.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
@@ -133,6 +133,7 @@ public class PartnerActivity extends Activity implements PartnerAdpater.OnRecycl
         parnter_goods_detail_price = (Button) findViewById(R.id.parnter_goods_detail_price);
         btn_default = (Button) findViewById(R.id.btn_default);
         parnter_top_editsearch = (EditText) findViewById(R.id.parnter_top_editsearch);
+        iv_partner_back = (ImageView) findViewById(R.id.iv_partner_back);
         InitBanner();
     }
 
@@ -214,6 +215,9 @@ public class PartnerActivity extends Activity implements PartnerAdpater.OnRecycl
                 isdefault = false;
                 ispricesort = !ispricesort;
                 initData(1);
+                break;
+            case R.id.iv_partner_back:
+                finish();
                 break;
         }
     }

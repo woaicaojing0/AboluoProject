@@ -819,7 +819,7 @@ public class GoodsDetailActivity extends Activity implements View.OnClickListene
                         List<GoodsStandardsBean> goodsStandardsBean = goodsDetailInfo.getResult().getGoodsInfo().getGoodsStandards();
                         for (int i = 0; i < goodsStandardsBean.size(); i++) {
                             if (goodsStandardsBean.get(i).getGoodsStandardId() == standardsId) {
-                                goods_detail_type_txtmoney.setText("会员价：￥" + String.valueOf(goodsStandardsBean.get(i).getHyPrice()) + "元");
+                                goods_detail_type_txtmoney.setText(String.valueOf(goodsStandardsBean.get(i).getHyPrice()) + "元");
 
                             }
                         }

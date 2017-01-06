@@ -153,10 +153,16 @@ public class MyFragment extends Fragment implements View.OnClickListener {
                 response = response.substring(1, response.length() - 1);
                 myInfoBean = gson.fromJson(response, MyInfoBean.class);
                 if (myInfoBean.isIsSuccess()) {
-                    String url = myInfoBean.getResult().getMemberLogoUrl();
-                    picasso.load(CommonUtils.GetLoginImageURl(MyFragment.this.getContext()))
-                            .placeholder(R.drawable.image_placeholder)
-                            .error(R.drawable.imageview_error).into(my_fragment_imageview);
+                    String url = CommonUtils.GetLoginImageURl(MyFragment.this.getContext());
+                    if (url.equals("") || url.equals("0")) {
+                        picasso.load(R.drawable.appstart)
+                                .placeholder(R.drawable.image_placeholder)
+                                .error(R.drawable.imageview_error).into(my_fragment_imageview);
+                    } else {
+                        picasso.load(CommonUtils.GetLoginImageURl(MyFragment.this.getContext()))
+                                .placeholder(R.drawable.image_placeholder)
+                                .error(R.drawable.imageview_error).into(my_fragment_imageview);
+                    }
                 } else {
                     Toast.makeText(MyFragment.this.getContext(), "个人信息获取失败，请重试", Toast.LENGTH_SHORT).show();
                 }

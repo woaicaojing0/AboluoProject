@@ -176,20 +176,6 @@ public class IndexFragment extends Fragment implements View.OnClickListener {
                 }
             }
         });
-        final List<String> info = new ArrayList<>();
-        info.add("1. 大家好，我是曹晶 \n 2.欢迎大家关注我哦！");
-        info.add("2. 欢迎大家关注我哦！");
-        info.add("3. GitHub帐号：woaicaojing0");
-        info.add("4. 新浪微博：曹晶微博");
-        info.add("5. 个人博客：caojing.com");
-        info.add("6. 微信公众号：woaiocajing0");
-        marqueeView.startWithList(info);
-        marqueeView.setOnItemClickListener(new MarqueeView.OnItemClickListener() {
-            @Override
-            public void onItemClick(int position, TextView textView) {
-                Toast.makeText(IndexFragment.this.getActivity(), info.get(position).toString() + textView.getText().toString(), Toast.LENGTH_SHORT).show();
-            }
-        });
         pullToRefreshScrollView.setOnRefreshListener(new PullToRefreshBase.OnRefreshListener<ScrollView>() {
             @Override
             public void onRefresh(PullToRefreshBase<ScrollView> refreshView) {
@@ -564,12 +550,51 @@ public class IndexFragment extends Fragment implements View.OnClickListener {
     }
 
     private void initConfig() {
+        initNews();
         initBanner(); //顶部banner
         inithuodong(); //活动页面
         initbrand();   //品牌图片
         initThemeBanner(); //主题滚动banner
         initThemeGridview(); //主题九宫格
         initSpecial(); //推荐专享banner
+    }
+    //加载阿波罗头条
+    private void initNews() {
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, URL + "/api/ConfigApi/ReceiveHomeConfig", new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                response = response.replace("\\", "");
+                response = response.substring(1, response.length() - 1);
+                final List<String> info = new ArrayList<>();
+                info.add("1. 大家好，我是曹晶 \n 2.欢迎大家关注我哦！");
+                info.add("2. 欢迎大家关注我哦！");
+                info.add("3. GitHub帐号：woaicaojing0");
+                info.add("4. 新浪微博：曹晶微博");
+                info.add("5. 个人博客：caojing.com");
+                info.add("6. 微信公众号：woaiocajing0");
+                marqueeView.startWithList(info);
+                marqueeView.setOnItemClickListener(new MarqueeView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(int position, TextView textView) {
+                        Toast.makeText(IndexFragment.this.getActivity(), info.get(position).toString() + textView.getText().toString(), Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        }) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> map = new HashMap<>();
+                map.put("ConfigModule", "15");
+                map.put("APPToken", APPToken);
+                return map;
+            }
+        };
+        requestQueue.add(stringRequest);
     }
 
     //加载首页的配置

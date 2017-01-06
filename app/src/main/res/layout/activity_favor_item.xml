@@ -78,7 +78,7 @@
                             android:text="￥77元"
                             android:textColor="@color/red" />
                     </LinearLayout>
-
+                    <!--android:layout_marginRight="48dp" -->
                     <LinearLayout
                         android:id="@+id/favor_item_more"
                         android:layout_width="60dp"
@@ -87,7 +87,7 @@
                         android:focusable="false"
                         android:gravity="center"
                         android:paddingLeft="16dp"
-                        android:layout_marginRight="48dp">
+                        >
 
                         <ImageView
                             android:layout_width="24dp"
@@ -95,6 +95,7 @@
                             android:src="@drawable/more_gray" />
                     </LinearLayout>
                     <LinearLayout
+                        android:visibility="gone"
                         android:id="@+id/favor_item_share"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
@@ -103,6 +104,7 @@
                         android:gravity="center"
                         android:paddingRight="8dp">
                         <ImageView
+
                             android:layout_marginLeft="16dp"
                             android:layout_width="24dp"
                             android:layout_height="24dp"

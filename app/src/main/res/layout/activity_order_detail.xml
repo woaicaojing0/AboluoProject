@@ -311,6 +311,7 @@
                         android:text="运费" />
 
                     <TextView
+                        android:id="@+id/tv_orderdetail_freight"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
@@ -327,8 +328,13 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="代金券抵扣" />
-
                     <TextView
+                        android:layout_toStartOf="@+id/tv_orderdetail_coupons"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="-"/>
+                    <TextView
+                        android:id="@+id/tv_orderdetail_coupons"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
@@ -345,8 +351,13 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="积分抵扣" />
-
                     <TextView
+                        android:layout_toStartOf="@+id/tv_orderdetail_integral"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="-"/>
+                    <TextView
+                        android:id="@+id/tv_orderdetail_integral"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"

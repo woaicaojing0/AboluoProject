@@ -183,6 +183,7 @@
                         android:src="@drawable/right" />
 
                     <TextView
+                        android:maxLines="1"
                         android:gravity="right"
                         android:id="@+id/tv_makeorder_showcoupons"
                         android:layout_width="240dp"

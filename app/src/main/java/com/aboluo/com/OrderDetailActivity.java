@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -50,7 +51,8 @@ public class OrderDetailActivity extends Activity implements View.OnClickListene
     private OrderDetailInfo orderDetailInfo;
     private TextView orderdetail_express_status, orderdetail_express_time, orderdetail_address_name,
             orderdetail_address_phone, orderdetail_address_address, orderdetail_pay_allmonney,
-            orderdetail_allmonney2, orderdetail_allmonney;
+            tv_orderdetail_integral, orderdetail_allmonney,tv_orderdetail_freight,tv_orderdetail_coupons
+            ;
     private MyListview orderdetail_listview;
     private OrderDetailItemAdpater adpater;
     private RelativeLayout order_detail_bottom;
@@ -96,7 +98,7 @@ public class OrderDetailActivity extends Activity implements View.OnClickListene
         orderdetail_address_phone = (TextView) findViewById(R.id.orderdetail_address_phone);
         orderdetail_address_address = (TextView) findViewById(R.id.orderdetail_address_address);
         orderdetail_pay_allmonney = (TextView) findViewById(R.id.orderdetail_pay_allmonney);
-        orderdetail_allmonney2 = (TextView) findViewById(R.id.orderdetail_allmonney2);
+        tv_orderdetail_integral = (TextView) findViewById(R.id.tv_orderdetail_integral);
         orderdetail_allmonney = (TextView) findViewById(R.id.orderdetail_allmonney);
         oederdetail_findgoods = (TextView) findViewById(R.id.oederdetail_findgoods);
         oederdetail_ok = (TextView) findViewById(R.id.oederdetail_ok);
@@ -104,6 +106,8 @@ public class OrderDetailActivity extends Activity implements View.OnClickListene
         oederdetail_payorder = (TextView) findViewById(R.id.oederdetail_payorder);
         oederdetail_cuicui = (TextView) findViewById(R.id.oederdetail_cuicui);
         order_detail_topstatus = (TextView) findViewById(R.id.order_detail_topstatus);
+        tv_orderdetail_freight = (TextView) findViewById(R.id.tv_orderdetail_freight);
+        tv_orderdetail_coupons = (TextView) findViewById(R.id.tv_orderdetail_coupons);
         orderdetail_listview = (MyListview) findViewById(R.id.orderdetail_listview);
         orderdetail_expressdetail = (LinearLayout) findViewById(R.id.orderdetail_expressdetail);
         order_detail_back = (LinearLayout) findViewById(R.id.order_detail_back);
@@ -136,8 +140,16 @@ public class OrderDetailActivity extends Activity implements View.OnClickListene
                 orderdetail_address_address.setText(orderDetailInfo.getResult().get(0).getAddress()
                         == null ? "" : orderDetailInfo.getResult().get(0).getAddress().toString());
                 orderdetail_pay_allmonney.setText("￥"+String.valueOf(orderDetailInfo.getResult().get(0).getTotalPrice()));
-                orderdetail_allmonney2.setText("￥"+String.valueOf(orderDetailInfo.getResult().get(0).getTotalPrice()));
-                orderdetail_allmonney.setText("￥"+String.valueOf(orderDetailInfo.getResult().get(0).getTotalPrice()));
+                tv_orderdetail_integral.setText("￥"+String.valueOf(orderDetailInfo.getResult().get(0).getTotalPrice()));
+                double goodsAllPrice = 0; //商品总价
+                for (OrderDetailInfo.ResultBean.OrderItemListBean bean : orderDetailInfo.getResult().get(0).getOrderItemList()) {
+                    goodsAllPrice = goodsAllPrice+(bean.getGoodsQuantity()*bean.getGoodsPrice());
+                }
+                Log.i("OrderDetailActivity",goodsAllPrice+"");
+                orderdetail_allmonney.setText("￥"+goodsAllPrice);
+                tv_orderdetail_freight.setText("￥"+orderDetailInfo.getResult().get(0).getExpressPrice()+"");
+                tv_orderdetail_coupons.setText("￥"+orderDetailInfo.getResult().get(0).getCouponPrice()+"");
+                tv_orderdetail_integral.setText("￥"+orderDetailInfo.getResult().get(0).getIntegralPrice()+"");
                 adpater = new OrderDetailItemAdpater(OrderDetailActivity.this
                         , orderDetailInfo.getResult().get(0).getOrderItemList(), orderDetailInfo.getResult().get(0).getOrderStatus());
                 adpater.setEvaluationOnClickListener(OrderDetailActivity.this);

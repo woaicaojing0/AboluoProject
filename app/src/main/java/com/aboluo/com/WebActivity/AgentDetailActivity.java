@@ -61,26 +61,26 @@ public class AgentDetailActivity extends Activity {
         switch (level) {
             case 1:
                 Log.i("agentdetail>>" + level,
-                        CommonUtils.GetValueByKey(this, "backUrl") + "Moblie/ShowPersonReferents?memberid=" + MemberId
+                        CommonUtils.GetValueByKey(this, "backUrl") + "/Moblie/ShowPersonReferents?memberid=" + MemberId
                                 + "&referrerId=" + 1 + "&pageindex=1");
                 agentdetail_webiview.loadUrl(
-                        CommonUtils.GetValueByKey(this, "backUrl") + "Moblie/ShowPersonReferents?memberid=" + MemberId
+                        CommonUtils.GetValueByKey(this, "backUrl") + "/Moblie/ShowPersonReferents?memberid=" + MemberId
                                 + "&referrerId=" + 1 + "&pageindex=1");
                 break;
             case 2:
                 Log.i("agentdetail>>" + level,
-                        CommonUtils.GetValueByKey(this, "backUrl") + "Moblie/ShowPersonReferents?memberid=" + MemberId
+                        CommonUtils.GetValueByKey(this, "backUrl") + "/Moblie/ShowPersonReferents?memberid=" + MemberId
                                 + "&referrerId=" + 2 + "&pageindex=1");
                 agentdetail_webiview.loadUrl(
-                        CommonUtils.GetValueByKey(this, "backUrl") + "Moblie/ShowPersonReferents?memberid=" + MemberId
+                        CommonUtils.GetValueByKey(this, "backUrl") + "/Moblie/ShowPersonReferents?memberid=" + MemberId
                                 + "&referrerId=" + 2 + "&pageindex=1");
                 break;
             case 3:
                 Log.i("agentdetail>>" + level,
-                        CommonUtils.GetValueByKey(this, "backUrl") + "Moblie/ShowPersonReferents?memberid=" + MemberId
+                        CommonUtils.GetValueByKey(this, "backUrl") + "/Moblie/ShowPersonReferents?memberid=" + MemberId
                                 + "&referrerId=" + 3 + "&pageindex=1");
                 agentdetail_webiview.loadUrl(
-                        CommonUtils.GetValueByKey(this, "backUrl") + "Moblie/ShowPersonReferents?memberid=" + MemberId
+                        CommonUtils.GetValueByKey(this, "backUrl") + "/Moblie/ShowPersonReferents?memberid=" + MemberId
                                 + "&referrerId=" + 3 + "&pageindex=1");
                 break;
             default:

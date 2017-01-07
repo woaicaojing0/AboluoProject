@@ -102,8 +102,15 @@ public class LoginActivity extends Activity implements View.OnClickListener, Tex
         APPToken = CommonUtils.GetValueByKey(this, "APPToken");
         preferences = getSharedPreferences("aboluoInfo", MODE_PRIVATE);
         editor = preferences.edit();
-        Picasso.with(this).load(CommonUtils.GetLoginImageURl(this)).error(R.drawable.appstart)
-                .into(iv_login_touxiang);
+        String url = CommonUtils.GetLoginImageURl(this);
+        if (url.equals("") || url.equals("0")) {
+            Picasso.with(this).load(R.drawable.appstart)
+                    .placeholder(R.drawable.image_placeholder)
+                    .error(R.drawable.imageview_error).into(iv_login_touxiang);
+        } else {
+            Picasso.with(this).load(CommonUtils.GetLoginImageURl(this)).error(R.drawable.appstart)
+                    .into(iv_login_touxiang);
+        }
     }
 
     @Override

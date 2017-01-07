@@ -116,9 +116,16 @@ public class CreditInfoActivity extends Activity {
                             creditInfoBean.getNickName().toString());
                     Log.i("CreditInfoActivity", (creditInfoBean.getMemberLogo() == null ? "" :
                             creditInfoBean.getMemberLogo().toString()));
-                    picasso.load(CommonUtils.GetLoginImageURl(CreditInfoActivity.this)).placeholder(
-                            R.drawable.image_placeholder).error(R.drawable.imageview_error)
-                            .into(cred_userImage);
+                    String url = CommonUtils.GetLoginImageURl(CreditInfoActivity.this);
+                    if (url.equals("") || url.equals("0")) {
+                        picasso.load(R.drawable.appstart)
+                                .placeholder(R.drawable.image_placeholder)
+                                .error(R.drawable.imageview_error).into(cred_userImage);
+                    } else {
+                        picasso.load(CommonUtils.GetLoginImageURl(CreditInfoActivity.this)).placeholder(
+                                R.drawable.image_placeholder).error(R.drawable.imageview_error)
+                                .into(cred_userImage);
+                    }
                 } else {
 
                 }

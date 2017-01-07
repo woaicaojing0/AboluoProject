@@ -112,4 +112,5 @@ public class BaseApplication extends Application {
         intent.putExtra(Contants.INTENT_SECONDACTIVITY_KEY, mode);
         activity.startActivityForResult(intent, 1);
     }
+
 }

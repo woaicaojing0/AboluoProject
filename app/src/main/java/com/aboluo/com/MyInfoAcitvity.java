@@ -83,7 +83,6 @@ public class MyInfoAcitvity extends TakePhotoActivity implements View.OnClickLis
     private TextView my_inf_txt_loginName, my_inf_txt_nicheng, my_info_txt_sex, my_info_txt_phone, my_info_txt_weixin, my_info_txt_email;
     private static int NickNameCode = 1;//昵称返回标识
     private boolean updateimages = false;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -226,6 +225,8 @@ public class MyInfoAcitvity extends TakePhotoActivity implements View.OnClickLis
      * 跳转到密码处理界面
      */
     private void actionSecondActivity(LockMode mode) {
+        Intent intent = new Intent(this, SecondActivity.class);
+        intent.putExtra("from", "setting");
         if (mode != LockMode.SETTING_PASSWORD) {
             if (StringUtils.isEmpty(PasswordUtil.getPin(this))) {
                 Toast.makeText(getBaseContext(), "请先设置密码", Toast.LENGTH_SHORT).show();
@@ -233,13 +234,12 @@ public class MyInfoAcitvity extends TakePhotoActivity implements View.OnClickLis
             }
         }
         if (mode == LockMode.VERIFY_PASSWORD) {
-            Intent intent = new Intent(this, SecondActivity.class);
+
             intent.putExtra("myinfo", true);
             intent.putExtra(Contants.INTENT_SECONDACTIVITY_KEY, mode);
             startActivityForResult(intent, 1);
 
         } else {
-            Intent intent = new Intent(this, SecondActivity.class);
             intent.putExtra(Contants.INTENT_SECONDACTIVITY_KEY, mode);
             startActivity(intent);
         }
@@ -248,7 +248,9 @@ public class MyInfoAcitvity extends TakePhotoActivity implements View.OnClickLis
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+
         if (data == null) {
+
         } else {
             int result = data.getIntExtra("startgesture", 3);
             if (result == 0) {
@@ -394,9 +396,16 @@ public class MyInfoAcitvity extends TakePhotoActivity implements View.OnClickLis
         my_info_txt_email.setText(myInfoBean.getResult().getMemberEmail() == null ? "未填写"
                 : myInfoBean.getResult().getMemberEmail().toString());
         Log.i("MyInfoAcitivity", myInfoBean.getResult().getMemberLogoUrl());
-        picasso.load(CommonUtils.GetLoginImageURl(this))
-                .placeholder(R.drawable.image_placeholder)
-                .error(R.drawable.imageview_error).into(my_info_touxiang);
+        String url = CommonUtils.GetLoginImageURl(this);
+        if (url.equals("") || url.equals("0")) {
+            picasso.load(R.drawable.appstart)
+                    .placeholder(R.drawable.image_placeholder)
+                    .error(R.drawable.imageview_error).into(my_info_touxiang);
+        } else {
+            picasso.load(url)
+                    .placeholder(R.drawable.image_placeholder)
+                    .error(R.drawable.imageview_error).into(my_info_touxiang);
+        }
     }
 
     private void UpdateInfo() {
@@ -462,5 +471,12 @@ public class MyInfoAcitvity extends TakePhotoActivity implements View.OnClickLis
         };
         requestQueue.add(stringRequest);
 
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        boolean isstartgesture =sharedPreferences.getBoolean("isstartgesture", false);
+        gesture.setChecked(isstartgesture);
     }
 }

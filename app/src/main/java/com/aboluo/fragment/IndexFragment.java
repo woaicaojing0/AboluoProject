@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -32,6 +33,7 @@ import com.aboluo.adapter.BannerAdapter;
 import com.aboluo.adapter.BrandGridViewAdapter;
 import com.aboluo.adapter.GridViewAdapter;
 import com.aboluo.adapter.ThemeGridViewAdapter;
+import com.aboluo.com.GoodsDetailActivity;
 import com.aboluo.com.GoodsListActivity;
 import com.aboluo.com.MainActivity;
 import com.aboluo.com.MessageActivity;
@@ -41,6 +43,7 @@ import com.aboluo.com.SecKillActivity;
 import com.aboluo.com.SignInActivity;
 import com.aboluo.com.UnaryActivity;
 import com.aboluo.model.BaseConfigBean;
+import com.aboluo.model.BaseModel;
 import com.aboluo.model.SecKillAllInfo;
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -58,6 +61,8 @@ import com.squareup.picasso.Picasso;
 import com.sunfusheng.marqueeview.MarqueeView;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -93,7 +98,7 @@ public class IndexFragment extends Fragment implements View.OnClickListener {
     private Picasso picasso;
     private SweetAlertDialog pdialog;
     private BaseConfigBean indexBannerBean, huodongbean, brandConfigBean,
-            themeBannerConfigBean, themeConfigBean, specialConfigBean, newsConfigBean;
+            themeBannerConfigBean, themeConfigBean, specialConfigBean, newsConfigBean,midGridViewConfigBean;
     private LinearLayout linelayout_miaosha, index_message;
     private ImageView huodong_left1, huodong_left2, huodong_right1, huodong_right2, huodong_right3, theme_imageview;
     private GridView brand_gridview, theme_gridview;
@@ -134,46 +139,6 @@ public class IndexFragment extends Fragment implements View.OnClickListener {
             @Override
             public void onItemClick(int position) {
                 Toast.makeText(IndexFragment.this.getActivity(), "1", Toast.LENGTH_SHORT).show();
-            }
-        });
-        mid_gridview.setAdapter(new GridViewAdapter(this.getActivity()));
-        mid_gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(IndexFragment.this.getActivity(), position + "", Toast.LENGTH_SHORT).show();
-                switch (position) {
-                    case 0:
-                        Intent intent = new Intent(getActivity(), PartnerActivity.class);
-                        startActivity(intent);
-                        break;
-                    case 1:
-                        Intent intent1 = new Intent(getActivity(), UnaryActivity.class);
-                        startActivity(intent1);
-                        break;
-                    case 3:
-                        Intent intent2 = new Intent(getActivity(), MainActivity.class);
-                        intent2.putExtra("id", 2);
-                        startActivity(intent2);
-                        break;
-                    case 4:
-                        if (secKillAllInfo == null) {
-                        } else {
-                            if (secKillAllInfo.getResult().equals("暂无秒杀场次")) {
-                                Toast.makeText(IndexFragment.this.getContext(), "暂无秒杀场次", Toast.LENGTH_SHORT).show();
-                            } else {
-                                Intent SecKillintent = new Intent(IndexFragment.this.getContext(), SecKillActivity.class);
-                                SecKillintent.putExtra("data", listskillbean);
-                                SecKillintent.putExtra("changci", 0);
-                                startActivity(SecKillintent);
-                            }
-                        }
-                        break;
-                    case 5:
-                        Intent intent5 = new Intent(getActivity(), SignInActivity.class);
-                        startActivity(intent5);
-                        break;
-
-                }
             }
         });
         pullToRefreshScrollView.setOnRefreshListener(new PullToRefreshBase.OnRefreshListener<ScrollView>() {
@@ -252,16 +217,20 @@ public class IndexFragment extends Fragment implements View.OnClickListener {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 if (themeConfigBean == null) {
                 } else {
-                    Intent intent4 = new Intent(IndexFragment.this.getContext(), GoodsListActivity.class);
+//                    Intent intent4 = new Intent(IndexFragment.this.getContext(), GoodsListActivity.class);
                     if (themeConfigBean.getAppConfigList().get(position).getParams() == null) {
                         Toast.makeText(IndexFragment.this.getContext(),
                                 "ChildId is NULL", Toast.LENGTH_SHORT).show();
                     } else {
-                        Toast.makeText(IndexFragment.this.getContext(),
-                                themeConfigBean.getAppConfigList().get(position).getParams().getChildId(), Toast.LENGTH_SHORT).show();
-                        intent4.putExtra("goods_type_id", themeConfigBean.getAppConfigList().get(position).getParams().getChildId());
+//                        Toast.makeText(IndexFragment.this.getContext(),
+//                                themeConfigBean.getAppConfigList().get(position).getParams().getChildId(), Toast.LENGTH_SHORT).show();
+//                        intent4.putExtra("goods_type_id", themeConfigBean.getAppConfigList().get(position).getParams().getChildId());
+                        int goods_id = themeConfigBean.getAppConfigList().get(position).getParams().getChildId();
+                        Intent intent = new Intent(IndexFragment.this.getContext(), GoodsDetailActivity.class);
+                        intent.putExtra("goods_id", goods_id);
+                        startActivity(intent);
                     }
-                    startActivity(intent4);
+                    //startActivity(intent4);
                 }
             }
         });
@@ -550,7 +519,8 @@ public class IndexFragment extends Fragment implements View.OnClickListener {
     }
 
     private void initConfig() {
-        initNews();
+        initMemu(); //加载菜单栏
+        initNews(); //加载滚动新闻
         initBanner(); //顶部banner
         inithuodong(); //活动页面
         initbrand();   //品牌图片
@@ -891,5 +861,96 @@ public class IndexFragment extends Fragment implements View.OnClickListener {
             }
         };
         requestQueue.add(stringRequest);
+    }
+    //加载首页菜单栏配置
+    private void initMemu() {
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, URL + "/api/ConfigApi/ReceiveHomeConfig", new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                response = response.replace("\\", "");
+                response = response.substring(1, response.length() - 1);
+                midGridViewConfigBean = gson.fromJson(response, BaseConfigBean.class);
+                if (midGridViewConfigBean.isIsSuccess()) {
+                    Collections.sort(midGridViewConfigBean.getAppConfigList(),new Comparator<BaseConfigBean.AppConfigListBean>(){
+
+                        @Override
+                        public int compare(BaseConfigBean.AppConfigListBean arg0, BaseConfigBean.AppConfigListBean arg1) {
+                            return arg0.getParams().getParentId().compareTo(arg1.getParams().getParentId());
+                        }
+                    });
+                    String[] arrString = new String[midGridViewConfigBean.getAppConfigList().size()];
+                    for (int i = 0; i < midGridViewConfigBean.getAppConfigList().size(); i++) {
+                        arrString[i] = ImageUrl + midGridViewConfigBean.getAppConfigList().get(i).getImage();
+                    }
+                    if (arrString.length == 0) {
+                        theme_view_pager.setVisibility(View.GONE);
+                    } else {
+                        initMidGridView(arrString);
+                    }
+                } else {
+                    mid_gridview.setVisibility(View.GONE);
+                    Toast.makeText(IndexFragment.this.getContext(), midGridViewConfigBean.getMessage().toString(), Toast.LENGTH_SHORT).show();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                pullToRefreshScrollView.onRefreshComplete();
+                //byte[] data = error.networkResponse.data;
+                //Toast.makeText(IndexFragment.this.getContext(), new String(data), Toast.LENGTH_SHORT).show();
+            }
+        }) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> map = new HashMap<>();
+                map.put("ConfigModule", "2");
+                map.put("APPToken", APPToken);
+                return map;
+            }
+        };
+        requestQueue.add(stringRequest);
+    }
+    private void  initMidGridView(String [] images)
+    {
+        mid_gridview.setAdapter(new GridViewAdapter(this.getActivity(),images));
+        mid_gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Toast.makeText(IndexFragment.this.getActivity(), position + "", Toast.LENGTH_SHORT).show();
+                switch (midGridViewConfigBean.getAppConfigList().get(position).getParams().getChildId()) {
+                    case 53:
+                        Intent intent = new Intent(getActivity(), PartnerActivity.class);
+                        startActivity(intent);
+                        break;
+                    case 51:
+                        Intent intent1 = new Intent(getActivity(), UnaryActivity.class);
+                        startActivity(intent1);
+                        break;
+                    case 52:
+                        Intent intent2 = new Intent(getActivity(), MainActivity.class);
+                        intent2.putExtra("id", 2);
+                        startActivity(intent2);
+                        break;
+                    case 54:
+                        if (secKillAllInfo == null) {
+                        } else {
+                            if (secKillAllInfo.getResult().equals("暂无秒杀场次")) {
+                                Toast.makeText(IndexFragment.this.getContext(), "暂无秒杀场次", Toast.LENGTH_SHORT).show();
+                            } else {
+                                Intent SecKillintent = new Intent(IndexFragment.this.getContext(), SecKillActivity.class);
+                                SecKillintent.putExtra("data", listskillbean);
+                                SecKillintent.putExtra("changci", 0);
+                                startActivity(SecKillintent);
+                            }
+                        }
+                        break;
+                    case 56:
+                        Intent intent5 = new Intent(getActivity(), SignInActivity.class);
+                        startActivity(intent5);
+                        break;
+
+                }
+            }
+        });
     }
 }

@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -42,7 +43,7 @@ public class UpdateMyInfoActivity extends Activity {
     private Picasso picasso;
     private SweetAlertDialog pdialog;
     private String MemberId;
-
+    private ImageView iv_setname_back;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,11 +65,18 @@ public class UpdateMyInfoActivity extends Activity {
                 }
             }
         });
+        iv_setname_back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
     }
 
     private void init() {
 
         my_info_update_save = (Button) findViewById(R.id.my_info_update_save);
+        iv_setname_back = (ImageView) findViewById(R.id.iv_setname_back);
         my_info_edit = (EditText) findViewById(R.id.my_info_edit);
         update_myinfo_txt = (TextView) findViewById(R.id.update_myinfo_txt);
         MemberId = CommonUtils.GetMemberId(this);

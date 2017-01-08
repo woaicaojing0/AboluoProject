@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.support.v7.widget.GridLayoutManager;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebSettings;
@@ -68,7 +69,7 @@ public class UnaryActivity extends FragmentActivity implements UnaryAdapter.OnRe
     private WebView webview_introduce;
     private LinearLayout unary_publish;
     private ArrayList<ShopCarBean.ResultBean.GoodsShoppingCartListBean> goodsShoppingCartListBean; //传入下订单的信息
-
+    private ImageView iv_unary_back;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -79,7 +80,7 @@ public class UnaryActivity extends FragmentActivity implements UnaryAdapter.OnRe
             @Override
             public void onReachBottom() {
                 //即将到达几部，进行加载更多操作
-                Toast.makeText(mcontext, "sssssssssssssssssssssssss", Toast.LENGTH_SHORT).show();
+               // Toast.makeText(mcontext, "sssssssssssssssssssssssss", Toast.LENGTH_SHORT).show();
                 if (sort == null || sorttype == null) {
                 } else {
                     currentpage++;
@@ -92,6 +93,7 @@ public class UnaryActivity extends FragmentActivity implements UnaryAdapter.OnRe
         unary_new.setOnClickListener(this);
         unary_introduce.setOnClickListener(this);
         unary_publish.setOnClickListener(this);
+        iv_unary_back.setOnClickListener(this);
         int screenWidth = ScreenUtils.getScreenWidth(this);
         unary__view_pager.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, (screenWidth)*2 / 5));
         unary__view_pager.setHintView(new ColorPointHintView(this, Color.RED, Color.WHITE));
@@ -109,6 +111,7 @@ public class UnaryActivity extends FragmentActivity implements UnaryAdapter.OnRe
         unary_image_03 = (ImageView) findViewById(R.id.unary_image_03);
         unary_image_02 = (ImageView) findViewById(R.id.unary_image_02);
         unary_image_01 = (ImageView) findViewById(R.id.unary_image_01);
+        iv_unary_back = (ImageView) findViewById(R.id.iv_unary_back);
         unary_txt_02 = (TextView) findViewById(R.id.unary_txt_02);
         unary_txt_01 = (TextView) findViewById(R.id.unary_txt_01);
         unary_txt_03 = (TextView) findViewById(R.id.unary_txt_03);
@@ -291,6 +294,7 @@ public class UnaryActivity extends FragmentActivity implements UnaryAdapter.OnRe
                         intent1.putExtra("allmoney", 1);
                         intent1.putExtra("data", goodsShoppingCartListBean);
                         intent1.putExtra("payfrom", "4"); //代表从一元购结算的
+                        intent1.putExtra("OnePurchaseId", listResultBean.getId()); //代表从支付的场次
                         startActivity(intent1);
                     }
                 } else {
@@ -298,6 +302,9 @@ public class UnaryActivity extends FragmentActivity implements UnaryAdapter.OnRe
                     startActivity(intent2);
                     Toast.makeText(UnaryActivity.this, "请先登录", Toast.LENGTH_SHORT).show();
                 }
+                break;
+            case R.id.iv_unary_back:
+                finish();
                 break;
     }
 
@@ -317,7 +324,11 @@ public class UnaryActivity extends FragmentActivity implements UnaryAdapter.OnRe
                 response = response.substring(1, response.length() - 1);
                 unaryListBean = gson.fromJson(response, UnaryListBean.class);
                 if (unaryListBean.isIsSuccess()) {
-                    unary_recyclerView.setLayoutManager(new FullyGridLayoutManager(UnaryActivity.this, 2));
+                    final FullyGridLayoutManager manager = new FullyGridLayoutManager(UnaryActivity.this, 2);
+                    manager.setOrientation(GridLayoutManager.VERTICAL);
+                    manager.setSmoothScrollbarEnabled(true);
+                    unary_recyclerView.setLayoutManager(manager);
+                    unary_recyclerView.setNestedScrollingEnabled(false);
                     adapter.notifyDataSetChanged();
                     adapter.setOnItemClickListener(UnaryActivity.this);
                     adapter.setOnBeginClickListener(UnaryActivity.this);

@@ -331,9 +331,13 @@ public class PartnerGoodsDetailActivity extends Activity implements View.OnClick
      * 初始化
      */
     private void init() {
+        //合伙人商品只能买一件商品
         btnDecrease = (Button) findViewById(R.id.btnDecrease);
         btnIncrease = (Button) findViewById(R.id.btnIncrease);
+        btnDecrease.setClickable(false);
+        btnIncrease.setClickable(false);
         etAmount = (EditText) findViewById(R.id.etAmount);
+        etAmount.setEnabled(false);
         rollPagerView = (RollPagerView) findViewById(R.id.roll_view_pager_detail);
         goods_pingjia_layout_btn = (RelativeLayout) findViewById(R.id.goods_pingjia_layout_btn);
         goods_detail_layout_btn = (RelativeLayout) findViewById(R.id.goods_detail_layout_btn);
@@ -977,7 +981,7 @@ public class PartnerGoodsDetailActivity extends Activity implements View.OnClick
                 color,
                 standardsid,
                 standards,
-                Integer.valueOf(etAmount.getText().toString()),
+                1,
                 (new Double(goodsDetailInfo.getResult().getGoodsInfo().getYunfei())).intValue(),
                 goodsDetailInfo.getResult().getGoodsInfo().getGoodsName(),
                 goodsDetailInfo.getResult().getGoodsInfo().getGoodsLogo(),
@@ -988,7 +992,7 @@ public class PartnerGoodsDetailActivity extends Activity implements View.OnClick
         intent1.putExtra("allmoney", String.valueOf(hyprice *
                 Integer.valueOf(etAmount.getText().toString())));
         intent1.putExtra("data", goodsShoppingCartListBean);
-        intent1.putExtra("payfrom", "1"); //代表从购物车结算的
+        intent1.putExtra("payfrom", "5"); //代表从合伙人结算的
         startActivity(intent1);
     }
 

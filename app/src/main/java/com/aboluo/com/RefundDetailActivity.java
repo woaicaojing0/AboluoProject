@@ -324,9 +324,6 @@ public class RefundDetailActivity extends TakePhotoActivity implements View.OnCl
                                     Toast.makeText(RefundDetailActivity.this, "图片上传成功", Toast.LENGTH_SHORT).show();
                                     UploadRefund();
                                 } else {
-                                    if(finalI +1==filepath.size()) {
-                                        Toast.makeText(RefundDetailActivity.this, "图片上传失败，请重试", Toast.LENGTH_SHORT).show();
-                                    }
                                 }
 
                             }

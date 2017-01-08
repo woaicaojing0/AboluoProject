@@ -224,7 +224,7 @@ public class PartnerActivity extends Activity implements PartnerAdpater.OnRecycl
 
     @Override
     public void onItemClick(View view, int position) {
-        Toast.makeText(this, position + "", Toast.LENGTH_SHORT).show();
+      //  Toast.makeText(this, position + "", Toast.LENGTH_SHORT).show();
         int goods_id = goodsListBean.get(position).getGoodsId();
         Intent intent = new Intent(this, PartnerGoodsDetailActivity.class);
         intent.putExtra("goods_id", goods_id);

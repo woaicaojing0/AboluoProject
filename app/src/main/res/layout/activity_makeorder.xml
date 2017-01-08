@@ -243,6 +243,7 @@
                             android:text="运费：" />
 
                         <TextView
+                            android:text="￥"
                             android:id="@+id/order_yunfei"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"

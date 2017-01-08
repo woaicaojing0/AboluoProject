@@ -184,7 +184,7 @@ public class AllOrderFragment extends Fragment implements View.OnClickListener {
                     intent.putExtra("orderid", orderBean.getResult().get(position).getOrderId());
                     intent.putExtra("payMoney", orderBean.getResult().get(position).getTotalPrice().toString());
                     intent.putExtra("OrderNum", orderBean.getResult().get(position).getOrderCode().toString());
-                    intent.putExtra("payfrom", "2");
+                    intent.putExtra("payfrom", "2"); //个人中心付款
                     startActivity(intent);
                 }
                 break;
@@ -223,7 +223,7 @@ public class AllOrderFragment extends Fragment implements View.OnClickListener {
                     Intent intent = new Intent(AllOrderFragment.this.getActivity(), OrderPayActivity.class);
                     intent.putExtra("payMoney", orderBean.getResult().get(position).getTotalPrice().toString());
                     intent.putExtra("OrderNum", orderBean.getResult().get(position).getOrderCode().toString());
-                    intent.putExtra("payfrom", "2");
+                    intent.putExtra("payfrom", "2");//个人中心付款
                     startActivity(intent);
                 }
             case R.id.txt_cuicui:

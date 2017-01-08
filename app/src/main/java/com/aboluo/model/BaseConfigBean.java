@@ -124,27 +124,27 @@ public class BaseConfigBean {
         }
 
         public static class ParamsBean {
-            private int ParentId;
-            private int ChildId;
+            private Integer  ParentId;
+            private Integer  ChildId;
 
             public static ParamsBean objectFromData(String str) {
 
                 return new Gson().fromJson(str, ParamsBean.class);
             }
 
-            public int getParentId() {
+            public Integer getParentId() {
                 return ParentId;
             }
 
-            public void setParentId(int ParentId) {
+            public void setParentId(Integer ParentId) {
                 this.ParentId = ParentId;
             }
 
-            public int getChildId() {
+            public Integer getChildId() {
                 return ChildId;
             }
 
-            public void setChildId(int ChildId) {
+            public void setChildId(Integer ChildId) {
                 this.ChildId = ChildId;
             }
         }

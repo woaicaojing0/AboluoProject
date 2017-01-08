@@ -276,9 +276,6 @@ public class EvaluationActivity extends TakePhotoActivity implements View.OnClic
                                         Toast.makeText(EvaluationActivity.this, "图片上传成功", Toast.LENGTH_SHORT).show();
                                         UploadEvaluation();
                                     } else {
-                                        if(finalI +1==filepath.size()) {
-                                            Toast.makeText(EvaluationActivity.this, "图片上传失败，请重试", Toast.LENGTH_SHORT).show();
-                                        }
                                     }
 
                                 }

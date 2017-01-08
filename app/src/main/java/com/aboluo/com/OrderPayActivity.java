@@ -9,13 +9,12 @@ import android.os.Message;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.CheckBox;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.aboluo.XUtils.BillUtils;
 import com.aboluo.XUtils.CommonUtils;
 
 import java.util.HashMap;
@@ -43,9 +42,11 @@ public class OrderPayActivity extends Activity implements View.OnClickListener {
     private String OrderNum;
     private int requsetcode = 1;
     private String payfrom;
+    private int OnePurchaseId;
     private TextView txt_lastpaymoeny;
     private LinearLayout lineLayout_wx_pay, lineLayout_zfb_pay;
     private RadioButton ck_zfb_pay, ck_wx_pay;
+    private ImageView iv_pay_back;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,6 +62,7 @@ public class OrderPayActivity extends Activity implements View.OnClickListener {
         sure_pay.setOnClickListener(this);
         lineLayout_wx_pay.setOnClickListener(this);
         lineLayout_zfb_pay.setOnClickListener(this);
+        iv_pay_back.setOnClickListener(this);
     }
 
     private void init() {
@@ -68,6 +70,7 @@ public class OrderPayActivity extends Activity implements View.OnClickListener {
         txt_lastpaymoeny = (TextView) findViewById(R.id.txt_lastpaymoeny);
         lineLayout_wx_pay = (LinearLayout) findViewById(R.id.lineLayout_wx_pay);
         lineLayout_zfb_pay = (LinearLayout) findViewById(R.id.lineLayout_zfb_pay);
+        iv_pay_back = (ImageView) findViewById(R.id.iv_pay_back);
         ck_zfb_pay = (RadioButton) findViewById(R.id.ck_zfb_pay);
         ck_wx_pay = (RadioButton) findViewById(R.id.ck_wx_pay);
         pdialog = new SweetAlertDialog(this, SweetAlertDialog.PROGRESS_TYPE);
@@ -79,6 +82,7 @@ public class OrderPayActivity extends Activity implements View.OnClickListener {
         String yuanmoney = intent.getStringExtra("payMoney");
         OrderNum = intent.getStringExtra("OrderNum");
         payfrom = intent.getStringExtra("payfrom");
+        OnePurchaseId = intent.getIntExtra("OnePurchaseId", 0);
         paymoney = Integer.valueOf(CommonUtils.yuanToFen(yuanmoney));
         txt_lastpaymoeny.setText("￥" + String.valueOf(yuanmoney));
         Log.i("woaicaojingpay", "实际支付的金额为" + paymoney);
@@ -232,6 +236,7 @@ public class OrderPayActivity extends Activity implements View.OnClickListener {
                     mapOptional.put("consumptioncode", "consumptionCode");
                     mapOptional.put("money", "2");
                     mapOptional.put("payfrom", payfrom);  //标识从哪边支付的，1购物车 2个人中心（待付款） 3秒杀 4一元购
+                    mapOptional.put("OnePurchaseId", String.valueOf(OnePurchaseId));  //标识从一元夺宝的场次，默认是0
                     BCPay.getInstance(OrderPayActivity.this).reqAliPaymentAsync(
                             "阿波罗商铺支付宝支付",
                             paymoney,
@@ -274,6 +279,9 @@ public class OrderPayActivity extends Activity implements View.OnClickListener {
             case R.id.lineLayout_wx_pay:
                 Clean();
                 ck_wx_pay.setChecked(true);
+                break;
+            case R.id.iv_pay_back:
+                finish();
                 break;
         }
     }

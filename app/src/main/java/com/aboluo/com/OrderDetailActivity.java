@@ -58,7 +58,7 @@ public class OrderDetailActivity extends Activity implements View.OnClickListene
     private RelativeLayout order_detail_bottom;
     private LinearLayout orderdetail_expressdetail, order_detail_back;
     private TextView oederdetail_findgoods, oederdetail_ok, oederdetail_cancelorder,
-            oederdetail_payorder, oederdetail_cuicui, order_detail_topstatus;
+            oederdetail_payorder, oederdetail_cuicui, order_detail_topstatus,tv_orderdetail_code;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -108,6 +108,7 @@ public class OrderDetailActivity extends Activity implements View.OnClickListene
         order_detail_topstatus = (TextView) findViewById(R.id.order_detail_topstatus);
         tv_orderdetail_freight = (TextView) findViewById(R.id.tv_orderdetail_freight);
         tv_orderdetail_coupons = (TextView) findViewById(R.id.tv_orderdetail_coupons);
+        tv_orderdetail_code = (TextView) findViewById(R.id.tv_orderdetail_code);
         orderdetail_listview = (MyListview) findViewById(R.id.orderdetail_listview);
         orderdetail_expressdetail = (LinearLayout) findViewById(R.id.orderdetail_expressdetail);
         order_detail_back = (LinearLayout) findViewById(R.id.order_detail_back);
@@ -150,6 +151,7 @@ public class OrderDetailActivity extends Activity implements View.OnClickListene
                 tv_orderdetail_freight.setText("￥"+orderDetailInfo.getResult().get(0).getExpressPrice()+"");
                 tv_orderdetail_coupons.setText("￥"+orderDetailInfo.getResult().get(0).getCouponPrice()+"");
                 tv_orderdetail_integral.setText("￥"+orderDetailInfo.getResult().get(0).getIntegralPrice()+"");
+                tv_orderdetail_code.setText(orderDetailInfo.getResult().get(0).getOrderCode()+"");
                 adpater = new OrderDetailItemAdpater(OrderDetailActivity.this
                         , orderDetailInfo.getResult().get(0).getOrderItemList(), orderDetailInfo.getResult().get(0).getOrderStatus());
                 adpater.setEvaluationOnClickListener(OrderDetailActivity.this);

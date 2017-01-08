@@ -124,8 +124,9 @@ public class OrderDetailItemAdpater extends BaseAdapter {
         holder.tordetail_item_yuanprice.setText("￥" + String.valueOf(mlist.get(position).getGoodsPrice()));
         holder.ordetail_item__goods_num.setText(String.valueOf("X" + String.valueOf(mlist.get(position).getGoodsQuantity())));
         if (mlist.get(position).getRefundStatus() == -1) {
-            holder.txt_orderdetail_after_sale.setOnClickListener(EvaluationOnClickListener);
+            holder.txt_orderdetail_after_sale.setOnClickListener(AfterSaleOnClickListener);
             holder.txt_orderdetail_after_sale.setTag(position);
+            holder.txt_orderdetail_after_sale.setText("申请售后");
         } else {
             switch (mlist.get(position).getRefundStatus()) {
                 case 0: //待审核
@@ -144,10 +145,11 @@ public class OrderDetailItemAdpater extends BaseAdapter {
         }
         if (mlist.get(position).getEvaluationStatus() > 0) {
             //评价完成后，不可以申请售后
-            //holder.txt_orderdetail_after_sale.setVisibility(View.GONE);
+            holder.txt_orderdetail_after_sale.setVisibility(View.GONE);
             holder.txt_orderdetail_evaluate.setText("已评价");
+            holder.txt_orderdetail_evaluate.setClickable(false);
         } else {
-            holder.txt_orderdetail_evaluate.setOnClickListener(AfterSaleOnClickListener);
+            holder.txt_orderdetail_evaluate.setOnClickListener(EvaluationOnClickListener);
             holder.txt_orderdetail_evaluate.setTag(position);
         }
         return convertView;

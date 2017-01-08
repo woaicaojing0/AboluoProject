@@ -21,7 +21,7 @@
             android:orientation="horizontal">
 
             <ImageView
-                android:id="@+id/all_add_text_back"
+                android:id="@+id/iv_setname_back"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
@@ -34,7 +34,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
-                android:text="最新揭晓" />
+                android:text="修改昵称" />
 
         </RelativeLayout>
     </android.support.v7.widget.Toolbar>

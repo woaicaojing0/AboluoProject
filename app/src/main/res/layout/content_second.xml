@@ -15,15 +15,10 @@
         android:background="@color/colorPrimary"
         android:orientation="vertical">
 
-        <com.andexert.library.RippleView
-            android:id="@+id/rv_back"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            app:rv_centered="true"
-            android:gravity="center"
-            app:rv_zoom="true">
+
 
             <TextView
+                android:id="@+id/rv_back"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:gravity="center"
@@ -32,7 +27,6 @@
                 android:text="返回"
                 android:textColor="@color/white"
                 android:textSize="18sp" />
-        </com.andexert.library.RippleView>
 
         <TextView
             android:id="@+id/tv_text"

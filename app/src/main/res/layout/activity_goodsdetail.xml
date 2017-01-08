@@ -226,18 +226,16 @@
                     android:layout_height="45dp">
 
                     <RelativeLayout
-                        android:id="@+id/goods_detail_layout_btn"
+                        android:id="@+id/goods_detail_layout_btn1"
                         android:layout_width="0dp"
                         android:layout_height="45dp"
                         android:layout_weight="1"
-                        android:clickable="true"
-                        android:focusable="true"
-                        android:focusableInTouchMode="true"
                         android:orientation="vertical">
 
                         <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
                             android:layout_centerInParent="true"
                             android:layout_gravity="center"
                             android:text="商品详情"></TextView>
@@ -259,18 +257,16 @@
                         android:background="@color/view_color"></View>
 
                     <RelativeLayout
-                        android:id="@+id/goods_pingjia_layout_btn"
+                        android:id="@+id/goods_pingjia_layout_btn1"
                         android:layout_width="0dp"
                         android:layout_height="45dp"
                         android:layout_weight="1"
-                        android:clickable="true"
-                        android:focusable="true"
-                        android:focusableInTouchMode="true"
                         android:orientation="vertical">
 
                         <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
                             android:layout_centerInParent="true"
                             android:layout_gravity="center"
                             android:text="商品评价"></TextView>

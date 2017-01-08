@@ -3,6 +3,7 @@ package com.aboluo.Gesture;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -24,7 +25,7 @@ public class SecondActivity extends BaseActivity implements RippleView.OnRippleC
     private boolean fromcleangusture = false;
     private String from;
     @Bind(R.id.rv_back)
-    RippleView rvBack;
+    TextView rvBack;
     @Bind(R.id.tv_text)
     TextView tvText;
     @Bind(R.id.lv_lock)
@@ -62,7 +63,17 @@ public class SecondActivity extends BaseActivity implements RippleView.OnRippleC
     @Override
     public void initListener() {
         lvLock.setOnCompleteListener(onCompleteListener);
-        rvBack.setOnRippleCompleteListener(this);
+        rvBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (from == null) {
+                    Toast.makeText(SecondActivity.this, "请重新登陆", Toast.LENGTH_SHORT).show();
+                    cleanGesturePwd();
+                } else {
+                    finish();
+                }
+            }
+        });
     }
 
     /**
@@ -206,11 +217,6 @@ public class SecondActivity extends BaseActivity implements RippleView.OnRippleC
     public void onComplete(RippleView rippleView) {
         onBackPressed();
 
-        if (from == null) {
-            Toast.makeText(this, "请重新登陆", Toast.LENGTH_SHORT).show();
-            cleanGesturePwd();
-        } else {
-        }
     }
 
     @Override

@@ -30,6 +30,7 @@ import android.widget.TextView;
 import com.aboluo.XUtils.CommonUtils;
 import com.aboluo.XUtils.MyApplication;
 import com.aboluo.XUtils.RBCallbkRecyclerView;
+import com.aboluo.XUtils.RBCallbkRecyclerView2;
 import com.aboluo.XUtils.ScreenUtils;
 import com.aboluo.adapter.RecycleViewAdapter;
 import com.aboluo.model.BrandBean;
@@ -58,7 +59,7 @@ public class GoodsListActivity extends Activity implements RecycleViewAdapter.On
     private RequestQueue requestQueue;
     private StringRequest requestlist;
     //显示的容器，用于替代listview
-    private RBCallbkRecyclerView mRBCallbkRecyclerView;
+    private RBCallbkRecyclerView2 mRBCallbkRecyclerView;
     //接口地址
     private String url;
     private static String APPToken;
@@ -160,7 +161,7 @@ public class GoodsListActivity extends Activity implements RecycleViewAdapter.On
         btn_goodslist_surefiltrate.setOnClickListener(this);
         initfiltrate();
         mRBCallbkRecyclerView.setReachBottomRow(4);
-        mRBCallbkRecyclerView.setOnReachBottomListener(new RBCallbkRecyclerView.OnReachBottomListener() {
+        mRBCallbkRecyclerView.setOnReachBottomListener(new RBCallbkRecyclerView2.OnReachBottomListener() {
             @Override
             public void onReachBottom() {
                 //即将到达几部，进行加载更多操作
@@ -189,7 +190,7 @@ public class GoodsListActivity extends Activity implements RecycleViewAdapter.On
         btn_goodslist_surefiltrate = (Button) findViewById(R.id.btn_goodslist_surefiltrate);
         line_goods_detail_price = (LinearLayout) findViewById(R.id.line_goods_detail_price);
         drawer_layout = (DrawerLayout) findViewById(R.id.drawer_layout);
-        mRBCallbkRecyclerView = (RBCallbkRecyclerView) findViewById(R.id.goods_list_recycleview);
+        mRBCallbkRecyclerView = (RBCallbkRecyclerView2) findViewById(R.id.goods_list_recycleview);
         right_shaixuan = (RelativeLayout) findViewById(R.id.right_shaixuan);
         goods_list_brand_radiogroup = (MyRadioGroup) findViewById(R.id.goods_list_brand_radiogroup);
         requestQueue = MyApplication.getRequestQueue();

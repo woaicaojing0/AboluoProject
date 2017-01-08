@@ -88,7 +88,7 @@ public class GoodsDetailActivity extends Activity implements View.OnClickListene
     private String[] imgurl = null;    //首部banner中绑定的图片
     private BannerAdapter bannerAdapter;
     //商品详情和评价按钮
-    private RelativeLayout goods_pingjia_layout_btn, goods_detail_layout_btn;
+    private RelativeLayout goods_pingjia_layout_btn1, goods_detail_layout_btn1;
     //商品详情和评价按钮下面的横线
     private View id_goods_detail_view, id_goods_pingjia_view;
     //显示详情和评价的webview
@@ -102,7 +102,9 @@ public class GoodsDetailActivity extends Activity implements View.OnClickListene
     //详情返回、商品类型弹出xml中的关闭、商品类型中的图片
     private ImageView goods_detail_text_back, goods_type_pop_close, goods_detail_type_imageview;
     //商品类型、名称、会员价、原价、数量、商品列表的价格和数量,商品副标题,积分,商品头部的商品详情
-    private TextView txt_goods_type, txt_goods_name, txt_new_money, txt_old_money, txt_goods_num, goods_detail_type_txtmoney, goods_detail_type_txtnum, txt_goods_sub, goods_detail_jifen, goods_detail_top_txt;
+    private TextView txt_goods_type, txt_goods_name, txt_new_money, txt_old_money, txt_goods_num,
+            goods_detail_type_txtmoney, goods_detail_type_txtnum, txt_goods_sub,
+            goods_detail_jifen, goods_detail_top_txt;
     private int fHeight; //父容器的高度
     private int sHeight;  //商品类型的高度
     //父容器、自容器、商品列表颜色布局、尺寸布局
@@ -135,8 +137,8 @@ public class GoodsDetailActivity extends Activity implements View.OnClickListene
         setContentView(R.layout.activity_goodsdetail);
         MemberId = CommonUtils.GetMemberId(GoodsDetailActivity.this);
         init();
-        goods_pingjia_layout_btn.setOnClickListener(this);
-        goods_detail_layout_btn.setOnClickListener(this);
+        goods_pingjia_layout_btn1.setOnClickListener(this);
+        goods_detail_layout_btn1.setOnClickListener(this);
         detail_more.setOnClickListener(this);
         detail_goods.setOnClickListener(this);
         goods_detail_text_back.setOnClickListener(new View.OnClickListener() {
@@ -333,8 +335,8 @@ public class GoodsDetailActivity extends Activity implements View.OnClickListene
         btnIncrease = (Button) findViewById(R.id.btnIncrease);
         etAmount = (EditText) findViewById(R.id.etAmount);
         rollPagerView = (RollPagerView) findViewById(R.id.roll_view_pager_detail);
-        goods_pingjia_layout_btn = (RelativeLayout) findViewById(R.id.goods_pingjia_layout_btn);
-        goods_detail_layout_btn = (RelativeLayout) findViewById(R.id.goods_detail_layout_btn);
+        goods_pingjia_layout_btn1 = (RelativeLayout) findViewById(R.id.goods_pingjia_layout_btn1);
+        goods_detail_layout_btn1 = (RelativeLayout) findViewById(R.id.goods_detail_layout_btn1);
         id_goods_detail_view = (View) findViewById(R.id.id_goods_detail_view);
         id_goods_pingjia_view = (View) findViewById(R.id.id_goods_pingjia_view);
         goods_detail_webview = (WebView) findViewById(R.id.goods_detail_webview);
@@ -835,13 +837,13 @@ public class GoodsDetailActivity extends Activity implements View.OnClickListene
     public void onClick(View v) {
         if (CommonUtils.IsLogin(GoodsDetailActivity.this)) {
             switch (v.getId()) {
-                case R.id.goods_detail_layout_btn: //商品详情按钮
+                case R.id.goods_detail_layout_btn1: //商品详情按钮
                     id_goods_detail_view.setVisibility(View.VISIBLE);
                     id_goods_pingjia_view.setVisibility(View.GONE);
                     String detailurl0 = CommonUtils.GetValueByKey(GoodsDetailActivity.this, "backUrl") + "/moblie/Index?productId=" + goods_id;
                     initwebview(detailurl0, null);
                     break;
-                case R.id.goods_pingjia_layout_btn: //商品评价按钮Moblie/ShowEvaluation?goodsId
+                case R.id.goods_pingjia_layout_btn1: //商品评价按钮Moblie/ShowEvaluation?goodsId
                     id_goods_detail_view.setVisibility(View.GONE);
                     id_goods_pingjia_view.setVisibility(View.VISIBLE);
                     String detailurl = CommonUtils.GetValueByKey(GoodsDetailActivity.this, "backUrl") + "/Moblie/ShowEvaluation?goodsId=" + goods_id;

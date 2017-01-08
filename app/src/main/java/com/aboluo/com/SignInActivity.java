@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -46,7 +47,7 @@ public class SignInActivity extends Activity implements View.OnClickListener {
     private boolean isfrist = true;
     private static final int signinfocode = 1;
     private boolean isfromsigninfo = false;
-
+    private ImageView iv_singn_back;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,6 +62,7 @@ public class SignInActivity extends Activity implements View.OnClickListener {
             unalready_signed.setOnClickListener(this);
             GetTodayScroe();
         }
+        iv_singn_back.setOnClickListener(this);
     }
 
     private void init() {
@@ -69,6 +71,7 @@ public class SignInActivity extends Activity implements View.OnClickListener {
         txt_signvalue = (TextView) findViewById(R.id.txt_signvalue);
         txt_alreadyday = (TextView) findViewById(R.id.txt_alreadyday);
         txt_againday = (TextView) findViewById(R.id.txt_againday);
+        iv_singn_back = (ImageView) findViewById(R.id.iv_singn_back);
         unalready_signed = (LinearLayout) findViewById(R.id.unalready_signed);
         already_signed = (LinearLayout) findViewById(R.id.already_signed);
         requestQueue = MyApplication.getRequestQueue();
@@ -96,6 +99,10 @@ public class SignInActivity extends Activity implements View.OnClickListener {
                 break;
             case R.id.unalready_signed:
                 InitSign();
+                break;
+            case R.id.iv_singn_back:
+                finish();
+                break;
         }
 
     }

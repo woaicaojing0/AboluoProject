@@ -98,7 +98,7 @@ public class MenuFragment extends Fragment implements View.OnClickListener {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 sweetAlertDialog.show();
-                Toast.makeText(MenuFragment.this.getActivity(), position + "", Toast.LENGTH_SHORT).show();
+               // Toast.makeText(MenuFragment.this.getActivity(), position + "", Toast.LENGTH_SHORT).show();
                 final int type_id = resultBean.getGoodsTypeList().get(position).getGoodsTypeId();
                 menuListViewAdapter.setSelectedPosition(position);
                 menuListViewAdapter.notifyDataSetChanged();

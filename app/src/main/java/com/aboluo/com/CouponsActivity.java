@@ -97,7 +97,7 @@ public class CouponsActivity extends Activity implements View.OnClickListener {
                 response = response.substring(1, response.length() - 1);
                 final CouponsBean couponsBean = gson.fromJson(response, CouponsBean.class);
                 if (couponsBean.getMemberCouponList() == null) {
-                    Toast.makeText(CouponsActivity.this, "获取的membercouponlist为空", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(CouponsActivity.this, "当前没有优惠券", Toast.LENGTH_SHORT).show();
                 } else {
                     CouponsAdapter couponsAdapter = new CouponsAdapter(CouponsActivity.this, couponsBean.getMemberCouponList());
                     lv_coupons_showcoupons.setAdapter(couponsAdapter);

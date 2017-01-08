@@ -225,6 +225,7 @@ public class UnaryDetailActivity extends Activity implements View.OnClickListene
     }
 
     public void UnaryBuyNow() {
+        goodsShoppingCartListBean.clear();
 //        ShopCarBean.ResultBean.GoodsShoppingCartListBean goodsShoppingCartListBean2 = new ShopCarBean.ResultBean.GoodsShoppingCartListBean(
 //                goodsDetailInfo.getResult().getGoodsInfo().getGoodsId(),
 //                colorid,
@@ -247,7 +248,8 @@ public class UnaryDetailActivity extends Activity implements View.OnClickListene
         Intent intent1 = new Intent(UnaryDetailActivity.this, MakeOrderActivity.class);
         intent1.putExtra("allmoney", 1);
         intent1.putExtra("data", goodsShoppingCartListBean);
-        intent1.putExtra("payfrom", "4"); //代表从购物车结算的
+        intent1.putExtra("payfrom", "4"); //代表从一元购结算的
+        intent1.putExtra("OnePurchaseId", listResultBean.getId()); //代表从一元购结算的
         startActivity(intent1);
     }
 }

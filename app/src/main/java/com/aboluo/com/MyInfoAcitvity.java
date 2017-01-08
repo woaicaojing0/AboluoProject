@@ -83,6 +83,7 @@ public class MyInfoAcitvity extends TakePhotoActivity implements View.OnClickLis
     private TextView my_inf_txt_loginName, my_inf_txt_nicheng, my_info_txt_sex, my_info_txt_phone, my_info_txt_weixin, my_info_txt_email;
     private static int NickNameCode = 1;//昵称返回标识
     private boolean updateimages = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -248,9 +249,7 @@ public class MyInfoAcitvity extends TakePhotoActivity implements View.OnClickLis
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
         if (data == null) {
-
         } else {
             int result = data.getIntExtra("startgesture", 3);
             if (result == 0) {
@@ -476,7 +475,17 @@ public class MyInfoAcitvity extends TakePhotoActivity implements View.OnClickLis
     @Override
     protected void onRestart() {
         super.onRestart();
-        boolean isstartgesture =sharedPreferences.getBoolean("isstartgesture", false);
-        gesture.setChecked(isstartgesture);
+        boolean isstartgesture = sharedPreferences.getBoolean("isstartgesture", false);
+        String pwd = PasswordUtil.getPin(MyInfoAcitvity.this);
+        if (isstartgesture) {
+            if (pwd != null) {
+                gesture.setChecked(true);
+            } else {
+                gesture.setChecked(false);
+            }
+        } else {
+            gesture.setChecked(false);
+        }
+
     }
 }

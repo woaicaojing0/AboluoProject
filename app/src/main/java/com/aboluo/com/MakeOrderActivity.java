@@ -71,7 +71,8 @@ public class MakeOrderActivity extends Activity implements View.OnClickListener 
     private static int AddressId = 0;
     private RelativeLayout change_make_sure_location;
     private String MemberId;
-    private String payfrom;
+    private String payfrom; //从哪边支付
+    private int OnePurchaseId; //一元夺宝购的场次
     private ImageView all_makeorder_text_back;
     private RelativeLayout rl_makeorder_usecoupons, rl_makerorder_jifeng;
     private int MakeOrderRequestCode = 3;
@@ -83,7 +84,7 @@ public class MakeOrderActivity extends Activity implements View.OnClickListener 
     private String discountType = "0"; //代表不使用优惠券和积分，1代表使用积分，2代表使用优惠券
     private MakerOrderIntergralBean makerOrderIntergralBean;
     private LinearLayout ll_makerorder_jifeng;
-
+    private int SeckillId; // 秒杀的商品的id
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -156,6 +157,8 @@ public class MakeOrderActivity extends Activity implements View.OnClickListener 
         goodsShoppingCartListBean = bundle.getParcelableArrayList("data");
         moeny = bundle.get("allmoney").toString();
         payfrom = bundle.get("payfrom").toString();
+        OnePurchaseId = bundle.getInt("OnePurchaseId", 0);
+        SeckillId = bundle.getInt("SeckillId", 0);
         txt_allmoney.setText(bundle.get("allmoney").toString());
         goods_smallallmoeny.setText("￥" + bundle.get("allmoney").toString());
         txt_goods_allnum.setText("共计" + goodsShoppingCartListBean.size() + "件商品");
@@ -220,7 +223,7 @@ public class MakeOrderActivity extends Activity implements View.OnClickListener 
     }
 
     private void SubmitOrder() {
-        final String lastmoney = String.valueOf(Double.valueOf(moeny) + yunfei);
+        final String lastmoney = txt_allmoney.getText().toString();
         List<OrderInfoBean> bean = new ArrayList<>();
         for (int i = 0; i < goodsShoppingCartListBean.size(); i++) {
             OrderInfoBean bean1 = new OrderInfoBean();
@@ -258,6 +261,7 @@ public class MakeOrderActivity extends Activity implements View.OnClickListener 
                         intent.putExtra("payMoney", lastmoney);
                         intent.putExtra("OrderNum", baseModel.getOrderSerialId().toString());
                         intent.putExtra("payfrom", payfrom);
+                        intent.putExtra("OnePurchaseId", OnePurchaseId);
                         startActivityForResult(intent, requsetcode);
                         pdialog.dismiss();
                     } else {
@@ -312,6 +316,7 @@ public class MakeOrderActivity extends Activity implements View.OnClickListener 
                             break;
                     }
                     map.put("APPToken", APPToken);
+                    map.put("SeckillId", String.valueOf(SeckillId));
                     String result = gson.toJson(map);
                     Log.i("MakeOrderActivity", "确认订单上传值" + result);
                     return map;
@@ -337,9 +342,14 @@ public class MakeOrderActivity extends Activity implements View.OnClickListener 
                 finish();
                 break;
             case R.id.rl_makeorder_usecoupons:
-                Intent intent1 = new Intent(MakeOrderActivity.this, CouponsActivity.class);
-                intent1.putExtra("allmoney", moeny);
-                startActivityForResult(intent1, MakeOrderRequestCode);
+                if (payfrom.equals("1"))//正常的商品
+                {
+                    Intent intent1 = new Intent(MakeOrderActivity.this, CouponsActivity.class);
+                    intent1.putExtra("allmoney", moeny);
+                    startActivityForResult(intent1, MakeOrderRequestCode);
+                } else {
+                    Toast.makeText(this, "当前商品不支持使用代金券", Toast.LENGTH_SHORT).show();
+                }
                 break;
             case R.id.rl_makerorder_jifeng:
                 if (payfrom.equals("1"))//正常的商品
@@ -467,12 +477,11 @@ public class MakeOrderActivity extends Activity implements View.OnClickListener 
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> map = new HashMap<>();
                 map.put("MemberId", MemberId);
+                map.put("OrderType", payfrom);
                 map.put("TotalPrice", moeny);
                 map.put("APPToken", APPToken);
                 return map;
             }
-
-            ;
         };
         requestQueue.add(stringRequest);
     }

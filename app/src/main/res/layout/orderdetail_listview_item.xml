@@ -108,21 +108,21 @@
             android:id="@+id/txt_orderdetail_after_sale"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginRight="8dp"
-            android:layout_toLeftOf="@+id/txt_orderdetail_evaluate"
+            android:layout_marginRight="88dp"
             android:background="@drawable/order_red_button"
             android:paddingBottom="7dp"
             android:paddingLeft="22dp"
             android:paddingRight="22dp"
             android:paddingTop="7dp"
             android:text="申请售后"
+            android:layout_alignParentRight="true"
             android:textColor="@color/btn_color"
             android:textSize="12sp"
-            android:visibility="gone" />
+            android:visibility="gone"/>
 
         <TextView
             android:id="@+id/txt_orderdetail_evaluate"
-            android:layout_width="wrap_content"
+            android:layout_width="72dp"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_marginRight="8dp"

@@ -202,9 +202,6 @@
                         android:layout_width="0dp"
                         android:layout_height="45dp"
                         android:layout_weight="1"
-                        android:clickable="true"
-                        android:focusable="true"
-                        android:focusableInTouchMode="true"
                         android:orientation="vertical">
 
                         <TextView
@@ -235,9 +232,6 @@
                         android:layout_width="0dp"
                         android:layout_height="45dp"
                         android:layout_weight="1"
-                        android:clickable="true"
-                        android:focusable="true"
-                        android:focusableInTouchMode="true"
                         android:orientation="vertical">
 
                         <TextView

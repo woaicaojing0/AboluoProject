@@ -8,6 +8,7 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -33,7 +34,7 @@ public class SecKillActivity extends FragmentActivity {
     private SecKillDetailAdapter fAdapter;
     private ArrayList<SecKillAllInfo.SkillMainListBean> listseckillbean;
     private int selected;
-
+    private LinearLayout back_miaosha_choose;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,11 +45,18 @@ public class SecKillActivity extends FragmentActivity {
         Bundle bundle = intent.getExtras();
         listseckillbean = bundle.getParcelableArrayList("data");
         init();
+        back_miaosha_choose.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
     }
 
     private void init() {
         tabLayout_seckilldetail = (TabLayout) findViewById(R.id.tabLayout_seckilldetail);
         viewpage_seckilldetail = (ViewPager) findViewById(R.id.vp_seckilldetail);
+        back_miaosha_choose = (LinearLayout) findViewById(R.id.back_miaosha_choose);
         inintValue();
     }
 

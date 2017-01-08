@@ -235,6 +235,8 @@ public class SecKillGoodsDetailActivity extends Activity implements View.OnClick
         }
     }
     public void UnaryBuyNow() {
+
+        goodsShoppingCartListBean.clear();
 //        ShopCarBean.ResultBean.GoodsShoppingCartListBean goodsShoppingCartListBean2 = new ShopCarBean.ResultBean.GoodsShoppingCartListBean(
 //                goodsDetailInfo.getResult().getGoodsInfo().getGoodsId(),
 //                colorid,
@@ -251,13 +253,15 @@ public class SecKillGoodsDetailActivity extends Activity implements View.OnClick
                 seckillListBean.getGoodsId(), seckillListBean.getGoodsColorId(),
                 seckillListBean.getGoodsColor() == null ? "0" : seckillListBean.getGoodsColor().toString(),
                 seckillListBean.getGoodsStandardId(), seckillListBean.getGoodsStandard() == null ? "0" : seckillListBean.getGoodsStandard().toString(),
-                1,0, seckillListBean.getGoodsName(), seckillListBean.getGoodsLogo().toString(), 1
+                1,0, seckillListBean.getGoodsName(), seckillListBean.getGoodsLogo().toString(),
+                seckillListBean.getSeckillPrice()
         );
         goodsShoppingCartListBean.add(goodsShoppingCartListBean2);
         Intent intent1 = new Intent(SecKillGoodsDetailActivity.this, MakeOrderActivity.class);
         intent1.putExtra("allmoney", seckillListBean.getSeckillPrice());
         intent1.putExtra("data", goodsShoppingCartListBean);
         intent1.putExtra("payfrom", "3"); //代表从秒杀结算的
+        intent1.putExtra("SeckillId", seckillListBean.getSeckillId()); //代表秒杀商品的id
         startActivity(intent1);
     }
 }

@@ -339,8 +339,8 @@ public class PartnerGoodsDetailActivity extends Activity implements View.OnClick
         etAmount = (EditText) findViewById(R.id.etAmount);
         etAmount.setEnabled(false);
         rollPagerView = (RollPagerView) findViewById(R.id.roll_view_pager_detail);
-        goods_pingjia_layout_btn = (RelativeLayout) findViewById(R.id.goods_pingjia_layout_btn);
-        goods_detail_layout_btn = (RelativeLayout) findViewById(R.id.goods_detail_layout_btn);
+        goods_pingjia_layout_btn = (RelativeLayout) findViewById(R.id.goods_pingjia_layout_btn1);
+        goods_detail_layout_btn = (RelativeLayout) findViewById(R.id.goods_detail_layout_btn1);
         id_goods_detail_view = (View) findViewById(R.id.id_goods_detail_view);
         id_goods_pingjia_view = (View) findViewById(R.id.id_goods_pingjia_view);
         goods_detail_webview = (WebView) findViewById(R.id.goods_detail_webview);
@@ -876,18 +876,19 @@ public class PartnerGoodsDetailActivity extends Activity implements View.OnClick
                     setChooseType();
                     break;
                 case R.id.btnDecrease: //数量减少按钮
-                    if (Integer.valueOf(etAmount.getText().toString()) <= 1) {
-                    } else {
-                        etAmount.setText(String.valueOf(Integer.valueOf(etAmount.getText().toString()) - 1));
-
-                    }
+                    //合伙人商品只能购买一件
+//                    if (Integer.valueOf(etAmount.getText().toString()) <= 1) {
+//                    } else {
+//                        etAmount.setText(String.valueOf(Integer.valueOf(etAmount.getText().toString()) - 1));
+//
+//                    }
                     break;
                 case R.id.btnIncrease: //数量增加按钮
-                    if (Integer.valueOf(etAmount.getText().toString()) < goodsDetailInfo.getResult().getGoodsInfo().getBuyQuantity()) {
-                    } else {
-                        etAmount.setText(String.valueOf(Integer.valueOf(etAmount.getText().toString()) + 1));
-
-                    }
+//                    if (Integer.valueOf(etAmount.getText().toString()) < goodsDetailInfo.getResult().getGoodsInfo().getBuyQuantity()) {
+//                    } else {
+//                        etAmount.setText(String.valueOf(Integer.valueOf(etAmount.getText().toString()) + 1));
+//
+//                    }
                     break;
                 case R.id.goods_type_ok: //点击底部购物车弹出view中的确定
                     Toast.makeText(this, "合伙人商品请直接支付", Toast.LENGTH_SHORT).show();

@@ -1,6 +1,7 @@
 package com.aboluo.adapter;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,47 +9,35 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.aboluo.XUtils.CommonUtils;
 import com.aboluo.com.R;
+import com.squareup.picasso.Picasso;
 
 import org.w3c.dom.Text;
+
+import java.util.List;
 
 /**
  * Created by cj34920 on 2016/9/7.
  */
 public class GridViewAdapter extends BaseAdapter {
     private Context mContext;
-
-    public GridViewAdapter(Context mContext) {
+    private String [] images;
+    private Picasso picasso;
+    private String ImageUrl;
+    public GridViewAdapter(Context mContext,String [] mimages) {
         this.mContext = mContext;
+        this.images =mimages;
+        this.picasso = Picasso.with(mContext);
+        ImageUrl = CommonUtils.GetValueByKey(mContext, "ImgUrl");
     }
 
-    private Integer[] images = {
-            //九宫格图片的设置
-            R.drawable.icon_01,
-            R.drawable.icon_02,
-            R.drawable.icon_03,
-            R.drawable.icon_04,
-            R.drawable.icon_05,
-            R.drawable.icon_06,
-            R.drawable.icon_07,
-            R.drawable.icon_08,
-    };
 
-    private String[] texts = {
-            //九宫格图片下方文字的设置
-            "合伙人商品",
-            "夺宝",
-            "拼团购",
-            "分类",
-            "秒杀",
-            "签到送积分",
-            "尽请期待...",
-            "尽请期待...",
-    };
+
 
     @Override
     public int getCount() {
-        return texts.length;
+        return images.length;
     }
 
     @Override
@@ -73,8 +62,9 @@ public class GridViewAdapter extends BaseAdapter {
         }else {
             holder = (ViewHolder) view.getTag();
         }
-        holder.imageView.setImageResource(images[i]);
-        holder.textView.setText(texts[i]);
+        Log.i("Mid_GridViewAdapter",images[i]);
+        picasso.load(images[i]).placeholder(R.drawable.imagviewloading)
+                .error(R.drawable.imageview_error).into( holder.imageView);
         return view;
     }
 

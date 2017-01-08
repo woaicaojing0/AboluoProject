@@ -14,14 +14,14 @@
         app:contentInsetLeft="0dp"
         app:contentInsetStart="0dp">
 
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center_vertical"
             android:orientation="horizontal">
 
             <ImageView
-                android:id="@+id/all_add_text_back"
+                android:id="@+id/iv_unary_back"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
@@ -30,18 +30,19 @@
                 android:text="返回" />
 
             <TextView
+                android:layout_gravity="center"
                 android:id="@+id/toolbar_txt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
                 android:text="夺宝幸运" />
 
-        </LinearLayout>
+        </RelativeLayout>
     </android.support.v7.widget.Toolbar>
 
-    <com.aboluo.widget.UnaryScrollView
+    <com.aboluo.widget.MyScrollview
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_below="@id/toolbar"
         android:fillViewport="true">
 
@@ -245,7 +246,7 @@
             <com.aboluo.XUtils.RBCallbkRecyclerView
                 android:id="@+id/unary_recyclerView"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_marginLeft="24dp"
                 android:layout_marginRight="20dp"></com.aboluo.XUtils.RBCallbkRecyclerView>
 
@@ -255,5 +256,5 @@
                 android:layout_height="wrap_content"
                 android:visibility="gone"></WebView>
         </LinearLayout>
-    </com.aboluo.widget.UnaryScrollView>
+    </com.aboluo.widget.MyScrollview>
 </RelativeLayout>

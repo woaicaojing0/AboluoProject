@@ -12,8 +12,15 @@ import android.util.Log;
  * Add the callback of reaching bottom into RecyclerView
  * Support three LayoutManager(Linear、Grid、StaggeredGrid)
  * Created by wiky on 2016/3/26.
+ * 这个和RBCallbkRecyclerView唯一不同的是
+ *  @Override
+ *  protected void onMeasure(int widthSpec, int heightSpec) {
+ *  int expandSpec = MeasureSpec.makeMeasureSpec(Integer.MAX_VALUE >> 2,
+ *  MeasureSpec.AT_MOST);
+ *  super.onMeasure(widthSpec, expandSpec);
+}
  */
-public class RBCallbkRecyclerView extends RecyclerView {
+public class RBCallbkRecyclerView2 extends RecyclerView {
     private OnReachBottomListener onReachBottomListener;
     private boolean isInTheBottom = false;
     /**
@@ -25,15 +32,15 @@ public class RBCallbkRecyclerView extends RecyclerView {
      */
     private int reachBottomRow = 1;
 
-    public RBCallbkRecyclerView(Context context) {
+    public RBCallbkRecyclerView2(Context context) {
         super(context);
     }
 
-    public RBCallbkRecyclerView(Context context, AttributeSet attrs) {
+    public RBCallbkRecyclerView2(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
 
-    public RBCallbkRecyclerView(Context context, AttributeSet attrs, int defStyle) {
+    public RBCallbkRecyclerView2(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
     }
 
@@ -105,10 +112,4 @@ public class RBCallbkRecyclerView extends RecyclerView {
         this.onReachBottomListener = onReachBottomListener;
     }
 
-    @Override
-    protected void onMeasure(int widthSpec, int heightSpec) {
-        int expandSpec = MeasureSpec.makeMeasureSpec(Integer.MAX_VALUE >> 2,
-                MeasureSpec.AT_MOST);
-        super.onMeasure(widthSpec, expandSpec);
-    }
 }

@@ -317,7 +317,7 @@ public class GoodsDetailActivity extends Activity implements View.OnClickListene
         rollPagerView.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
-                Toast.makeText(GoodsDetailActivity.this, "1", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(GoodsDetailActivity.this, "1", Toast.LENGTH_SHORT).show();
             }
         });
         goods_type_imgeurl = imges[0];
@@ -520,7 +520,7 @@ public class GoodsDetailActivity extends Activity implements View.OnClickListene
                         Log.i("woaicaojing + picURl", ImgUrl + listcolor.get(finalI).getColorImg());
                         Picasso.with(GoodsDetailActivity.this).load(ImgUrl + listcolor.get(finalI).getColorImg()).placeholder(getResources().getDrawable(R.drawable.imagviewloading)).into(goods_detail_type_imageview);
                         RadioButton radioButton = (RadioButton) findViewById(v.getId());
-                        Toast.makeText(GoodsDetailActivity.this, radioButton.getText().toString(), Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(GoodsDetailActivity.this, radioButton.getText().toString(), Toast.LENGTH_SHORT).show();
                         if (listcolorstandard == null) {
                         } else {
                             RadioButton checkRadioButton = (RadioButton) findViewById(goodsdetail_type_standards.getCheckedRadioButtonId());
@@ -719,7 +719,7 @@ public class GoodsDetailActivity extends Activity implements View.OnClickListene
                     Log.i("woaicaojing + picURl", ImgUrl + listcolor.get(finalI).getColorImg());
                     Picasso.with(GoodsDetailActivity.this).load(ImgUrl + listcolor.get(finalI).getColorImg()).placeholder(getResources().getDrawable(R.drawable.imagviewloading)).into(goods_detail_type_imageview);
                     RadioButton radioButton = (RadioButton) findViewById(v.getId());
-                    Toast.makeText(GoodsDetailActivity.this, radioButton.getText().toString(), Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(GoodsDetailActivity.this, radioButton.getText().toString(), Toast.LENGTH_SHORT).show();
                     if (listcolorstandard == null) {
                     } else {
                         RadioButton checkRadioButton = (RadioButton) findViewById(goodsdetail_type_standards.getCheckedRadioButtonId());
@@ -1082,7 +1082,7 @@ public class GoodsDetailActivity extends Activity implements View.OnClickListene
         pop_01.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(GoodsDetailActivity.this, "1111", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(GoodsDetailActivity.this, "1111", Toast.LENGTH_SHORT).show();
                 goods_popwindow.dismiss();
             }
         });

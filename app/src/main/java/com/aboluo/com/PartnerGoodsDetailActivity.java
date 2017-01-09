@@ -259,7 +259,6 @@ public class PartnerGoodsDetailActivity extends Activity implements View.OnClick
         });
 
     }
-
     /**
      * 初始化底部webivew（获取数据之后）
      *
@@ -276,16 +275,29 @@ public class PartnerGoodsDetailActivity extends Activity implements View.OnClick
         goods_detail_webview.setHorizontalScrollbarOverlay(false);
         //end
         WebSettings webviewsetting = goods_detail_webview.getSettings();
+        webviewsetting.setDomStorageEnabled(true);
         webviewsetting.setJavaScriptEnabled(true);
         webviewsetting.setUseWideViewPort(true);//关键点
         webviewsetting.setLoadWithOverviewMode(true);
         webviewsetting.setLoadWithOverviewMode(true);
-        goods_detail_webview.loadUrl("http://t.back.aboluomall.com/Moblie/ProductDescription?productId=10");
-        goods_detail_webview.setWebViewClient(new WebViewClient(){
+        goods_detail_webview.loadUrl(detailurl);
+        goods_detail_webview.setWebViewClient(new WebViewClient() {
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
                 view.loadUrl(url);
                 return super.shouldOverrideUrlLoading(view, url);
+            }
+
+            @Override
+            public void onPageFinished(WebView view, String url) {
+                super.onPageFinished(view, url);
+                //这个是一定要加上那个的,配合scrollView和WebView的height=wrap_content属性使用
+                int w = View.MeasureSpec.makeMeasureSpec(0,
+                        View.MeasureSpec.UNSPECIFIED);
+                int h = View.MeasureSpec.makeMeasureSpec(0,
+                        View.MeasureSpec.UNSPECIFIED);
+                //重新测量
+                goods_detail_webview.measure(w, h);
             }
         });
 //        //评价地址
@@ -296,7 +308,6 @@ public class PartnerGoodsDetailActivity extends Activity implements View.OnClick
 //        goods_pingjia_webview.loadUrl("http://t.back.aboluomall.com/Moblie/ShowEvaluationList");
 //        goods_pingjia_webview.setWebViewClient(new WebViewClient());
     }
-
     /**
      * 加载头部banner(获取数据之后)
      *
@@ -317,7 +328,7 @@ public class PartnerGoodsDetailActivity extends Activity implements View.OnClick
         rollPagerView.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
-                Toast.makeText(PartnerGoodsDetailActivity.this, "1", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(PartnerGoodsDetailActivity.this, "1", Toast.LENGTH_SHORT).show();
             }
         });
         goods_type_imgeurl = imges[0];
@@ -523,7 +534,7 @@ public class PartnerGoodsDetailActivity extends Activity implements View.OnClick
                         Log.i("woaicaojing + picURl", ImgUrl + listcolor.get(finalI).getColorImg());
                         Picasso.with(PartnerGoodsDetailActivity.this).load(ImgUrl + listcolor.get(finalI).getColorImg()).placeholder(getResources().getDrawable(R.drawable.imagviewloading)).into(goods_detail_type_imageview);
                         RadioButton radioButton = (RadioButton) findViewById(v.getId());
-                        Toast.makeText(PartnerGoodsDetailActivity.this, radioButton.getText().toString(), Toast.LENGTH_SHORT).show();
+                       // Toast.makeText(PartnerGoodsDetailActivity.this, radioButton.getText().toString(), Toast.LENGTH_SHORT).show();
                         if (listcolorstandard == null) {
                         } else {
                             RadioButton checkRadioButton = (RadioButton) findViewById(goodsdetail_type_standards.getCheckedRadioButtonId());
@@ -722,7 +733,7 @@ public class PartnerGoodsDetailActivity extends Activity implements View.OnClick
                     Log.i("woaicaojing + picURl", ImgUrl + listcolor.get(finalI).getColorImg());
                     Picasso.with(PartnerGoodsDetailActivity.this).load(ImgUrl + listcolor.get(finalI).getColorImg()).placeholder(getResources().getDrawable(R.drawable.imagviewloading)).into(goods_detail_type_imageview);
                     RadioButton radioButton = (RadioButton) findViewById(v.getId());
-                    Toast.makeText(PartnerGoodsDetailActivity.this, radioButton.getText().toString(), Toast.LENGTH_SHORT).show();
+                   // Toast.makeText(PartnerGoodsDetailActivity.this, radioButton.getText().toString(), Toast.LENGTH_SHORT).show();
                     if (listcolorstandard == null) {
                     } else {
                         RadioButton checkRadioButton = (RadioButton) findViewById(goodsdetail_type_standards.getCheckedRadioButtonId());
@@ -840,18 +851,18 @@ public class PartnerGoodsDetailActivity extends Activity implements View.OnClick
     public void onClick(View v) {
         if (CommonUtils.IsLogin(PartnerGoodsDetailActivity.this)) {
             switch (v.getId()) {
-                case R.id.goods_detail_layout_btn: //商品详情按钮
+                case R.id.goods_detail_layout_btn1: //商品详情按钮
                     id_goods_detail_view.setVisibility(View.VISIBLE);
                     id_goods_pingjia_view.setVisibility(View.GONE);
                     String detailurl0 = CommonUtils.GetValueByKey(PartnerGoodsDetailActivity.this, "backUrl") + "/moblie/Index?productId=" + goods_id;
                     initwebview(detailurl0,null);
                     break;
-                case R.id.goods_pingjia_layout_btn: //商品评价按钮Moblie/ShowEvaluation?goodsId
+                case R.id.goods_pingjia_layout_btn1: //商品评价按钮Moblie/ShowEvaluation?goodsId
                     id_goods_detail_view.setVisibility(View.GONE);
                     id_goods_pingjia_view.setVisibility(View.VISIBLE);
-                   // String detailurl = CommonUtils.GetValueByKey(GoodsDetailActivity.this, "backUrl") + "/Moblie/ShowEvaluation?goodsId=" + goods_id;
-                    String detailurl = "http://back.aboluomall.com/Moblie/ShowEvaluation?goodsId=12";
-                    initwebview(detailurl,null);
+                    String detailurl = CommonUtils.GetValueByKey(PartnerGoodsDetailActivity.this, "backUrl") + "/Moblie/ShowEvaluation?goodsId=" + goods_id;
+                    //String detailurl = "http://back.aboluomall.com/Moblie/ShowEvaluation?goodsId=12";
+                    initwebview(detailurl, null);
                     break;
                 case R.id.detail_goods: //首部购物车
                     Intent intent = new Intent(PartnerGoodsDetailActivity.this, MainActivity.class);
@@ -1069,7 +1080,7 @@ public class PartnerGoodsDetailActivity extends Activity implements View.OnClick
         pop_01.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(PartnerGoodsDetailActivity.this, "1111", Toast.LENGTH_SHORT).show();
+               // Toast.makeText(PartnerGoodsDetailActivity.this, "1111", Toast.LENGTH_SHORT).show();
                 goods_popwindow.dismiss();
             }
         });

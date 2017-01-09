@@ -29,7 +29,6 @@ import android.widget.TextView;
 
 import com.aboluo.XUtils.CommonUtils;
 import com.aboluo.XUtils.MyApplication;
-import com.aboluo.XUtils.RBCallbkRecyclerView;
 import com.aboluo.XUtils.RBCallbkRecyclerView2;
 import com.aboluo.XUtils.ScreenUtils;
 import com.aboluo.adapter.RecycleViewAdapter;
@@ -94,9 +93,10 @@ public class GoodsListActivity extends Activity implements RecycleViewAdapter.On
     private int pagesize = 10;
     private List<GoodsListInfo.ResultBean.GoodsListBean> goodsListBean;
     private static String GoodsName;
-    private static int GoodsBrandId;
-    private static boolean IsPriceSort;
-    private static boolean LineType = true;
+    private  int GoodsBrandId;
+    private  boolean IsPriceSort;
+    private  boolean LineType = true;
+    private  boolean isDeault = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -261,8 +261,11 @@ public class GoodsListActivity extends Activity implements RecycleViewAdapter.On
                 } else {
                     map.put("GoodsBrandId", String.valueOf(GoodsBrandId));
                 }
+                if (isDeault) {
+                } else {
+                    map.put("IsPriceSort", String.valueOf(IsPriceSort));
+                }
                 map.put("APPToken", APPToken);
-                map.put("IsPriceSort", String.valueOf(IsPriceSort));
                 map.put("CurrentPage", String.valueOf(currentpage));
                 map.put("PageSize", String.valueOf(pagesize));
                 return map;
@@ -425,6 +428,7 @@ public class GoodsListActivity extends Activity implements RecycleViewAdapter.On
                 drawer_layout.openDrawer(Gravity.RIGHT);
                 break;
             case R.id.line_buju:
+                isDeault =false;
                 btn_goodsdetail_defalut.setTextColor(Color.BLACK);
                 LineType = !LineType;
                 if (LineType) {
@@ -454,6 +458,7 @@ public class GoodsListActivity extends Activity implements RecycleViewAdapter.On
                 finish();
                 break;
             case R.id.btn_goodslist_rest:
+                currentpages = 1;
                 goods_list_brand_radiogroup.clearCheck();
                 GoodsBrandId = -1;
                 initdate(1);
@@ -462,17 +467,22 @@ public class GoodsListActivity extends Activity implements RecycleViewAdapter.On
                 drawer_layout.closeDrawers();
                 break;
             case R.id.line_goods_detail_price:
+                isDeault =false;
+                currentpages = 1;
                 btn_goodsdetail_defalut.setTextColor(Color.BLACK);
                 btn_goodsdetail_price.setTextColor(getResources().getColor(R.color.btn_color));
                 IsPriceSort = !IsPriceSort;
                 if (IsPriceSort) {
-                    goods_detail_price_img.setImageResource(R.drawable.triangle_down_fill_color);
-                } else {
                     goods_detail_price_img.setImageResource(R.drawable.triangle_up_fill_color);
+                } else {
+                    goods_detail_price_img.setImageResource(R.drawable.triangle_down_fill_color);
+
                 }
                 initdate(1);
                 break;
             case R.id.line_default:
+                currentpages = 1;
+                isDeault =true;
                 CleanBtnColor();
                 btn_goodsdetail_defalut.setTextColor(getResources()
                         .getColor(R.color.btn_color));

@@ -9,6 +9,7 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.aboluo.XUtils.CommonUtils;
 import com.aboluo.com.R;
@@ -21,6 +22,7 @@ public class AgentDetailActivity extends Activity {
     private WebView agentdetail_webiview;
     private String MemberId;
     private ImageView agentdetail_back;
+    private TextView agentdetail_txt;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,6 +31,7 @@ public class AgentDetailActivity extends Activity {
         MemberId = CommonUtils.GetMemberId(this);
         agentdetail_webiview = (WebView) findViewById(R.id.agentdetail_webiview);
         agentdetail_back = (ImageView) findViewById(R.id.agentdetail_back);
+        agentdetail_txt = (TextView) findViewById(R.id.agentdetail_txt);
         agentdetail_webiview.getSettings().setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
         agentdetail_webiview.setVerticalScrollBarEnabled(false);
         agentdetail_webiview.setHorizontalScrollBarEnabled(false);
@@ -60,6 +63,7 @@ public class AgentDetailActivity extends Activity {
     private void AgentLevel(int level) {
         switch (level) {
             case 1:
+                agentdetail_txt.setText("一级代理");
                 Log.i("agentdetail>>" + level,
                         CommonUtils.GetValueByKey(this, "backUrl") + "/Moblie/ShowPersonReferents?memberid=" + MemberId
                                 + "&referrerId=" + 1 + "&pageindex=1");
@@ -68,6 +72,7 @@ public class AgentDetailActivity extends Activity {
                                 + "&referrerId=" + 1 + "&pageindex=1");
                 break;
             case 2:
+                agentdetail_txt.setText("二级代理");
                 Log.i("agentdetail>>" + level,
                         CommonUtils.GetValueByKey(this, "backUrl") + "/Moblie/ShowPersonReferents?memberid=" + MemberId
                                 + "&referrerId=" + 2 + "&pageindex=1");
@@ -76,6 +81,7 @@ public class AgentDetailActivity extends Activity {
                                 + "&referrerId=" + 2 + "&pageindex=1");
                 break;
             case 3:
+                agentdetail_txt.setText("三级代理");
                 Log.i("agentdetail>>" + level,
                         CommonUtils.GetValueByKey(this, "backUrl") + "/Moblie/ShowPersonReferents?memberid=" + MemberId
                                 + "&referrerId=" + 3 + "&pageindex=1");

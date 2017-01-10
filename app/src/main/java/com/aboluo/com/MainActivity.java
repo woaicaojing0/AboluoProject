@@ -19,6 +19,11 @@ import com.aboluo.fragment.IndexFragment;
 import com.aboluo.fragment.MenuFragment;
 import com.aboluo.fragment.MyFragment;
 import com.aboluo.fragment.ShopCarFragment;
+import com.pgyersdk.javabean.AppBean;
+import com.pgyersdk.update.PgyUpdateManager;
+import com.pgyersdk.update.UpdateManagerListener;
+
+import me.drakeet.materialdialog.MaterialDialog;
 
 
 public class MainActivity extends FragmentActivity implements View.OnClickListener {
@@ -43,6 +48,7 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
         menu_linelayout.setOnClickListener(this);
         shopcar_linelayout.setOnClickListener(this);
         my_linelayout.setOnClickListener(this);
+        checkUpdate();
     }
 
     private void SwitchFragment(int id) {
@@ -193,4 +199,43 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
         tv_menu_car.setTextColor(getResources().getColor(R.color.txtColor));
         tv_menu_me.setTextColor(getResources().getColor(R.color.txtColor));
     }
+    private void checkUpdate(){
+        PgyUpdateManager.register(MainActivity.this,
+                new UpdateManagerListener() {
+
+                    @Override
+                    public void onUpdateAvailable(final String result) {
+
+                        // 将新版本信息封装到AppBean中
+                        final AppBean appBean = getAppBeanFromString(result);
+                        final MaterialDialog updateDialog = new MaterialDialog(MainActivity.this);
+                        updateDialog.setTitle("更新提示");
+                        updateDialog.setMessage("发现新版本！");
+                        updateDialog.setPositiveButton("马上升级", new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {   //进行更新
+                                startDownloadTask(
+                                        MainActivity.this,
+                                        appBean.getDownloadURL());
+                            }
+                        });
+
+                        updateDialog.setNegativeButton("以后再说", new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {   //取消更新
+                                updateDialog.dismiss();
+                            }
+                        });
+
+                        updateDialog.show();
+
+                    }
+
+                    @Override
+                    public void onNoUpdateAvailable() {
+
+                    }
+                });
+    }
+
 }

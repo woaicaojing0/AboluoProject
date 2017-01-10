@@ -32,7 +32,7 @@ android {
 
         manifestPlaceholders = [
                 JPUSH_PKGNAME: applicationId,
-                JPUSH_APPKEY : "da563b978891b6775c1da2e1", //JPush上注册的包名对应的appkey.
+                JPUSH_APPKEY : "79c84eb23b15bf0dfdc7cfd6", //JPush上注册的包名对应的appkey客户的极光推送.
                 JPUSH_CHANNEL: "developer-default", //暂时填写默认值即可.
         ]
     }
@@ -116,4 +116,9 @@ dependencies {
     compile files('libs/ShareSDK-Wechat-2.8.0.jar')
     compile files('libs/ShareSDK-Wechat-Core-2.8.0.jar')
     compile files('libs/ShareSDK-Wechat-Moments-2.8.0.jar')
+    //end
+    //蒲公英
+    compile 'com.pgyersdk:sdk:2.4.0'
+    //MaterialDialog
+    compile 'me.drakeet.materialdialog:library:1.3.1'
 }

@@ -21,6 +21,13 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <!--蒲公英权限-->
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />  <!-- 获取设备信息 -->
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" /> <!-- 获取MAC地址-->
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" /> <!-- 读写sdcard，storage等等 -->
+    <uses-permission android:name="android.permission.RECORD_AUDIO" /> <!-- 允许程序录制音频 -->
+
+    <uses-permission android:name="android.permission.READ_LOGS" /> <!-- 获取logcat日志 -->
     <!-- 自定义权限 -->
     <permission
         android:name="com.aboluo.com.permission.JPUSH_MESSAGE"
@@ -37,6 +44,13 @@
         android:theme="@style/AppTheme"
 
         tools:replace="android:icon, android:theme">
+        <!-- 必选b8f839629c15987cf95b99e0abf6f0c4是蒲公英的appid-->
+        <meta-data
+            android:name="PGYER_APPID"
+            android:value="b8f839629c15987cf95b99e0abf6f0c4" >
+        </meta-data>
+        <!--end-->
+        <!-- 可选-->
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTask"

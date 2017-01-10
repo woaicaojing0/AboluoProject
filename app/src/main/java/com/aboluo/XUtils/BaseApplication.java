@@ -11,8 +11,9 @@ import android.util.Log;
 import com.aboluo.Gesture.SecondActivity;
 import com.aboluo.GestureUtils.Contants;
 import com.leo.gesturelibray.enums.LockMode;
-
-import cn.beecloud.BeeCloud;
+import com.pgyersdk.crash.PgyCrashManager;
+//
+//import cn.beecloud.BeeCloud;
 import cn.jpush.android.api.JPushInterface;
 import cn.sharesdk.framework.ShareSDK;
 
@@ -27,6 +28,8 @@ public class BaseApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        //蒲公英的初始化
+        PgyCrashManager.register(this);
         //分享初始化
         ShareSDK.initSDK(this);
         //极光推送

@@ -105,28 +105,51 @@
                 android:layout_height="32dp"
                 android:background="@drawable/goods_list_type"
                 android:orientation="horizontal">
-
-                <Button
-                    android:id="@+id/btn_default"
+                <LinearLayout
+                    android:id="@+id/line_default"
                     android:layout_width="0dp"
-                    android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:background="@color/transparent"
-                    android:text="默认"/>
-
+                    android:gravity="center"
+                    android:layout_height="match_parent">
+                    <Button
+                        android:clickable="false"
+                        android:id="@+id/btn_default"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:background="@color/transparent"
+                        android:text="默认">
+                    </Button>
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                </LinearLayout>
                 <View
                     android:id="@+id/top_view1"
                     android:layout_width="0.5dp"
                     android:layout_height="match_parent"
                     android:background="@color/view_color"/>
-
-                <Button
-                    android:id="@+id/parnter_goods_detail_price"
+                <LinearLayout
+                    android:descendantFocusability="blocksDescendants"
+                    android:id="@+id/line_goods_detail_price"
                     android:layout_width="0dp"
-                    android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:background="@color/transparent"
-                    android:text="价格"/>
+                    android:gravity="center"
+                    android:layout_height="match_parent">
+                    <Button
+                        android:clickable="false"
+                        android:id="@+id/parnter_goods_detail_price"
+                        android:layout_width="40dp"
+                        android:layout_height="wrap_content"
+                        android:background="@color/transparent"
+                        android:text="价格" />
+                    <ImageView
+                        android:focusable="false"
+                        android:id="@+id/parnter_price_img"
+                        android:layout_gravity="center_vertical"
+                        android:src="@drawable/triangle_down_fill"
+                        android:layout_width="12dp"
+                        android:layout_height="12dp" />
+                </LinearLayout>
 
                 <View
                     android:id="@+id/top_view4"

@@ -72,7 +72,7 @@ public class PartnerActivity extends Activity implements PartnerAdpater.OnRecycl
     private boolean isdefault = true;
     private EditText parnter_top_editsearch;
     private String GoodsName;
-    private ImageView iv_partner_back;
+    private ImageView iv_partner_back, parnter_price_img;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -134,6 +134,7 @@ public class PartnerActivity extends Activity implements PartnerAdpater.OnRecycl
         btn_default = (Button) findViewById(R.id.btn_default);
         parnter_top_editsearch = (EditText) findViewById(R.id.parnter_top_editsearch);
         iv_partner_back = (ImageView) findViewById(R.id.iv_partner_back);
+        parnter_price_img = (ImageView) findViewById(R.id.parnter_price_img);
         InitBanner();
     }
 
@@ -208,12 +209,25 @@ public class PartnerActivity extends Activity implements PartnerAdpater.OnRecycl
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btn_default:
+                currentpages=1;
+                btn_default.setTextColor(getResources().getColor(R.color.btn_color));
+                parnter_goods_detail_price.setTextColor(Color.BLACK);
+                parnter_price_img.setImageResource(R.drawable.triangle_down_fill);
                 isdefault = true;
                 initData(1);
                 break;
             case R.id.parnter_goods_detail_price:
-                isdefault = false;
+                currentpages=1;
+                btn_default.setTextColor(Color.BLACK);
+                parnter_goods_detail_price.setTextColor(getResources().getColor(R.color.btn_color));
                 ispricesort = !ispricesort;
+                if (ispricesort) {
+                    parnter_price_img.setImageResource(R.drawable.triangle_up_fill_color);
+                } else {
+                    parnter_price_img.setImageResource(R.drawable.triangle_down_fill_color);
+
+                }
+                isdefault = false;
                 initData(1);
                 break;
             case R.id.iv_partner_back:
@@ -224,7 +238,7 @@ public class PartnerActivity extends Activity implements PartnerAdpater.OnRecycl
 
     @Override
     public void onItemClick(View view, int position) {
-      //  Toast.makeText(this, position + "", Toast.LENGTH_SHORT).show();
+        //  Toast.makeText(this, position + "", Toast.LENGTH_SHORT).show();
         int goods_id = goodsListBean.get(position).getGoodsId();
         Intent intent = new Intent(this, PartnerGoodsDetailActivity.class);
         intent.putExtra("goods_id", goods_id);

@@ -138,7 +138,7 @@ public class IndexFragment extends Fragment implements View.OnClickListener {
         rollPagerView.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
-                Toast.makeText(IndexFragment.this.getActivity(), "1", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(IndexFragment.this.getActivity(), "1", Toast.LENGTH_SHORT).show();
             }
         });
         pullToRefreshScrollView.setOnRefreshListener(new PullToRefreshBase.OnRefreshListener<ScrollView>() {
@@ -916,7 +916,7 @@ public class IndexFragment extends Fragment implements View.OnClickListener {
         mid_gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(IndexFragment.this.getActivity(), position + "", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(IndexFragment.this.getActivity(), position + "", Toast.LENGTH_SHORT).show();
                 switch (midGridViewConfigBean.getAppConfigList().get(position).getParams().getChildId()) {
                     case 53:
                         Intent intent = new Intent(getActivity(), PartnerActivity.class);

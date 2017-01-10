@@ -85,18 +85,13 @@
                         android:layout_height="wrap_content"
                         android:orientation="horizontal">
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="原价:￥" />
 
                         <TextView
-                            android:id="@+id/parnter_old_money"
+                            android:id="@+id/parnter_new_money"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:lines="1"
-                            android:text="123元"
-                            android:textColor="#cccccc" />
+                            android:text="77元"
+                            android:textColor="@color/red" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -105,18 +100,13 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
                         android:orientation="horizontal">
-
                         <TextView
+                            android:id="@+id/parnter_old_money"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="会员价:￥" />
-
-                        <TextView
-                            android:id="@+id/parnter_new_money"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="77元"
-                            android:textColor="@color/red" />
+                            android:lines="1"
+                            android:text="123元"
+                            android:textColor="#cccccc" />
                     </LinearLayout>
                 </RelativeLayout>
             </LinearLayout>

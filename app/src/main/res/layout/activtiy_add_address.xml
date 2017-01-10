@@ -51,6 +51,8 @@
                android:id="@+id/textView2" />
 
             <EditText
+                android:textColor="@color/blue"
+                android:textColorHint="@color/btn_color"
                 android:id="@+id/edit_receive_name"
                 android:layout_marginLeft="34dp"
                 android:layout_width="wrap_content"
@@ -74,6 +76,8 @@
                 android:text="联系电话" />
 
             <EditText
+                android:textColor="@color/blue"
+                android:textColorHint="@color/btn_color"
                 android:id="@+id/edit_receive_phone"
                 android:layout_marginLeft="18dp"
                 android:layout_width="wrap_content"
@@ -82,6 +86,7 @@
                 android:background="@null"/>
 
     </LinearLayout>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="48dp"
@@ -103,6 +108,7 @@
                 android:layout_height="match_parent"
                 android:text="所在地区" />
             <TextView
+                android:textColor="@color/blue"
                 android:layout_marginLeft="18dp"
                 android:id="@+id/add_address_txtview_location"
                 android:layout_width="wrap_content"
@@ -112,17 +118,20 @@
                 android:text=""
                 android:ellipsize="end"
                 android:layout_toStartOf="@+id/go" />
+
             <ImageView
                 android:id="@+id/go"
-                android:layout_alignParentRight="true"
                 android:layout_gravity="end"
                 android:layout_width="40dp"
                 android:layout_height="wrap_content"
-                android:src="@drawable/choose_addrees_go"/>
+                android:src="@drawable/choose_addrees_color_go"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentEnd="true" />
 
 
         </RelativeLayout>
     </LinearLayout>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="48dp"
@@ -139,19 +148,23 @@
             android:gravity="center"
             android:layout_height="match_parent"
             android:text="街道" />
+
+            <ImageView
+            android:id="@+id/imageview_jiedao"
+            android:layout_width="40dp"
+            android:layout_height="match_parent"
+            android:src="@drawable/choose_addrees_color_go"
+            android:layout_alignParentRight="true"/>
+
             <TextView
+                android:textColor="@color/btn_color"
                 android:text="街道"
                 android:layout_width="wrap_content"
                 android:gravity="center"
                 android:layout_height="match_parent"
                 android:id="@+id/add_address_txtview_jiedao"
-                android:layout_toStartOf="@+id/imageview_jiedao"/>
-        <ImageView
-            android:id="@+id/imageview_jiedao"
-            android:layout_width="40dp"
-            android:layout_height="match_parent"
-            android:src="@drawable/choose_addrees_go"
-            android:layout_alignParentRight="true"/>
+                android:layout_alignParentTop="true"
+                android:layout_toStartOf="@+id/imageview_jiedao" />
         </RelativeLayout>
         </LinearLayout>
     <LinearLayout
@@ -168,6 +181,7 @@
                 android:text="详细地址" />
 
             <EditText
+                android:textColorHint="@color/btn_color"
                 android:id="@+id/edit_receive_address"
                 android:layout_marginLeft="18dp"
                 android:layout_width="wrap_content"
@@ -191,6 +205,7 @@
                 android:text="邮政编码" />
 
             <EditText
+                android:textColorHint="@color/btn_color"
                 android:id="@+id/edit_receive_zipcode"
                 android:layout_marginLeft="18dp"
                 android:layout_width="wrap_content"

@@ -196,6 +196,7 @@ public class AddAddressActivity extends Activity implements TextWatcher, View.On
         }
         if (streetname != null) {
             add_address_txtview_jiedao.setText(streetname);
+            add_address_txtview_jiedao.setTextColor(Color.BLUE);
         }
         if (streetid != 0) {
             txt_street_id.setText(String.valueOf(streetid));
@@ -258,8 +259,6 @@ public class AddAddressActivity extends Activity implements TextWatcher, View.On
                 basemodel = gson.fromJson(response, BaseModel.class);
                 if (basemodel.isIsSuccess()) {
                     Toast.makeText(AddAddressActivity.this, basemodel.getMessage().toString(), Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(AddAddressActivity.this, AddressActivity.class);
-                    startActivity(intent);
                     finish();
                 } else {
                     Toast.makeText(AddAddressActivity.this, basemodel.getMessage().toString(), Toast.LENGTH_SHORT).show();
@@ -390,6 +389,7 @@ public class AddAddressActivity extends Activity implements TextWatcher, View.On
                     add_address_txtview_location.setText(memberAddressListBean.getProvince() + " " +
                             memberAddressListBean.getCity() + " " + memberAddressListBean.getRegion() + " ");
                     add_address_txtview_jiedao.setText(memberAddressListBean.getStreet());
+                    add_address_txtview_jiedao.setTextColor(Color.BLUE);
                     txt_street_id.setText(String.valueOf(memberAddressListBean.getStreetId()));
                     txt_allid.setText(memberAddressListBean.getProvinceId() + ";" +
                             memberAddressListBean.getCityId() + ";" + memberAddressListBean.getRegionId());

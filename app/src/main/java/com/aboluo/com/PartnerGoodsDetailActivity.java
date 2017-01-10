@@ -419,8 +419,8 @@ public class PartnerGoodsDetailActivity extends Activity implements View.OnClick
                 txt_old_money.setText(String.valueOf(goodsDetailInfo.getResult().getGoodsInfo().getGoodsPrice()));
                 txt_old_money.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG);
                 txt_goods_num.setText(String.valueOf(goodsDetailInfo.getResult().getGoodsInfo().getGoodsQuantity()));
-                goods_detail_type_txtmoney.setText("会员价：￥" + String.valueOf(goodsDetailInfo.getResult().getGoodsInfo().getHyPrice()) + "元");
-                goods_detail_type_txtnum.setText("库存：" + String.valueOf(goodsDetailInfo.getResult().getGoodsInfo().getGoodsQuantity()) + "件");
+                goods_detail_type_txtmoney.setText("￥" + String.valueOf(goodsDetailInfo.getResult().getGoodsInfo().getHyPrice()) + "元");
+                goods_detail_type_txtnum.setText(String.valueOf(goodsDetailInfo.getResult().getGoodsInfo().getGoodsQuantity()) + "件");
                 if (goodsDetailInfo.getResult().getGoodsInfo().getGoodsSub() == null) {
                     layout_txt_goods_sub.setVisibility(View.GONE);
                 } else {
@@ -665,7 +665,7 @@ public class PartnerGoodsDetailActivity extends Activity implements View.OnClick
                             List<GoodsStandardsBean> goodsStandardsBean = goodsDetailInfo.getResult().getGoodsInfo().getGoodsStandards();
                             for (int i = 0; i < goodsStandardsBean.size(); i++) {
                                 if (goodsStandardsBean.get(i).getGoodsStandardId() == standardsId) {
-                                    goods_detail_type_txtmoney.setText("会员价：￥" + String.valueOf(goodsStandardsBean.get(i).getHyPrice()) + "元");
+                                    goods_detail_type_txtmoney.setText("￥" + String.valueOf(goodsStandardsBean.get(i).getHyPrice()) + "元");
 
                                 }
                             }
@@ -835,7 +835,7 @@ public class PartnerGoodsDetailActivity extends Activity implements View.OnClick
                         List<GoodsStandardsBean> goodsStandardsBean = goodsDetailInfo.getResult().getGoodsInfo().getGoodsStandards();
                         for (int i = 0; i < goodsStandardsBean.size(); i++) {
                             if (goodsStandardsBean.get(i).getGoodsStandardId() == standardsId) {
-                                goods_detail_type_txtmoney.setText("会员价：￥" + String.valueOf(goodsStandardsBean.get(i).getHyPrice()) + "元");
+                                goods_detail_type_txtmoney.setText("￥" + String.valueOf(goodsStandardsBean.get(i).getHyPrice()) + "元");
 
                             }
                         }

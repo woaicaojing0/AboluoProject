@@ -39,13 +39,14 @@
             </LinearLayout>
 
         </LinearLayout>
-        <TextView
+        <TextView android:textSize="20sp"
         android:layout_gravity="center"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="我的代金券"/>
 
         <TextView
+            android:textColor="@color/btn_color"
             android:layout_marginRight="8dp"
             android:id="@+id/tv_coupons_clean"
             android:layout_gravity="right"
@@ -61,4 +62,23 @@
         android:layout_height="match_parent"
         android:background="#ededed"
         />
+    <LinearLayout
+        android:visibility="gone"
+        android:id="@+id/ll_coupons_nocoupons"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="vertical">
+        <ImageView
+            android:layout_width="160dp"
+            android:layout_height="160dp"
+            android:src="@drawable/no_coupons"/>
+        <TextView
+            android:layout_marginTop="7dp"
+            android:textSize="20sp"
+            android:gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="暂无优惠券"/>
+    </LinearLayout>
 </LinearLayout>

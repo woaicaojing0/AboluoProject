@@ -65,7 +65,7 @@ public class MakeOrderActivity extends Activity implements View.OnClickListener 
     private Button Submit_Order;
     private int requsetcode = 1;
     private static String moeny;
-    private TextView order_yunfei;
+    private TextView order_yunfei, tv_order_tishi;
     private double yunfei = 0.0;
     private int choose_address_requestcode = 2;
     private static int AddressId = 0;
@@ -83,8 +83,9 @@ public class MakeOrderActivity extends Activity implements View.OnClickListener 
     private TextView tv_makeorder_showcoupons, tv_makerorder_isuserintegral, tv_makerorder_IntegralCount, tv_makerorder_IntegralPrice;
     private String discountType = "0"; //代表不使用优惠券和积分，1代表使用积分，2代表使用优惠券
     private MakerOrderIntergralBean makerOrderIntergralBean;
-    private LinearLayout ll_makerorder_jifeng;
+    private LinearLayout ll_makerorder_jifeng, order_Line_tishi;
     private int SeckillId; // 秒杀的商品的id
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -142,7 +143,9 @@ public class MakeOrderActivity extends Activity implements View.OnClickListener 
         tv_makerorder_isuserintegral = (TextView) findViewById(R.id.tv_makerorder_isuserintegral);
         tv_makerorder_IntegralCount = (TextView) findViewById(R.id.tv_makerorder_IntegralCount);
         tv_makerorder_IntegralPrice = (TextView) findViewById(R.id.tv_makerorder_IntegralPrice);
+        tv_order_tishi = (TextView) findViewById(R.id.tv_order_tishi);
         ll_makerorder_jifeng = (LinearLayout) findViewById(R.id.ll_makerorder_jifeng);
+        order_Line_tishi = (LinearLayout) findViewById(R.id.order_Line_tishi);
         change_make_sure_location = (RelativeLayout) findViewById(R.id.change_make_sure_location);
         requestQueue = MyApplication.getRequestQueue();
         url = CommonUtils.GetValueByKey(this, "apiurl");
@@ -160,7 +163,7 @@ public class MakeOrderActivity extends Activity implements View.OnClickListener 
         OnePurchaseId = bundle.getInt("OnePurchaseId", 0);
         SeckillId = bundle.getInt("SeckillId", 0);
         txt_allmoney.setText(bundle.get("allmoney").toString());
-        goods_smallallmoeny.setText("￥" + bundle.get("allmoney").toString());
+//        goods_smallallmoeny.setText("￥" + bundle.get("allmoney").toString());
         txt_goods_allnum.setText("共计" + goodsShoppingCartListBean.size() + "件商品");
         Submit_Order.setOnClickListener(this);
         initData();
@@ -484,5 +487,22 @@ public class MakeOrderActivity extends Activity implements View.OnClickListener 
             }
         };
         requestQueue.add(stringRequest);
+    }
+
+    /**
+     * 加载下单时提示用户多少免邮
+     *
+     * @param freightBase  多少免邮
+     * @param currentMoney 当前总价(不包含优惠券和积分)
+     */
+    private void initTiShi(double freightBase, double currentMoney) {
+        if (freightBase > currentMoney) {
+            String surplus = String.valueOf(freightBase - currentMoney);
+            order_Line_tishi.setVisibility(View.VISIBLE);
+            tv_order_tishi.setText("亲，购满" + String.valueOf(freightBase) + "元，可减免邮费哦！您现在已购"
+                    + String.valueOf(currentMoney) + "元，还差" + surplus + "元，可以再去逛逛哟");
+        } else {
+            order_Line_tishi.setVisibility(View.GONE);
+        }
     }
 }

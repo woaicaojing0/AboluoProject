@@ -24,7 +24,6 @@ import com.google.gson.Gson;
 import com.handmark.pulltorefresh.library.PullToRefreshListView;
 import com.squareup.picasso.Picasso;
 
-import java.lang.reflect.Member;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -47,7 +46,7 @@ public class CouponsActivity extends Activity implements View.OnClickListener {
     private String TotalMoney = "0"; //表明从个人优惠券还是下单的选择优惠券跳转的(0代表是个人中心，非0代表下单)
     private PullToRefreshListView lv_coupons_showcoupons;
     private TextView tv_coupons_clean, tv__conpous_backname;
-    private LinearLayout back_last_choose;
+    private LinearLayout back_last_choose, ll_coupons_nocoupons;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,6 +74,7 @@ public class CouponsActivity extends Activity implements View.OnClickListener {
         tv_coupons_clean = (TextView) findViewById(R.id.tv_coupons_clean);
         tv__conpous_backname = (TextView) findViewById(R.id.tv__conpous_backname);
         back_last_choose = (LinearLayout) findViewById(R.id.back_last_choose);
+        ll_coupons_nocoupons = (LinearLayout) findViewById(R.id.ll_coupons_nocoupons);
         if (TotalMoney.equals("0")) {
             tv_coupons_clean.setVisibility(View.GONE);
             tv__conpous_backname.setText("个人中心");
@@ -98,7 +98,11 @@ public class CouponsActivity extends Activity implements View.OnClickListener {
                 final CouponsBean couponsBean = gson.fromJson(response, CouponsBean.class);
                 if (couponsBean.getMemberCouponList() == null) {
                     Toast.makeText(CouponsActivity.this, "当前没有优惠券", Toast.LENGTH_SHORT).show();
+                    ll_coupons_nocoupons.setVisibility(View.VISIBLE);
+                    lv_coupons_showcoupons.setVisibility(View.GONE);
                 } else {
+                    ll_coupons_nocoupons.setVisibility(View.GONE);
+                    lv_coupons_showcoupons.setVisibility(View.VISIBLE);
                     CouponsAdapter couponsAdapter = new CouponsAdapter(CouponsActivity.this, couponsBean.getMemberCouponList());
                     lv_coupons_showcoupons.setAdapter(couponsAdapter);
                     if (TotalMoney.equals("0")) {
@@ -109,9 +113,9 @@ public class CouponsActivity extends Activity implements View.OnClickListener {
                             @Override
                             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                                 Intent intent = new Intent();
-                                intent.putExtra("CouponId", String.valueOf(couponsBean.getMemberCouponList().get(position-1).getCouponId()));
-                                intent.putExtra("Remark", couponsBean.getMemberCouponList().get(position-1).getRemark());
-                                intent.putExtra("CouponMoney", String.valueOf(couponsBean.getMemberCouponList().get(position-1).getCouponMoney()));
+                                intent.putExtra("CouponId", String.valueOf(couponsBean.getMemberCouponList().get(position - 1).getCouponId()));
+                                intent.putExtra("Remark", couponsBean.getMemberCouponList().get(position - 1).getRemark());
+                                intent.putExtra("CouponMoney", String.valueOf(couponsBean.getMemberCouponList().get(position - 1).getCouponMoney()));
                                 setResult(RESULT_OK, intent);
                                 finish();
                             }

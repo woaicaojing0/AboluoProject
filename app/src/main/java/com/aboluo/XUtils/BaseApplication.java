@@ -14,6 +14,7 @@ import com.leo.gesturelibray.enums.LockMode;
 import com.pgyersdk.crash.PgyCrashManager;
 //
 //import cn.beecloud.BeeCloud;
+import cn.beecloud.BeeCloud;
 import cn.jpush.android.api.JPushInterface;
 import cn.sharesdk.framework.ShareSDK;
 

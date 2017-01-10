@@ -55,6 +55,7 @@ public class NoPayFragment extends Fragment implements View.OnClickListener {
     private String MemberId;
     private int InitPage = 1;
     private LinearLayout allorder_empty;
+    private boolean isFrist = true;
 
     @Nullable
     @Override
@@ -91,6 +92,7 @@ public class NoPayFragment extends Fragment implements View.OnClickListener {
         URL = CommonUtils.GetValueByKey(context, "apiurl");
         ImageURL = CommonUtils.GetValueByKey(context, "ImgUrl");
         gson = new Gson();
+        isFrist=false;
         //GetInfo(1);
     }
 
@@ -246,4 +248,20 @@ public class NoPayFragment extends Fragment implements View.OnClickListener {
         };
         requestQueue.add(stringRequest);
     }
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if (getUserVisibleHint()) {
+            if (isFrist) {
+                isFrist=false;
+            } else {
+                InitPage = 1;
+                orderBean = null;
+                GetInfo(1);
+            }
+
+        }
+    }
+
 }

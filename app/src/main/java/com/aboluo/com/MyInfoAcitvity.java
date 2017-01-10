@@ -199,17 +199,17 @@ public class MyInfoAcitvity extends TakePhotoActivity implements View.OnClickLis
                 break;
             case R.id.my_info_sex:
                 builder = new AlertDialog.Builder(MyInfoAcitvity.this);
-                final String[] sex = {"女", "男"};
+                final String[] sex = {"男", "女"};
                 //    设置一个单项选择下拉框
                 /**
                  * 第一个参数指定我们要显示的一组下拉单选框的数据集合
                  * 第二个参数代表索引，指定默认哪一个单选框被勾选上，1表示默认'女' 会被勾选上
                  * 第三个参数给每一个单选项绑定一个监听器
                  */
-                builder.setSingleChoiceItems(sex, 1, new DialogInterface.OnClickListener() {
+                builder.setSingleChoiceItems(sex, myInfoBean.getResult().getMemberSex(), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        Toast.makeText(MyInfoAcitvity.this, "性别为：" + sex[which], Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(MyInfoAcitvity.this, "性别为：" + sex[which], Toast.LENGTH_SHORT).show();
                         dialog.dismiss();
                         myInfoBean.getResult().setMemberSex(which);
                         updateimages = false;

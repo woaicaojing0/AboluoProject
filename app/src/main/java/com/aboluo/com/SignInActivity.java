@@ -162,13 +162,13 @@ public class SignInActivity extends Activity implements View.OnClickListener {
                     already_signed.setVisibility(View.GONE);
                     txt_alreadyday.setText(String.valueOf(signInfoBean.getContineSignDay()));
                     txt_againday.setText(String.valueOf(signInfoBean.getTotalDay() - signInfoBean.getContineSignDay()));
-                    txt_signvalue.setText("+" + String.valueOf(signInfoBean.getForenScoreConfig()));
+                    txt_signvalue.setText("+" + String.valueOf(signInfoBean.getSignScore()));
 
                 } else {
                     unalready_signed.setVisibility(View.GONE);
                     already_signed.setVisibility(View.VISIBLE);
-                    txt_alreadyday.setText(String.valueOf(signInfoBean.getContineSignDay() + 1));
-                    txt_againday.setText(String.valueOf(signInfoBean.getTotalDay() - signInfoBean.getContineSignDay() - 1));
+                    txt_alreadyday.setText(String.valueOf(signInfoBean.getContineSignDay()));
+                    txt_againday.setText(String.valueOf(signInfoBean.getTotalDay() - signInfoBean.getContineSignDay()));
                     Toast.makeText(SignInActivity.this, "您已签到！", Toast.LENGTH_SHORT).show();
                 }
                 pdialog.dismiss();

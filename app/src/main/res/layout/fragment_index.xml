@@ -128,6 +128,8 @@
                 app:rollviewpager_play_delay="3000" />
             <!--pageview 轮播效果 end -->
             <GridView
+                android:listSelector="#00000000"
+                android:background="#00000000"
                 android:id="@+id/mid_gridview"
                 android:layout_width="match_parent"
                 android:layout_height="120dp"

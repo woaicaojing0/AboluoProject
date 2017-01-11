@@ -7,10 +7,10 @@
 
     <ScrollView
         android:id="@+id/my_scrollview"
-        android:scrollbars="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#ededed">
+        android:background="#ededed"
+        android:scrollbars="vertical">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -38,23 +38,23 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent">
-                        <de.hdodenhof.circleimageview.CircleImageView
-                            xmlns:app="http://schemas.android.com/apk/res-auto"
+
+                        <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
                             android:id="@+id/my_fragment_imageview"
                             android:layout_width="65dp"
                             android:layout_height="65dp"
-                            android:src="@drawable/logo"
                             android:layout_marginLeft="20dp"
-                            app:civ_border_color="#FF000000"
-                            />
+                            android:src="@drawable/logo"
+                            app:civ_border_color="#FF000000" />
+
                         <TextView
                             android:id="@+id/tv_my_huiyuan"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="普通会员"
-                            android:textColor="@color/white"
+                            android:layout_gravity="center_vertical"
                             android:layout_marginLeft="26dp"
-                            android:layout_gravity="center_vertical"/>
+                            android:text="普通会员"
+                            android:textColor="@color/white" />
                     </LinearLayout>
 
                 </LinearLayout>
@@ -198,24 +198,25 @@
                             android:text="待评价" />
                     </LinearLayout>
                 </RelativeLayout>
+
                 <RelativeLayout
-                    android:visibility="gone"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:gravity="center">
+                    android:gravity="center"
+                    android:visibility="gone">
 
                     <LinearLayout
-                        android:gravity="center"
                         android:id="@+id/my_refund"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:gravity="center"
                         android:orientation="vertical">
 
                         <ImageView
-                            android:layout_marginBottom="4dp"
                             android:layout_width="30dp"
                             android:layout_height="40dp"
+                            android:layout_marginBottom="4dp"
                             android:src="@drawable/refund" />
 
                         <TextView
@@ -234,11 +235,20 @@
                 android:layout_height="60dp"
                 android:layout_marginBottom="10dp"
                 android:layout_marginTop="10dp"
-                android:background="@color/white">
-<ImageView
-    android:layout_width="wrap_content"
-    android:layout_height="60dp"
-    android:src="@drawable/my_money"/>
+                android:background="@color/white"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="60dp"
+                    android:src="@drawable/my_money" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:text="我的钱包"
+                    android:textSize="20dp" />
             </LinearLayout>
 
             <LinearLayout
@@ -324,6 +334,7 @@
                             android:text="个人信息" />
                     </LinearLayout>
                 </RelativeLayout>
+
                 <RelativeLayout
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
@@ -350,6 +361,7 @@
                     </LinearLayout>
                 </RelativeLayout>
             </LinearLayout>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="89dp"
@@ -363,10 +375,10 @@
                     android:gravity="center">
 
                     <LinearLayout
-                        android:gravity="center_vertical"
                         android:id="@+id/my_invitation"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
                         android:orientation="vertical">
 
 
@@ -376,9 +388,9 @@
                             android:src="@drawable/invitation" />
 
                         <TextView
-                            android:layout_marginTop="6dp"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:layout_marginTop="6dp"
                             android:gravity="center"
                             android:text="我要邀请" />
                     </LinearLayout>
@@ -403,9 +415,9 @@
                             android:src="@drawable/invitation_code" />
 
                         <TextView
-                            android:layout_marginTop="6dp"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:layout_marginTop="6dp"
                             android:gravity="center"
                             android:text="邀请码" />
                     </LinearLayout>
@@ -430,13 +442,14 @@
                             android:src="@drawable/agent" />
 
                         <TextView
-                            android:layout_marginTop="8dp"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
                             android:gravity="center"
                             android:text="我的代理" />
                     </LinearLayout>
                 </RelativeLayout>
+
                 <RelativeLayout
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
@@ -456,33 +469,36 @@
                             android:src="@drawable/coupons" />
 
                         <TextView
-                            android:layout_marginTop="8dp"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
                             android:gravity="center"
                             android:text="代金券" />
                     </LinearLayout>
                 </RelativeLayout>
             </LinearLayout>
+
             <Button
                 android:id="@+id/my_btn"
                 android:layout_width="match_parent"
                 android:layout_height="42dp"
-                android:background="@drawable/myinfo_btn_login"
                 android:layout_marginTop="20dp"
+                android:background="@drawable/myinfo_btn_login"
+                android:text="登录"
                 android:textColor="@color/white"
-                android:textSize="16sp"
-                android:text="登录" />
+                android:textSize="16sp" />
+
             <Button
-                android:visibility="gone"
                 android:id="@+id/my_out"
                 android:layout_width="match_parent"
                 android:layout_height="42dp"
-                android:background="@drawable/myinfo_btn_login"
                 android:layout_marginTop="20dp"
+                android:background="@drawable/myinfo_btn_login"
+                android:text="注销"
                 android:textColor="@color/white"
                 android:textSize="16sp"
-                android:text="注销" />
+                android:visibility="gone" />
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="42dp"></LinearLayout>

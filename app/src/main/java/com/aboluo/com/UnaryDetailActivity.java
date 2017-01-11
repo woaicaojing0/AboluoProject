@@ -12,6 +12,7 @@ import android.view.ViewTreeObserver;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -64,7 +65,7 @@ public class UnaryDetailActivity extends Activity implements View.OnClickListene
     private VerticalScrollView unary_detail_scollview;
     private TextView unarydetail_text_title;
     private Toolbar unary_toolbar;
-
+    private ImageView unarydetail_text_back;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -93,6 +94,13 @@ public class UnaryDetailActivity extends Activity implements View.OnClickListene
                             }
                         }
                     });
+                }
+            });
+            unarydetail_text_back.setOnClickListener(this);
+            unarydetail_text_back.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    finish();
                 }
             });
         } else {
@@ -129,6 +137,7 @@ public class UnaryDetailActivity extends Activity implements View.OnClickListene
         unary_detail_scollview = (VerticalScrollView) findViewById(R.id.unary_detail_scollview);
         unary_startgoods = (LinearLayout) findViewById(R.id.unary_startgoods);
         unary_buy_now = (LinearLayout) findViewById(R.id.unary_buy_now);
+        unarydetail_text_back = (ImageView) findViewById(R.id.unarydetail_text_back);
         unary_goodsdetail_webview = (WebView) findViewById(R.id.unary_goodsdetail_webview);
         int screenWidth = ScreenUtils.getScreenWidth(this);
         unarydetail_view_pager.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, screenWidth));
@@ -159,9 +168,9 @@ public class UnaryDetailActivity extends Activity implements View.OnClickListene
     private void initDetailData() {
         if (listResultBean == null) {
         } else {
-            String[] imagesurl = listResultBean.getGoodsPicture().toString().split(",");
+            String[] imagesurl = listResultBean.getGoodsPicture().toString().split(";");
             for (int i = 0; i < imagesurl.length; i++) {
-                imagesurl[i] = ImageUrl + imagesurl;
+                imagesurl[i] = ImageUrl + imagesurl[i];
             }
             initWebview();
             //头部滚动banner

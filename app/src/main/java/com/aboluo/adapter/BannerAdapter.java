@@ -33,7 +33,7 @@ public class BannerAdapter extends LoopPagerAdapter {
     @Override
     public View getView(ViewGroup container, int position) {
          ImageView view =new ImageView(container.getContext());
-        Log.i("woaiocajingimgs",imgsurl[position]);
+        Log.i("unarydetailactivity",imgsurl[position]);
         picasso.load(imgsurl[position])
                 .placeholder(mcontext.getResources().getDrawable(R.drawable.imagviewloading))
                 .into(view);

@@ -7,9 +7,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.aboluo.XUtils.CommonUtils;
+import com.aboluo.XUtils.ScreenUtils;
 import com.aboluo.com.R;
 import com.squareup.picasso.Picasso;
 
@@ -58,6 +60,8 @@ public class GridViewAdapter extends BaseAdapter {
             view = LayoutInflater.from(mContext).inflate(R.layout.gridview_item,null);
             holder.imageView = (ImageView) view.findViewById(R.id.img_mid_gridview_item);
             holder.textView = (TextView) view.findViewById(R.id.txt_mid_gridview_item);
+            int screenWidth = ScreenUtils.getScreenWidth(mContext);
+            holder.imageView.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, screenWidth / 4));
             view.setTag(holder);
         }else {
             holder = (ViewHolder) view.getTag();

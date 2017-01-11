@@ -134,6 +134,7 @@ public class IndexFragment extends Fragment implements View.OnClickListener {
         special_view_pager.setHintView(new ColorPointHintView(this.getActivity(), Color.RED, Color.WHITE));
         brand_gridview.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, screenWidth / 2));
         theme_gridview.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, screenWidth / 2));
+        mid_gridview.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, (screenWidth / 2+CommonUtils.dip2px(this.getContext(),16))));
         initConfig();
         rollPagerView.setOnItemClickListener(new OnItemClickListener() {
             @Override

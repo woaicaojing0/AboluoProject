@@ -23,6 +23,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
 import com.squareup.picasso.Picasso;
 
 import java.util.HashMap;
@@ -105,26 +106,32 @@ public class ExpressDetailActivity extends Activity {
             public void onResponse(String response) {
                 response = response.replace("\\", "");
                 response = response.substring(1, response.length() - 1);
-                ExpressDetailBean expressDetailBean = gson.fromJson(response, ExpressDetailBean.class);
-                if (expressDetailBean.isIsSuccess()) {
+                try {
 
-                    if (expressDetailBean.getResult().getList() == null) {
-                        Toast.makeText(ExpressDetailActivity.this, "当前没有物流状态", Toast.LENGTH_SHORT).show();
-                    } else {
-                        if (expressDetailBean.getResult().getList().size() == 0) {
-                            express_top.setVisibility(View.GONE);
+                    ExpressDetailBean expressDetailBean = gson.fromJson(response, ExpressDetailBean.class);
+                    if (expressDetailBean.isIsSuccess()) {
+
+                        if (expressDetailBean.getResult().getList() == null) {
                             Toast.makeText(ExpressDetailActivity.this, "当前没有物流状态", Toast.LENGTH_SHORT).show();
                         } else {
-                            express_top.setVisibility(View.VISIBLE);
-                            ChangeExpressStatus(Integer.valueOf(expressDetailBean.getResult().getDeliverystatus()));
-                            express_company_name.setText(expressDetailBean.getResult().getName().toString());
-                            express_code.setText(expressDetailBean.getResult().getNumber());
-                            adapter = new ExpressDetailAdapter(expressDetailBean.getResult().getList(), ExpressDetailActivity.this);
-                            express_listview.setAdapter(adapter);
+                            if (expressDetailBean.getResult().getList().size() == 0) {
+                                express_top.setVisibility(View.GONE);
+                                Toast.makeText(ExpressDetailActivity.this, "当前没有物流状态", Toast.LENGTH_SHORT).show();
+                            } else {
+                                express_top.setVisibility(View.VISIBLE);
+                                ChangeExpressStatus(Integer.valueOf(expressDetailBean.getResult().getDeliverystatus()));
+                                express_company_name.setText(expressDetailBean.getResult().getName().toString());
+                                express_code.setText(expressDetailBean.getResult().getNumber());
+                                adapter = new ExpressDetailAdapter(expressDetailBean.getResult().getList(), ExpressDetailActivity.this);
+                                express_listview.setAdapter(adapter);
+                            }
                         }
+                    } else {
+                        Toast.makeText(ExpressDetailActivity.this, "当前没有物流状态", Toast.LENGTH_SHORT).show();
                     }
-                } else {
-                    Toast.makeText(ExpressDetailActivity.this, "当前没有物流状态", Toast.LENGTH_SHORT).show();
+                }catch (JsonSyntaxException exception)
+                {
+                    Toast.makeText(ExpressDetailActivity.this, "物流信息有误", Toast.LENGTH_SHORT).show();
                 }
                 pdialog.dismiss();
             }

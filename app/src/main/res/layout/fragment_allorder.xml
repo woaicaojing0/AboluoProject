@@ -9,7 +9,7 @@
                                                                         android:layout_width="match_parent"
                                                                         android:layout_height="match_parent"
                                                                         android:background="#ededed"
-                                                                        ptr:ptrMode="pullFromEnd"
+                                                                        ptr:ptrMode="both"
     />
     <include
         layout="@layout/fragment_orderdetail_empty"

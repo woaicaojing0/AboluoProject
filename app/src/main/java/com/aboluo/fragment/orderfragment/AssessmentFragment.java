@@ -67,6 +67,9 @@ public class AssessmentFragment extends Fragment implements View.OnClickListener
                     PullToRefreshBase<ListView> refreshView) {
                 Log.e("TAG", "onPullDownToRefresh");
                 //这里写下拉刷新的任务
+                InitPage = 1;
+                orderBean = null;
+                GetInfo(1);
             }
 
             @Override

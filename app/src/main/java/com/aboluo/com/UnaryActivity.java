@@ -237,7 +237,7 @@ public class UnaryActivity extends FragmentActivity implements UnaryAdapter.OnRe
 
     @Override
     public void onItemClick(View view, int position) {
-        Toast.makeText(mcontext, "当前点击项是：" + position, Toast.LENGTH_SHORT).show();
+        //Toast.makeText(mcontext, "当前点击项是：" + position, Toast.LENGTH_SHORT).show();
         UnaryListBean.ListResultBean listResultBean = unaryListBean.getListResult().get(position);
         Intent intent = new Intent(UnaryActivity.this, UnaryDetailActivity.class);
         Bundle bundle = new Bundle();

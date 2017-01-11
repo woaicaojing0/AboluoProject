@@ -421,6 +421,7 @@ public class PartnerGoodsDetailActivity extends Activity implements View.OnClick
                 txt_goods_num.setText(String.valueOf(goodsDetailInfo.getResult().getGoodsInfo().getGoodsQuantity()));
                 goods_detail_type_txtmoney.setText("￥" + String.valueOf(goodsDetailInfo.getResult().getGoodsInfo().getHyPrice()) + "元");
                 goods_detail_type_txtnum.setText(String.valueOf(goodsDetailInfo.getResult().getGoodsInfo().getGoodsQuantity()) + "件");
+                goods_detail_jifen.setText("送" + String.valueOf(goodsDetailInfo.getResult().getGoodsInfo().getJifenPrice()));
                 if (goodsDetailInfo.getResult().getGoodsInfo().getGoodsSub() == null) {
                     layout_txt_goods_sub.setVisibility(View.GONE);
                 } else {

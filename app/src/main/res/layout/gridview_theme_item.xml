@@ -8,6 +8,7 @@
     android:layout_height="wrap_content"
     android:layout_gravity="center">
     <ImageView
+        android:padding="0.5dp"
         android:scaleType="fitCenter"
         android:id="@+id/img_theme_gridview_item"
         android:src="@mipmap/ic_launcher"

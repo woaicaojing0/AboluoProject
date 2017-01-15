@@ -129,6 +129,9 @@
         <activity android:name=".MyAgentActivity"></activity>
         <activity android:name=".WebActivity.AgentDetailActivity"></activity>
         <activity android:name=".CouponsActivity"></activity>
+        <activity android:name=".UnaryIntroduceActivity"></activity>
+        <activity android:name=".CompanyIntroduceActivity"></activity>
+        <activity android:name=".SettingActivity"></activity>
         <activity android:name=".wxapi.WXEntryActivity"
             android:exported="true"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" >

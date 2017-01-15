@@ -113,6 +113,7 @@ public class LeftFragment extends Fragment {
                     secKillDetailInfo = gson.fromJson(response, SecKillDetailInfo.class);
                     if (secKillDetailInfo.isIsSuccess()) {
                         if (secKillDetailInfo.getSeckillList().size() == 0) {
+                            pdialog.dismiss();
                             Toast.makeText(context, "当前没有秒杀商品", Toast.LENGTH_SHORT).show();
                         } else {
                             seckillAdapter = new SeckillAdapter(context, secKillDetailInfo.getSeckillList()
@@ -121,8 +122,9 @@ public class LeftFragment extends Fragment {
                             GetSreverTime(); //显示 当前秒杀状态
                         }
                     } else {
-
-                        Toast.makeText(context, "获取秒杀数据出错", Toast.LENGTH_SHORT).show();
+                        pdialog.dismiss();
+                        Toast.makeText(context, "获取秒杀数据出错,原因：" + secKillDetailInfo.getMessage(),
+                                Toast.LENGTH_SHORT).show();
                     }
                     pdialog.dismiss();
                 }

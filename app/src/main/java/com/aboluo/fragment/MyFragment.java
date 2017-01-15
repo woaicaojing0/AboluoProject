@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
@@ -19,6 +20,7 @@ import android.widget.Toast;
 import com.aboluo.XUtils.CommonUtils;
 import com.aboluo.XUtils.MyApplication;
 import com.aboluo.com.AddressActivity;
+import com.aboluo.com.CompanyIntroduceActivity;
 import com.aboluo.com.CouponsActivity;
 import com.aboluo.com.CreditInfoActivity;
 import com.aboluo.com.FavorActivity;
@@ -30,6 +32,7 @@ import com.aboluo.com.MyInfoAcitvity;
 import com.aboluo.com.OrderActivity;
 import com.aboluo.com.R;
 import com.aboluo.com.ReFundActivity;
+import com.aboluo.com.SettingActivity;
 import com.aboluo.com.WebActivity.FeedBackActivity;
 import com.aboluo.com.WebActivity.InvitationActivity;
 import com.aboluo.model.MyInfoBean;
@@ -71,7 +74,7 @@ public class MyFragment extends Fragment implements View.OnClickListener {
     private MyInfoBean myInfoBean;
     private CircleImageView my_fragment_imageview;
     private TextView tv_my_huiyuan;
-
+    private ImageView iv_my_setting;
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         if (view == null) {
@@ -98,6 +101,7 @@ public class MyFragment extends Fragment implements View.OnClickListener {
         invitation_code.setOnClickListener(this);
         my_agent.setOnClickListener(this);
         my_coupons_center.setOnClickListener(this);
+        iv_my_setting.setOnClickListener(this);
         if (CommonUtils.IsLogin(MyFragment.this.getContext())) {
             btn.setVisibility(View.GONE);
             my_out.setVisibility(View.VISIBLE);
@@ -137,6 +141,7 @@ public class MyFragment extends Fragment implements View.OnClickListener {
         sharedPreferences = MyFragment.this.getContext().getSharedPreferences("aboluo", Context.MODE_PRIVATE);
         my_fragment_imageview = (CircleImageView) view.findViewById(R.id.my_fragment_imageview);
         tv_my_huiyuan = (TextView) view.findViewById(R.id.tv_my_huiyuan);
+        iv_my_setting = (ImageView) view.findViewById(R.id.iv_my_setting);
         InitData();
         if (CommonUtils.GetisDealer(MyFragment.this.getContext()).equals("0")) {
             tv_my_huiyuan.setText("普通会员");
@@ -272,6 +277,10 @@ public class MyFragment extends Fragment implements View.OnClickListener {
                 Intent intent16 = new Intent(MyFragment.this.getActivity(), CouponsActivity.class);
                 intent16.putExtra("allmoney", "0");
                 startActivity(intent16);
+                break;
+            case R.id.iv_my_setting:
+                Intent intent17 = new Intent(MyFragment.this.getActivity(), SettingActivity.class);
+                startActivity(intent17);
                 break;
 
         }

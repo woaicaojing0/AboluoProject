@@ -10,6 +10,7 @@ import android.util.Log;
 
 import com.aboluo.Gesture.SecondActivity;
 import com.aboluo.GestureUtils.Contants;
+import com.baidu.android.bba.common.util.Util;
 import com.leo.gesturelibray.enums.LockMode;
 import com.pgyersdk.crash.PgyCrashManager;
 //
@@ -29,6 +30,8 @@ public class BaseApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        //初始化工具类
+        Utils.init(this);
         //蒲公英的初始化
         PgyCrashManager.register(this);
         //分享初始化

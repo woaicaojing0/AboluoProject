@@ -58,7 +58,7 @@ public class UnaryActivity extends FragmentActivity implements UnaryAdapter.OnRe
     private BannerAdapter bannerAdapter;
     private RollPagerView unary__view_pager;
     private ImageView unary_image_03, unary_image_02, unary_image_01;
-    private TextView unary_txt_02, unary_txt_01, unary_txt_03;
+    private TextView unary_txt_02, unary_txt_01, unary_txt_03,tv_unary_introduce;
     private RBCallbkRecyclerView unary_recyclerView;
     private UnaryAdapter adapter;
     private UnaryListBean unaryListBean;
@@ -94,6 +94,7 @@ public class UnaryActivity extends FragmentActivity implements UnaryAdapter.OnRe
         unary_introduce.setOnClickListener(this);
         unary_publish.setOnClickListener(this);
         iv_unary_back.setOnClickListener(this);
+        tv_unary_introduce.setOnClickListener(this);
         int screenWidth = ScreenUtils.getScreenWidth(this);
         unary__view_pager.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, (screenWidth)*2 / 5));
         unary__view_pager.setHintView(new ColorPointHintView(this, Color.RED, Color.WHITE));
@@ -118,6 +119,7 @@ public class UnaryActivity extends FragmentActivity implements UnaryAdapter.OnRe
         unary_popularity = (TextView) findViewById(R.id.unary_popularity);
         unary_new = (TextView) findViewById(R.id.unary_new);
         unary_introduce = (TextView) findViewById(R.id.unary_introduce);
+        tv_unary_introduce = (TextView) findViewById(R.id.tv_unary_introduce);
         unary_recyclerView = (RBCallbkRecyclerView) findViewById(R.id.unary_recyclerView);
         webview_introduce = (WebView) findViewById(R.id.webview_introduce);
         unary_publish = (LinearLayout) findViewById(R.id.unary_publish);
@@ -305,6 +307,10 @@ public class UnaryActivity extends FragmentActivity implements UnaryAdapter.OnRe
                 break;
             case R.id.iv_unary_back:
                 finish();
+                break;
+            case R.id.tv_unary_introduce:
+                Intent intent1 = new Intent(UnaryActivity.this,UnaryIntroduceActivity.class);
+                startActivity(intent1);
                 break;
     }
 

@@ -87,9 +87,9 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
         shopcarfragment = new ShopCarFragment();
         indexFragment = new IndexFragment();
         mNowFragment = indexFragment;
+        FristChangeFragment(indexFragment);
         iv_menu_home.setBackground(getResources().getDrawable(R.drawable.home_fill));
         tv_menu_home.setTextColor(getResources().getColor(R.color.btn_color));
-        FristChangeFragment(indexFragment);
     }
 
     private void initBootomButton() {
@@ -109,20 +109,20 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
         CleanBootomButton();
         switch (view.getId()) {
             case R.id.index_bottom_index:
+                switchContent(indexFragment);
                 iv_menu_home.setBackground(getResources().getDrawable(R.drawable.home_fill));
                 tv_menu_home.setTextColor(getResources().getColor(R.color.btn_color));
-                switchContent(indexFragment);
                 break;
             case R.id.index_menu_menu:
+                switchContent(menufragment);
                 iv_bottom_menu.setBackground(getResources().getDrawable(R.drawable.sort_light_fill));
                 tv_bottom_menu.setTextColor(getResources().getColor(R.color.btn_color));
-                switchContent(menufragment);
                 break;
             case R.id.index_bottom_shopcar:
                 if (CommonUtils.IsLogin(MainActivity.this)) {
+                    switchContent(shopcarfragment);
                     iv_menu_car.setBackground(getResources().getDrawable(R.drawable.cart_fill));
                     tv_menu_car.setTextColor(getResources().getColor(R.color.btn_color));
-                    switchContent(shopcarfragment);
                 } else {
                     Toast.makeText(this, "请先登录！", Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(MainActivity.this, LoginActivity.class);
@@ -131,9 +131,9 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
                 break;
             case R.id.index_bottom_me:
                 if (CommonUtils.IsLogin(MainActivity.this)) {
+                    switchContent(myfragment);
                     iv_menu_me.setBackground(getResources().getDrawable(R.drawable.my_fill));
                     tv_menu_me.setTextColor(getResources().getColor(R.color.btn_color));
-                    switchContent(myfragment);
                 } else {
                     Toast.makeText(this, "请先登录！", Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(MainActivity.this, LoginActivity.class);
@@ -144,15 +144,30 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
         }
     }
 
+    //    private void switchContent(Fragment fragment) {
+//        if (mNowFragment != fragment) {
+//            fragmentTransaction = getSupportFragmentManager()
+//                    .beginTransaction();
+//            if (!fragment.isAdded()) {
+//                fragmentTransaction.remove(mNowFragment).add(R.id.content, fragment).commit();
+//
+//            } else {
+//                fragmentTransaction.remove(mNowFragment).add(R.id.content, fragment).commit();
+//            }
+//        } else {
+//        }
+//        mNowFragment = fragment;
+//    }
+    //不要每次加载
     private void switchContent(Fragment fragment) {
         if (mNowFragment != fragment) {
             fragmentTransaction = getSupportFragmentManager()
                     .beginTransaction();
             if (!fragment.isAdded()) {
-                fragmentTransaction.remove(mNowFragment).add(R.id.content, fragment).commit();
+                fragmentTransaction.hide(mNowFragment).add(R.id.content, fragment).commit();
 
             } else {
-                fragmentTransaction.remove(mNowFragment).add(R.id.content, fragment).commit();
+                fragmentTransaction.hide(mNowFragment).show(fragment).commit();
             }
         } else {
         }
@@ -199,7 +214,8 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
         tv_menu_car.setTextColor(getResources().getColor(R.color.txtColor));
         tv_menu_me.setTextColor(getResources().getColor(R.color.txtColor));
     }
-    private void checkUpdate(){
+
+    private void checkUpdate() {
         PgyUpdateManager.register(MainActivity.this,
                 new UpdateManagerListener() {
 

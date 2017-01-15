@@ -103,7 +103,6 @@
                                 android:id="@+id/express_status"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="已签收"
                                 android:textColor="#25ae5f"
                                 android:textSize="16sp"
                                 android:textStyle="bold" />
@@ -125,7 +124,7 @@
                                 android:id="@+id/express_company_name"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="韵达快递"
+
                                 android:textColor="#9d9d9d" />
                         </LinearLayout>
 
@@ -145,7 +144,7 @@
                                 android:id="@+id/express_code"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="3943606166668"
+
                                 android:textColor="#9d9d9d" />
                         </LinearLayout>
 

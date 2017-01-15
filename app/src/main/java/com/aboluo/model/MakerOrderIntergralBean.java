@@ -62,7 +62,7 @@ public class MakerOrderIntergralBean {
         private Double IntegralPrice;
         private int IntegralCount;
         private Double ExpressPrice;
-
+        private String  Description;
         public int getIsUserIntegral() {
             return IsUserIntegral;
         }
@@ -93,6 +93,14 @@ public class MakerOrderIntergralBean {
 
         public void setExpressPrice(Double ExpressPrice) {
             this.ExpressPrice = ExpressPrice;
+        }
+
+        public String getDescription() {
+            return Description;
+        }
+
+        public void setDescription(String description) {
+            Description = description;
         }
     }
 }

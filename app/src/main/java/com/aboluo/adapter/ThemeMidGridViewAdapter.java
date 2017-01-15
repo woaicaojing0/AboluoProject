@@ -15,12 +15,12 @@ import com.squareup.picasso.Picasso;
 /**
  * Created by cj34920 on 2016/9/7.
  */
-public class ThemeGridViewAdapter extends BaseAdapter {
+public class ThemeMidGridViewAdapter extends BaseAdapter {
     private Context mContext;
     private String[] images;
     private Picasso picasso;
 
-    public ThemeGridViewAdapter(Context mContext, String[] images) {
+    public ThemeMidGridViewAdapter(Context mContext, String[] images) {
         this.mContext = mContext;
         this.images = images;
         this.picasso = Picasso.with(mContext);
@@ -50,7 +50,7 @@ public class ThemeGridViewAdapter extends BaseAdapter {
             view = LayoutInflater.from(mContext).inflate(R.layout.gridview_theme_item, null);
             holder.imageView = (ImageView) view.findViewById(R.id.img_theme_gridview_item);
             int screenWidth = ScreenUtils.getScreenWidth(mContext);
-            holder.imageView.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, screenWidth / 2));
+            holder.imageView.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, screenWidth / 4));
             view.setTag(holder);
         } else {
             holder = (ViewHolder) view.getTag();

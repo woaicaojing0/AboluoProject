@@ -22,10 +22,10 @@
         android:layout_width="match_parent"
         android:numColumns="4"
         android:layout_height="240px"></GridView>
-    <GridView
+    <com.aboluo.widget.MyGridView
         android:listSelector="@color/btn_color"
         android:id="@+id/theme_gridview"
         android:layout_width="match_parent"
-        android:numColumns="4"
-        android:layout_height="240px"></GridView>
+        android:numColumns="2"
+        android:layout_height="wrap_content"></com.aboluo.widget.MyGridView>
 </LinearLayout>

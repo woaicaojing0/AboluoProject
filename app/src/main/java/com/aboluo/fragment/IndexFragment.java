@@ -33,6 +33,7 @@ import com.aboluo.adapter.BannerAdapter;
 import com.aboluo.adapter.BrandGridViewAdapter;
 import com.aboluo.adapter.GridViewAdapter;
 import com.aboluo.adapter.ThemeGridViewAdapter;
+import com.aboluo.adapter.ThemeMidGridViewAdapter;
 import com.aboluo.com.GoodsDetailActivity;
 import com.aboluo.com.GoodsListActivity;
 import com.aboluo.com.MainActivity;
@@ -134,7 +135,7 @@ public class IndexFragment extends Fragment implements View.OnClickListener {
         special_view_pager.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, screenWidth / 3));
         special_view_pager.setHintView(new ColorPointHintView(this.getActivity(), Color.RED, Color.WHITE));
         brand_gridview.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, screenWidth / 2));
-        theme_gridview.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, screenWidth / 2));
+//        theme_gridview.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, screenWidth / 2));
         theme_mid_gridview.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, screenWidth / 2));
         mid_gridview.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, (screenWidth / 2+CommonUtils.dip2px(this.getContext(),16))));
         initConfig();
@@ -237,23 +238,41 @@ public class IndexFragment extends Fragment implements View.OnClickListener {
                 }
             }
         });
+        theme_mid_gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                if (themeMidConfigBean == null) {
+                } else {
+                    Intent intent4 = new Intent(IndexFragment.this.getContext(), GoodsListActivity.class);
+                    if (themeMidConfigBean.getAppConfigList().get(position).getParams() == null) {
+                        Toast.makeText(IndexFragment.this.getContext(),
+                                "ChildId is NULL", Toast.LENGTH_SHORT).show();
+                    } else {
+//                        Toast.makeText(IndexFragment.this.getContext(),
+//                                themeMidConfigBean.getAppConfigList().get(position).getParams().getChildId().toString(), Toast.LENGTH_SHORT).show();
+                        intent4.putExtra("GoodsBrandId", themeMidConfigBean.getAppConfigList().get(position).getParams().getChildId());
+                    }
+                    startActivity(intent4);
+                }
+            }
+        });
         index_message.setOnClickListener(this);
         theme_view_pager.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
-                Toast.makeText(IndexFragment.this.getActivity(), ("" + position), Toast.LENGTH_SHORT).show();
+                //Toast.makeText(IndexFragment.this.getActivity(), ("" + position), Toast.LENGTH_SHORT).show();
             }
         });
         rollPagerView.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
-                Toast.makeText(IndexFragment.this.getActivity(), ("" + position), Toast.LENGTH_SHORT).show();
+                //Toast.makeText(IndexFragment.this.getActivity(), ("" + position), Toast.LENGTH_SHORT).show();
             }
         });
         special_view_pager.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
-                Toast.makeText(IndexFragment.this.getActivity(), ("" + position), Toast.LENGTH_SHORT).show();
+                //Toast.makeText(IndexFragment.this.getActivity(), ("" + position), Toast.LENGTH_SHORT).show();
             }
         });
         return view;
@@ -311,13 +330,13 @@ public class IndexFragment extends Fragment implements View.OnClickListener {
         StringRequest stringRequest = new StringRequest(Request.Method.POST, "http://msoa.weidustudio.com/api/MachineManage/ReceiveProductListByCategoryId", new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                Toast.makeText(IndexFragment.this.getActivity(), response, Toast.LENGTH_SHORT).show();
+                //Toast.makeText(IndexFragment.this.getActivity(), response, Toast.LENGTH_SHORT).show();
                 pullToRefreshScrollView.onRefreshComplete();
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(IndexFragment.this.getActivity(), error.toString(), Toast.LENGTH_SHORT).show();
+                //Toast.makeText(IndexFragment.this.getActivity(), error.toString(), Toast.LENGTH_SHORT).show();
                 pullToRefreshScrollView.onRefreshComplete();
             }
         }) {
@@ -838,8 +857,8 @@ public class IndexFragment extends Fragment implements View.OnClickListener {
                         theme_mid_gridview.setVisibility(View.GONE);
                     } else {
                         theme_mid_gridview.setVisibility(View.VISIBLE);
-                        ThemeGridViewAdapter themeGridViewAdapter = new ThemeGridViewAdapter(IndexFragment.this.getContext(), arrString);
-                        theme_mid_gridview.setAdapter(themeGridViewAdapter);
+                        ThemeMidGridViewAdapter themeMidGridViewAdapter = new ThemeMidGridViewAdapter(IndexFragment.this.getContext(), arrString);
+                        theme_mid_gridview.setAdapter(themeMidGridViewAdapter);
                     }
 
                 }

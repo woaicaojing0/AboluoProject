@@ -175,9 +175,9 @@ public class MyFragment extends Fragment implements View.OnClickListener {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                byte[] bytecode = error.networkResponse.data;
-                String s = new String(bytecode);
-                Toast.makeText(MyFragment.this.getContext(), s, Toast.LENGTH_SHORT).show();
+//                byte[] bytecode = error.networkResponse.data;
+//                String s = new String(bytecode);
+//                Toast.makeText(MyFragment.this.getContext(), s, Toast.LENGTH_SHORT).show();
             }
         }) {
             @Override

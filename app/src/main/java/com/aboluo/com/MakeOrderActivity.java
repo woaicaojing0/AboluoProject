@@ -462,6 +462,15 @@ public class MakeOrderActivity extends Activity implements View.OnClickListener 
                             + makerOrderIntergralBean.getResult().getExpressPrice());
                     goods_smallallmoeny.setText("￥" + moeny);
                     txt_allmoney.setText(moeny);
+                    if(makerOrderIntergralBean.getResult().getDescription() ==null||
+                            makerOrderIntergralBean.getResult().getDescription()=="")
+                    {
+                        order_Line_tishi.setVisibility(View.GONE);
+                    }else
+                    {
+                        order_Line_tishi.setVisibility(View.VISIBLE);
+                        tv_order_tishi.setText(makerOrderIntergralBean.getResult().getDescription().toString());
+                    }
                 } else {
                     rl_makerorder_jifeng.setClickable(false);
                     rl_makeorder_usecoupons.setClickable(false);

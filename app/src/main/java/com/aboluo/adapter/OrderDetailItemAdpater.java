@@ -28,7 +28,7 @@ public class OrderDetailItemAdpater extends BaseAdapter {
     private Picasso picasso;
     private LayoutInflater layoutInflater;
     private int mOrderStatus;
-
+    private int morderType;
     private View.OnClickListener EvaluationOnClickListener;
     private View.OnClickListener AfterSaleOnClickListener;
 
@@ -40,13 +40,20 @@ public class OrderDetailItemAdpater extends BaseAdapter {
         AfterSaleOnClickListener = afterSaleOnClickListener;
     }
 
-    public OrderDetailItemAdpater(Context context, List<OrderItemListBean> list, int OrderStatus) {
+    /**
+     * @param context
+     * @param list
+     * @param OrderStatus 订单状态
+     * @param orderType   来源 1购物车 2个人中心（待付款） 3秒杀 4一元购 5 合伙人(4 5是不能评价的)
+     */
+    public OrderDetailItemAdpater(Context context, List<OrderItemListBean> list, int OrderStatus, int orderType) {
         mlist = list;
         mcontext = context;
         picasso = Picasso.with(context);
         layoutInflater = LayoutInflater.from(context);
         ImageUrl = CommonUtils.GetValueByKey(context, "ImgUrl");
         mOrderStatus = OrderStatus;
+        morderType = orderType;
     }
 
     @Override
@@ -123,25 +130,29 @@ public class OrderDetailItemAdpater extends BaseAdapter {
         holder.tordetail_item_yuanprice.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG);
         holder.tordetail_item_yuanprice.setText("￥" + String.valueOf(mlist.get(position).getGoodsPrice()));
         holder.ordetail_item__goods_num.setText(String.valueOf("X" + String.valueOf(mlist.get(position).getGoodsQuantity())));
-        if (mlist.get(position).getRefundStatus() == -1) {
-            holder.txt_orderdetail_after_sale.setOnClickListener(AfterSaleOnClickListener);
-            holder.txt_orderdetail_after_sale.setTag(position);
-            holder.txt_orderdetail_after_sale.setText("申请售后");
+        if (morderType == 5 || morderType == 4) { //合伙人和一元购不能申请售后
+            holder.txt_orderdetail_after_sale.setVisibility(View.GONE);
         } else {
-            holder.txt_orderdetail_evaluate.setVisibility(View.GONE);
-            switch (mlist.get(position).getRefundStatus()) {
-                case 0: //待审核
-                    holder.txt_orderdetail_after_sale.setText("待审核");
-                    break;
-                case 1: //审核通过
-                    holder.txt_orderdetail_after_sale.setText("审核通过");
-                    break;
-                case 2: //审核未通过
-                    holder.txt_orderdetail_after_sale.setText("审核未通过");
-                    break;
-                case 3: //已完成
-                    holder.txt_orderdetail_after_sale.setText("已完成");
-                    break;
+            if (mlist.get(position).getRefundStatus() == -1) {
+                holder.txt_orderdetail_after_sale.setOnClickListener(AfterSaleOnClickListener);
+                holder.txt_orderdetail_after_sale.setTag(position);
+                holder.txt_orderdetail_after_sale.setText("申请售后");
+            } else {
+                holder.txt_orderdetail_evaluate.setVisibility(View.GONE);
+                switch (mlist.get(position).getRefundStatus()) {
+                    case 0: //待审核
+                        holder.txt_orderdetail_after_sale.setText("待审核");
+                        break;
+                    case 1: //审核通过
+                        holder.txt_orderdetail_after_sale.setText("审核通过");
+                        break;
+                    case 2: //审核未通过
+                        holder.txt_orderdetail_after_sale.setText("审核未通过");
+                        break;
+                    case 3: //已完成
+                        holder.txt_orderdetail_after_sale.setText("已完成");
+                        break;
+                }
             }
         }
         if (mlist.get(position).getEvaluationStatus() > 0) {

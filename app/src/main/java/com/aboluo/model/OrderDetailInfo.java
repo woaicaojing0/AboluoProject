@@ -44,7 +44,8 @@ public class OrderDetailInfo {
      * integralCount: 200,
      * couponPrice: 0,
      * couponId: 0,
-     "expressPrice": 0,
+     * expressPrice: 0,
+     * orderType: 5,
      * OrderItemList : [{"orderItemId":735,"goodsId":3067,"goodsName":"20161115测试","goodsSub":"20161115测试","goodsColorId":52,"goodsColor":"黑色1","goodsStandardId":56,"goodsStandard":"XXL","goodsPrice":300,"yunfei":0,"goodsLogoUrl":null,"goodsQuantity":1,"Price":300,"RefundStatus":0,"EvaluationStatus":18,"orderId":621}]
      * OrderExpress : {"Id":12,"orderId":621,"expressName":"","expressType":"","expressNumber":"","expressPrice":0,"expressTime":"2016-12-11T14:02:25"}
      * LocalInfo : []
@@ -110,6 +111,7 @@ public class OrderDetailInfo {
         private int integralCount;
         private  double couponPrice;
         private  double expressPrice;
+        private  int orderType;
         /**
          * Id : 12
          * orderId : 621
@@ -314,6 +316,14 @@ public class OrderDetailInfo {
 
         public void setOrderExpress(OrderExpressBean OrderExpress) {
             this.OrderExpress = OrderExpress;
+        }
+
+        public int getOrderType() {
+            return orderType;
+        }
+
+        public void setOrderType(int orderType) {
+            this.orderType = orderType;
         }
 
         public List<OrderItemListBean> getOrderItemList() {

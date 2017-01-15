@@ -213,7 +213,7 @@
                         android:textColorHint="@color/btn_color"
                         android:id="@+id/edit_remark"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="80dp"
                         android:layout_marginLeft="8dp"
                         android:background="@null"
                         android:hint="给卖家留个言吧"

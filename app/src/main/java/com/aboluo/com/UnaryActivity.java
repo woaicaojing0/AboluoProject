@@ -35,8 +35,11 @@ import com.android.volley.toolbox.StringRequest;
 import com.google.gson.Gson;
 import com.jude.rollviewpager.RollPagerView;
 import com.jude.rollviewpager.hintview.ColorPointHintView;
+import com.shizhefei.view.largeimage.LargeImageView;
+import com.shizhefei.view.largeimage.factory.InputStreamBitmapDecoderFactory;
 import com.squareup.picasso.Picasso;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -58,7 +61,7 @@ public class UnaryActivity extends FragmentActivity implements UnaryAdapter.OnRe
     private BannerAdapter bannerAdapter;
     private RollPagerView unary__view_pager;
     private ImageView unary_image_03, unary_image_02, unary_image_01;
-    private TextView unary_txt_02, unary_txt_01, unary_txt_03,tv_unary_introduce;
+    private TextView unary_txt_02, unary_txt_01, unary_txt_03, tv_unary_introduce;
     private RBCallbkRecyclerView unary_recyclerView;
     private UnaryAdapter adapter;
     private UnaryListBean unaryListBean;
@@ -70,6 +73,8 @@ public class UnaryActivity extends FragmentActivity implements UnaryAdapter.OnRe
     private LinearLayout unary_publish;
     private ArrayList<ShopCarBean.ResultBean.GoodsShoppingCartListBean> goodsShoppingCartListBean; //传入下订单的信息
     private ImageView iv_unary_back;
+    private LargeImageView lgiv_unary_introduce;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -80,7 +85,7 @@ public class UnaryActivity extends FragmentActivity implements UnaryAdapter.OnRe
             @Override
             public void onReachBottom() {
                 //即将到达几部，进行加载更多操作
-               // Toast.makeText(mcontext, "sssssssssssssssssssssssss", Toast.LENGTH_SHORT).show();
+                // Toast.makeText(mcontext, "sssssssssssssssssssssssss", Toast.LENGTH_SHORT).show();
                 if (sort == null || sorttype == null) {
                 } else {
                     currentpage++;
@@ -96,8 +101,14 @@ public class UnaryActivity extends FragmentActivity implements UnaryAdapter.OnRe
         iv_unary_back.setOnClickListener(this);
         tv_unary_introduce.setOnClickListener(this);
         int screenWidth = ScreenUtils.getScreenWidth(this);
-        unary__view_pager.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, (screenWidth)*2 / 5));
+        unary__view_pager.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, (screenWidth) * 2 / 5));
         unary__view_pager.setHintView(new ColorPointHintView(this, Color.RED, Color.WHITE));
+        try {
+            lgiv_unary_introduce.setImage(new InputStreamBitmapDecoderFactory(getAssets().open("unaryintroduce.png")));
+            lgiv_unary_introduce.setEnabled(true);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private void init() {
@@ -123,6 +134,7 @@ public class UnaryActivity extends FragmentActivity implements UnaryAdapter.OnRe
         unary_recyclerView = (RBCallbkRecyclerView) findViewById(R.id.unary_recyclerView);
         webview_introduce = (WebView) findViewById(R.id.webview_introduce);
         unary_publish = (LinearLayout) findViewById(R.id.unary_publish);
+        lgiv_unary_introduce = (LargeImageView) findViewById(R.id.lgiv_unary_introduce);
         unary_popularity.setTextColor(UnaryActivity.this.getResources().getColor(R.color.btn_color));
         initBannerImage();
         initNewOpen();
@@ -215,8 +227,8 @@ public class UnaryActivity extends FragmentActivity implements UnaryAdapter.OnRe
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                String result = new String(error.networkResponse.data);
-                Toast.makeText(mcontext, result, Toast.LENGTH_SHORT).show();
+//                String result = new String(error.networkResponse.data);
+                Toast.makeText(mcontext, error.toString(), Toast.LENGTH_SHORT).show();
             }
         }) {
             @Override
@@ -271,9 +283,10 @@ public class UnaryActivity extends FragmentActivity implements UnaryAdapter.OnRe
                 break;
             case R.id.unary_introduce: //玩法介绍
                 CleanTxtView();
-                webview_introduce.setVisibility(View.VISIBLE);
+                webview_introduce.setVisibility(View.GONE);
                 unary_recyclerView.setVisibility(View.GONE);
                 unary_introduce.setTextColor(this.getResources().getColor(R.color.btn_color));
+                lgiv_unary_introduce.setVisibility(View.VISIBLE);
                 break;
             case R.id.unary_publish:
                 Intent intent = new Intent(UnaryActivity.this, UnaryPublishActivity.class);
@@ -309,12 +322,12 @@ public class UnaryActivity extends FragmentActivity implements UnaryAdapter.OnRe
                 finish();
                 break;
             case R.id.tv_unary_introduce:
-                Intent intent1 = new Intent(UnaryActivity.this,UnaryIntroduceActivity.class);
+                Intent intent1 = new Intent(UnaryActivity.this, UnaryIntroduceActivity.class);
                 startActivity(intent1);
                 break;
-    }
+        }
 
-}
+    }
 
     /**
      * @param status   四种状态：1代表正在开抢 2等待开奖 3已开奖 0 暂未开始
@@ -408,6 +421,7 @@ public class UnaryActivity extends FragmentActivity implements UnaryAdapter.OnRe
 
     private void CleanTxtView() {
         webview_introduce.setVisibility(View.GONE);
+        lgiv_unary_introduce.setVisibility(View.GONE);
         unary_recyclerView.setVisibility(View.VISIBLE);
         unary_popularity.setTextColor(Color.parseColor("#737373"));
         unary_new.setTextColor(Color.parseColor("#737373"));

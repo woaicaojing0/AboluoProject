@@ -153,7 +153,9 @@ public class OrderDetailActivity extends Activity implements View.OnClickListene
                 tv_orderdetail_integral.setText("￥"+orderDetailInfo.getResult().get(0).getIntegralPrice()+"");
                 tv_orderdetail_code.setText(orderDetailInfo.getResult().get(0).getOrderCode()+"");
                 adpater = new OrderDetailItemAdpater(OrderDetailActivity.this
-                        , orderDetailInfo.getResult().get(0).getOrderItemList(), orderDetailInfo.getResult().get(0).getOrderStatus());
+                        , orderDetailInfo.getResult().get(0).getOrderItemList(),
+                        orderDetailInfo.getResult().get(0).getOrderStatus()
+                ,orderDetailInfo.getResult().get(0).getOrderType());
                 adpater.setEvaluationOnClickListener(OrderDetailActivity.this);
                 adpater.setAfterSaleOnClickListener(OrderDetailActivity.this);
                 orderdetail_listview.setAdapter(adpater);

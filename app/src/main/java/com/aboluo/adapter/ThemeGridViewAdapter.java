@@ -50,7 +50,7 @@ public class ThemeGridViewAdapter extends BaseAdapter {
             view = LayoutInflater.from(mContext).inflate(R.layout.gridview_theme_item, null);
             holder.imageView = (ImageView) view.findViewById(R.id.img_theme_gridview_item);
             int screenWidth = ScreenUtils.getScreenWidth(mContext);
-            holder.imageView.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, screenWidth / 2));
+            holder.imageView.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, (screenWidth*3)/4 ));
             view.setTag(holder);
         } else {
             holder = (ViewHolder) view.getTag();

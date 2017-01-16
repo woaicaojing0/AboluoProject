@@ -46,6 +46,7 @@ import com.aboluo.com.UnaryActivity;
 import com.aboluo.model.BaseConfigBean;
 import com.aboluo.model.BaseModel;
 import com.aboluo.model.SecKillAllInfo;
+import com.aboluo.widget.MyGridView;
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -103,8 +104,8 @@ public class IndexFragment extends Fragment implements View.OnClickListener {
             newsConfigBean,midGridViewConfigBean,themeMidConfigBean;
     private LinearLayout linelayout_miaosha, index_message;
     private ImageView huodong_left1, huodong_left2, huodong_right1, huodong_right2, huodong_right3, theme_imageview;
-    private GridView brand_gridview, theme_gridview,theme_mid_gridview;
-
+    private GridView brand_gridview,theme_mid_gridview;
+    private MyGridView theme_gridview;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         if (view != null) {
@@ -250,7 +251,7 @@ public class IndexFragment extends Fragment implements View.OnClickListener {
                     } else {
 //                        Toast.makeText(IndexFragment.this.getContext(),
 //                                themeMidConfigBean.getAppConfigList().get(position).getParams().getChildId().toString(), Toast.LENGTH_SHORT).show();
-                        intent4.putExtra("GoodsBrandId", themeMidConfigBean.getAppConfigList().get(position).getParams().getChildId());
+                        intent4.putExtra("goods_type_id", themeMidConfigBean.getAppConfigList().get(position).getParams().getChildId());
                     }
                     startActivity(intent4);
                 }
@@ -298,7 +299,7 @@ public class IndexFragment extends Fragment implements View.OnClickListener {
         huodong_right3 = (ImageView) view.findViewById(R.id.huodong_right3);
         theme_imageview = (ImageView) view.findViewById(R.id.theme_imageview);
         brand_gridview = (GridView) view.findViewById(R.id.brand_gridview);
-        theme_gridview = (GridView) view.findViewById(R.id.theme_gridview);
+        theme_gridview = (MyGridView) view.findViewById(R.id.theme_gridview);
         theme_mid_gridview = (GridView) view.findViewById(R.id.theme_mid_gridview);
         mCvCountdownView = (CountdownView) view.findViewById(R.id.cv_countdownViewTest1);
         beginSecKill = (LinearLayout) view.findViewById(R.id.beginSecKill);
@@ -573,7 +574,7 @@ public class IndexFragment extends Fragment implements View.OnClickListener {
                 marqueeView.setOnItemClickListener(new MarqueeView.OnItemClickListener() {
                     @Override
                     public void onItemClick(int position, TextView textView) {
-                        Toast.makeText(IndexFragment.this.getActivity(), info.get(position).toString() + textView.getText().toString(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(IndexFragment.this.getActivity(), info.get(position).toString(), Toast.LENGTH_SHORT).show();
                     }
                 });
             }
@@ -777,8 +778,7 @@ public class IndexFragment extends Fragment implements View.OnClickListener {
         };
         requestQueue.add(stringRequest);
     }
-
-    //加载主题九宫图的配置
+    //加载商品推荐
     private void initThemeGridview() {
         StringRequest stringRequest = new StringRequest(Request.Method.POST, URL + "/api/ConfigApi/ReceiveHomeConfig", new Response.Listener<String>() {
             @Override
@@ -793,12 +793,6 @@ public class IndexFragment extends Fragment implements View.OnClickListener {
                     }
 
                     if (arrString.length == 0) {
-                        if (themeBannerConfigBean.isIsSuccess()) {
-                            String[] arrString2 = new String[themeBannerConfigBean.getAppConfigList().size()];
-                            if (arrString2.length == 0) { //如果主题的banner 和主题的九宫格都没有，则隐藏主题导购
-                                theme_imageview.setVisibility(View.GONE);
-                            }
-                        }
                         theme_gridview.setVisibility(View.GONE);
                     } else {
                         theme_gridview.setVisibility(View.VISIBLE);
@@ -807,18 +801,18 @@ public class IndexFragment extends Fragment implements View.OnClickListener {
                     }
 
                 } else {
-                    if (themeBannerConfigBean.isIsSuccess()) {
-                        String[] arrString2 = new String[themeBannerConfigBean.getAppConfigList().size()];
-                        if (arrString2.length == 0) { //如果主题的banner 和主题的九宫格都没有，则隐藏主题导购
-                            theme_imageview.setVisibility(View.GONE);
-                        } else {
-                            theme_imageview.setVisibility(View.VISIBLE);
-                        }
-                    } else {
-                        theme_imageview.setVisibility(View.GONE);
-                        theme_gridview.setVisibility(View.GONE);
-                        Toast.makeText(IndexFragment.this.getContext(), themeConfigBean.getMessage().toString(), Toast.LENGTH_SHORT).show();
-                    }
+//                    if (themeBannerConfigBean.isIsSuccess()) {
+//                        String[] arrString2 = new String[themeBannerConfigBean.getAppConfigList().size()];
+//                        if (arrString2.length == 0) { //如果主题的banner 和主题的九宫格都没有，则隐藏主题导购
+//                            theme_imageview.setVisibility(View.GONE);
+//                        } else {
+//                            theme_imageview.setVisibility(View.VISIBLE);
+//                        }
+//                    } else {
+//                        theme_imageview.setVisibility(View.GONE);
+//                        theme_gridview.setVisibility(View.GONE);
+//                        Toast.makeText(IndexFragment.this.getContext(), themeConfigBean.getMessage().toString(), Toast.LENGTH_SHORT).show();
+//                    }
                 }
             }
         }, new Response.ErrorListener() {
@@ -831,7 +825,7 @@ public class IndexFragment extends Fragment implements View.OnClickListener {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> map = new HashMap<>();
-                map.put("ConfigModule", "5");
+                map.put("ConfigModule", "10");
                 map.put("APPToken", APPToken);
                 return map;
             }
@@ -839,7 +833,7 @@ public class IndexFragment extends Fragment implements View.OnClickListener {
         requestQueue.add(stringRequest);
     }
 
-    //加载主题中间的gridview的配置（活动2）
+    //加载主题中间的gridview的配置（活动2）//加载主题九宫格
     private void initThemeMidGridview() {
         StringRequest stringRequest = new StringRequest(Request.Method.POST, URL + "/api/ConfigApi/ReceiveHomeConfig", new Response.Listener<String>() {
             @Override
@@ -873,7 +867,7 @@ public class IndexFragment extends Fragment implements View.OnClickListener {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> map = new HashMap<>();
-                map.put("ConfigModule", "6");
+                map.put("ConfigModule", "5");
                 map.put("APPToken", APPToken);
                 return map;
             }
@@ -1014,7 +1008,19 @@ public class IndexFragment extends Fragment implements View.OnClickListener {
                         Intent intent5 = new Intent(getActivity(), SignInActivity.class);
                         startActivity(intent5);
                         break;
-
+                    case 59: //9.9专场
+                        Intent intent6 = new Intent(IndexFragment.this.getContext(), GoodsListActivity.class);
+                        intent6.putExtra("goods_type_id", 268);
+                        startActivity(intent6);
+                        break;
+                    case 60: //最新商品
+                        Intent intent7 = new Intent(IndexFragment.this.getContext(), GoodsListActivity.class);
+                        startActivity(intent7);
+                        break;
+                    case 61: //年货节
+                        Intent intent8 = new Intent(IndexFragment.this.getContext(), GoodsListActivity.class);
+                        intent8.putExtra("goods_type_id", 271);
+                        startActivity(intent8);
                 }
             }
         });

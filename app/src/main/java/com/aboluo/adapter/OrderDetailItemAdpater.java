@@ -161,6 +161,7 @@ public class OrderDetailItemAdpater extends BaseAdapter {
             holder.txt_orderdetail_evaluate.setText("已评价");
             holder.txt_orderdetail_evaluate.setClickable(false);
         } else {
+            holder.txt_orderdetail_evaluate.setText("评价");
             holder.txt_orderdetail_evaluate.setOnClickListener(EvaluationOnClickListener);
             holder.txt_orderdetail_evaluate.setTag(position);
         }

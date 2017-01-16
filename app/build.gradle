@@ -12,13 +12,14 @@ android {
         debug {
             keyAlias 'hxzc'
             keyPassword '201314'
-            storeFile file('G:/cjkey.key')
+            storeFile file('d:/cjkey.key')
             storePassword '201314'
         }
     }
     compileSdkVersion 23
     buildToolsVersion "24.0.1"
     aaptOptions {
+
         cruncherEnabled = false
         useNewCruncher = false
     }
@@ -26,8 +27,8 @@ android {
         applicationId "com.aboluo.com"
         minSdkVersion 17
         targetSdkVersion 23
-        versionCode 3
-        versionName "1.1.1"
+        versionCode 4
+        versionName "1.1.2"
         ndk {
             //选择要添加的对应cpu类型的.so库。
             abiFilters 'armeabi', 'armeabi-v7a', 'armeabi-v8a', 'x86', 'x86_64', 'mips', 'mips64'

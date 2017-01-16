@@ -23,7 +23,6 @@
         android:numColumns="4"
         android:layout_height="240px"></GridView>
     <com.aboluo.widget.MyGridView
-        android:listSelector="@color/btn_color"
         android:id="@+id/theme_gridview"
         android:layout_width="match_parent"
         android:numColumns="2"

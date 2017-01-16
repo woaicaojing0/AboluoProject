@@ -1,6 +1,7 @@
 package com.aboluo.adapter;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -50,6 +51,8 @@ public class ThemeMidGridViewAdapter extends BaseAdapter {
             view = LayoutInflater.from(mContext).inflate(R.layout.gridview_theme_item, null);
             holder.imageView = (ImageView) view.findViewById(R.id.img_theme_gridview_item);
             int screenWidth = ScreenUtils.getScreenWidth(mContext);
+            holder.imageView.setPadding(1,1,1,1);
+            holder.imageView.setBackgroundColor(mContext.getResources().getColor(R.color.btn_color));
             holder.imageView.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, screenWidth / 4));
             view.setTag(holder);
         } else {

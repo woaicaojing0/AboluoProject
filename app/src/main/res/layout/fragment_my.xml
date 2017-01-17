@@ -358,22 +358,24 @@
                     android:gravity="center">
 
                     <LinearLayout
-                        android:id="@+id/feedbackInfo"
+                        android:id="@+id/my_coupons_center"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical">
+                        android:orientation="vertical"
+                        android:layout_centerVertical="true"
+                        android:layout_centerHorizontal="true">
 
 
                         <ImageView
                             android:layout_width="wrap_content"
                             android:layout_height="45dp"
-                            android:src="@drawable/my_email" />
+                            android:src="@drawable/my_coupon" />
 
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:gravity="center"
-                            android:text="意见反馈" />
+                            android:text="代金券" />
                     </LinearLayout>
                 </RelativeLayout>
             </LinearLayout>
@@ -391,7 +393,7 @@
                     android:gravity="center">
 
                     <LinearLayout
-                        android:id="@+id/my_invitation"
+                        android:id="@+id/invitation_code"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center_vertical"
@@ -400,8 +402,8 @@
 
                         <ImageView
                             android:layout_width="match_parent"
-                            android:layout_height="36dp"
-                            android:src="@drawable/invitation" />
+                            android:layout_height="45dp"
+                            android:src="@drawable/my_email" />
 
                         <TextView
                             android:layout_width="match_parent"
@@ -419,7 +421,7 @@
                     android:gravity="center">
 
                     <LinearLayout
-                        android:id="@+id/invitation_code"
+                        android:id="@+id/my_invitation"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="vertical">
@@ -427,8 +429,9 @@
 
                         <ImageView
                             android:layout_width="match_parent"
-                            android:layout_height="36dp"
-                            android:src="@drawable/invitation_code" />
+                            android:layout_height="45dp"
+                            android:src="@drawable/invite_code"
+                            android:id="@+id/imageView5" />
 
                         <TextView
                             android:layout_width="match_parent"
@@ -454,8 +457,8 @@
 
                         <ImageView
                             android:layout_width="match_parent"
-                            android:layout_height="36dp"
-                            android:src="@drawable/agent" />
+                            android:layout_height="45dp"
+                            android:src="@drawable/my_agent" />
 
                         <TextView
                             android:layout_width="match_parent"
@@ -473,7 +476,7 @@
                     android:gravity="center">
 
                     <LinearLayout
-                        android:id="@+id/my_coupons_center"
+                        android:id="@+id/feedbackInfo"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:orientation="vertical">
@@ -481,15 +484,15 @@
 
                         <ImageView
                             android:layout_width="match_parent"
-                            android:layout_height="36dp"
-                            android:src="@drawable/coupons" />
+                            android:layout_height="45dp"
+                            android:src="@drawable/feed_back" />
 
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="8dp"
                             android:gravity="center"
-                            android:text="代金券" />
+                            android:text="意见反馈" />
                     </LinearLayout>
                 </RelativeLayout>
             </LinearLayout>

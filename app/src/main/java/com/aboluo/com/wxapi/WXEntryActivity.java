@@ -211,6 +211,7 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler {
                 map.put("NickName", wxUserBean.getNickname());
                 map.put("LoginPhone", "123");
                 map.put("LoginCheckToken", "123");
+                map.put("UnionId", wxUserBean.getUnionid().toString());
                 map.put("APPToken", APPToken);
                 return map;
             }

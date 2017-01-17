@@ -28,7 +28,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
-                android:text="资产详情" />
+                android:text="邀请码" />
             <ImageView
                 android:id="@+id/invitation_share"
                 android:layout_centerVertical="true"

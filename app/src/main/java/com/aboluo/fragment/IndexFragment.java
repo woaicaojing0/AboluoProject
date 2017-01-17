@@ -1,11 +1,16 @@
 package com.aboluo.fragment;
 
+import android.Manifest;
+import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.location.LocationManager;
+import android.os.Build;
 import android.os.Bundle;
-import android.support.v4.app.ActivityOptionsCompat;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -44,7 +49,6 @@ import com.aboluo.com.SecKillActivity;
 import com.aboluo.com.SignInActivity;
 import com.aboluo.com.UnaryActivity;
 import com.aboluo.model.BaseConfigBean;
-import com.aboluo.model.BaseModel;
 import com.aboluo.model.SecKillAllInfo;
 import com.aboluo.widget.MyGridView;
 import com.android.volley.AuthFailureError;
@@ -53,6 +57,11 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
+import com.baidu.location.BDLocation;
+import com.baidu.location.BDLocationListener;
+import com.baidu.location.LocationClient;
+import com.baidu.location.LocationClientOption;
+import com.baidu.location.Poi;
 import com.google.gson.Gson;
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.handmark.pulltorefresh.library.PullToRefreshScrollView;
@@ -101,18 +110,46 @@ public class IndexFragment extends Fragment implements View.OnClickListener {
     private SweetAlertDialog pdialog;
     private BaseConfigBean indexBannerBean, huodongbean, brandConfigBean,
             themeBannerConfigBean, themeConfigBean, specialConfigBean,
-            newsConfigBean,midGridViewConfigBean,themeMidConfigBean;
+            newsConfigBean, midGridViewConfigBean, themeMidConfigBean;
     private LinearLayout linelayout_miaosha, index_message;
     private ImageView huodong_left1, huodong_left2, huodong_right1, huodong_right2, huodong_right3, theme_imageview;
-    private GridView brand_gridview,theme_mid_gridview;
+    private GridView brand_gridview, theme_mid_gridview;
     private MyGridView theme_gridview;
+    public LocationClient mLocationClient = null;
+    public BDLocationListener myListener = new MyLocationListener();
+    private static final int BAIDU_READ_PHONE_STATE = 100;
+    private TextView tv_location_address;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         if (view != null) {
         } else {
         }
         view = inflater.inflate(R.layout.fragment_index, null);
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+//            if (IndexFragment.this.getContext().checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+//                // 申请一个（或多个）权限，并提供用于回调返回的获取码（用户定义)
+//                requestPermissions(new String[]{Manifest.permission.ACCESS_COARSE_LOCATION,Manifest.permission.ACCESS_FINE_LOCATION}, BAIDU_READ_PHONE_STATE);
+//            }else
+//            {
+//                mLocationClient = new LocationClient(IndexFragment.this.getContext());     //声明LocationClient类
+//                mLocationClient.registerLocationListener(myListener);    //注册监听函数
+//                initLocation();
+//                mLocationClient.start();
+//            }
+//        } else {
+//            mLocationClient = new LocationClient(IndexFragment.this.getContext());     //声明LocationClient类
+//            mLocationClient.registerLocationListener(myListener);    //注册监听函数
+//            initLocation();
+//            mLocationClient.start();
+//        }
+//        LocationManager locManager = (LocationManager)IndexFragment.this.getContext().getSystemService(Context.LOCATION_SERVICE);
+//        if(!locManager.isProviderEnabled(LocationManager.GPS_PROVIDER))
+//        {
+//            // 未打开位置开关，可能导致定位失败或定位不准，提示用户或做相应处理
+//        }
         init(view);
+        tv_location_address.setText("定位中");
+        getPersimmions();
         linearLayout.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
@@ -138,7 +175,7 @@ public class IndexFragment extends Fragment implements View.OnClickListener {
         brand_gridview.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, screenWidth / 2));
 //        theme_gridview.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, screenWidth / 2));
         theme_mid_gridview.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, screenWidth / 2));
-        mid_gridview.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, (screenWidth / 2+CommonUtils.dip2px(this.getContext(),16))));
+        mid_gridview.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, (screenWidth / 2 + CommonUtils.dip2px(this.getContext(), 16))));
         initConfig();
         rollPagerView.setOnItemClickListener(new OnItemClickListener() {
             @Override
@@ -298,6 +335,7 @@ public class IndexFragment extends Fragment implements View.OnClickListener {
         huodong_right2 = (ImageView) view.findViewById(R.id.huodong_right2);
         huodong_right3 = (ImageView) view.findViewById(R.id.huodong_right3);
         theme_imageview = (ImageView) view.findViewById(R.id.theme_imageview);
+        tv_location_address = (TextView) view.findViewById(R.id.tv_location_address);
         brand_gridview = (GridView) view.findViewById(R.id.brand_gridview);
         theme_gridview = (MyGridView) view.findViewById(R.id.theme_gridview);
         theme_mid_gridview = (GridView) view.findViewById(R.id.theme_mid_gridview);
@@ -566,8 +604,7 @@ public class IndexFragment extends Fragment implements View.OnClickListener {
                 for (BaseConfigBean.AppConfigListBean listBean : newsConfigBean.getAppConfigList()) {
                     info.add(listBean.getName().toString());
                 }
-                if(info.size() ==0)
-                {
+                if (info.size() == 0) {
                     info.add("暂无新闻");
                 }
                 marqueeView.startWithList(info);
@@ -778,6 +815,7 @@ public class IndexFragment extends Fragment implements View.OnClickListener {
         };
         requestQueue.add(stringRequest);
     }
+
     //加载商品推荐
     private void initThemeGridview() {
         StringRequest stringRequest = new StringRequest(Request.Method.POST, URL + "/api/ConfigApi/ReceiveHomeConfig", new Response.Listener<String>() {
@@ -922,6 +960,7 @@ public class IndexFragment extends Fragment implements View.OnClickListener {
         };
         requestQueue.add(stringRequest);
     }
+
     //加载首页菜单栏配置
     private void initMemu() {
         StringRequest stringRequest = new StringRequest(Request.Method.POST, URL + "/api/ConfigApi/ReceiveHomeConfig", new Response.Listener<String>() {
@@ -931,7 +970,7 @@ public class IndexFragment extends Fragment implements View.OnClickListener {
                 response = response.substring(1, response.length() - 1);
                 midGridViewConfigBean = gson.fromJson(response, BaseConfigBean.class);
                 if (midGridViewConfigBean.isIsSuccess()) {
-                    Collections.sort(midGridViewConfigBean.getAppConfigList(),new Comparator<BaseConfigBean.AppConfigListBean>(){
+                    Collections.sort(midGridViewConfigBean.getAppConfigList(), new Comparator<BaseConfigBean.AppConfigListBean>() {
 
                         @Override
                         public int compare(BaseConfigBean.AppConfigListBean arg0, BaseConfigBean.AppConfigListBean arg1) {
@@ -970,9 +1009,9 @@ public class IndexFragment extends Fragment implements View.OnClickListener {
         };
         requestQueue.add(stringRequest);
     }
-    private void  initMidGridView(String [] images)
-    {
-        mid_gridview.setAdapter(new GridViewAdapter(this.getActivity(),images));
+
+    private void initMidGridView(String[] images) {
+        mid_gridview.setAdapter(new GridViewAdapter(this.getActivity(), images));
         mid_gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -1010,7 +1049,7 @@ public class IndexFragment extends Fragment implements View.OnClickListener {
                         break;
                     case 59: //9.9专场
                         Intent intent6 = new Intent(IndexFragment.this.getContext(), GoodsListActivity.class);
-                        intent6.putExtra("goods_type_id", 268);
+                        intent6.putExtra("goods_type_id", 297);
                         startActivity(intent6);
                         break;
                     case 60: //最新商品
@@ -1024,5 +1063,161 @@ public class IndexFragment extends Fragment implements View.OnClickListener {
                 }
             }
         });
+    }
+
+    private void initLocation() {
+        LocationClientOption option = new LocationClientOption();
+        option.setLocationMode(LocationClientOption.LocationMode.Hight_Accuracy
+        );//可选，默认高精度，设置定位模式，高精度，低功耗，仅设备
+        option.setCoorType("bd09ll");//可选，默认gcj02，设置返回的定位结果坐标系
+        int span = 1000;
+        option.setScanSpan(span);//可选，默认0，即仅定位一次，设置发起定位请求的间隔需要大于等于1000ms才是有效的
+        option.setIsNeedAddress(true);//可选，设置是否需要地址信息，默认不需要
+        option.setOpenGps(true);//可选，默认false,设置是否使用gps
+        option.setLocationNotify(true);//可选，默认false，设置是否当GPS有效时按照1S/1次频率输出GPS结果
+        option.setIsNeedLocationDescribe(true);//可选，默认false，设置是否需要位置语义化结果，可以在BDLocation.getLocationDescribe里得到，结果类似于“在北京天安门附近”
+        option.setIsNeedLocationPoiList(true);//可选，默认false，设置是否需要POI结果，可以在BDLocation.getPoiList里得到
+        option.setIgnoreKillProcess(false);//可选，默认true，定位SDK内部是一个SERVICE，并放到了独立进程，设置是否在stop的时候杀死这个进程，默认不杀死
+        option.SetIgnoreCacheException(false);//可选，默认false，设置是否收集CRASH信息，默认收集
+        option.setEnableSimulateGps(false);//可选，默认false，设置是否需要过滤GPS仿真结果，默认需要
+        mLocationClient.setLocOption(option);
+    }
+
+    public class MyLocationListener implements BDLocationListener {
+
+        @Override
+        public void onReceiveLocation(BDLocation location) {
+            if(location.getLocType()==BDLocation.TypeGpsLocation
+                    ||location.getLocType()==BDLocation.TypeNetWorkLocation
+                    ||location.getLocType()==BDLocation.TypeOffLineLocation)
+            {
+                tv_location_address.setText(location.getCity().toString());
+            }else
+            {
+                Toast.makeText(IndexFragment.this.getContext(), "定位失败", Toast.LENGTH_SHORT).show();
+                tv_location_address.setText("");
+            }
+            //Receive Location
+//            StringBuffer sb = new StringBuffer(256);
+//            sb.append("time : ");
+//            sb.append(location.getTime());
+//            sb.append("\nerror code : ");
+//            sb.append(location.getLocType());
+//            sb.append("\nlatitude : ");
+//            sb.append(location.getLatitude());
+//            sb.append("\nlontitude : ");
+//            sb.append(location.getLongitude());
+//            sb.append("\nradius : ");
+//            sb.append(location.getRadius());
+//            if (location.getLocType() == BDLocation.TypeGpsLocation) {// GPS定位结果
+//                sb.append("\nspeed : ");
+//                sb.append(location.getSpeed());// 单位：公里每小时
+//                sb.append("\nsatellite : ");
+//                sb.append(location.getSatelliteNumber());
+//                sb.append("\nheight : ");
+//                sb.append(location.getAltitude());// 单位：米
+//                sb.append("\ndirection : ");
+//                sb.append(location.getDirection());// 单位度
+//                sb.append("\naddr : ");
+//                sb.append(location.getAddrStr());
+//                sb.append("\ndescribe : ");
+//                sb.append("gps定位成功");
+//                location.getCity()
+//
+//            } else if (location.getLocType() == BDLocation.TypeNetWorkLocation) {// 网络定位结果
+//                sb.append("\naddr : ");
+//                sb.append(location.getAddrStr());
+//                //运营商信息
+//                sb.append("\noperationers : ");
+//                sb.append(location.getOperators());
+//                sb.append("\ndescribe : ");
+//                sb.append("网络定位成功");
+//            } else if (location.getLocType() == BDLocation.TypeOffLineLocation) {// 离线定位结果
+//                sb.append("\ndescribe : ");
+//                sb.append("离线定位成功，离线定位结果也是有效的");
+//            } else if (location.getLocType() == BDLocation.TypeServerError) {
+//                sb.append("\ndescribe : ");
+//                sb.append("服务端网络定位失败，可以反馈IMEI号和大体定位时间到loc-bugs@baidu.com，会有人追查原因");
+//            } else if (location.getLocType() == BDLocation.TypeNetWorkException) {
+//                sb.append("\ndescribe : ");
+//                sb.append("网络不同导致定位失败，请检查网络是否通畅");
+//            } else if (location.getLocType() == BDLocation.TypeCriteriaException) {
+//                sb.append("\ndescribe : ");
+//                sb.append("无法获取有效定位依据导致定位失败，一般是由于手机的原因，处于飞行模式下一般会造成这种结果，可以试着重启手机");
+//            }
+//            sb.append("\nlocationdescribe : ");
+//            sb.append(location.getLocationDescribe());// 位置语义化信息
+//            List<Poi> list = location.getPoiList();// POI数据
+//            if (list != null) {
+//                sb.append("\npoilist size = : ");
+//                sb.append(list.size());
+//                for (Poi p : list) {
+//                    sb.append("\npoi= : ");
+//                    sb.append(p.getId() + " " + p.getName() + " " + p.getRank());
+//                }
+//            }
+//            Log.i("BaiduLocationApiDem", sb.toString());
+            mLocationClient.stop();
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        switch (requestCode) {
+            // requestCode即所声明的权限获取码，在checkSelfPermission时传入
+            case BAIDU_READ_PHONE_STATE:
+                if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    mLocationClient = new LocationClient(IndexFragment.this.getContext());     //声明LocationClient类
+                    mLocationClient.registerLocationListener(myListener);    //注册监听函数
+                    initLocation();
+                    mLocationClient.start();
+                } else {
+                    // 没有获取到权限，做特殊处理
+                }
+                break;
+            default:
+                break;
+        }
+    }
+    /*
+    *判断当前是否是6.0版本
+    */
+    @TargetApi(23)
+    private void getPersimmions() {
+        ////判断当前是否是6.0版本
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            ArrayList<String> permissions = new ArrayList<String>();
+            /***
+             * 定位权限为必须权限，用户如果禁止，则每次进入都会申请
+             */
+            // 定位精确位置
+            if (IndexFragment.this.getContext().checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                permissions.add(Manifest.permission.ACCESS_FINE_LOCATION);
+
+            }
+            if (IndexFragment.this.getContext().checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                permissions.add(Manifest.permission.ACCESS_COARSE_LOCATION);
+
+            }
+            if (permissions.size() > 0) {
+                requestPermissions(permissions.toArray(new String[permissions.size()]), BAIDU_READ_PHONE_STATE);
+            } else {//****这里写自己的定位调用***/////
+                ///当权限都有时，开始定位
+                mLocationClient = new LocationClient(IndexFragment.this.getContext());     //声明LocationClient类
+                mLocationClient.registerLocationListener(myListener);    //注册监听函数
+                initLocation();
+                mLocationClient.start();
+            }
+        } else {
+//****这里写自己的定位调用***/////
+            ///低于6.0以下，开始定位
+            mLocationClient = new LocationClient(IndexFragment.this.getContext());     //声明LocationClient类
+            mLocationClient.registerLocationListener(myListener);    //注册监听函数
+            initLocation();
+            mLocationClient.start();
+        }
+
+
     }
 }

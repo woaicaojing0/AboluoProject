@@ -18,7 +18,7 @@
             android:gravity="center_vertical">
 
             <LinearLayout
-                android:layout_weight="1.2"
+                android:layout_weight="1.3"
                 android:id="@+id/top_left"
                 android:layout_width="0dp"
                 android:layout_height="24dp"
@@ -29,13 +29,14 @@
                 <ImageView
                     android:layout_width="24dp"
                     android:layout_height="24dp"
-                    android:layout_marginLeft="6dp"
+                    android:layout_marginLeft="2dp"
                     android:src="@drawable/location_fill" />
 
                 <TextView
+                    android:id="@+id/tv_location_address"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="苏州"
+                    android:text=""
                     android:textColor="@color/white"
                     android:textSize="12sp" />
             </LinearLayout>

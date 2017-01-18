@@ -30,6 +30,8 @@ public class BaseApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        //初始化volley
+        MyApplication.init(this);
         //初始化工具类
         Utils.init(this);
         //蒲公英的初始化

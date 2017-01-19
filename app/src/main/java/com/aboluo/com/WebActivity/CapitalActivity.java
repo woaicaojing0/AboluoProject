@@ -14,6 +14,7 @@ import com.aboluo.com.R;
 
 /**
  * Created by CJ on 2016/12/23.
+ * 资产详情
  */
 
 public class CapitalActivity extends Activity {

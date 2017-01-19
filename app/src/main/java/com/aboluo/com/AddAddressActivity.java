@@ -287,8 +287,8 @@ public class AddAddressActivity extends Activity implements TextWatcher, View.On
                 map.put("CityId", allids[1]);
                 map.put("Region", allname[2]);
                 map.put("RegionId", allids[2]);
-                map.put("Street", streename);
-                map.put("StreetId", String.valueOf(streeId));
+                map.put("Street", "");
+                map.put("StreetId", "0");
                 map.put("Address", address);
                 map.put("IsDefault", finalIsDefault);
                 map.put("ZipCode", ZipCode);
@@ -353,8 +353,8 @@ public class AddAddressActivity extends Activity implements TextWatcher, View.On
                 map.put("CityId", allids[1]);
                 map.put("Region", allname[2]);
                 map.put("RegionId", allids[2]);
-                map.put("Street", streename);
-                map.put("StreetId", String.valueOf(streeId));
+                map.put("Street", "");
+                map.put("StreetId", "0");
                 map.put("Address", address);
                 map.put("IsDefault", finalIsDefault);
                 map.put("ZipCode", ZipCode);

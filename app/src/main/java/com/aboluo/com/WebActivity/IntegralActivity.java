@@ -14,6 +14,7 @@ import com.aboluo.com.R;
 
 /**
  * Created by CJ on 2016/12/23.
+ * 积分详情
  */
 
 public class IntegralActivity extends Activity {

@@ -153,7 +153,7 @@ public class AddressActivity extends Activity implements View.OnClickListener {
             case R.id.address_edit:
                 final int model = addressInfoBean.getResult().getMemberAddressList().get((Integer) tag).getId();
                 if (tag != null && tag instanceof Integer) {
-                    Toast.makeText(this, tag + "edit", Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(this, tag + "edit", Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(AddressActivity.this, AddAddressActivity.class);
                     intent.putExtra("model", model);
                     startActivity(intent);

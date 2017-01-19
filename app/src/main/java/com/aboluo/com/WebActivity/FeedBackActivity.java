@@ -3,11 +3,8 @@ package com.aboluo.com.WebActivity;
 import android.app.Activity;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
-import android.webkit.WebSettings;
 import android.webkit.WebView;
-import android.webkit.WebViewClient;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -26,7 +23,6 @@ import com.android.volley.toolbox.StringRequest;
 import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
 
-import java.lang.reflect.Member;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -40,7 +36,7 @@ public class FeedBackActivity extends Activity {
     private WebView feedback_webiview;
     private ImageView feedback_back;
     private Button btn_fedback_submit;
-    private EditText et_content_fedback,et_phone_fedback;
+    private EditText et_content_fedback, et_phone_fedback;
     private RequestQueue requestQueue;
     private String ImageUrl;
     private String URL;
@@ -49,6 +45,7 @@ public class FeedBackActivity extends Activity {
     private Picasso picasso;
     private SweetAlertDialog pdialog;
     private String MemberId;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -88,16 +85,15 @@ public class FeedBackActivity extends Activity {
             public void onClick(View v) {
                 String content = et_content_fedback.getText().toString();
                 String phone = et_content_fedback.getText().toString();
-                if(content.equals("")||phone.equals(""))
-                {
+                if (content.equals("")) {
                     Toast.makeText(FeedBackActivity.this, "请填写相关内容", Toast.LENGTH_SHORT).show();
-                }else
-                {
-                    initData(phone,content);
+                } else {
+                    initData(phone, content);
                 }
             }
         });
     }
+
     private void init() {
         MemberId = CommonUtils.GetMemberId(this);
         requestQueue = MyApplication.getRequestQueue();
@@ -116,22 +112,21 @@ public class FeedBackActivity extends Activity {
         et_content_fedback = (EditText) findViewById(R.id.et_content_fedback);
         et_phone_fedback = (EditText) findViewById(R.id.et_phone_fedback);
     }
+
     private void initData(final String ContactPhoneNumber, final String Content) {
         pdialog.show();
         StringRequest stringRequest = new StringRequest(Request.Method.POST,
-                URL+"/api/ActiveApi/ReceiveQuestion", new Response.Listener<String>() {
+                URL + "/api/ActiveApi/ReceiveQuestion", new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                response = response.replace("\\","");
-                response = response.substring(1,response.length()-1);
+                response = response.replace("\\", "");
+                response = response.substring(1, response.length() - 1);
                 BaseModel baseModel = new BaseModel();
-                baseModel = gson.fromJson(response,BaseModel.class);
-                if(baseModel.isIsSuccess())
-                {
+                baseModel = gson.fromJson(response, BaseModel.class);
+                if (baseModel.isIsSuccess()) {
                     finish();
                     Toast.makeText(FeedBackActivity.this, baseModel.getMessage().toString(), Toast.LENGTH_SHORT).show();
-                }else
-                {
+                } else {
                     Toast.makeText(FeedBackActivity.this, baseModel.getMessage().toString(), Toast.LENGTH_SHORT).show();
                 }
                 pdialog.dismiss();
@@ -152,7 +147,9 @@ public class FeedBackActivity extends Activity {
                 map.put("LoginCheckToken", "123");
                 map.put("APPToken", APPToken);
                 return map;
-            };
+            }
+
+            ;
         };
         requestQueue.add(stringRequest);
     }

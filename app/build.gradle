@@ -7,6 +7,7 @@ android {
     }
     dexOptions {
         jumboMode true
+        javaMaxHeapSize "4g"
     }
     sourceSets {
         main {
@@ -29,6 +30,7 @@ android {
         useNewCruncher = false
     }
     defaultConfig {
+        multiDexEnabled true
         applicationId "com.aboluo.com"
         minSdkVersion 17
         targetSdkVersion 23

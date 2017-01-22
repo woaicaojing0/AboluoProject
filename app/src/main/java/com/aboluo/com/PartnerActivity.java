@@ -20,6 +20,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.aboluo.XUtils.CommonUtils;
+import com.aboluo.XUtils.FullyLinearLayoutManager;
 import com.aboluo.XUtils.MyApplication;
 import com.aboluo.XUtils.RBCallbkRecyclerView;
 import com.aboluo.XUtils.ScreenUtils;
@@ -79,7 +80,7 @@ public class PartnerActivity extends Activity implements PartnerAdpater.OnRecycl
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_parnter);
         init();
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+        FullyLinearLayoutManager linearLayoutManager = new FullyLinearLayoutManager(this);
         parnter_RecyclerView.setLayoutManager(linearLayoutManager);
         parnter_RecyclerView.setReachBottomRow(4);
         parnter_RecyclerView.setOnReachBottomListener(new RBCallbkRecyclerView.OnReachBottomListener() {
@@ -281,8 +282,8 @@ public class PartnerActivity extends Activity implements PartnerAdpater.OnRecycl
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                byte[] data = error.networkResponse.data;
-                Toast.makeText(PartnerActivity.this, new String(data), Toast.LENGTH_SHORT).show();
+//                byte[] data = error.networkResponse.data;
+                Toast.makeText(PartnerActivity.this, "error", Toast.LENGTH_SHORT).show();
             }
         }) {
             @Override

@@ -15,12 +15,6 @@
         app:rollviewpager_hint_gravity="right"
         app:rollviewpager_play_delay="3000" />
     <!--pageview 轮播效果 end -->
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="4dp"
-        android:layout_marginTop="2dp"
-        android:layout_marginBottom="2dp"
-        android:background="@color/view_color" />
     <GridView
         android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp"
@@ -28,12 +22,6 @@
         android:layout_width="match_parent"
         android:numColumns="4"
         android:layout_height="240px"></GridView>
-    <View
-        android:layout_marginTop="2dp"
-        android:layout_marginBottom="2dp"
-        android:layout_width="match_parent"
-        android:layout_height="4dp"
-        android:background="@color/view_color" />
     <com.aboluo.widget.MyGridView
         android:layout_marginTop="8dp"
         android:id="@+id/theme_gridview"

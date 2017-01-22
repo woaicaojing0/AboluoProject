@@ -456,46 +456,22 @@
                     android:background="@color/huodong_view" />
             </LinearLayout>
 
-            <View
-                android:layout_marginTop="2dp"
-                android:layout_marginBottom="2dp"
-                android:layout_width="match_parent"
-                android:layout_height="4dp"
-                android:background="@color/view_color" />
             <include
                 android:id="@+id/id_ly_huodong"
                 layout="@layout/activtiy_main_huodong"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content" />
-            <View
-                android:layout_marginTop="2dp"
-                android:layout_marginBottom="2dp"
-                android:layout_width="match_parent"
-                android:layout_height="4dp"
-                android:background="@color/view_color" />
             <include
                 android:id="@+id/id_ly_theme"
                 layout="@layout/index_theme"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content" />
-            <View
-                android:layout_marginTop="2dp"
-                android:layout_marginBottom="2dp"
-                android:layout_width="match_parent"
-                android:layout_height="4dp"
-                android:background="@color/view_color" />
             <include
                 android:id="@+id/id_ly_brand"
                 layout="@layout/index_brand"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 />
-            <View
-                android:layout_marginTop="2dp"
-                android:layout_marginBottom="2dp"
-                android:layout_width="match_parent"
-                android:layout_height="4dp"
-                android:background="@color/view_color" />
             <include
                 android:id="@+id/id_ly_special"
                 layout="@layout/index_special"

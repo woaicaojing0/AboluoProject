@@ -83,7 +83,7 @@
         </RelativeLayout>
     </LinearLayout>
 
-    <ScrollView
+    <com.aboluo.widget.MyScrollview
         android:layout_width="match_parent"
         android:layout_height="match_parent">
         <!--pageview 轮播效果-->
@@ -161,8 +161,8 @@
             <com.aboluo.XUtils.RBCallbkRecyclerView
                 android:id="@+id/parnter_RecyclerView"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"></com.aboluo.XUtils.RBCallbkRecyclerView>
+                android:layout_height="match_parent"></com.aboluo.XUtils.RBCallbkRecyclerView>
         </LinearLayout>
-    </ScrollView>
+    </com.aboluo.widget.MyScrollview>
 
 </LinearLayout>

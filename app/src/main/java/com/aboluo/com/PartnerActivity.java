@@ -153,6 +153,7 @@ public class PartnerActivity extends Activity implements PartnerAdpater.OnRecycl
                 listBean = gson.fromJson(response, GoodsListInfo.class);
                 if (currentpage == 1) {
                     goodsListBean = listBean.getResult().getGoodsList();
+                    parnter_RecyclerView.setInTheBottom(false);
                     partnerAdpater = new PartnerAdpater(goodsListBean, PartnerActivity.this);
                     parnter_RecyclerView.setAdapter(partnerAdpater);
                     partnerAdpater.setOnItemClickListener(PartnerActivity.this);

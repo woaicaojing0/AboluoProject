@@ -97,6 +97,10 @@ public class RBCallbkRecyclerView extends RecyclerView {
         this.reachBottomRow = reachBottomRow;
     }
 
+    public void setInTheBottom(boolean inTheBottom) {
+        isInTheBottom = inTheBottom;
+    }
+
     public interface OnReachBottomListener {
         void onReachBottom();
     }

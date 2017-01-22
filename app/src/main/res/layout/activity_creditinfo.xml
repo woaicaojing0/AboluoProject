@@ -136,7 +136,7 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/freemoney"/>
+                android:src="@drawable/capital_freemoney"/>
 
             <TextView
                 android:id="@+id/freeMoney"
@@ -163,7 +163,7 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/canusermoney"/>
+                android:src="@drawable/capital_canusermoney"/>
 
             <TextView
                 android:id="@+id/CanUserMoney"
@@ -219,7 +219,7 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/canuserscore"/>
+                android:src="@drawable/capital_canuserscore"/>
 
             <TextView
                 android:id="@+id/CanUserScore"

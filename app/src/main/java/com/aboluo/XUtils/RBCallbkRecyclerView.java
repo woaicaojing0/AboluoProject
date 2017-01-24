@@ -16,6 +16,7 @@ import android.util.Log;
 public class RBCallbkRecyclerView extends RecyclerView {
     private OnReachBottomListener onReachBottomListener;
     private boolean isInTheBottom = false;
+    private boolean hasdata = false;
     /**
      * reachBottomRow = 1;(default)
      * mean : when the lastVisibleRow is lastRow , call the onReachBottom();
@@ -83,8 +84,14 @@ public class RBCallbkRecyclerView extends RecyclerView {
             if (!isReachBottom) {
                 isInTheBottom = false;
             } else if (!isInTheBottom) {
-                onReachBottomListener.onReachBottom();
-                isInTheBottom = true;
+                if (!hasdata) {
+                    isInTheBottom = true;
+                    onReachBottomListener.onReachBottom();
+                }
+                else {
+
+                }
+
                 Log.d("RBCallbkRecyclerView", "onReachBottom");
             }
         }
@@ -99,6 +106,10 @@ public class RBCallbkRecyclerView extends RecyclerView {
 
     public void setInTheBottom(boolean inTheBottom) {
         isInTheBottom = inTheBottom;
+    }
+
+    public void setHasdata(boolean hasdata) {
+        this.hasdata = hasdata;
     }
 
     public interface OnReachBottomListener {

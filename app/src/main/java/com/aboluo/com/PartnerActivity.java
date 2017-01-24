@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.ActivityOptionsCompat;
-import android.support.v7.widget.LinearLayoutManager;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -88,6 +87,7 @@ public class PartnerActivity extends Activity implements PartnerAdpater.OnRecycl
             public void onReachBottom() {
                 //即将到达几部，进行加载更多操作
                 currentpages++;
+                parnter_RecyclerView.setInTheBottom(false);
                 initData(currentpages);
             }
         });
@@ -167,7 +167,15 @@ public class PartnerActivity extends Activity implements PartnerAdpater.OnRecycl
                     } else {
                         List<GoodsListInfo.ResultBean.GoodsListBean> goodsListBean2 = listBean.getResult().getGoodsList();
                         goodsListBean.addAll(goodsListBean2);
-                        partnerAdpater.notifyDataSetChanged();
+//                        partnerAdpater.notifyDataSetChanged();
+                        if (goodsListBean2.size() == 0) {
+                            //清除下拉滑动事件
+                            parnter_RecyclerView.setHasdata(true);
+                        } else {
+                            partnerAdpater = new PartnerAdpater(goodsListBean, PartnerActivity.this);
+                            parnter_RecyclerView.setAdapter(partnerAdpater);
+                            partnerAdpater.setOnItemClickListener(PartnerActivity.this);
+                        }
                     }
 
                 }
@@ -211,7 +219,7 @@ public class PartnerActivity extends Activity implements PartnerAdpater.OnRecycl
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btn_default:
-                currentpages=1;
+                currentpages = 1;
                 btn_default.setTextColor(getResources().getColor(R.color.btn_color));
                 parnter_goods_detail_price.setTextColor(Color.BLACK);
                 parnter_price_img.setImageResource(R.drawable.triangle_down_fill);
@@ -219,7 +227,7 @@ public class PartnerActivity extends Activity implements PartnerAdpater.OnRecycl
                 initData(1);
                 break;
             case R.id.parnter_goods_detail_price:
-                currentpages=1;
+                currentpages = 1;
                 btn_default.setTextColor(Color.BLACK);
                 parnter_goods_detail_price.setTextColor(getResources().getColor(R.color.btn_color));
                 ispricesort = !ispricesort;

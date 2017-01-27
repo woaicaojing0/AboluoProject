@@ -1,8 +1,9 @@
 package com.aboluo.com;
 
 import android.app.Activity;
-import android.content.Intent;
+import android.content.Context;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.text.Editable;
@@ -40,7 +41,7 @@ import cn.pedant.SweetAlert.SweetAlertDialog;
 public class RegisterActivity extends Activity implements View.OnClickListener, TextWatcher {
     private Button btn_getinfo; // 获取验证码的按钮
     private SMSBroadcastReceiver mSMSBroadcastReceiver;  //短信的广播监听
-    private EditText register_edit_auth, register_edit_phone, register_edit_pwd,register_edit_invitedNumber;
+    private EditText register_edit_auth, register_edit_phone, register_edit_pwd, register_edit_invitedNumber;
     private static final String ACTION = "android.provider.Telephony.SMS_RECEIVED";
     private RequestQueue requestQueue;
     private Button btn_register;    //注册按钮
@@ -48,6 +49,8 @@ public class RegisterActivity extends Activity implements View.OnClickListener, 
     private MessageInfo messageInfo;
     private static String URL = null;
     private static String APPToken = null;
+    private SharedPreferences preferences;
+    private String RegisterPhoneNumber = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,6 +76,7 @@ public class RegisterActivity extends Activity implements View.OnClickListener, 
         requestQueue = MyApplication.getRequestQueue();
         URL = CommonUtils.GetValueByKey(this, "apiurl");
         APPToken = CommonUtils.GetValueByKey(this, "APPToken");
+        preferences = RegisterActivity.this.getSharedPreferences("aboluoInfo", Context.MODE_PRIVATE);
     }
 
     @Override
@@ -106,6 +110,11 @@ public class RegisterActivity extends Activity implements View.OnClickListener, 
                         response = response.substring(1, response.length() - 1); //去掉头尾引号。
                         messageInfo = gson.fromJson(response, MessageInfo.class);
                         if (messageInfo.isIsSuccess()) {
+                            //发送短信成功后，将发送的短信的手机号存入到shareperferences中，防止用户退出应用
+                            //重新进入app进行注册，退出了应用，如果不存本地，无法判断。
+                            SharedPreferences.Editor editor = preferences.edit();
+                            editor.putString("registerPhoneNumber", messageInfo.getResult().getSendPhoneNumber().toString());
+                            editor.commit();
                             time.start();
                             btn_getinfo.setEnabled(false);
                         } else {
@@ -186,57 +195,56 @@ public class RegisterActivity extends Activity implements View.OnClickListener, 
                 final String number2 = register_edit_phone.getText().toString().trim();
                 final String yanzhengma = register_edit_auth.getText().toString().trim();
                 final String pwd = register_edit_pwd.getText().toString().trim();
+                RegisterPhoneNumber = preferences.getString("registerPhoneNumber", "0");
                 if (ValidateUtils.isMiMaRight(pwd)) {
-                    if (!messageInfo.getResult().getSendPhoneNumber().equals(number2)) {
+                    if (!RegisterPhoneNumber.equals(number2)) {
                         new SweetAlertDialog(this, SweetAlertDialog.ERROR_TYPE)
                                 .setTitleText("提示")
                                 .setContentText("请输入正确的手机号或邮箱!")
                                 .setConfirmText("确定")
                                 .show();
                     } else {
-                        StringRequest stringRequest = new StringRequest(Request.Method.POST, URL + "/api/Login/UserRegister", new Response.Listener<String>() {
-                            @Override
-                            public void onResponse(String response) {
-                                Log.i("TAG", response);
-                                Gson gson = new Gson();
-                                response = response.replace("\\", "");//去掉'/'
-                                response = response.substring(1, response.length() - 1); //去掉头尾引号。
-                                RegisterInfo registerInfo = gson.fromJson(response, RegisterInfo.class);
-                                if (registerInfo.isIsSuccess()) {
-                                    finish();
-                                } else {
-                                }
-                                Toast.makeText(RegisterActivity.this, registerInfo.getMessage(), Toast.LENGTH_SHORT).show();
+                    StringRequest stringRequest = new StringRequest(Request.Method.POST, URL + "/api/Login/UserRegister", new Response.Listener<String>() {
+                        @Override
+                        public void onResponse(String response) {
+                            Log.i("TAG", response);
+                            Gson gson = new Gson();
+                            response = response.replace("\\", "");//去掉'/'
+                            response = response.substring(1, response.length() - 1); //去掉头尾引号。
+                            RegisterInfo registerInfo = gson.fromJson(response, RegisterInfo.class);
+                            if (registerInfo.isIsSuccess()) {
+                                finish();
+                            } else {
                             }
-                        }, new Response.ErrorListener() {
-                            @Override
-                            public void onErrorResponse(VolleyError error) {
-                                byte[] bytecode = error.networkResponse.data;
-                                String s = new String(bytecode);
-                                Toast.makeText(RegisterActivity.this, s, Toast.LENGTH_SHORT).show();
+                            Toast.makeText(RegisterActivity.this, registerInfo.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                    }, new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            byte[] bytecode = error.networkResponse.data;
+                            String s = new String(bytecode);
+                            Toast.makeText(RegisterActivity.this, s, Toast.LENGTH_SHORT).show();
+                        }
+                    }) {
+                        @Override
+                        protected Map<String, String> getParams() throws AuthFailureError {
+                            Map<String, String> map = new HashMap<>();
+                            map.put("UserLoginNumber", number2);
+                            map.put("UserLoginPassword", CommonUtils.getMD5(pwd));
+                            map.put("MessageCheckNumber", yanzhengma);
+                            map.put("APPToken", APPToken);
+                            map.put("LoginCheckToken", "123123");
+                            map.put("LoginPhone", number2);
+                            if (register_edit_invitedNumber.getText().length() == 0) {
+                                map.put("InvitedNumber", "");
+                            } else {
+                                Log.i("RegisterActivity", register_edit_invitedNumber.getText().toString());
+                                map.put("InvitedNumber", register_edit_invitedNumber.getText().toString());
                             }
-                        }) {
-                            @Override
-                            protected Map<String, String> getParams() throws AuthFailureError {
-                                Map<String, String> map = new HashMap<>();
-                                map.put("UserLoginNumber", number2);
-                                map.put("UserLoginPassword", CommonUtils.getMD5(pwd));
-                                map.put("MessageCheckNumber", yanzhengma);
-                                map.put("APPToken", APPToken);
-                                map.put("LoginCheckToken", "123123");
-                                map.put("LoginPhone", number2);
-                                if(register_edit_invitedNumber.getText().length() ==0)
-                                {
-                                    map.put("InvitedNumber", "");
-                                }else
-                                {
-                                    Log.i("RegisterActivity",register_edit_invitedNumber.getText().toString());
-                                    map.put("InvitedNumber", register_edit_invitedNumber.getText().toString());
-                                }
-                                return map;
-                            }
-                        };
-                        requestQueue.add(stringRequest);
+                            return map;
+                        }
+                    };
+                    requestQueue.add(stringRequest);
                     }
                 } else {
                     new SweetAlertDialog(this, SweetAlertDialog.ERROR_TYPE)

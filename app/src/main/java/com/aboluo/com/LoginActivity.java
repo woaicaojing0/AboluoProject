@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.media.Image;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -12,6 +13,7 @@ import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -57,7 +59,7 @@ public class LoginActivity extends Activity implements View.OnClickListener, Tex
     public static final String APP_ID = "wxf933769a912e1313";
     private IWXAPI api;
     private CircleImageView iv_login_touxiang;
-
+    private ImageView login_back;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,6 +70,7 @@ public class LoginActivity extends Activity implements View.OnClickListener, Tex
         txt_retrivepwd.setOnClickListener(this);
         btn_login.setOnClickListener(this);
         weixin_login.setOnClickListener(this);
+        login_back.setOnClickListener(this);
         edit_userpwd.addTextChangedListener(this);
         edit_username.addTextChangedListener(this);
         api = WXAPIFactory.createWXAPI(LoginActivity.this, APP_ID, true);
@@ -91,6 +94,7 @@ public class LoginActivity extends Activity implements View.OnClickListener, Tex
         btn_login = (Button) findViewById(R.id.btn_login);
         edit_username = (EditText) findViewById(R.id.edit_username);
         edit_userpwd = (EditText) findViewById(R.id.edit_userpwd);
+        login_back = (ImageView) findViewById(R.id.login_back);
         weixin_login = (LinearLayout) findViewById(R.id.weixin_login);
         iv_login_touxiang = (CircleImageView) findViewById(R.id.iv_login_touxiang);
         requestQueue = MyApplication.getRequestQueue();
@@ -191,7 +195,9 @@ public class LoginActivity extends Activity implements View.OnClickListener, Tex
                     pDialog.show();
                 }
                 break;
-
+            case R.id.login_back:
+                finish();
+                break;
         }
     }
 

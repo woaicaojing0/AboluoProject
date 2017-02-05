@@ -21,7 +21,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RelativeLayout;
-import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -398,6 +397,7 @@ public class ShopCarFragment extends Fragment implements View.OnClickListener {
 
 
     private void initshopcar() {
+        MemberId = CommonUtils.GetMemberId(ShopCarFragment.this.getContext());
         sweetAlertDialog.show();
         StringRequest stringRequest = new StringRequest(Request.Method.POST, URL + "/api/GoodsShoppingCart/ReceiveGoodsShoppingCartList", new Response.Listener<String>() {
             @Override
@@ -1165,6 +1165,15 @@ public class ShopCarFragment extends Fragment implements View.OnClickListener {
                 cb_cart_all.setChecked(false);
             } else {
             }
+        }
+    }
+
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+        if (hidden) {
+        } else {
+            initshopcar();
         }
     }
 }

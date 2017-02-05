@@ -65,6 +65,7 @@ public class MakeOrderActivity extends Activity implements View.OnClickListener 
     private Button Submit_Order;
     private int requsetcode = 1;
     private static String moeny;
+    private static String oldmoeny;
     private TextView order_yunfei, tv_order_tishi;
     private double yunfei = 0.0;
     private int choose_address_requestcode = 2;
@@ -85,6 +86,7 @@ public class MakeOrderActivity extends Activity implements View.OnClickListener 
     private MakerOrderIntergralBean makerOrderIntergralBean;
     private LinearLayout ll_makerorder_jifeng, order_Line_tishi;
     private int SeckillId; // 秒杀的商品的id
+    private boolean isFirst = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -159,6 +161,7 @@ public class MakeOrderActivity extends Activity implements View.OnClickListener 
         Bundle bundle = intent.getExtras();
         goodsShoppingCartListBean = bundle.getParcelableArrayList("data");
         moeny = bundle.get("allmoney").toString();
+        oldmoeny = bundle.get("allmoney").toString();
         payfrom = bundle.get("payfrom").toString();
         OnePurchaseId = bundle.getInt("OnePurchaseId", 0);
         SeckillId = bundle.getInt("SeckillId", 0);
@@ -338,6 +341,7 @@ public class MakeOrderActivity extends Activity implements View.OnClickListener 
                 SubmitOrder();
                 break;
             case R.id.change_make_sure_location:
+                isFirst=true;
                 Intent intent = new Intent(MakeOrderActivity.this, ChooseAddressActivtiy.class);
                 startActivityForResult(intent, choose_address_requestcode);
                 break;
@@ -345,6 +349,7 @@ public class MakeOrderActivity extends Activity implements View.OnClickListener 
                 finish();
                 break;
             case R.id.rl_makeorder_usecoupons:
+                isFirst = true;
                 if (payfrom.equals("1"))//正常的商品
                 {
                     Intent intent1 = new Intent(MakeOrderActivity.this, CouponsActivity.class);
@@ -355,6 +360,7 @@ public class MakeOrderActivity extends Activity implements View.OnClickListener 
                 }
                 break;
             case R.id.rl_makerorder_jifeng:
+                isFirst = true;
                 if (payfrom.equals("1"))//正常的商品
                 {
                     if (ck_makerorder_jifeng.isChecked()) {
@@ -462,12 +468,10 @@ public class MakeOrderActivity extends Activity implements View.OnClickListener 
                             + makerOrderIntergralBean.getResult().getExpressPrice());
                     goods_smallallmoeny.setText("￥" + moeny);
                     txt_allmoney.setText(moeny);
-                    if(makerOrderIntergralBean.getResult().getDescription() ==null||
-                            makerOrderIntergralBean.getResult().getDescription()=="")
-                    {
+                    if (makerOrderIntergralBean.getResult().getDescription() == null ||
+                            makerOrderIntergralBean.getResult().getDescription() == "") {
                         order_Line_tishi.setVisibility(View.GONE);
-                    }else
-                    {
+                    } else {
                         order_Line_tishi.setVisibility(View.VISIBLE);
                         tv_order_tishi.setText(makerOrderIntergralBean.getResult().getDescription().toString());
                     }
@@ -512,6 +516,17 @@ public class MakeOrderActivity extends Activity implements View.OnClickListener 
                     + String.valueOf(currentMoney) + "元，还差" + surplus + "元，可以再去逛逛哟");
         } else {
             order_Line_tishi.setVisibility(View.GONE);
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (isFirst) {
+            isFirst = false;
+        } else {
+            moeny = oldmoeny;
+            getIntergralAndFreight();
         }
     }
 }

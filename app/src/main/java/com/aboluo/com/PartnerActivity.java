@@ -224,6 +224,7 @@ public class PartnerActivity extends Activity implements PartnerAdpater.OnRecycl
                 parnter_goods_detail_price.setTextColor(Color.BLACK);
                 parnter_price_img.setImageResource(R.drawable.triangle_down_fill);
                 isdefault = true;
+                parnter_RecyclerView.setHasdata(false);
                 initData(1);
                 break;
             case R.id.parnter_goods_detail_price:
@@ -237,6 +238,7 @@ public class PartnerActivity extends Activity implements PartnerAdpater.OnRecycl
                     parnter_price_img.setImageResource(R.drawable.triangle_down_fill_color);
 
                 }
+                parnter_RecyclerView.setHasdata(false);
                 isdefault = false;
                 initData(1);
                 break;

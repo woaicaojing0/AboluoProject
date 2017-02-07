@@ -63,6 +63,7 @@ public class SecKillGoodsDetailActivity extends Activity implements View.OnClick
     private String Seckill_endtime;
     private ImageView seckillgoods_detail_image_back;
     private ArrayList<ShopCarBean.ResultBean.GoodsShoppingCartListBean> goodsShoppingCartListBean; //传入下订单的信息
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -177,14 +178,13 @@ public class SecKillGoodsDetailActivity extends Activity implements View.OnClick
         Seckill_endtime = bundle.getString("endtime");
         GetSreverTime();
         initPageViewAndWebView(seckillListBean);
-        goodsShoppingCartListBean= new ArrayList<>();
+        goodsShoppingCartListBean = new ArrayList<>();
     }
 
     private void initPageViewAndWebView(SeckillListBean seckillListBean) {
-        if(seckillListBean.getGoodsPicture() ==null)
-        {
+        if (seckillListBean.getGoodsPicture() == null) {
             Toast.makeText(this, "请先添加商品的banner图片", Toast.LENGTH_SHORT).show();
-        }else {
+        } else {
             String[] imgesurl = seckillListBean.getGoodsPicture().split(";");
             initrollPagerView(imgesurl);
             String detailurl = CommonUtils.GetValueByKey(this, "backUrl") + "/moblie/Index?productId=" + seckillListBean.getGoodsId();
@@ -229,11 +229,18 @@ public class SecKillGoodsDetailActivity extends Activity implements View.OnClick
                 this.finish();
                 break;
             case R.id.seckill_goodsdetail_bottom:
-                Toast.makeText(this, "开始付款啦", Toast.LENGTH_SHORT).show();
-                UnaryBuyNow();
+                if (CommonUtils.IsLogin(SecKillGoodsDetailActivity.this)) {
+                    Toast.makeText(this, "开始付款啦", Toast.LENGTH_SHORT).show();
+                    UnaryBuyNow();
+                } else {
+                    Toast.makeText(this, "请先登录！", Toast.LENGTH_SHORT).show();
+                    Intent intent1 = new Intent(SecKillGoodsDetailActivity.this, LoginActivity.class);
+                    startActivity(intent1);
+                }
                 break;
         }
     }
+
     public void UnaryBuyNow() {
 
         goodsShoppingCartListBean.clear();
@@ -253,7 +260,7 @@ public class SecKillGoodsDetailActivity extends Activity implements View.OnClick
                 seckillListBean.getGoodsId(), seckillListBean.getGoodsColorId(),
                 seckillListBean.getGoodsColor() == null ? "0" : seckillListBean.getGoodsColor().toString(),
                 seckillListBean.getGoodsStandardId(), seckillListBean.getGoodsStandard() == null ? "0" : seckillListBean.getGoodsStandard().toString(),
-                1,0, seckillListBean.getGoodsName(), seckillListBean.getGoodsLogo().toString(),
+                1, 0, seckillListBean.getGoodsName(), seckillListBean.getGoodsLogo().toString(),
                 seckillListBean.getSeckillPrice()
         );
         goodsShoppingCartListBean.add(goodsShoppingCartListBean2);

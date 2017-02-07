@@ -25,6 +25,7 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
@@ -215,7 +216,9 @@ public class GoodsDetailActivity extends Activity implements View.OnClickListene
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(GoodsDetailActivity.this, GoodsDetailImageActivity.class);
-                intent.putExtra("imgeurl", goods_type_imgeurl);
+                ArrayList<String> listimage = new ArrayList<String>();
+                listimage.add(goods_type_imgeurl);
+                intent.putStringArrayListExtra("imgeurl", listimage);
                 String transitionName = "images";
                 ActivityOptionsCompat activityOptionsCompat = ActivityOptionsCompat.makeSceneTransitionAnimation(GoodsDetailActivity.this, v, transitionName);
                 startActivity(intent, activityOptionsCompat.toBundle());
@@ -267,7 +270,7 @@ public class GoodsDetailActivity extends Activity implements View.OnClickListene
         //webviewsetting.setJavaScriptEnabled(true);
         webviewsetting.setUseWideViewPort(true);//关键点
         webviewsetting.setLoadWithOverviewMode(true);
-        webviewsetting.setLoadWithOverviewMode(true);
+//        webviewsetting.setLoadWithOverviewMode(true);
         goods_detail_webview.loadUrl(detailurl);
         goods_detail_webview.setWebViewClient(new WebViewClient() {
             @Override
@@ -288,6 +291,18 @@ public class GoodsDetailActivity extends Activity implements View.OnClickListene
                 goods_detail_webview.measure(w, h);
             }
         });
+        goods_detail_webview.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+//                if (event.getAction() == MotionEvent.ACTION_UP) {
+//                    contentscrollView.requestDisallowInterceptTouchEvent(false);
+//                } else {
+//                    contentscrollView.requestDisallowInterceptTouchEvent(true);
+//                }
+                return true;
+            }
+        });
+
 //        //评价地址
 //        WebSettings webviewsetting2 = goods_pingjia_webview.getSettings();
 //        webviewsetting2.setJavaScriptEnabled(true);
@@ -302,9 +317,11 @@ public class GoodsDetailActivity extends Activity implements View.OnClickListene
      *
      * @param imges 图片地址(多个)
      */
-    private void initrollPagerView(String[] imges) {
+    private void initrollPagerView(final String[] imges) {
+        final ArrayList<String> listimage = new ArrayList<String>();
         for (int i = 0; i < imges.length; i++) {
             imges[i] = ImgUrl + imges[i].toString();
+            listimage.add(imges[i]);
         }
         //窗口的宽度
         int screenWidth = ScreenUtils.getScreenWidth(this);
@@ -317,7 +334,12 @@ public class GoodsDetailActivity extends Activity implements View.OnClickListene
         rollPagerView.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
-                //Toast.makeText(GoodsDetailActivity.this, "1", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(GoodsDetailActivity.this, GoodsDetailImageActivity.class);
+                intent.putStringArrayListExtra("imgeurl", listimage);
+                intent.putExtra("position", position);
+                String transitionName = "images";
+                ActivityOptionsCompat activityOptionsCompat = ActivityOptionsCompat.makeSceneTransitionAnimation(GoodsDetailActivity.this,rollPagerView, transitionName);
+                startActivity(intent,activityOptionsCompat.toBundle());
             }
         });
         goods_type_imgeurl = imges[0];

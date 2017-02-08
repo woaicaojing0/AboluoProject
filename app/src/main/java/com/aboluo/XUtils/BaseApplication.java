@@ -4,8 +4,10 @@ import android.app.Activity;
 import android.app.Application;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.annotation.Nullable;
 import android.util.Log;
 
 import com.aboluo.Gesture.SecondActivity;
@@ -13,6 +15,12 @@ import com.aboluo.GestureUtils.Contants;
 import com.baidu.android.bba.common.util.Util;
 import com.leo.gesturelibray.enums.LockMode;
 import com.pgyersdk.crash.PgyCrashManager;
+import com.qiyukf.unicorn.api.ImageLoaderListener;
+import com.qiyukf.unicorn.api.SavePowerConfig;
+import com.qiyukf.unicorn.api.StatusBarNotificationConfig;
+import com.qiyukf.unicorn.api.Unicorn;
+import com.qiyukf.unicorn.api.UnicornImageLoader;
+import com.qiyukf.unicorn.api.YSFOptions;
 //
 //import cn.beecloud.BeeCloud;
 import cn.beecloud.BeeCloud;
@@ -26,10 +34,18 @@ import cn.sharesdk.framework.ShareSDK;
 public class BaseApplication extends Application {
     public int count = 0;
     public boolean out = false;
-
+    // 如果返回值为null，则全部使用默认参数。
+    private YSFOptions options() {
+        YSFOptions options = new YSFOptions();
+        options.statusBarNotificationConfig = new StatusBarNotificationConfig();
+        options.savePowerConfig = new SavePowerConfig();
+        return options;
+    }
     @Override
     public void onCreate() {
         super.onCreate();
+        //初始化七鱼客服
+        Unicorn.init(this, "219a5cea9ad19bbf6fea3add081a1d27", options(), new PicassoImageLoader()); //
         //初始化volley
         MyApplication.init(this);
         //初始化工具类

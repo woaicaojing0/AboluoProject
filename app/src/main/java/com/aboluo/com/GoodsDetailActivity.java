@@ -65,6 +65,8 @@ import com.google.gson.Gson;
 import com.jude.rollviewpager.OnItemClickListener;
 import com.jude.rollviewpager.RollPagerView;
 import com.jude.rollviewpager.hintview.ColorPointHintView;
+import com.qiyukf.unicorn.api.ConsultSource;
+import com.qiyukf.unicorn.api.Unicorn;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -965,13 +967,23 @@ public class GoodsDetailActivity extends Activity implements View.OnClickListene
                     break;
 
                 case R.id.index_bottom_kefu:
-                    if (checkApkExist(this, "com.tencent.mobileqq")) {
-                        startActivity(new Intent(Intent.ACTION_VIEW,
-                                Uri.parse("mqqwpa://im/chat?chat_type=wpa&uin="
-                                        + CommonUtils.GetValueByKey(GoodsDetailActivity.this, "QQNum") + "&version=1")));
-                    } else {
-                        Toast.makeText(this, "本机未安装QQ应用", Toast.LENGTH_SHORT).show();
-                    }
+//                    if (checkApkExist(this, "com.tencent.mobileqq")) {
+//                        startActivity(new Intent(Intent.ACTION_VIEW,
+//                                Uri.parse("mqqwpa://im/chat?chat_type=wpa&uin="
+//                                        + CommonUtils.GetValueByKey(GoodsDetailActivity.this, "QQNum") + "&version=1")));
+//                    } else {
+//                        Toast.makeText(this, "本机未安装QQ应用", Toast.LENGTH_SHORT).show();
+//                    }
+                    String title = "商品详情";
+                    // 设置访客来源，标识访客是从哪个页面发起咨询的，用于客服了解用户是从什么页面进入三个参数分别为来源页面的url，来源页面标题，来源页面额外信息（可自由定义）
+                    // 设置来源后，在客服会话界面的"用户资料"栏的页面项，可以看到这里设置的值。
+                    String detailurladdress = CommonUtils.GetValueByKey(GoodsDetailActivity.this, "backUrl") + "/moblie/Index?productId=" + goods_id;
+                    ConsultSource source = new ConsultSource("商品详情", detailurladdress, "custom information string");
+                    // 请注意： 调用该接口前，应先检查Unicorn.isServiceAvailable(), 如果返回为false，该接口不会有任何动作
+                    Unicorn.openServiceActivity(GoodsDetailActivity.this, // 上下文
+                            title, // 聊天窗口的标题
+                            source // 咨询的发起来源，包括发起咨询的url，title，描述信息等
+                    );
                     break;
 
             }

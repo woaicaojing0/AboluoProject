@@ -7,7 +7,7 @@
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="40dp"
+        android:layout_height="56dp"
         app:contentInsetLeft="0dp"
         app:contentInsetStart="0dp">
 
@@ -32,13 +32,24 @@
 
         </RelativeLayout>
     </android.support.v7.widget.Toolbar>
+    <View
+        android:id="@+id/top_view"
+        android:layout_width="match_parent"
+        android:layout_height="0.2dp"
+        android:layout_alignBottom="@+id/toolbar"
+        android:background="@color/view_color" />
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_height="match_parent"
+        android:layout_width="match_parent"
+        android:background="@color/white">
     <EditText
+        android:layout_marginTop="20dp"
         android:id="@+id/et_content_fedback"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
         android:gravity="top|left"
         android:hint="反馈内容"
-        android:layout_marginTop="20dp"
         android:background="@drawable/fedback_et_border"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -69,4 +80,5 @@
         android:id="@+id/feedback_webiview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"></WebView>
+    </LinearLayout>
 </LinearLayout>

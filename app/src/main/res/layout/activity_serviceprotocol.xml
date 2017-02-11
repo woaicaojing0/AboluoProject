@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_alignParentTop="true"
+        android:background="@color/white"
+        app:contentInsetLeft="0dp"
+        app:contentInsetStart="0dp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/iv_serviceprotocol_back"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="10dp"
+                android:src="@drawable/back"
+                android:text="返回" />
+
+            <TextView
+                android:layout_gravity="center"
+                android:id="@+id/toolbar_txt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="服务协议" />
+        </RelativeLayout>
+    </android.support.v7.widget.Toolbar>
+    <View
+        android:id="@+id/top_view"
+        android:layout_width="match_parent"
+        android:layout_height="0.2dp"
+        android:layout_alignBottom="@+id/toolbar"
+        android:background="@color/view_color" />
+    <com.shizhefei.view.largeimage.LargeImageView
+        android:id="@+id/lgiv_serviceprotocol"
+        android:scrollbars="vertical|horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+</LinearLayout>

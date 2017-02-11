@@ -2,8 +2,10 @@ package com.aboluo.com;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.graphics.Paint;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.text.Editable;
@@ -13,6 +15,7 @@ import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.aboluo.XUtils.CommonUtils;
@@ -28,6 +31,8 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.google.gson.Gson;
+
+import org.w3c.dom.Text;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -51,7 +56,7 @@ public class RegisterActivity extends Activity implements View.OnClickListener, 
     private static String APPToken = null;
     private SharedPreferences preferences;
     private String RegisterPhoneNumber = "";
-
+    private TextView tv_serviceprotocol;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,6 +65,7 @@ public class RegisterActivity extends Activity implements View.OnClickListener, 
         init();
         btn_getinfo.setOnClickListener(this);
         btn_register.setOnClickListener(this);
+        tv_serviceprotocol.setOnClickListener(this);
         register_edit_auth.addTextChangedListener(this);
         register_edit_phone.addTextChangedListener(this);
         register_edit_pwd.addTextChangedListener(this);
@@ -73,10 +79,12 @@ public class RegisterActivity extends Activity implements View.OnClickListener, 
         register_edit_pwd = (EditText) findViewById(R.id.register_edit_pwd);
         register_edit_invitedNumber = (EditText) findViewById(R.id.register_edit_invitedNumber);
         btn_register = (Button) findViewById(R.id.btn_register);
+        tv_serviceprotocol = (TextView) findViewById(R.id.tv_serviceprotocol);
         requestQueue = MyApplication.getRequestQueue();
         URL = CommonUtils.GetValueByKey(this, "apiurl");
         APPToken = CommonUtils.GetValueByKey(this, "APPToken");
         preferences = RegisterActivity.this.getSharedPreferences("aboluoInfo", Context.MODE_PRIVATE);
+        tv_serviceprotocol.getPaint().setFlags(Paint. UNDERLINE_TEXT_FLAG ); //下划线
     }
 
     @Override
@@ -253,6 +261,10 @@ public class RegisterActivity extends Activity implements View.OnClickListener, 
                             .setConfirmText("确定")
                             .show();
                 }
+                break;
+            case R.id.tv_serviceprotocol:
+                Intent intent = new Intent(RegisterActivity.this,ServiceProtocolActivity.class);
+                startActivity(intent);
                 break;
 
         }

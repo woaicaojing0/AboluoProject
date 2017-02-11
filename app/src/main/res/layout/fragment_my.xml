@@ -87,7 +87,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
-
                     android:text="我的订单" />
 
                 <TextView
@@ -121,12 +120,32 @@
                         android:layout_height="wrap_content"
                         android:orientation="vertical">
 
-
-                        <ImageView
-                            android:id="@+id/my_01"
+                        <RelativeLayout
                             android:layout_width="wrap_content"
-                            android:layout_height="40dp"
-                            android:src="@drawable/my_01" />
+                            android:layout_height="wrap_content">
+                            <ImageView
+                                android:id="@+id/my_01"
+                                android:layout_width="wrap_content"
+                                android:layout_height="40dp"
+                                android:src="@drawable/my_01" />
+
+                            <TextView
+                                android:visibility="gone"
+                                android:id="@+id/my_01_num"
+                                android:layout_width="14dp"
+                                android:layout_height="14dp"
+                                android:textColor="@color/red"
+                                android:text="1"
+                                android:textSize="8sp"
+                                android:gravity="center"
+                                android:background="@drawable/cricle_goodsstates_num"
+                                android:layout_alignParentTop="true"
+                                android:layout_alignEnd="@+id/my_01"
+                                android:layout_marginRight="12dp"
+                                android:layout_marginTop="3dp"
+                                 />
+                        </RelativeLayout>
+
 
                         <TextView
                             android:layout_width="match_parent"
@@ -149,10 +168,31 @@
                         android:orientation="vertical">
 
 
-                        <ImageView
+                        <RelativeLayout
                             android:layout_width="wrap_content"
-                            android:layout_height="40dp"
-                            android:src="@drawable/my_02" />
+                            android:layout_height="wrap_content">
+                            <ImageView
+                                android:id="@+id/my_02"
+                                android:layout_width="wrap_content"
+                                android:layout_height="40dp"
+                                android:src="@drawable/my_02" />
+
+                            <TextView
+                                android:visibility="gone"
+                                android:id="@+id/my_02_num"
+                                android:layout_width="12dp"
+                                android:layout_height="12dp"
+                                android:textColor="@color/red"
+                                android:text="1"
+                                android:textSize="8sp"
+                                android:gravity="center"
+                                android:background="@drawable/cricle_goodsstates_num"
+                                android:layout_alignParentTop="true"
+                                android:layout_alignEnd="@+id/my_02"
+                                android:layout_marginRight="12dp"
+                                android:layout_marginTop="4dp"
+                                />
+                        </RelativeLayout>
 
                         <TextView
                             android:layout_width="match_parent"
@@ -176,10 +216,31 @@
                         android:orientation="vertical">
 
 
-                        <ImageView
+                        <RelativeLayout
                             android:layout_width="wrap_content"
-                            android:layout_height="40dp"
-                            android:src="@drawable/my_03" />
+                            android:layout_height="wrap_content">
+                            <ImageView
+                                android:id="@+id/my_03"
+                                android:layout_width="wrap_content"
+                                android:layout_height="40dp"
+                                android:src="@drawable/my_03" />
+
+                            <TextView
+                                android:visibility="gone"
+                                android:id="@+id/my_03_num"
+                                android:layout_width="12dp"
+                                android:layout_height="12dp"
+                                android:textColor="@color/red"
+                                android:text="1"
+                                android:textSize="8sp"
+                                android:gravity="center"
+                                android:background="@drawable/cricle_goodsstates_num"
+                                android:layout_alignParentTop="true"
+                                android:layout_alignEnd="@+id/my_03"
+                                android:layout_marginRight="12dp"
+                                android:layout_marginTop="4dp"
+                                />
+                        </RelativeLayout>
 
                         <TextView
                             android:layout_width="match_parent"
@@ -202,10 +263,31 @@
                         android:orientation="vertical">
 
 
-                        <ImageView
+                        <RelativeLayout
                             android:layout_width="wrap_content"
-                            android:layout_height="40dp"
-                            android:src="@drawable/my_04" />
+                            android:layout_height="wrap_content">
+                            <ImageView
+                                android:id="@+id/my_04"
+                                android:layout_width="wrap_content"
+                                android:layout_height="40dp"
+                                android:src="@drawable/my_04" />
+
+                            <TextView
+                                android:visibility="gone"
+                                android:id="@+id/my_04_num"
+                                android:layout_width="12dp"
+                                android:layout_height="12dp"
+                                android:textColor="@color/red"
+                                android:text="1"
+                                android:textSize="8sp"
+                                android:gravity="center"
+                                android:background="@drawable/cricle_goodsstates_num"
+                                android:layout_alignParentTop="true"
+                                android:layout_alignEnd="@+id/my_04"
+                                android:layout_marginRight="12dp"
+                                android:layout_marginTop="4dp"
+                                />
+                        </RelativeLayout>
 
                         <TextView
                             android:layout_width="match_parent"
@@ -438,7 +520,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="6dp"
                             android:gravity="center"
-                            android:text="邀请码" />
+                            android:text="我的邀请码" />
                     </LinearLayout>
                 </RelativeLayout>
 
@@ -476,7 +558,7 @@
                     android:gravity="center">
 
                     <LinearLayout
-                        android:id="@+id/feedbackInfo"
+                        android:id="@+id/helpcenter"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:orientation="vertical">
@@ -492,7 +574,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="8dp"
                             android:gravity="center"
-                            android:text="意见反馈" />
+                            android:text="帮助中心" />
                     </LinearLayout>
                 </RelativeLayout>
             </LinearLayout>

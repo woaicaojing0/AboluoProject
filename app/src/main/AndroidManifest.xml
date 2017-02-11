@@ -147,12 +147,12 @@
         <activity android:name=".UnaryIntroduceActivity"></activity>
         <activity android:name=".CompanyIntroduceActivity"></activity>
         <activity android:name=".SettingActivity"></activity>
+        <activity android:name=".HelpCenterActivity"></activity>
+        <activity android:name=".ServiceProtocolActivity"></activity>
         <activity android:name=".wxapi.WXEntryActivity"
             android:exported="true"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" >
-
         </activity>
-
         <!--分享-->
         <activity
             android:name="com.mob.tools.MobUIShell"

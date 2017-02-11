@@ -24,6 +24,7 @@ import com.aboluo.com.CompanyIntroduceActivity;
 import com.aboluo.com.CouponsActivity;
 import com.aboluo.com.CreditInfoActivity;
 import com.aboluo.com.FavorActivity;
+import com.aboluo.com.HelpCenterActivity;
 import com.aboluo.com.InvitationCodeActivity;
 import com.aboluo.com.LoginActivity;
 import com.aboluo.com.MainActivity;
@@ -59,7 +60,7 @@ public class MyFragment extends Fragment implements View.OnClickListener {
     private Button btn, my_out;
     private ScrollView my_scrollview;
     private LinearLayout linLayout_my_info, my_nopay, my_nosend, my_noreceive, my_assessment,
-            feedbackInfo, my_favor, my_refund, creditinfodetail, my_invitation,
+            helpcenter, my_favor, my_refund, creditinfodetail, my_invitation,
             invitation_code, my_agent, my_coupons_center;
     private RelativeLayout my_allorder, my_addressinfo;
     private SharedPreferences sharedPreferences;
@@ -91,7 +92,7 @@ public class MyFragment extends Fragment implements View.OnClickListener {
         my_noreceive.setOnClickListener(this);
         my_assessment.setOnClickListener(this);
         my_addressinfo.setOnClickListener(this);
-        feedbackInfo.setOnClickListener(this);
+        helpcenter.setOnClickListener(this);
         my_favor.setOnClickListener(this);
         my_refund.setOnClickListener(this);
         btn.setOnClickListener(this);
@@ -132,7 +133,7 @@ public class MyFragment extends Fragment implements View.OnClickListener {
         my_favor = (LinearLayout) view.findViewById(R.id.my_favor);
         my_addressinfo = (RelativeLayout) view.findViewById(R.id.my_addressinfo);
         my_refund = (LinearLayout) view.findViewById(R.id.my_refund);
-        feedbackInfo = (LinearLayout) view.findViewById(R.id.feedbackInfo);
+        helpcenter = (LinearLayout) view.findViewById(R.id.helpcenter);
         creditinfodetail = (LinearLayout) view.findViewById(R.id.creditinfodetail);
         my_invitation = (LinearLayout) view.findViewById(R.id.my_invitation);
         invitation_code = (LinearLayout) view.findViewById(R.id.invitation_code);
@@ -235,8 +236,8 @@ public class MyFragment extends Fragment implements View.OnClickListener {
                 intent6.putExtra("TAG", 5);
                 startActivity(intent6);
                 break;
-            case R.id.feedbackInfo:
-                Intent intent12 = new Intent(MyFragment.this.getActivity(), FeedBackActivity.class);
+            case R.id.helpcenter:
+                Intent intent12 = new Intent(MyFragment.this.getActivity(), HelpCenterActivity.class);
                 startActivity(intent12);
                 break;
             case R.id.my_out:

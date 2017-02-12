@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -47,6 +48,7 @@ public class OrderPayActivity extends Activity implements View.OnClickListener {
     private LinearLayout lineLayout_wx_pay, lineLayout_zfb_pay;
     private RadioButton ck_zfb_pay, ck_wx_pay;
     private ImageView iv_pay_back;
+    private SweetAlertDialog finishDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,6 +88,25 @@ public class OrderPayActivity extends Activity implements View.OnClickListener {
         paymoney = Integer.valueOf(CommonUtils.yuanToFen(yuanmoney));
         txt_lastpaymoeny.setText("￥" + String.valueOf(yuanmoney));
         Log.i("woaicaojingpay", "实际支付的金额为" + paymoney);
+        finishDialog = new SweetAlertDialog(this, SweetAlertDialog.WARNING_TYPE)
+                .setTitleText("您确定离开么")
+                .setContentText("订单还未付款")
+                .setCancelText("确认离开")
+                .setConfirmText("继续支付")
+                .showCancelButton(true)
+                .setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                    @Override
+                    public void onClick(SweetAlertDialog sDialog) {
+                        finishDialog.dismiss();
+                        finish();
+                    }
+                })
+                .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                    @Override
+                    public void onClick(SweetAlertDialog sweetAlertDialog) {
+                        finishDialog.dismiss();
+                    }
+                });
     }
 
     private void Clean() {
@@ -281,8 +302,15 @@ public class OrderPayActivity extends Activity implements View.OnClickListener {
                 ck_wx_pay.setChecked(true);
                 break;
             case R.id.iv_pay_back:
-                finish();
+                finishDialog.show();
                 break;
         }
+    }
+
+    public boolean onKeyDown (int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            finishDialog.show();
+        }
+        return false;
     }
 }

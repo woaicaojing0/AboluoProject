@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
@@ -133,8 +134,10 @@ public class SecKillGoodsDetailActivity extends Activity implements View.OnClick
      * @param imges 图片地址(多个)
      */
     private void initrollPagerView(String[] imges) {
+        final ArrayList<String> listimage = new ArrayList<String>();
         for (int i = 0; i < imges.length; i++) {
             imges[i] = ImgUrl + imges[i].toString();
+            listimage.add(imges[i]);
         }
         //窗口的宽度
         int screenWidth = ScreenUtils.getScreenWidth(this);
@@ -147,7 +150,12 @@ public class SecKillGoodsDetailActivity extends Activity implements View.OnClick
         rollPagerView.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
-                Toast.makeText(SecKillGoodsDetailActivity.this, "1", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(SecKillGoodsDetailActivity.this, GoodsDetailImageActivity.class);
+                intent.putStringArrayListExtra("imgeurl", listimage);
+                intent.putExtra("position", position);
+                String transitionName = "images";
+                ActivityOptionsCompat activityOptionsCompat = ActivityOptionsCompat.makeSceneTransitionAnimation(SecKillGoodsDetailActivity.this,rollPagerView, transitionName);
+                startActivity(intent,activityOptionsCompat.toBundle());
             }
         });
     }

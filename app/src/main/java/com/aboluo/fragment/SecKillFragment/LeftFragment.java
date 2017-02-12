@@ -20,11 +20,13 @@ import com.aboluo.XUtils.ConstUtils;
 import com.aboluo.XUtils.MyApplication;
 import com.aboluo.XUtils.TimeUtils;
 import com.aboluo.adapter.SeckillAdapter;
+import com.aboluo.com.MakeOrderActivity;
 import com.aboluo.com.R;
 import com.aboluo.com.SecKillGoodsDetailActivity;
 import com.aboluo.model.SecKillAllInfo;
 import com.aboluo.model.SecKillDetailInfo;
 import com.aboluo.model.SecKillDetailInfo.SeckillListBean;
+import com.aboluo.model.ShopCarBean;
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -34,6 +36,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -62,6 +65,11 @@ public class LeftFragment extends Fragment {
     private CountdownView cv_seckilldetail;
     private TextView txt_countview;
     private SweetAlertDialog pdialog;
+    private ArrayList<ShopCarBean.ResultBean.GoodsShoppingCartListBean> goodsShoppingCartListBean; //传入下订单的信息
+    private SeckillListBean seckillListBean;
+
+    public LeftFragment() {
+    }
 
     @Nullable
     @Override
@@ -79,7 +87,6 @@ public class LeftFragment extends Fragment {
         cv_seckilldetail = (CountdownView) v.findViewById(R.id.cv_seckilldetail);
         txt_countview = (TextView) v.findViewById(R.id.txt_countview);
         requestQueue = MyApplication.getRequestQueue();
-
         ImageUrl = CommonUtils.GetValueByKey(context, "ImgUrl");
         URL = CommonUtils.GetValueByKey(context, "apiurl");
         APPToken = CommonUtils.GetValueByKey(context, "APPToken");
@@ -90,6 +97,7 @@ public class LeftFragment extends Fragment {
         pdialog.setTitleText("加载中");
         pdialog.setCanceledOnTouchOutside(true);
         pdialog.setCancelable(true);
+        goodsShoppingCartListBean = new ArrayList<>();
     }
 
     @Override
@@ -119,6 +127,41 @@ public class LeftFragment extends Fragment {
                             seckillAdapter = new SeckillAdapter(context, secKillDetailInfo.getSeckillList()
                                     , Integer.valueOf(skillMainListBean.getState()));
                             seckill_listview.setAdapter(seckillAdapter);
+                            seckillAdapter.setBtnGoOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    Object tag = v.getTag();
+                                    switch (v.getId()) {
+                                        case R.id.seckill_btn_go:
+                                            //State : 0,1,2 //(0-未开启，1-已开启，2-准备中，3-已结束）
+                                            if (tag != null && tag instanceof Integer) {
+                                                int goodsstatus = Integer.valueOf(skillMainListBean.getState());
+                                                if (goodsstatus == 1) {
+                                                    seckillListBean = secKillDetailInfo.getSeckillList().get((Integer) tag);
+                                                    ShopCarBean.ResultBean.GoodsShoppingCartListBean goodsShoppingCartListBean2 = new ShopCarBean.ResultBean.GoodsShoppingCartListBean(
+                                                            seckillListBean.getGoodsId(), seckillListBean.getGoodsColorId(),
+                                                            seckillListBean.getGoodsColor() == null ? "0" : seckillListBean.getGoodsColor().toString(),
+                                                            seckillListBean.getGoodsStandardId(), seckillListBean.getGoodsStandard() == null ? "0" : seckillListBean.getGoodsStandard().toString(),
+                                                            1, 0, seckillListBean.getGoodsName(), seckillListBean.getGoodsLogo().toString(),
+                                                            seckillListBean.getSeckillPrice()
+                                                    );
+                                                    goodsShoppingCartListBean.add(goodsShoppingCartListBean2);
+                                                    Intent intent1 = new Intent(LeftFragment.this.getActivity(), MakeOrderActivity.class);
+                                                    intent1.putExtra("allmoney", seckillListBean.getSeckillPrice());
+                                                    intent1.putExtra("data", goodsShoppingCartListBean);
+                                                    intent1.putExtra("payfrom", "3"); //代表从秒杀结算的
+                                                    intent1.putExtra("SeckillId", seckillListBean.getSeckillId()); //代表秒杀商品的id
+                                                    startActivity(intent1);
+                                                } else {
+                                                    Toast.makeText(context, "活动暂未开始！", Toast.LENGTH_SHORT).show();
+                                                }
+                                            } else {
+                                            }
+
+                                            break;
+                                    }
+                                }
+                            });
                             GetSreverTime(); //显示 当前秒杀状态
                         }
                     } else {
@@ -131,8 +174,9 @@ public class LeftFragment extends Fragment {
             }, new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
-                    byte[] b = error.networkResponse.data;
-                    Log.i("woaicaojingskilldetail", new String(b));
+                    pdialog.dismiss();
+                    //byte[] b = error.networkResponse.data;
+                    //Log.i("woaicaojingskilldetail", new String(b));
                 }
             }) {
                 @Override

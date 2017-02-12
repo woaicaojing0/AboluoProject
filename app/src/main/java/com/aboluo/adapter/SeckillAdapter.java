@@ -29,6 +29,11 @@ public class SeckillAdapter extends BaseAdapter {
     private String ImageURl;
     private int status;
 
+    public void setBtnGoOnClickListener(View.OnClickListener btnGoOnClickListener) {
+        BtnGoOnClickListener = btnGoOnClickListener;
+    }
+
+    private View.OnClickListener BtnGoOnClickListener;
     public SeckillAdapter(Context context, List<SeckillListBean> list, int status) {
         this.mcontext = context;
         this.mlist = list;
@@ -75,7 +80,8 @@ public class SeckillAdapter extends BaseAdapter {
         holder.seckill_goods_price.setText(String.valueOf(mlist.get(position).getSeckillPrice()));
         picasso.load(ImageURl + mlist.get(position).getGoodsLogo()).placeholder(mcontext.getResources().getDrawable(R.drawable.imagviewloading)
         ).error(mcontext.getResources().getDrawable(R.drawable.imageview_error)).into(holder.seckill_goods_image);
-        holder.seckill_btn_go.setTag(mlist.get(position).getSeckillStatus());
+        holder.seckill_btn_go.setTag(position);
+        holder.seckill_btn_go.setOnClickListener(BtnGoOnClickListener);
         //State : 0,1,2 //(0-未开启，1-已开启，2-准备中，3-已结束）
         if (status == 0 || status == 2) {
             holder.seckill_btn_go.setText("未开始");

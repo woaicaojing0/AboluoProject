@@ -214,7 +214,9 @@ public class PartnerGoodsDetailActivity extends Activity implements View.OnClick
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(PartnerGoodsDetailActivity.this, GoodsDetailImageActivity.class);
-                intent.putExtra("imgeurl", goods_type_imgeurl);
+                ArrayList<String> listimage = new ArrayList<String>();
+                listimage.add(goods_type_imgeurl);
+                intent.putStringArrayListExtra("imgeurl", listimage);
                 String transitionName = "images";
                 ActivityOptionsCompat activityOptionsCompat = ActivityOptionsCompat.makeSceneTransitionAnimation(PartnerGoodsDetailActivity.this, v, transitionName);
                 startActivity(intent, activityOptionsCompat.toBundle());
@@ -316,8 +318,10 @@ public class PartnerGoodsDetailActivity extends Activity implements View.OnClick
      * @param imges 图片地址(多个)
      */
     private void initrollPagerView(String[] imges) {
+        final ArrayList<String> listimage = new ArrayList<String>();
         for (int i = 0; i < imges.length; i++) {
             imges[i] = ImgUrl + imges[i].toString();
+            listimage.add(imges[i]);
         }
         //窗口的宽度
         int screenWidth = ScreenUtils.getScreenWidth(this);
@@ -330,7 +334,12 @@ public class PartnerGoodsDetailActivity extends Activity implements View.OnClick
         rollPagerView.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
-                //Toast.makeText(PartnerGoodsDetailActivity.this, "1", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(PartnerGoodsDetailActivity.this, GoodsDetailImageActivity.class);
+                intent.putStringArrayListExtra("imgeurl", listimage);
+                intent.putExtra("position", position);
+                String transitionName = "images";
+                ActivityOptionsCompat activityOptionsCompat = ActivityOptionsCompat.makeSceneTransitionAnimation(PartnerGoodsDetailActivity.this,rollPagerView, transitionName);
+                startActivity(intent,activityOptionsCompat.toBundle());
             }
         });
         goods_type_imgeurl = imges[0];

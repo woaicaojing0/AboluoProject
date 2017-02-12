@@ -300,4 +300,12 @@ public class MyFragment extends Fragment implements View.OnClickListener {
         }
         InitData();
     }
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+        if (hidden) {
+        } else {
+            InitData();
+        }
+    }
 }

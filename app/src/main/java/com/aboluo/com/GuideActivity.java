@@ -41,7 +41,7 @@ preferences = getSharedPreferences("abolu",MODE_PRIVATE);
         //如果是第一次进入，进入引导界面；如果不是第一次进入，直接跳到主页面
         if(isFristIn)
         {
-            Intent intent = new Intent(this,MainActivity.class);
+            Intent intent = new Intent(this,LaunchActivity.class);
             startActivity(intent);
             finish();
         }else {

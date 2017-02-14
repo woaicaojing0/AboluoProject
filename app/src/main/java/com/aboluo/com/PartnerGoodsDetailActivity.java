@@ -900,18 +900,18 @@ public class PartnerGoodsDetailActivity extends Activity implements View.OnClick
                     break;
                 case R.id.btnDecrease: //数量减少按钮
                     //合伙人商品只能购买一件
-//                    if (Integer.valueOf(etAmount.getText().toString()) <= 1) {
-//                    } else {
-//                        etAmount.setText(String.valueOf(Integer.valueOf(etAmount.getText().toString()) - 1));
-//
-//                    }
+                    if (Integer.valueOf(etAmount.getText().toString()) <= 1) {
+                    } else {
+                        etAmount.setText(String.valueOf(Integer.valueOf(etAmount.getText().toString()) - 1));
+
+                    }
                     break;
                 case R.id.btnIncrease: //数量增加按钮
-//                    if (Integer.valueOf(etAmount.getText().toString()) < goodsDetailInfo.getResult().getGoodsInfo().getBuyQuantity()) {
-//                    } else {
-//                        etAmount.setText(String.valueOf(Integer.valueOf(etAmount.getText().toString()) + 1));
-//
-//                    }
+                    if (Integer.valueOf(etAmount.getText().toString()) < goodsDetailInfo.getResult().getGoodsInfo().getBuyQuantity()) {
+                    } else {
+                        etAmount.setText(String.valueOf(Integer.valueOf(etAmount.getText().toString()) + 1));
+
+                    }
                     break;
                 case R.id.goods_type_ok: //点击底部购物车弹出view中的确定
                     Toast.makeText(this, "合伙人商品请直接支付", Toast.LENGTH_SHORT).show();
@@ -1015,7 +1015,7 @@ public class PartnerGoodsDetailActivity extends Activity implements View.OnClick
                 color,
                 standardsid,
                 standards,
-                1,
+                Integer.valueOf(etAmount.getText().toString()),
                 (new Double(goodsDetailInfo.getResult().getGoodsInfo().getYunfei())).intValue(),
                 goodsDetailInfo.getResult().getGoodsInfo().getGoodsName(),
                 goodsDetailInfo.getResult().getGoodsInfo().getGoodsLogo(),

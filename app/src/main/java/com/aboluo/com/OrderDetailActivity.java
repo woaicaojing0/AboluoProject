@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -13,6 +14,7 @@ import android.widget.Toast;
 
 import com.aboluo.XUtils.CommonUtils;
 import com.aboluo.XUtils.MyApplication;
+import com.aboluo.adapter.ExpressListAdapter;
 import com.aboluo.adapter.OrderDetailItemAdpater;
 import com.aboluo.model.OrderDetailInfo;
 import com.aboluo.widget.MyListview;
@@ -59,19 +61,28 @@ public class OrderDetailActivity extends Activity implements View.OnClickListene
     private LinearLayout orderdetail_expressdetail, order_detail_back;
     private TextView oederdetail_findgoods, oederdetail_ok, oederdetail_cancelorder,
             oederdetail_payorder, oederdetail_cuicui, order_detail_topstatus,tv_orderdetail_code;
-
+    private MyListview lv_expresslist;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_order_detail);
         init();
-        orderdetail_expressdetail.setOnClickListener(this);
         order_detail_back.setOnClickListener(this);
         oederdetail_findgoods.setOnClickListener(this);
         oederdetail_ok.setOnClickListener(this);
         oederdetail_cancelorder.setOnClickListener(this);
         oederdetail_payorder.setOnClickListener(this);
         oederdetail_cuicui.setOnClickListener(this);
+        lv_expresslist.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent1 = new Intent(OrderDetailActivity.this, ExpressDetailActivity.class);
+                intent1.putExtra("OrderId", orderDetailInfo.getResult().get(0).getOrderId());
+                intent1.putExtra("ExpressId", orderDetailInfo.getResult().get(0).getOrderExpressList().get(position).getId());
+                intent1.putExtra("GoodsLogoUrl", orderDetailInfo.getResult().get(0).getOrderItemList().get(0).getGoodsLogoUrl());
+                startActivity(intent1);
+            }
+        });
     }
 
     private void init() {
@@ -92,8 +103,7 @@ public class OrderDetailActivity extends Activity implements View.OnClickListene
         pdialog.setTitleText("加载中");
         pdialog.setCanceledOnTouchOutside(true);
         pdialog.setCancelable(true);
-        orderdetail_express_status = (TextView) findViewById(R.id.orderdetail_express_status);
-        orderdetail_express_time = (TextView) findViewById(R.id.orderdetail_express_time);
+        lv_expresslist = (MyListview) findViewById(R.id.lv_expresslist);
         orderdetail_address_name = (TextView) findViewById(R.id.orderdetail_address_name);
         orderdetail_address_phone = (TextView) findViewById(R.id.orderdetail_address_phone);
         orderdetail_address_address = (TextView) findViewById(R.id.orderdetail_address_address);
@@ -110,7 +120,6 @@ public class OrderDetailActivity extends Activity implements View.OnClickListene
         tv_orderdetail_coupons = (TextView) findViewById(R.id.tv_orderdetail_coupons);
         tv_orderdetail_code = (TextView) findViewById(R.id.tv_orderdetail_code);
         orderdetail_listview = (MyListview) findViewById(R.id.orderdetail_listview);
-        orderdetail_expressdetail = (LinearLayout) findViewById(R.id.orderdetail_expressdetail);
         order_detail_back = (LinearLayout) findViewById(R.id.order_detail_back);
         order_detail_bottom = (RelativeLayout) findViewById(R.id.order_detail_bottom);
         if (orderid == 0) {
@@ -127,12 +136,11 @@ public class OrderDetailActivity extends Activity implements View.OnClickListene
                 response = response.replace("\\", "");
                 response = response.substring(1, response.length() - 1);
                 orderDetailInfo = gson.fromJson(response, OrderDetailInfo.class);
-                if(orderDetailInfo.getResult().get(0).getLocalInfo() == null)
-                {}else {
-                    orderdetail_express_status.setText(orderDetailInfo.getResult().get(0).getLocalInfo().size()==0  ? "" :
-                            orderDetailInfo.getResult().get(0).getLocalInfo().get(0).getStatus().toString());
-                    orderdetail_express_time.setText(orderDetailInfo.getResult().get(0).getLocalInfo().size()==0 ? "" :
-                            orderDetailInfo.getResult().get(0).getLocalInfo().get(0).getTime().toString());
+                if(orderDetailInfo.getResult().get(0).getOrderExpressList().size() == 0)
+                {} else {
+                    ExpressListAdapter expressListAdapter = new ExpressListAdapter(orderDetailInfo
+                    .getResult().get(0).getOrderExpressList(),OrderDetailActivity.this);
+                    lv_expresslist.setAdapter(expressListAdapter);
                 }
                 orderdetail_address_name.setText(orderDetailInfo.getResult().get(0).getReceiver()
                         == null ? "" : orderDetailInfo.getResult().get(0).getReceiver().toString());
@@ -259,13 +267,11 @@ public class OrderDetailActivity extends Activity implements View.OnClickListene
         switch (status) {
             case 10://待付款
                 order_detail_topstatus.setText("等待买家付款");
-                orderdetail_expressdetail.setVisibility(View.GONE);
                 oederdetail_cancelorder.setVisibility(View.VISIBLE);
                 oederdetail_payorder.setVisibility(View.VISIBLE);
                 break;
             case 20://待发货
                 order_detail_topstatus.setText("买家已付款");
-                orderdetail_expressdetail.setVisibility(View.GONE);
                 oederdetail_cuicui.setVisibility(View.VISIBLE);
                 break;
             case 30://卖家已发货

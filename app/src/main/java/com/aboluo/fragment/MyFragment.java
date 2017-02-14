@@ -20,7 +20,6 @@ import android.widget.Toast;
 import com.aboluo.XUtils.CommonUtils;
 import com.aboluo.XUtils.MyApplication;
 import com.aboluo.com.AddressActivity;
-import com.aboluo.com.CompanyIntroduceActivity;
 import com.aboluo.com.CouponsActivity;
 import com.aboluo.com.CreditInfoActivity;
 import com.aboluo.com.FavorActivity;
@@ -34,8 +33,8 @@ import com.aboluo.com.OrderActivity;
 import com.aboluo.com.R;
 import com.aboluo.com.ReFundActivity;
 import com.aboluo.com.SettingActivity;
-import com.aboluo.com.WebActivity.FeedBackActivity;
 import com.aboluo.com.WebActivity.InvitationActivity;
+import com.aboluo.model.ExpressNumBean;
 import com.aboluo.model.MyInfoBean;
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -74,8 +73,9 @@ public class MyFragment extends Fragment implements View.OnClickListener {
     private String MemberId;
     private MyInfoBean myInfoBean;
     private CircleImageView my_fragment_imageview;
-    private TextView tv_my_huiyuan;
+    private TextView tv_my_huiyuan, my_01_num, my_02_num, my_03_num, my_04_num;
     private ImageView iv_my_setting;
+
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         if (view == null) {
@@ -143,12 +143,11 @@ public class MyFragment extends Fragment implements View.OnClickListener {
         my_fragment_imageview = (CircleImageView) view.findViewById(R.id.my_fragment_imageview);
         tv_my_huiyuan = (TextView) view.findViewById(R.id.tv_my_huiyuan);
         iv_my_setting = (ImageView) view.findViewById(R.id.iv_my_setting);
+        my_01_num = (TextView) view.findViewById(R.id.my_01_num);
+        my_02_num = (TextView) view.findViewById(R.id.my_02_num);
+        my_03_num = (TextView) view.findViewById(R.id.my_03_num);
+        my_04_num = (TextView) view.findViewById(R.id.my_04_num);
         InitData();
-        if (CommonUtils.GetisDealer(MyFragment.this.getContext()).equals("0")) {
-            tv_my_huiyuan.setText("普通会员");
-        } else {
-            tv_my_huiyuan.setText("合伙人");
-        }
     }
 
     private void InitData() {
@@ -169,6 +168,11 @@ public class MyFragment extends Fragment implements View.OnClickListener {
                                 .placeholder(R.drawable.image_placeholder)
                                 .error(R.drawable.imageview_error).into(my_fragment_imageview);
                     }
+                    //更新用户的身份
+                    CommonUtils.SetisDealer(MyFragment.this.getContext(), String.valueOf(myInfoBean.getResult()
+                            .getIsLeader()));
+                    tv_my_huiyuan.setText(myInfoBean.getResult()
+                            .getIsLeader() == 0 ? "普通会员" : "合伙人");
                 } else {
                     Toast.makeText(MyFragment.this.getContext(), "个人信息获取失败，请重试", Toast.LENGTH_SHORT).show();
                 }
@@ -188,6 +192,52 @@ public class MyFragment extends Fragment implements View.OnClickListener {
                 map.put("APPToken", APPToken);
                 map.put("LoginCheckToken", "123");
                 map.put("LoginPhone", "123");
+                return map;
+            }
+
+            ;
+        };
+        requestQueue.add(stringRequest);
+        ExpressNum();
+    }
+
+    private void ExpressNum() {
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, URL + "/api/Order/ReceiveOrderCountByMemberId", new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                response = response.replace("\\", "");
+                response = response.substring(1, response.length() - 1);
+                ExpressNumBean bean = gson.fromJson(response, ExpressNumBean.class);
+                if (bean.getResult().getWaitPayCount() != 0) {
+                    my_01_num.setVisibility(View.VISIBLE);
+                }
+                if (bean.getResult().getWaitSendCount() != 0) {
+                    my_02_num.setVisibility(View.VISIBLE);
+                }
+                if (bean.getResult().getWaitReceiptCont() != 0) {
+                    my_03_num.setVisibility(View.VISIBLE);
+                }
+                if (bean.getResult().getWaitEvaluateCount() != 0) {
+                    my_04_num.setVisibility(View.VISIBLE);
+                }
+                my_01_num.setText(bean.getResult().getWaitPayCount() + "");
+                my_02_num.setText(bean.getResult().getWaitSendCount() + "");
+                my_03_num.setText(bean.getResult().getWaitReceiptCont() + "");
+                my_04_num.setText(bean.getResult().getWaitEvaluateCount() + "");
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+//                byte[] bytecode = error.networkResponse.data;
+//                String s = new String(bytecode);
+//                Toast.makeText(MyFragment.this.getContext(), s, Toast.LENGTH_SHORT).show();
+            }
+        }) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> map = new HashMap<>();
+                map.put("MemberId", MemberId);
+                map.put("APPToken", APPToken);
                 return map;
             }
 
@@ -300,6 +350,7 @@ public class MyFragment extends Fragment implements View.OnClickListener {
         }
         InitData();
     }
+
     @Override
     public void onHiddenChanged(boolean hidden) {
         super.onHiddenChanged(hidden);

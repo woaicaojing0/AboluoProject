@@ -209,6 +209,11 @@ public class CommonUtils {
         String isDealer = sharedPreferences.getString("isDealer", "0");
         return isDealer;
     }
+    public static boolean SetisDealer(Context context,String isDealer) {
+        SharedPreferences.Editor editor = context.getSharedPreferences("aboluoInfo", Context.MODE_PRIVATE).edit();
+        editor.putString("isDealer", isDealer);
+        return editor.commit();
+    }
     public static String Getpercent(int num1, int num2) {
         // 创建一个数值格式化对象
         NumberFormat numberFormat = NumberFormat.getInstance();

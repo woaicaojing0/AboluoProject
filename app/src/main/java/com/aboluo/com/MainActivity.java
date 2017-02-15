@@ -226,7 +226,7 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
                         final AppBean appBean = getAppBeanFromString(result);
                         final MaterialDialog updateDialog = new MaterialDialog(MainActivity.this);
                         updateDialog.setTitle("更新提示");
-                        updateDialog.setMessage("发现新版本！");
+                        updateDialog.setMessage(appBean.getReleaseNote());
                         updateDialog.setPositiveButton("马上升级", new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {   //进行更新

@@ -1,11 +1,16 @@
 package com.aboluo.fragment;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -36,6 +41,7 @@ import com.aboluo.com.SettingActivity;
 import com.aboluo.com.WebActivity.InvitationActivity;
 import com.aboluo.model.ExpressNumBean;
 import com.aboluo.model.MyInfoBean;
+import com.aboluo.model.QiNiuToken;
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -43,10 +49,22 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.google.gson.Gson;
+import com.jph.takephoto.app.TakePhotoFragment;
+import com.jph.takephoto.compress.CompressConfig;
+import com.jph.takephoto.model.TResult;
+import com.qiniu.android.common.Zone;
+import com.qiniu.android.http.ResponseInfo;
+import com.qiniu.android.storage.Configuration;
+import com.qiniu.android.storage.UpCompletionHandler;
+import com.qiniu.android.storage.UploadManager;
 import com.squareup.picasso.Picasso;
 
+import org.json.JSONObject;
+
+import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -54,7 +72,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 /**
  * Created by cj34920 on 2016/9/8.
  */
-public class MyFragment extends Fragment implements View.OnClickListener {
+public class MyFragment extends TakePhotoFragment implements View.OnClickListener {
     private View view;
     private Button btn, my_out;
     private ScrollView my_scrollview;
@@ -73,8 +91,10 @@ public class MyFragment extends Fragment implements View.OnClickListener {
     private String MemberId;
     private MyInfoBean myInfoBean;
     private CircleImageView my_fragment_imageview;
-    private TextView tv_my_huiyuan, my_01_num, my_02_num, my_03_num, my_04_num;
+    private TextView tv_my_huiyuan, my_01_num, my_02_num, my_03_num, my_04_num,tv_user_id;
     private ImageView iv_my_setting;
+    private AlertDialog.Builder builder;
+    private QiNiuToken qiNiuToken;
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -103,6 +123,7 @@ public class MyFragment extends Fragment implements View.OnClickListener {
         my_agent.setOnClickListener(this);
         my_coupons_center.setOnClickListener(this);
         iv_my_setting.setOnClickListener(this);
+        my_fragment_imageview.setOnClickListener(this);
         if (CommonUtils.IsLogin(MyFragment.this.getContext())) {
             btn.setVisibility(View.GONE);
             my_out.setVisibility(View.VISIBLE);
@@ -147,7 +168,42 @@ public class MyFragment extends Fragment implements View.OnClickListener {
         my_02_num = (TextView) view.findViewById(R.id.my_02_num);
         my_03_num = (TextView) view.findViewById(R.id.my_03_num);
         my_04_num = (TextView) view.findViewById(R.id.my_04_num);
+        tv_user_id = (TextView) view.findViewById(R.id.tv_user_id);
+        pdialog = new SweetAlertDialog(MyFragment.this.getContext(), SweetAlertDialog.PROGRESS_TYPE);
+        pdialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
+        pdialog.setTitleText("加载中");
+        pdialog.setCanceledOnTouchOutside(true);
+        pdialog.setCancelable(true);
         InitData();
+        GetQiNiuToken();
+    }
+
+    private void GetQiNiuToken() {
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, URL + "/api/ActiveApi/ReciveQiNiuToken", new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                response = response.replace("\\", "");
+                response = response.substring(1, response.length() - 1);
+                qiNiuToken = gson.fromJson(response, QiNiuToken.class);
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                byte[] bytecode = error.networkResponse.data;
+                String s = new String(bytecode);
+                Toast.makeText(MyFragment.this.getContext(), "Token" + s, Toast.LENGTH_SHORT).show();
+            }
+        }) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> map = new HashMap<>();
+                map.put("APPToken", APPToken);
+                return map;
+            }
+
+            ;
+        };
+        requestQueue.add(stringRequest);
     }
 
     private void InitData() {
@@ -173,6 +229,7 @@ public class MyFragment extends Fragment implements View.OnClickListener {
                             .getIsLeader()));
                     tv_my_huiyuan.setText(myInfoBean.getResult()
                             .getIsLeader() == 0 ? "普通会员" : "合伙人");
+                    tv_user_id.setText("用户编号：10"+ String.valueOf(myInfoBean.getResult().getMemberId()));
                 } else {
                     Toast.makeText(MyFragment.this.getContext(), "个人信息获取失败，请重试", Toast.LENGTH_SHORT).show();
                 }
@@ -333,8 +390,120 @@ public class MyFragment extends Fragment implements View.OnClickListener {
                 Intent intent17 = new Intent(MyFragment.this.getActivity(), SettingActivity.class);
                 startActivity(intent17);
                 break;
+            case R.id.my_fragment_imageview:
+                File file = new File(Environment.getExternalStorageDirectory(), "/temp/" + System.currentTimeMillis() + ".jpg");
+                if (!file.getParentFile().exists()) file.getParentFile().mkdirs();
+                final Uri imageUri = Uri.fromFile(file);
+                CompressConfig compressConfig = new CompressConfig.Builder().setMaxSize(20 * 1024).setMaxPixel(150).create();
+//                CropOptions cropOptions=new CropOptions.Builder().setAspectX(1).setApectY(1).setWithOwnCrop(true).create();
+                getTakePhoto().onEnableCompress(compressConfig, true);
+                builder = new AlertDialog.Builder(MyFragment.this.getContext());
+                //    指定下拉列表的显示数据
+                final String[] cities = {"相册", "拍照"};
+                //    设置一个下拉的列表选择项
+                builder.setItems(cities, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        switch (which) {
+                            case 0:
+                                getTakePhoto().onPickFromDocuments();
+                                break;
+                            case 1:
+                                getTakePhoto().onPickFromCapture(imageUri);
+                                break;
+                            //dialog.dismiss();
+                        }
+                        //Toast.makeText(MyInfoAcitvity.this, "选择的城市为：" + cities[which], Toast.LENGTH_SHORT).show();
+                    }
+                });
+                builder.show();
+                break;
 
         }
+
+    }
+
+    @Override
+    public void takeSuccess(TResult result) {
+        super.takeSuccess(result);
+        String filepath = result.getImages().get(0).getCompressPath().toString();
+        String key = "memberLogo/android/" + UUID.randomUUID().toString();
+        if (qiNiuToken == null) {
+        } else {
+            File file = new File(filepath);
+            picasso.load(file)
+                    .placeholder(R.drawable.image_placeholder)
+                    .error(R.drawable.imageview_error).into(my_fragment_imageview);
+            String token = qiNiuToken.getFileUploadToken();
+            UploadImage(filepath, key, token);
+        }
+    }
+
+    private void UploadImage(String filepath, String key, String token) {
+        //pdialog.setTitleText("上传中......");
+        Configuration config = new Configuration.Builder().zone(Zone.zone0).build();
+//  重用uploadManager。一般地，只需要创建一个uploadManager对象
+        UploadManager uploadManager = new UploadManager(config);
+        uploadManager.put(filepath, key, token,
+                new UpCompletionHandler() {
+                    @Override
+                    public void complete(String key, ResponseInfo info, JSONObject res) {
+                        //res包含hash、key等信息，具体字段取决于上传策略的设置
+                        Log.i("qiniu", key + ",\r\n " + info + ",\r\n " + res);
+                        if (info.isOK()) {
+                            pdialog.dismiss();
+                            Toast.makeText(MyFragment.this.getContext(), "上传成功", Toast.LENGTH_SHORT).show();
+                            myInfoBean.getResult().setMemberLogoUrl(key);
+                            UpdateInfo();
+                        }
+                    }
+                }, null);
+    }
+
+    private void UpdateInfo() {
+        pdialog.setTitleText("修改中");
+        pdialog.show();
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, URL + "/api/MemberApi/EditUserInfo", new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                response = response.replace("\\", "");
+                response = response.substring(1, response.length() - 1);
+                myInfoBean = gson.fromJson(response, MyInfoBean.class);
+                if (myInfoBean.isIsSuccess()) {
+                    Toast.makeText(MyFragment.this.getContext(), "修改成功", Toast.LENGTH_SHORT).show();
+                    Log.i("UploadImage", myInfoBean.getResult().getMemberLogoUrl());
+                    CommonUtils.LoginImageURl(MyFragment.this.getContext(),
+                            myInfoBean.getResult().getMemberLogoUrl());
+                } else {
+                    Toast.makeText(MyFragment.this.getContext(), "修改失败", Toast.LENGTH_SHORT).show();
+                }
+                picasso.load(myInfoBean.getResult().getMemberLogoUrl())
+                        .placeholder(R.drawable.image_placeholder)
+                        .error(R.drawable.imageview_error).into(my_fragment_imageview);
+                pdialog.dismiss();
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                pdialog.dismiss();
+            }
+        }) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> map = new HashMap<>();
+                map.put("MemberId", MemberId);
+                map.put("APPToken", APPToken);
+                map.put("WechatLogoUrl", myInfoBean.getResult().getMemberLogoUrl());
+                map.put("WechatNickName", myInfoBean.getResult().getUserNickName().toString());
+                map.put("MemberSex", String.valueOf(myInfoBean.getResult().getMemberSex()));
+                map.put("LoginCheckToken", "123");
+                map.put("LoginPhone", "123");
+                return map;
+            }
+
+            ;
+        };
+        requestQueue.add(stringRequest);
 
     }
 

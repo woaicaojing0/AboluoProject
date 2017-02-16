@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -39,6 +38,7 @@ import com.aboluo.adapter.BrandGridViewAdapter;
 import com.aboluo.adapter.GridViewAdapter;
 import com.aboluo.adapter.ThemeGridViewAdapter;
 import com.aboluo.adapter.ThemeMidGridViewAdapter;
+import com.aboluo.adapter.index.HotSaleGridViewAdapter;
 import com.aboluo.com.GoodsDetailActivity;
 import com.aboluo.com.GoodsListActivity;
 import com.aboluo.com.MainActivity;
@@ -61,7 +61,6 @@ import com.baidu.location.BDLocation;
 import com.baidu.location.BDLocationListener;
 import com.baidu.location.LocationClient;
 import com.baidu.location.LocationClientOption;
-import com.baidu.location.Poi;
 import com.google.gson.Gson;
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.handmark.pulltorefresh.library.PullToRefreshScrollView;
@@ -86,10 +85,10 @@ import cn.pedant.SweetAlert.SweetAlertDialog;
  * Created by cj34920 on 2016/9/8.
  */
 public class IndexFragment extends Fragment implements View.OnClickListener {
-    private LinearLayout linearLayout;
+    private LinearLayout linearLayout, ll_hotsale_main;
     private EditText top_editsearch;
     private RollPagerView rollPagerView, theme_view_pager, special_view_pager;
-    private GridView mid_gridview;
+    private GridView mid_gridview, gv_hotsale;
     private MarqueeView marqueeView;
     private View view;
     private String[] imgurl = {"http://img4.imgtn.bdimg.com/it/u=2408370625,380818695&fm=21&gp=0.jpg", "" +
@@ -110,15 +109,17 @@ public class IndexFragment extends Fragment implements View.OnClickListener {
     private SweetAlertDialog pdialog;
     private BaseConfigBean indexBannerBean, huodongbean, brandConfigBean,
             themeBannerConfigBean, themeConfigBean, specialConfigBean,
-            newsConfigBean, midGridViewConfigBean, themeMidConfigBean;
+            newsConfigBean, midGridViewConfigBean, themeMidConfigBean,hotSaleGridViewBean,hotSaleImageBean;
     private LinearLayout linelayout_miaosha, index_message;
-    private ImageView huodong_left1, huodong_left2, huodong_right1, huodong_right2, huodong_right3, theme_imageview;
+    private ImageView huodong_left1, huodong_left2, huodong_right1, huodong_right2, huodong_right3, theme_imageview; //1.1版本的活动页面
+    private ImageView hotsale_left1, hotsale_left2, hotsale_left3, hotsale_right1, hotsale_right2;//1.2版本的特色专区
     private GridView brand_gridview, theme_mid_gridview;
     private MyGridView theme_gridview;
     public LocationClient mLocationClient = null;
     public BDLocationListener myListener = new MyLocationListener();
     private static final int BAIDU_READ_PHONE_STATE = 100;
     private TextView tv_location_address;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         if (view != null) {
@@ -176,6 +177,7 @@ public class IndexFragment extends Fragment implements View.OnClickListener {
 //        theme_gridview.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, screenWidth / 2));
         theme_mid_gridview.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, screenWidth / 2));
         mid_gridview.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, (screenWidth / 2 + CommonUtils.dip2px(this.getContext(), 16))));
+        ll_hotsale_main.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, screenWidth / 2));
         initConfig();
         rollPagerView.setOnItemClickListener(new OnItemClickListener() {
             @Override
@@ -316,6 +318,18 @@ public class IndexFragment extends Fragment implements View.OnClickListener {
         return view;
     }
 
+    /*
+        初始化热卖版块的数据
+     */
+    private void inithotsale(View view) {
+        hotsale_left1 = (ImageView) view.findViewById(R.id.hotsale_left1);
+        hotsale_left2 = (ImageView) view.findViewById(R.id.hotsale_left2);
+        hotsale_left3 = (ImageView) view.findViewById(R.id.hotsale_left3);
+        hotsale_right1 = (ImageView) view.findViewById(R.id.hotsale_right1);
+        hotsale_right2 = (ImageView) view.findViewById(R.id.hotsale_right2);
+        gv_hotsale = (GridView) view.findViewById(R.id.gv_hotsale);
+    }
+
     private void init(View view) {
         linearLayout = (LinearLayout) view.findViewById(R.id.ALLFather);
         top_editsearch = (EditText) view.findViewById(R.id.top_editsearch);
@@ -334,6 +348,7 @@ public class IndexFragment extends Fragment implements View.OnClickListener {
         huodong_right1 = (ImageView) view.findViewById(R.id.huodong_right1);
         huodong_right2 = (ImageView) view.findViewById(R.id.huodong_right2);
         huodong_right3 = (ImageView) view.findViewById(R.id.huodong_right3);
+        inithotsale(view);
         theme_imageview = (ImageView) view.findViewById(R.id.theme_imageview);
         tv_location_address = (TextView) view.findViewById(R.id.tv_location_address);
         brand_gridview = (GridView) view.findViewById(R.id.brand_gridview);
@@ -342,6 +357,7 @@ public class IndexFragment extends Fragment implements View.OnClickListener {
         mCvCountdownView = (CountdownView) view.findViewById(R.id.cv_countdownViewTest1);
         beginSecKill = (LinearLayout) view.findViewById(R.id.beginSecKill);
         index_message = (LinearLayout) view.findViewById(R.id.index_message);
+        ll_hotsale_main = (LinearLayout) view.findViewById(R.id.ll_hotsale_main);
         linelayout_miaosha = (LinearLayout) view.findViewById(R.id.linelayout_miaosha);
         requestQueue = MyApplication.getRequestQueue();
         ImageUrl = CommonUtils.GetValueByKey(IndexFragment.this.getContext(), "ImgUrl");
@@ -361,7 +377,6 @@ public class IndexFragment extends Fragment implements View.OnClickListener {
         seckill_imge1.setOnClickListener(this);
         seckill_imge2.setOnClickListener(this);
         initSecKill();
-
     }
 
 
@@ -732,7 +747,109 @@ public class IndexFragment extends Fragment implements View.OnClickListener {
         };
         requestQueue.add(stringRequest);
     }
+    /*
+        加载商品热卖专区的九宫格图
+     */
+    private void initHotSaleGridview() {
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, URL + "/api/ConfigApi/ReceiveHomeConfig", new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                response = response.replace("\\", "");
+                response = response.substring(1, response.length() - 1);
+                hotSaleGridViewBean = gson.fromJson(response, BaseConfigBean.class);
+                if (hotSaleGridViewBean.isIsSuccess()) {
+                    String[] arrString = new String[hotSaleGridViewBean.getAppConfigList().size()];
+                    for (int i = 0; i < hotSaleGridViewBean.getAppConfigList().size(); i++) {
+                        arrString[i] = ImageUrl + hotSaleGridViewBean.getAppConfigList().get(i).getImage();
+                    }
 
+                    if (arrString.length == 0) {
+                        gv_hotsale.setVisibility(View.GONE);
+                    } else {
+                        gv_hotsale.setVisibility(View.VISIBLE);
+                        HotSaleGridViewAdapter hotSaleGridViewAdapter = new HotSaleGridViewAdapter(IndexFragment.this.getContext(), arrString);
+                        gv_hotsale.setAdapter(hotSaleGridViewAdapter);
+                    }
+
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                //byte[] data = error.networkResponse.data;
+                //Toast.makeText(IndexFragment.this.getContext(), new String(data), Toast.LENGTH_SHORT).show();
+            }
+        }) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> map = new HashMap<>();
+                map.put("ConfigModule", "5");
+                map.put("APPToken", APPToken);
+                return map;
+            }
+        };
+        requestQueue.add(stringRequest);
+    }
+    /*
+        加载商品热卖专区的3+2图片
+     */
+    private void initHotSaleImage() {
+        hotsale_left1.setOnClickListener(this);
+        hotsale_left2.setOnClickListener(this);
+        hotsale_left3.setOnClickListener(this);
+        hotsale_right1.setOnClickListener(this);
+        hotsale_right2.setOnClickListener(this);
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, URL + "/api/ConfigApi/ReceiveHomeConfig", new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                response = response.replace("\\", "");
+                response = response.substring(1, response.length() - 1);
+                hotSaleImageBean = gson.fromJson(response, BaseConfigBean.class);
+                if (hotSaleImageBean.isIsSuccess()) {
+                    String[] arrString = new String[hotSaleImageBean.getAppConfigList().size()];
+                    for (int i = 0; i < hotSaleImageBean.getAppConfigList().size(); i++) {
+                        arrString[i] = ImageUrl + hotSaleImageBean.getAppConfigList().get(i).getImage();
+                    }
+                    if (arrString.length >= 5) {
+                        picasso.load(ImageUrl + hotSaleImageBean.getAppConfigList().get(0).getImage())
+                                .placeholder(IndexFragment.this.getResources().getDrawable(R.drawable.imagviewloading))
+                                .into(hotsale_left1);
+                        picasso.load(ImageUrl + hotSaleImageBean.getAppConfigList().get(1).getImage())
+                                .placeholder(IndexFragment.this.getResources().getDrawable(R.drawable.imagviewloading))
+                                .into(hotsale_left2);
+                        picasso.load(ImageUrl + hotSaleImageBean.getAppConfigList().get(2).getImage())
+                                .placeholder(IndexFragment.this.getResources().getDrawable(R.drawable.imagviewloading))
+                                .into(hotsale_left3);
+                        picasso.load(ImageUrl + hotSaleImageBean.getAppConfigList().get(3).getImage())
+                                .placeholder(IndexFragment.this.getResources().getDrawable(R.drawable.imagviewloading))
+                                .into(hotsale_right1);
+                        picasso.load(ImageUrl + hotSaleImageBean.getAppConfigList().get(4).getImage())
+                                .placeholder(IndexFragment.this.getResources().getDrawable(R.drawable.imagviewloading))
+                                .into(hotsale_right2);
+                    } else {
+
+                    }
+                } else {
+                    Toast.makeText(IndexFragment.this.getContext(), huodongbean.getMessage().toString(), Toast.LENGTH_SHORT).show();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                //byte[] data = error.networkResponse.data;
+                //Toast.makeText(IndexFragment.this.getContext(), new String(data), Toast.LENGTH_SHORT).show();
+            }
+        }) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> map = new HashMap<>();
+                map.put("ConfigModule", "3");
+                map.put("APPToken", APPToken);
+                return map;
+            }
+        };
+        requestQueue.add(stringRequest);
+    }
     //加载品牌的配置
     private void initbrand() {
         StringRequest stringRequest = new StringRequest(Request.Method.POST, URL + "/api/ConfigApi/ReceiveHomeConfig", new Response.Listener<String>() {
@@ -1087,13 +1204,11 @@ public class IndexFragment extends Fragment implements View.OnClickListener {
 
         @Override
         public void onReceiveLocation(BDLocation location) {
-            if(location.getLocType()==BDLocation.TypeGpsLocation
-                    ||location.getLocType()==BDLocation.TypeNetWorkLocation
-                    ||location.getLocType()==BDLocation.TypeOffLineLocation)
-            {
+            if (location.getLocType() == BDLocation.TypeGpsLocation
+                    || location.getLocType() == BDLocation.TypeNetWorkLocation
+                    || location.getLocType() == BDLocation.TypeOffLineLocation) {
                 tv_location_address.setText(location.getCity().toString());
-            }else
-            {
+            } else {
                 Toast.makeText(IndexFragment.this.getContext(), "定位失败", Toast.LENGTH_SHORT).show();
                 tv_location_address.setText("");
             }
@@ -1180,6 +1295,7 @@ public class IndexFragment extends Fragment implements View.OnClickListener {
                 break;
         }
     }
+
     /*
     *判断当前是否是6.0版本
     */

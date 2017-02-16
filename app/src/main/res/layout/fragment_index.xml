@@ -455,7 +455,12 @@
                     android:layout_height="1dp"
                     android:background="@color/huodong_view" />
             </LinearLayout>
-
+            <include
+                android:visibility="gone"
+                android:id="@+id/id_ly_hotsale"
+                layout="@layout/activity_main_hotsale"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content" />
             <include
                 android:id="@+id/id_ly_huodong"
                 layout="@layout/activtiy_main_huodong"

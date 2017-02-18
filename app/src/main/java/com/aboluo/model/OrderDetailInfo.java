@@ -107,11 +107,11 @@ public class OrderDetailInfo {
         private String Receiver;
         private String Mobile;
         private String Address;
-        private int integralPrice;
+        private double integralPrice;
         private int integralCount;
-        private int couponPrice;
+        private double couponPrice;
         private int couponId;
-        private int expressPrice;
+        private double expressPrice;
         private int deductionType;
         private int orderType;
         private List<OrderItemListBean> OrderItemList;
@@ -250,11 +250,11 @@ public class OrderDetailInfo {
             this.Address = Address;
         }
 
-        public int getIntegralPrice() {
+        public double getIntegralPrice() {
             return integralPrice;
         }
 
-        public void setIntegralPrice(int integralPrice) {
+        public void setIntegralPrice(double integralPrice) {
             this.integralPrice = integralPrice;
         }
 
@@ -266,11 +266,11 @@ public class OrderDetailInfo {
             this.integralCount = integralCount;
         }
 
-        public int getCouponPrice() {
+        public double getCouponPrice() {
             return couponPrice;
         }
 
-        public void setCouponPrice(int couponPrice) {
+        public void setCouponPrice(double couponPrice) {
             this.couponPrice = couponPrice;
         }
 
@@ -282,11 +282,11 @@ public class OrderDetailInfo {
             this.couponId = couponId;
         }
 
-        public int getExpressPrice() {
+        public double getExpressPrice() {
             return expressPrice;
         }
 
-        public void setExpressPrice(int expressPrice) {
+        public void setExpressPrice(double expressPrice) {
             this.expressPrice = expressPrice;
         }
 
@@ -351,11 +351,11 @@ public class OrderDetailInfo {
             private String goodsColor;
             private int goodsStandardId;
             private String goodsStandard;
-            private int goodsPrice;
+            private double goodsPrice;
             private int yunfei;
             private String goodsLogoUrl;
             private int goodsQuantity;
-            private int Price;
+            private double Price;
             private int RefundStatus;
             private int EvaluationStatus;
 
@@ -369,11 +369,11 @@ public class OrderDetailInfo {
                 goodsColor = in.readString();
                 goodsStandardId = in.readInt();
                 goodsStandard = in.readString();
-                goodsPrice = in.readInt();
+                goodsPrice = in.readDouble();
                 yunfei = in.readInt();
                 goodsLogoUrl = in.readString();
                 goodsQuantity = in.readInt();
-                Price = in.readInt();
+                Price = in.readDouble();
                 RefundStatus = in.readInt();
                 EvaluationStatus = in.readInt();
             }
@@ -467,11 +467,11 @@ public class OrderDetailInfo {
                 this.goodsStandard = goodsStandard;
             }
 
-            public int getGoodsPrice() {
+            public double getGoodsPrice() {
                 return goodsPrice;
             }
 
-            public void setGoodsPrice(int goodsPrice) {
+            public void setGoodsPrice(double goodsPrice) {
                 this.goodsPrice = goodsPrice;
             }
 
@@ -499,11 +499,11 @@ public class OrderDetailInfo {
                 this.goodsQuantity = goodsQuantity;
             }
 
-            public int getPrice() {
+            public double getPrice() {
                 return Price;
             }
 
-            public void setPrice(int Price) {
+            public void setPrice(double Price) {
                 this.Price = Price;
             }
 
@@ -539,11 +539,11 @@ public class OrderDetailInfo {
                 dest.writeString(goodsColor);
                 dest.writeInt(goodsStandardId);
                 dest.writeString(goodsStandard);
-                dest.writeInt(goodsPrice);
+                dest.writeDouble(goodsPrice);
                 dest.writeInt(yunfei);
                 dest.writeString(goodsLogoUrl);
                 dest.writeInt(goodsQuantity);
-                dest.writeInt(Price);
+                dest.writeDouble(Price);
                 dest.writeInt(RefundStatus);
                 dest.writeInt(EvaluationStatus);
             }

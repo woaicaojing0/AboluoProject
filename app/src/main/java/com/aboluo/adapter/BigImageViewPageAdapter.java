@@ -51,22 +51,37 @@ public class BigImageViewPageAdapter extends PagerAdapter {
             view.setTag(position);
             final ImageView image = (ImageView) view.findViewById(R.id.image);
             final PhotoViewAttacher photoViewAttacher = new PhotoViewAttacher(image);
+            if (isNumeric(images.get(position))) {
+                Picasso.with(context).load(Integer.valueOf(images.get(position)))
+                        .error(context.getResources().getDrawable(R.drawable.imageview_error))
+                        .placeholder(context.getResources().getDrawable(R.drawable.imagviewloading))
+                        .config(Bitmap.Config.RGB_565).into(image, new Callback() {
+                    @Override
+                    public void onSuccess() {
+                        photoViewAttacher.update();
+                    }
 
-            Picasso.with(context).load(images.get(position))
-                    .error(context.getResources().getDrawable(R.drawable.imageview_error))
-                    .placeholder(context.getResources().getDrawable(R.drawable.imagviewloading))
-                    .config(Bitmap.Config.RGB_565).into(image, new Callback() {
-                @Override
-                public void onSuccess() {
-                    photoViewAttacher.update();
-                }
+                    @Override
+                    public void onError() {
+                        photoViewAttacher.update();
+                    }
+                });
+            } else {
+                Picasso.with(context).load(images.get(position))
+                        .error(context.getResources().getDrawable(R.drawable.imageview_error))
+                        .placeholder(context.getResources().getDrawable(R.drawable.imagviewloading))
+                        .config(Bitmap.Config.RGB_565).into(image, new Callback() {
+                    @Override
+                    public void onSuccess() {
+                        photoViewAttacher.update();
+                    }
 
-                @Override
-                public void onError() {
-                    photoViewAttacher.update();
-                }
-            });
-
+                    @Override
+                    public void onError() {
+                        photoViewAttacher.update();
+                    }
+                });
+            }
             photoViewAttacher.setOnPhotoTapListener(new PhotoViewAttacher.OnPhotoTapListener() {
                 @Override
                 public void onPhotoTap(View view, float x, float y) {
@@ -96,4 +111,12 @@ public class BigImageViewPageAdapter extends PagerAdapter {
         container.removeView(view);
     }
 
+    public static boolean isNumeric(String str) {
+        for (int i = str.length(); --i >= 0; ) {
+            if (!Character.isDigit(str.charAt(i))) {
+                return false;
+            }
+        }
+        return true;
+    }
 }

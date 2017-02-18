@@ -64,7 +64,7 @@ public class MyInfoAcitvity extends TakePhotoActivity implements View.OnClickLis
     private SharedPreferences sharedPreferences;
     private String pwd;
     private SharedPreferences.Editor editor;
-    private RelativeLayout my_info_image;
+    private RelativeLayout my_info_image, rl_change_email, rl_change_phone;
     private CustomHelper customHelper;
     private View view;
     private RequestQueue requestQueue;
@@ -82,6 +82,7 @@ public class MyInfoAcitvity extends TakePhotoActivity implements View.OnClickLis
     private MyInfoBean myInfoBean;
     private TextView my_inf_txt_loginName, my_inf_txt_nicheng, my_info_txt_sex, my_info_txt_phone, my_info_txt_weixin, my_info_txt_email;
     private static int NickNameCode = 1;//昵称返回标识
+    private static int BindInfoCode = 2;//绑定手机号和邮箱返回标识
     private boolean updateimages = false;
 
     @Override
@@ -95,6 +96,8 @@ public class MyInfoAcitvity extends TakePhotoActivity implements View.OnClickLis
         my_info_image.setOnClickListener(this);
         my_info_name.setOnClickListener(this);
         my_info_sex.setOnClickListener(this);
+        rl_change_email.setOnClickListener(this);
+        rl_change_phone.setOnClickListener(this);
 
 
         pwd = sharedPreferences.getString(Contants.PASS_KEY, "0");
@@ -149,6 +152,8 @@ public class MyInfoAcitvity extends TakePhotoActivity implements View.OnClickLis
         my_info_image = (RelativeLayout) findViewById(R.id.my_info_image);
         my_info_name = (RelativeLayout) findViewById(R.id.my_info_name);
         my_info_sex = (RelativeLayout) findViewById(R.id.my_info_sex);
+        rl_change_email = (RelativeLayout) findViewById(R.id.rl_change_email);
+        rl_change_phone = (RelativeLayout) findViewById(R.id.rl_change_phone);
         gesture = (Switch) findViewById(R.id.gesture);
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(MyInfoAcitvity.this);
         editor = sharedPreferences.edit();
@@ -217,6 +222,20 @@ public class MyInfoAcitvity extends TakePhotoActivity implements View.OnClickLis
                     }
                 }).show();
                 break;
+            case R.id.rl_change_email:
+                if (myInfoBean.getResult().getMemberEmail() == "") {
+                    Intent intent1 = new Intent(MyInfoAcitvity.this, BindInfoActivity.class);
+                    intent1.putExtra("bindType", 0);
+                    startActivityForResult(intent1, BindInfoCode);
+                }
+                break;
+            case R.id.rl_change_phone:
+                if (myInfoBean.getResult().getMemberMobile() == "") {
+                    Intent intent1 = new Intent(MyInfoAcitvity.this, BindInfoActivity.class);
+                    intent1.putExtra("bindType", 1);
+                    startActivityForResult(intent1, BindInfoCode);
+                }
+                break;
             default:
                 break;
         }
@@ -260,6 +279,11 @@ public class MyInfoAcitvity extends TakePhotoActivity implements View.OnClickLis
                     myInfoBean.getResult().setUserNickName(data.getStringExtra("nickname"));
                     updateimages = false;
                     UpdateInfo();
+                    break;
+                case 2:
+                    InitData();
+                    break;
+                default:
                     break;
             }
         }

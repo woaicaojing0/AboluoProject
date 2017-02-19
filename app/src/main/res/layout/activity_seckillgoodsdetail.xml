@@ -212,7 +212,7 @@
                             android:text="商品详情"></TextView>
 
                         <View
-                            android:id="@+id/id_goods_detail_view"
+                            android:id="@+id/seckill_goods_detail_view"
                             android:layout_width="match_parent"
                             android:layout_height="2dp"
                             android:layout_alignParentBottom="true"
@@ -242,7 +242,7 @@
                             android:text="商品评价"></TextView>
 
                         <View
-                            android:id="@+id/id_goods_pingjia_view"
+                            android:id="@+id/seckill_goods_pingjia_view"
                             android:layout_width="match_parent"
                             android:layout_height="2dp"
                             android:layout_alignParentBottom="true"
@@ -253,9 +253,10 @@
                 </LinearLayout>
 
                 <WebView
+                    android:minHeight="60dp"
                     android:id="@+id/kill_goods_detail_webview"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:scrollbars="vertical"></WebView>
 
                 <WebView

@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
@@ -15,6 +16,7 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -64,7 +66,9 @@ public class SecKillGoodsDetailActivity extends Activity implements View.OnClick
     private String Seckill_endtime;
     private ImageView seckillgoods_detail_image_back;
     private ArrayList<ShopCarBean.ResultBean.GoodsShoppingCartListBean> goodsShoppingCartListBean; //传入下订单的信息
-
+    private RelativeLayout goods_pingjia_layout_btn,goods_detail_layout_btn;
+    //商品详情和评价按钮下面的横线
+    private View seckill_goods_detail_view, seckill_goods_pingjia_view;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -94,7 +98,9 @@ public class SecKillGoodsDetailActivity extends Activity implements View.OnClick
             }
         });
         seckill_goodsdetail_bottom.setOnClickListener(this);
+        goods_detail_layout_btn.setOnClickListener(this);
         seckillgoods_detail_image_back.setOnClickListener(this);
+        goods_pingjia_layout_btn.setOnClickListener(this);
 
     }
 
@@ -114,20 +120,46 @@ public class SecKillGoodsDetailActivity extends Activity implements View.OnClick
         kill_goods_detail_webview.setHorizontalScrollbarOverlay(false);
         //end
         WebSettings webviewsetting = kill_goods_detail_webview.getSettings();
+        webviewsetting.setDomStorageEnabled(true);
         webviewsetting.setJavaScriptEnabled(true);
         webviewsetting.setUseWideViewPort(true);//关键点
         webviewsetting.setLoadWithOverviewMode(true);
+//        webviewsetting.setLoadWithOverviewMode(true);
         kill_goods_detail_webview.loadUrl(detailurl);
-        kill_goods_detail_webview.setWebViewClient(new WebViewClient());
-        //评价地址
-        WebSettings webviewsetting2 = seckill_goods_pingjia_webview.getSettings();
-        webviewsetting2.setJavaScriptEnabled(true);
-        webviewsetting2.setUseWideViewPort(true);//关键点
-        webviewsetting2.setLoadWithOverviewMode(true);
-        seckill_goods_pingjia_webview.loadUrl(null);
-        seckill_goods_pingjia_webview.setWebViewClient(new WebViewClient());
-    }
+        kill_goods_detail_webview.setWebViewClient(new WebViewClient() {
+            @Override
+            public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                view.loadUrl(url);
+                return super.shouldOverrideUrlLoading(view, url);
+            }
 
+            @Override
+            public void onPageFinished(WebView view, String url) {
+                super.onPageFinished(view, url);
+                //这个是一定要加上那个的,配合scrollView和WebView的height=wrap_content属性使用
+                int w = View.MeasureSpec.makeMeasureSpec(0,
+                        View.MeasureSpec.UNSPECIFIED);
+                int h = View.MeasureSpec.makeMeasureSpec(0,
+                        View.MeasureSpec.UNSPECIFIED);
+                //重新测量
+                kill_goods_detail_webview.measure(w, h);
+            }
+        });
+        kill_goods_detail_webview.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                return true;
+            }
+        });
+
+//        //评价地址
+//        WebSettings webviewsetting2 = goods_pingjia_webview.getSettings();
+//        webviewsetting2.setJavaScriptEnabled(true);
+//        webviewsetting2.setUseWideViewPort(true);//关键点
+//        webviewsetting2.setLoadWithOverviewMode(true);
+//        goods_pingjia_webview.loadUrl("http://t.back.aboluomall.com/Moblie/ShowEvaluationList");
+//        goods_pingjia_webview.setWebViewClient(new WebViewClient());
+    }
     /**
      * 加载头部banner(获取数据之后)
      *
@@ -181,6 +213,10 @@ public class SecKillGoodsDetailActivity extends Activity implements View.OnClick
         kill_goods_detail_webview = (WebView) findViewById(R.id.kill_goods_detail_webview);
         seckill_goods_pingjia_webview = (WebView) findViewById(R.id.seckill_goods_pingjia_webview);
         cv_seckillgoodsdetail = (CountdownView) findViewById(R.id.cv_seckillgoodsdetail);
+        goods_detail_layout_btn = (RelativeLayout) findViewById(R.id.goods_detail_layout_btn);
+        goods_pingjia_layout_btn = (RelativeLayout) findViewById(R.id.goods_pingjia_layout_btn);
+        seckill_goods_detail_view = (View) findViewById(R.id.seckill_goods_detail_view);
+        seckill_goods_pingjia_view = (View) findViewById(R.id.seckill_goods_pingjia_view);
         Bundle bundle = getIntent().getExtras();
         seckillListBean = bundle.getParcelable("data");
         Seckill_endtime = bundle.getString("endtime");
@@ -245,6 +281,21 @@ public class SecKillGoodsDetailActivity extends Activity implements View.OnClick
                     Intent intent1 = new Intent(SecKillGoodsDetailActivity.this, LoginActivity.class);
                     startActivity(intent1);
                 }
+                break;
+            case R.id.goods_detail_layout_btn:
+                seckill_goods_detail_view.setVisibility(View.VISIBLE);
+                seckill_goods_pingjia_view.setVisibility(View.GONE);
+                String detailurl0 = CommonUtils.GetValueByKey(SecKillGoodsDetailActivity.this, "backUrl")
+                        + "/moblie/Index?productId=" + seckillListBean.getGoodsId();
+                initwebview(detailurl0, null);
+                break;
+            case R.id.goods_pingjia_layout_btn:
+                seckill_goods_detail_view.setVisibility(View.GONE);
+                seckill_goods_pingjia_view.setVisibility(View.VISIBLE);
+                String detailurl = CommonUtils.GetValueByKey(SecKillGoodsDetailActivity.this, "backUrl")
+                        + "/Moblie/ShowEvaluation?goodsId=" + seckillListBean.getGoodsId();
+                //String detailurl = "http://back.aboluomall.com/Moblie/ShowEvaluation?goodsId=12";
+                initwebview(detailurl, null);
                 break;
         }
     }

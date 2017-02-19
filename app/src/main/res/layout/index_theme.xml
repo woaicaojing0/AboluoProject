@@ -3,10 +3,15 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
     <ImageView
+        android:visibility="gone"
         android:id="@+id/theme_imageview"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:src="@drawable/index_theme" />
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="8dp"
+        android:background="#f2f2f2"></View>
     <!--pageview 轮播效果-->
     <com.jude.rollviewpager.RollPagerView xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/theme_view_pager"
@@ -15,18 +20,47 @@
         app:rollviewpager_hint_gravity="right"
         app:rollviewpager_play_delay="3000" />
     <!--pageview 轮播效果 end -->
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:gravity="center"
+        android:background="#f2f2f2">
+        <LinearLayout
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent">
+            <View
+                android:layout_marginRight="20dp"
+                android:layout_width="60dp"
+                android:layout_height="1.5dp"
+                android:background="@color/btn_color"></View>
+            <TextView
+                android:textColor="@color/btn_color"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:text="主题导购"/>
+            <View
+                android:layout_marginLeft="20dp"
+                android:layout_width="60dp"
+                android:layout_height="1.5dp"
+                android:background="@color/btn_color"></View>
+        </LinearLayout>
+    </LinearLayout>
     <GridView
-
         android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp"
-        android:id="@+id/theme_mid_gridview"
+        android:id="@+id/theme_top_gridview"
         android:layout_width="match_parent"
         android:numColumns="4"
         android:layout_height="240px"></GridView>
     <com.aboluo.widget.MyGridView
         android:layout_marginTop="8dp"
-        android:id="@+id/theme_gridview"
+        android:id="@+id/theme_gridview_middle"
         android:layout_width="match_parent"
         android:numColumns="2"
         android:layout_height="wrap_content"></com.aboluo.widget.MyGridView>
+
 </LinearLayout>

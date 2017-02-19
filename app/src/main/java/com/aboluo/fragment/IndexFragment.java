@@ -84,11 +84,12 @@ import cn.pedant.SweetAlert.SweetAlertDialog;
 /**
  * Created by cj34920 on 2016/9/8.
  */
-public class IndexFragment extends Fragment implements View.OnClickListener {
+public class IndexFragment extends Fragment implements View.OnClickListener, AdapterView.OnItemClickListener {
     private LinearLayout linearLayout, ll_hotsale_main;
     private EditText top_editsearch;
-    private RollPagerView rollPagerView, theme_view_pager, special_view_pager;
-    private GridView mid_gridview, gv_hotsale;
+    private RollPagerView rollPagerView, theme_view_pager, special_view_pager, brand_view_pager;
+    private GridView mid_gridview, brand_gridview, theme_top_gridview;
+    private MyGridView gv_hotsale, theme_gridview_middle, special_gridview_bottom;
     private MarqueeView marqueeView;
     private View view;
     private String[] imgurl = {"http://img4.imgtn.bdimg.com/it/u=2408370625,380818695&fm=21&gp=0.jpg", "" +
@@ -109,12 +110,10 @@ public class IndexFragment extends Fragment implements View.OnClickListener {
     private SweetAlertDialog pdialog;
     private BaseConfigBean indexBannerBean, huodongbean, brandConfigBean,
             themeBannerConfigBean, themeConfigBean, specialConfigBean,
-            newsConfigBean, midGridViewConfigBean, themeMidConfigBean,hotSaleGridViewBean,hotSaleImageBean;
+            newsConfigBean, midGridViewConfigBean, themeTopConfigBean, themeBottomConfigBean, hotSaleGridViewBean, hotSaleImageBean;
     private LinearLayout linelayout_miaosha, index_message;
     private ImageView huodong_left1, huodong_left2, huodong_right1, huodong_right2, huodong_right3, theme_imageview; //1.1版本的活动页面
     private ImageView hotsale_left1, hotsale_left2, hotsale_left3, hotsale_right1, hotsale_right2;//1.2版本的特色专区
-    private GridView brand_gridview, theme_mid_gridview;
-    private MyGridView theme_gridview;
     public LocationClient mLocationClient = null;
     public BDLocationListener myListener = new MyLocationListener();
     private static final int BAIDU_READ_PHONE_STATE = 100;
@@ -171,13 +170,15 @@ public class IndexFragment extends Fragment implements View.OnClickListener {
         rollPagerView.setHintView(new ColorPointHintView(this.getActivity(), Color.RED, Color.WHITE));
         theme_view_pager.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, screenWidth / 3));
         theme_view_pager.setHintView(new ColorPointHintView(this.getActivity(), Color.RED, Color.WHITE));
+        brand_view_pager.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, screenWidth / 3));
+        brand_view_pager.setHintView(new ColorPointHintView(this.getActivity(), Color.RED, Color.WHITE));
         special_view_pager.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, screenWidth / 3));
         special_view_pager.setHintView(new ColorPointHintView(this.getActivity(), Color.RED, Color.WHITE));
         brand_gridview.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, screenWidth / 2));
 //        theme_gridview.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, screenWidth / 2));
-        theme_mid_gridview.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, screenWidth / 2));
+        theme_top_gridview.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, screenWidth / 2));
         mid_gridview.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, (screenWidth / 2 + CommonUtils.dip2px(this.getContext(), 16))));
-        ll_hotsale_main.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, screenWidth / 2));
+        ll_hotsale_main.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, screenWidth));
         initConfig();
         rollPagerView.setOnItemClickListener(new OnItemClickListener() {
             @Override
@@ -238,64 +239,13 @@ public class IndexFragment extends Fragment implements View.OnClickListener {
                 }
             }
         });
-        brand_gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if (brandConfigBean == null) {
-                } else {
-                    Intent intent4 = new Intent(IndexFragment.this.getContext(), GoodsListActivity.class);
-                    if (brandConfigBean.getAppConfigList().get(position).getParams() == null) {
-                        Toast.makeText(IndexFragment.this.getContext(),
-                                "ChildId is NULL", Toast.LENGTH_SHORT).show();
-                    } else {
-                        Toast.makeText(IndexFragment.this.getContext(),
-                                brandConfigBean.getAppConfigList().get(position).getParams().getChildId() + "", Toast.LENGTH_SHORT).show();
-                        intent4.putExtra("GoodsBrandId", brandConfigBean.getAppConfigList().get(position).getParams().getChildId());
-                    }
-                    startActivity(intent4);
-                }
-            }
-        });
-        theme_gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if (themeConfigBean == null) {
-                } else {
-//                    Intent intent4 = new Intent(IndexFragment.this.getContext(), GoodsListActivity.class);
-                    if (themeConfigBean.getAppConfigList().get(position).getParams() == null) {
-                        Toast.makeText(IndexFragment.this.getContext(),
-                                "ChildId is NULL", Toast.LENGTH_SHORT).show();
-                    } else {
-//                        Toast.makeText(IndexFragment.this.getContext(),
-//                                themeConfigBean.getAppConfigList().get(position).getParams().getChildId(), Toast.LENGTH_SHORT).show();
-//                        intent4.putExtra("goods_type_id", themeConfigBean.getAppConfigList().get(position).getParams().getChildId());
-                        int goods_id = themeConfigBean.getAppConfigList().get(position).getParams().getChildId();
-                        Intent intent = new Intent(IndexFragment.this.getContext(), GoodsDetailActivity.class);
-                        intent.putExtra("goods_id", goods_id);
-                        startActivity(intent);
-                    }
-                    //startActivity(intent4);
-                }
-            }
-        });
-        theme_mid_gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if (themeMidConfigBean == null) {
-                } else {
-                    Intent intent4 = new Intent(IndexFragment.this.getContext(), GoodsListActivity.class);
-                    if (themeMidConfigBean.getAppConfigList().get(position).getParams() == null) {
-                        Toast.makeText(IndexFragment.this.getContext(),
-                                "ChildId is NULL", Toast.LENGTH_SHORT).show();
-                    } else {
-//                        Toast.makeText(IndexFragment.this.getContext(),
-//                                themeMidConfigBean.getAppConfigList().get(position).getParams().getChildId().toString(), Toast.LENGTH_SHORT).show();
-                        intent4.putExtra("goods_type_id", themeMidConfigBean.getAppConfigList().get(position).getParams().getChildId());
-                    }
-                    startActivity(intent4);
-                }
-            }
-        });
+        //品牌点击事件
+        brand_gridview.setOnItemClickListener(this);
+        //特价专享点击事件
+        special_gridview_bottom.setOnItemClickListener(this);
+        theme_top_gridview.setOnItemClickListener(this);
+        gv_hotsale.setOnItemClickListener(this);
+        theme_gridview_middle.setOnItemClickListener(this);
         index_message.setOnClickListener(this);
         theme_view_pager.setOnItemClickListener(new OnItemClickListener() {
             @Override
@@ -318,6 +268,69 @@ public class IndexFragment extends Fragment implements View.OnClickListener {
         return view;
     }
 
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        switch (parent.getId()) {
+            case R.id.special_gridview_bottom:  //s特价商品
+                if (themeConfigBean == null) {
+                } else {
+//                    Intent intent4 = new Intent(IndexFragment.this.getContext(), GoodsListActivity.class);
+                    if (themeConfigBean.getAppConfigList().get(position).getParams() == null) {
+                        Toast.makeText(IndexFragment.this.getContext(),
+                                "ChildId is NULL", Toast.LENGTH_SHORT).show();
+                    } else {
+//                        Toast.makeText(IndexFragment.this.getContext(),
+//                                themeConfigBean.getAppConfigList().get(position).getParams().getChildId(), Toast.LENGTH_SHORT).show();
+//                        intent4.putExtra("goods_type_id", themeConfigBean.getAppConfigList().get(position).getParams().getChildId());
+                        int goods_id = themeConfigBean.getAppConfigList().get(position).getParams().getChildId();
+                        Intent intent = new Intent(IndexFragment.this.getContext(), GoodsDetailActivity.class);
+                        intent.putExtra("goods_id", goods_id);
+                        startActivity(intent);
+                    }
+                    //startActivity(intent4);
+                }
+                break;
+            case R.id.brand_gridview://品牌点击事件
+                if (brandConfigBean == null) {
+                } else {
+                    Intent intent4 = new Intent(IndexFragment.this.getContext(), GoodsListActivity.class);
+                    if (brandConfigBean.getAppConfigList().get(position).getParams() == null) {
+                        Toast.makeText(IndexFragment.this.getContext(),
+                                "ChildId is NULL", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(IndexFragment.this.getContext(),
+                                brandConfigBean.getAppConfigList().get(position).getParams().getChildId() + "", Toast.LENGTH_SHORT).show();
+                        intent4.putExtra("GoodsBrandId", brandConfigBean.getAppConfigList().get(position).getParams().getChildId());
+                    }
+                    startActivity(intent4);
+                }
+                break;
+            case R.id.theme_top_gridview: //主题模块上面的箱包什么的
+                startGoodsListActivity(themeTopConfigBean, position);
+                break;
+            case R.id.gv_hotsale: //特色专区点击事件
+                startGoodsListActivity(hotSaleGridViewBean, position);
+                break;
+            case R.id.theme_gridview_middle: //主题下面gridview4个图片的点击事件
+                startGoodsListActivity(themeBottomConfigBean, position);
+                break;
+        }
+    }
+
+    private void startGoodsListActivity(BaseConfigBean bean, int position) {
+        if (bean == null) {
+        } else {
+            Intent intent4 = new Intent(IndexFragment.this.getContext(), GoodsListActivity.class);
+            if (bean.getAppConfigList().get(position).getParams() == null) {
+                Toast.makeText(IndexFragment.this.getContext(),
+                        "ChildId is NULL", Toast.LENGTH_SHORT).show();
+            } else {
+                intent4.putExtra("goods_type_id", bean.getAppConfigList().get(position).getParams().getChildId());
+            }
+            startActivity(intent4);
+        }
+    }
+
     /*
         初始化热卖版块的数据
      */
@@ -327,7 +340,7 @@ public class IndexFragment extends Fragment implements View.OnClickListener {
         hotsale_left3 = (ImageView) view.findViewById(R.id.hotsale_left3);
         hotsale_right1 = (ImageView) view.findViewById(R.id.hotsale_right1);
         hotsale_right2 = (ImageView) view.findViewById(R.id.hotsale_right2);
-        gv_hotsale = (GridView) view.findViewById(R.id.gv_hotsale);
+        gv_hotsale = (MyGridView) view.findViewById(R.id.gv_hotsale);
     }
 
     private void init(View view) {
@@ -336,6 +349,7 @@ public class IndexFragment extends Fragment implements View.OnClickListener {
         rollPagerView = (RollPagerView) view.findViewById(R.id.roll_view_pager);
         theme_view_pager = (RollPagerView) view.findViewById(R.id.theme_view_pager);
         special_view_pager = (RollPagerView) view.findViewById(R.id.special_view_pager);
+        brand_view_pager = (RollPagerView) view.findViewById(R.id.brand_view_pager);
         mid_gridview = (GridView) view.findViewById(R.id.mid_gridview);
         mid_gridview.setSelector(new ColorDrawable(Color.TRANSPARENT));
         marqueeView = (MarqueeView) view.findViewById(R.id.marqueeView);
@@ -352,8 +366,9 @@ public class IndexFragment extends Fragment implements View.OnClickListener {
         theme_imageview = (ImageView) view.findViewById(R.id.theme_imageview);
         tv_location_address = (TextView) view.findViewById(R.id.tv_location_address);
         brand_gridview = (GridView) view.findViewById(R.id.brand_gridview);
-        theme_gridview = (MyGridView) view.findViewById(R.id.theme_gridview);
-        theme_mid_gridview = (GridView) view.findViewById(R.id.theme_mid_gridview);
+        special_gridview_bottom = (MyGridView) view.findViewById(R.id.special_gridview_bottom);
+        theme_gridview_middle = (MyGridView) view.findViewById(R.id.theme_gridview_middle);
+        theme_top_gridview = (GridView) view.findViewById(R.id.theme_top_gridview);
         mCvCountdownView = (CountdownView) view.findViewById(R.id.cv_countdownViewTest1);
         beginSecKill = (LinearLayout) view.findViewById(R.id.beginSecKill);
         index_message = (LinearLayout) view.findViewById(R.id.index_message);
@@ -376,9 +391,14 @@ public class IndexFragment extends Fragment implements View.OnClickListener {
         seckill_imge0.setOnClickListener(this);
         seckill_imge1.setOnClickListener(this);
         seckill_imge2.setOnClickListener(this);
-        initSecKill();
+
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+        initSecKill();
+    }
 
     private StringRequest getInfo() {
         StringRequest stringRequest = new StringRequest(Request.Method.POST, "http://msoa.weidustudio.com/api/MachineManage/ReceiveProductListByCategoryId", new Response.Listener<String>() {
@@ -510,58 +530,58 @@ public class IndexFragment extends Fragment implements View.OnClickListener {
                 intent3.putExtra("changci", 2);
                 startActivity(intent3);
                 break;
-            case R.id.huodong_left1:
-                if (huodongbean == null) {
+            case R.id.hotsale_left1:
+                if (hotSaleImageBean == null) {
                 } else {
                     Intent intent4 = new Intent(IndexFragment.this.getContext(), GoodsListActivity.class);
-                    if (huodongbean.getAppConfigList().get(0).getParams() == null) {
+                    if (hotSaleImageBean.getAppConfigList().get(0).getParams() == null) {
                     } else {
-                        intent4.putExtra("goods_type_id", huodongbean.getAppConfigList().get(0).getParams().getChildId());
+                        intent4.putExtra("goods_type_id", hotSaleImageBean.getAppConfigList().get(0).getParams().getChildId());
                     }
                     startActivity(intent4);
                 }
                 break;
-            case R.id.huodong_left2:
-                if (huodongbean == null) {
+            case R.id.hotsale_left2:
+                if (hotSaleImageBean == null) {
                 } else {
                     Intent intent5 = new Intent(IndexFragment.this.getContext(), GoodsListActivity.class);
-                    if (huodongbean.getAppConfigList().get(1).getParams() == null) {
+                    if (hotSaleImageBean.getAppConfigList().get(1).getParams() == null) {
                     } else {
-                        intent5.putExtra("goods_type_id", huodongbean.getAppConfigList().get(1).getParams().getChildId());
+                        intent5.putExtra("goods_type_id", hotSaleImageBean.getAppConfigList().get(1).getParams().getChildId());
                     }
                     startActivity(intent5);
                 }
                 break;
-            case R.id.huodong_right1:
-                if (huodongbean == null) {
+            case R.id.hotsale_left3:
+                if (hotSaleImageBean == null) {
                 } else {
                     Intent intent6 = new Intent(IndexFragment.this.getContext(), GoodsListActivity.class);
-                    if (huodongbean.getAppConfigList().get(2).getParams() == null) {
+                    if (hotSaleImageBean.getAppConfigList().get(2).getParams() == null) {
                     } else {
-                        intent6.putExtra("goods_type_id", huodongbean.getAppConfigList().get(2).getParams().getChildId());
+                        intent6.putExtra("goods_type_id", hotSaleImageBean.getAppConfigList().get(2).getParams().getChildId());
                     }
                     startActivity(intent6);
                 }
                 break;
-            case R.id.huodong_right2:
-                if (huodongbean == null) {
+            case R.id.hotsale_right1:
+                if (hotSaleImageBean == null) {
                 } else {
                     Intent intent7 = new Intent(IndexFragment.this.getContext(), GoodsListActivity.class);
-                    if (huodongbean.getAppConfigList().get(3).getParams() == null) {
+                    if (hotSaleImageBean.getAppConfigList().get(3).getParams() == null) {
                     } else {
-                        intent7.putExtra("goods_type_id", huodongbean.getAppConfigList().get(3).getParams().getChildId());
+                        intent7.putExtra("goods_type_id", hotSaleImageBean.getAppConfigList().get(3).getParams().getChildId());
                     }
                     startActivity(intent7);
                 }
 
                 break;
-            case R.id.huodong_right3:
-                if (huodongbean == null) {
+            case R.id.hotsale_right2:
+                if (hotSaleImageBean == null) {
                 } else {
                     Intent intent7 = new Intent(IndexFragment.this.getContext(), GoodsListActivity.class);
-                    if (huodongbean.getAppConfigList().get(4).getParams() == null) {
+                    if (hotSaleImageBean.getAppConfigList().get(4).getParams() == null) {
                     } else {
-                        intent7.putExtra("goods_type_id", huodongbean.getAppConfigList().get(4).getParams().getChildId());
+                        intent7.putExtra("goods_type_id", hotSaleImageBean.getAppConfigList().get(4).getParams().getChildId());
                     }
                     startActivity(intent7);
                 }
@@ -599,11 +619,15 @@ public class IndexFragment extends Fragment implements View.OnClickListener {
         initMemu(); //加载菜单栏
         initNews(); //加载滚动新闻
         initBanner(); //顶部banner
-        inithuodong(); //活动页面
-        initbrand();   //品牌图片
+        //inithuodong(); //活动页面
+        initHotSaleGridview(); //热卖上4个
+        initHotSaleImage();//热卖下3+2
         initThemeBanner(); //主题滚动banner
-        initThemeMidGridview(); //主题滚动banner
-        initThemeGridview(); //主题九宫格
+        initThemeTopGridview(); //主题模块中上面的gridview
+        initThemeBottomGridview();//主题模块最下面的gridview 4个图
+        initBrandBanner(); //品牌banner
+        initbrand();   //品牌图片
+        inittejiaGridview(); //主题九宫格
         initSpecial(); //推荐专享banner
     }
 
@@ -747,6 +771,7 @@ public class IndexFragment extends Fragment implements View.OnClickListener {
         };
         requestQueue.add(stringRequest);
     }
+
     /*
         加载商品热卖专区的九宫格图
      */
@@ -771,6 +796,8 @@ public class IndexFragment extends Fragment implements View.OnClickListener {
                         gv_hotsale.setAdapter(hotSaleGridViewAdapter);
                     }
 
+                } else {
+                    Toast.makeText(IndexFragment.this.getContext(), hotSaleGridViewBean.getMessage().toString(), Toast.LENGTH_SHORT).show();
                 }
             }
         }, new Response.ErrorListener() {
@@ -783,13 +810,14 @@ public class IndexFragment extends Fragment implements View.OnClickListener {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> map = new HashMap<>();
-                map.put("ConfigModule", "5");
+                map.put("ConfigModule", "11");
                 map.put("APPToken", APPToken);
                 return map;
             }
         };
         requestQueue.add(stringRequest);
     }
+
     /*
         加载商品热卖专区的3+2图片
      */
@@ -811,6 +839,7 @@ public class IndexFragment extends Fragment implements View.OnClickListener {
                         arrString[i] = ImageUrl + hotSaleImageBean.getAppConfigList().get(i).getImage();
                     }
                     if (arrString.length >= 5) {
+                        ll_hotsale_main.setVisibility(View.VISIBLE);
                         picasso.load(ImageUrl + hotSaleImageBean.getAppConfigList().get(0).getImage())
                                 .placeholder(IndexFragment.this.getResources().getDrawable(R.drawable.imagviewloading))
                                 .into(hotsale_left1);
@@ -827,65 +856,31 @@ public class IndexFragment extends Fragment implements View.OnClickListener {
                                 .placeholder(IndexFragment.this.getResources().getDrawable(R.drawable.imagviewloading))
                                 .into(hotsale_right2);
                     } else {
+                        ll_hotsale_main.setVisibility(View.GONE);
+                        Toast.makeText(IndexFragment.this.getContext(), "特色专区图片少于5个", Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    Toast.makeText(IndexFragment.this.getContext(), hotSaleImageBean.getMessage().toString(), Toast.LENGTH_SHORT).show();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                //byte[] data = error.networkResponse.data;
+                //Toast.makeText(IndexFragment.this.getContext(), new String(data), Toast.LENGTH_SHORT).show();
+            }
+        }) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> map = new HashMap<>();
+                map.put("ConfigModule", "13");
+                map.put("APPToken", APPToken);
+                return map;
+            }
+        };
+        requestQueue.add(stringRequest);
+    }
 
-                    }
-                } else {
-                    Toast.makeText(IndexFragment.this.getContext(), huodongbean.getMessage().toString(), Toast.LENGTH_SHORT).show();
-                }
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                //byte[] data = error.networkResponse.data;
-                //Toast.makeText(IndexFragment.this.getContext(), new String(data), Toast.LENGTH_SHORT).show();
-            }
-        }) {
-            @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-                Map<String, String> map = new HashMap<>();
-                map.put("ConfigModule", "3");
-                map.put("APPToken", APPToken);
-                return map;
-            }
-        };
-        requestQueue.add(stringRequest);
-    }
-    //加载品牌的配置
-    private void initbrand() {
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, URL + "/api/ConfigApi/ReceiveHomeConfig", new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                response = response.replace("\\", "");
-                response = response.substring(1, response.length() - 1);
-                brandConfigBean = gson.fromJson(response, BaseConfigBean.class);
-                if (brandConfigBean.isIsSuccess()) {
-                    String[] arrString = new String[brandConfigBean.getAppConfigList().size()];
-                    for (int i = 0; i < brandConfigBean.getAppConfigList().size(); i++) {
-                        arrString[i] = ImageUrl + brandConfigBean.getAppConfigList().get(i).getImage();
-                    }
-                    BrandGridViewAdapter brandGridViewAdapter = new BrandGridViewAdapter(IndexFragment.this.getContext(), arrString);
-                    brand_gridview.setAdapter(brandGridViewAdapter);
-                } else {
-                    Toast.makeText(IndexFragment.this.getContext(), brandConfigBean.getMessage().toString(), Toast.LENGTH_SHORT).show();
-                }
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                //byte[] data = error.networkResponse.data;
-                //Toast.makeText(IndexFragment.this.getContext(), new String(data), Toast.LENGTH_SHORT).show();
-            }
-        }) {
-            @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-                Map<String, String> map = new HashMap<>();
-                map.put("ConfigModule", "6");
-                map.put("APPToken", APPToken);
-                return map;
-            }
-        };
-        requestQueue.add(stringRequest);
-    }
 
     //加载主题导购banner的配置
     private void initThemeBanner() {
@@ -933,8 +928,175 @@ public class IndexFragment extends Fragment implements View.OnClickListener {
         requestQueue.add(stringRequest);
     }
 
-    //加载商品推荐
-    private void initThemeGridview() {
+    //加载主题最上面gridview的配置（活动2）//加载主题九宫格
+    private void initThemeTopGridview() {
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, URL + "/api/ConfigApi/ReceiveHomeConfig", new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                response = response.replace("\\", "");
+                response = response.substring(1, response.length() - 1);
+                themeTopConfigBean = gson.fromJson(response, BaseConfigBean.class);
+                if (themeTopConfigBean.isIsSuccess()) {
+                    String[] arrString = new String[themeTopConfigBean.getAppConfigList().size()];
+                    for (int i = 0; i < themeTopConfigBean.getAppConfigList().size(); i++) {
+                        arrString[i] = ImageUrl + themeTopConfigBean.getAppConfigList().get(i).getImage();
+                    }
+
+                    if (arrString.length == 0) {
+                        theme_top_gridview.setVisibility(View.GONE);
+                    } else {
+                        theme_top_gridview.setVisibility(View.VISIBLE);
+                        ThemeMidGridViewAdapter themeMidGridViewAdapter = new ThemeMidGridViewAdapter(IndexFragment.this.getContext(), arrString);
+                        theme_top_gridview.setAdapter(themeMidGridViewAdapter);
+                    }
+
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                //byte[] data = error.networkResponse.data;
+                //Toast.makeText(IndexFragment.this.getContext(), new String(data), Toast.LENGTH_SHORT).show();
+            }
+        }) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> map = new HashMap<>();
+                map.put("ConfigModule", "5");
+                map.put("APPToken", APPToken);
+                return map;
+            }
+        };
+        requestQueue.add(stringRequest);
+    }
+
+    //加载主题最下面gridview的配置（4个图片）
+    private void initThemeBottomGridview() {
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, URL + "/api/ConfigApi/ReceiveHomeConfig", new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                response = response.replace("\\", "");
+                response = response.substring(1, response.length() - 1);
+                themeBottomConfigBean = gson.fromJson(response, BaseConfigBean.class);
+                if (themeBottomConfigBean.isIsSuccess()) {
+                    String[] arrString = new String[themeBottomConfigBean.getAppConfigList().size()];
+                    for (int i = 0; i < themeBottomConfigBean.getAppConfigList().size(); i++) {
+                        arrString[i] = ImageUrl + themeBottomConfigBean.getAppConfigList().get(i).getImage();
+                    }
+
+                    if (arrString.length == 0) {
+                        theme_gridview_middle.setVisibility(View.GONE);
+                    } else {
+                        theme_gridview_middle.setVisibility(View.VISIBLE);
+                        ThemeMidGridViewAdapter themeMidGridViewAdapter = new ThemeMidGridViewAdapter(IndexFragment.this.getContext(), arrString);
+                        theme_gridview_middle.setAdapter(themeMidGridViewAdapter);
+                    }
+
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                //byte[] data = error.networkResponse.data;
+                //Toast.makeText(IndexFragment.this.getContext(), new String(data), Toast.LENGTH_SHORT).show();
+            }
+        }) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> map = new HashMap<>();
+                map.put("ConfigModule", "12");
+                map.put("APPToken", APPToken);
+                return map;
+            }
+        };
+        requestQueue.add(stringRequest);
+    }
+
+    //加载品类活动banner的配置
+    private void initBrandBanner() {
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, URL + "/api/ConfigApi/ReceiveHomeConfig", new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                response = response.replace("\\", "");
+                response = response.substring(1, response.length() - 1);
+                themeBannerConfigBean = gson.fromJson(response, BaseConfigBean.class);
+                if (themeBannerConfigBean.isIsSuccess()) {
+                    String[] arrString = new String[themeBannerConfigBean.getAppConfigList().size()];
+                    for (int i = 0; i < themeBannerConfigBean.getAppConfigList().size(); i++) {
+                        arrString[i] = ImageUrl + themeBannerConfigBean.getAppConfigList().get(i).getImage();
+                    }
+                    if (arrString.length == 0) {
+                        brand_view_pager.setVisibility(View.GONE);
+                    } else {
+                        //头部滚动banner
+                        brand_view_pager.setVisibility(View.VISIBLE);
+                        bannerAdapter = new BannerAdapter(IndexFragment.this.getContext(), arrString, brand_view_pager);
+                        brand_view_pager.setAdapter(bannerAdapter); // 设置适配器（请求网络图片，适配器要在网络请求完成后再设置）
+                        brand_view_pager.getViewPager().getAdapter().notifyDataSetChanged();// 更新banner图片
+                        brand_view_pager.setFocusable(false);
+                    }
+                } else {
+                    brand_view_pager.setVisibility(View.GONE);
+                    Toast.makeText(IndexFragment.this.getContext(), themeBannerConfigBean.getMessage().toString(), Toast.LENGTH_SHORT).show();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                //byte[] data = error.networkResponse.data;
+                //Toast.makeText(IndexFragment.this.getContext(), new String(data), Toast.LENGTH_SHORT).show();
+            }
+        }) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> map = new HashMap<>();
+                map.put("ConfigModule", "4");
+                map.put("APPToken", APPToken);
+                return map;
+            }
+        };
+        requestQueue.add(stringRequest);
+    }
+
+    //加载品牌的配置
+    private void initbrand() {
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, URL + "/api/ConfigApi/ReceiveHomeConfig", new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                response = response.replace("\\", "");
+                response = response.substring(1, response.length() - 1);
+                brandConfigBean = gson.fromJson(response, BaseConfigBean.class);
+                if (brandConfigBean.isIsSuccess()) {
+                    String[] arrString = new String[brandConfigBean.getAppConfigList().size()];
+                    for (int i = 0; i < brandConfigBean.getAppConfigList().size(); i++) {
+                        arrString[i] = ImageUrl + brandConfigBean.getAppConfigList().get(i).getImage();
+                    }
+                    BrandGridViewAdapter brandGridViewAdapter = new BrandGridViewAdapter(IndexFragment.this.getContext(), arrString);
+                    brand_gridview.setAdapter(brandGridViewAdapter);
+                } else {
+                    Toast.makeText(IndexFragment.this.getContext(), brandConfigBean.getMessage().toString(), Toast.LENGTH_SHORT).show();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                //byte[] data = error.networkResponse.data;
+                //Toast.makeText(IndexFragment.this.getContext(), new String(data), Toast.LENGTH_SHORT).show();
+            }
+        }) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> map = new HashMap<>();
+                map.put("ConfigModule", "6");
+                map.put("APPToken", APPToken);
+                return map;
+            }
+        };
+        requestQueue.add(stringRequest);
+    }
+
+    //加载特价专享
+    private void inittejiaGridview() {
         StringRequest stringRequest = new StringRequest(Request.Method.POST, URL + "/api/ConfigApi/ReceiveHomeConfig", new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
@@ -948,11 +1110,11 @@ public class IndexFragment extends Fragment implements View.OnClickListener {
                     }
 
                     if (arrString.length == 0) {
-                        theme_gridview.setVisibility(View.GONE);
+                        special_gridview_bottom.setVisibility(View.GONE);
                     } else {
-                        theme_gridview.setVisibility(View.VISIBLE);
+                        special_gridview_bottom.setVisibility(View.VISIBLE);
                         ThemeGridViewAdapter themeGridViewAdapter = new ThemeGridViewAdapter(IndexFragment.this.getContext(), arrString);
-                        theme_gridview.setAdapter(themeGridViewAdapter);
+                        special_gridview_bottom.setAdapter(themeGridViewAdapter);
                     }
 
                 } else {
@@ -981,48 +1143,6 @@ public class IndexFragment extends Fragment implements View.OnClickListener {
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> map = new HashMap<>();
                 map.put("ConfigModule", "10");
-                map.put("APPToken", APPToken);
-                return map;
-            }
-        };
-        requestQueue.add(stringRequest);
-    }
-
-    //加载主题中间的gridview的配置（活动2）//加载主题九宫格
-    private void initThemeMidGridview() {
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, URL + "/api/ConfigApi/ReceiveHomeConfig", new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                response = response.replace("\\", "");
-                response = response.substring(1, response.length() - 1);
-                themeMidConfigBean = gson.fromJson(response, BaseConfigBean.class);
-                if (themeMidConfigBean.isIsSuccess()) {
-                    String[] arrString = new String[themeMidConfigBean.getAppConfigList().size()];
-                    for (int i = 0; i < themeMidConfigBean.getAppConfigList().size(); i++) {
-                        arrString[i] = ImageUrl + themeMidConfigBean.getAppConfigList().get(i).getImage();
-                    }
-
-                    if (arrString.length == 0) {
-                        theme_mid_gridview.setVisibility(View.GONE);
-                    } else {
-                        theme_mid_gridview.setVisibility(View.VISIBLE);
-                        ThemeMidGridViewAdapter themeMidGridViewAdapter = new ThemeMidGridViewAdapter(IndexFragment.this.getContext(), arrString);
-                        theme_mid_gridview.setAdapter(themeMidGridViewAdapter);
-                    }
-
-                }
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                //byte[] data = error.networkResponse.data;
-                //Toast.makeText(IndexFragment.this.getContext(), new String(data), Toast.LENGTH_SHORT).show();
-            }
-        }) {
-            @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-                Map<String, String> map = new HashMap<>();
-                map.put("ConfigModule", "5");
                 map.put("APPToken", APPToken);
                 return map;
             }
@@ -1199,6 +1319,7 @@ public class IndexFragment extends Fragment implements View.OnClickListener {
         option.setEnableSimulateGps(false);//可选，默认false，设置是否需要过滤GPS仿真结果，默认需要
         mLocationClient.setLocOption(option);
     }
+
 
     public class MyLocationListener implements BDLocationListener {
 

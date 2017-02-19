@@ -4,18 +4,18 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <GridView
+    <com.aboluo.widget.MyGridView
         android:id="@+id/gv_hotsale"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:numColumns="2"></GridView>
+        android:numColumns="2"></com.aboluo.widget.MyGridView>
 
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="30dp"
         android:gravity="center"
-        android:background="#e4e4e4">
+        android:background="#f2f2f2">
         <LinearLayout
             android:gravity="center"
             android:orientation="horizontal"
@@ -41,6 +41,7 @@
     </LinearLayout>
 
     <LinearLayout
+        android:orientation="horizontal"
         android:id="@+id/ll_hotsale_main"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -57,14 +58,22 @@
                 android:layout_height="0dp"
                 android:layout_weight="1"
                 android:scaleType="fitXY" />
-
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="#e4e4e4"
+                ></View>
             <ImageView
                 android:id="@+id/hotsale_left2"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="1"
                 android:scaleType="fitXY" />
-
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="#e4e4e4"
+                ></View>
             <ImageView
                 android:id="@+id/hotsale_left3"
                 android:layout_width="match_parent"
@@ -72,21 +81,28 @@
                 android:layout_weight="1"
                 android:scaleType="fitXY" />
         </LinearLayout>
-
+        <View
+            android:layout_width="0.5dp"
+            android:layout_height="match_parent"
+            android:background="#e4e4e4"
+           ></View>
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-
             android:orientation="vertical">
 
             <ImageView
                 android:id="@+id/hotsale_right1"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_weight="1"
+                android:layout_weight="2"
                 android:scaleType="fitXY" />
-
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="#e4e4e4"
+                ></View>
             <ImageView
                 android:id="@+id/hotsale_right2"
                 android:layout_width="match_parent"

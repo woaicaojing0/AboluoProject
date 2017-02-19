@@ -50,7 +50,6 @@ import com.android.volley.toolbox.StringRequest;
 import com.google.gson.Gson;
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.handmark.pulltorefresh.library.PullToRefreshListView;
-import com.squareup.okhttp.OkHttpClient;
 import com.squareup.picasso.Picasso;
 import com.tandong.bottomview.view.BottomView;
 
@@ -62,6 +61,7 @@ import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
+import okhttp3.OkHttpClient;
 
 /**
  * Created by cj34920 on 2016/9/8.
@@ -152,9 +152,6 @@ public class ShopCarFragment extends Fragment implements View.OnClickListener {
 
     private void init() {
         OkHttpClient okHttpClient = new OkHttpClient();
-        okHttpClient.setConnectTimeout(1, TimeUnit.SECONDS);
-        okHttpClient.setReadTimeout(1, TimeUnit.SECONDS);
-        okHttpClient.setWriteTimeout(1, TimeUnit.SECONDS);
         context = ShopCarFragment.this.getActivity();
         listView = (PullToRefreshListView) view.findViewById(R.id.shopcar_listview);
         cb_cart_all = (CheckBox) view.findViewById(R.id.cb_cart_all);
@@ -1149,7 +1146,7 @@ public class ShopCarFragment extends Fragment implements View.OnClickListener {
 
     @Override
     public void onResume() {
-        super.onPause();
+        super.onResume();
 //        Toast.makeText(context, "暂停结束了", Toast.LENGTH_SHORT).show();
         if (isnormal) {
             isnormal = false;

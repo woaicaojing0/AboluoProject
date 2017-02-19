@@ -100,7 +100,7 @@ dependencies {
     //    compile 'com.android.support:gridlayout-v7:23.0.0'
     //万能的适配器
     compile 'com.zhy:base-adapter:3.0.3'
-    compile 'com.squareup.okhttp:okhttp:2.4.0'
+    //compile 'com.squareup.okhttp:okhttp:2.4.0'
     //底部弹出的bottomview
     compile files('libs/bottomView.jar')
     //手势解锁

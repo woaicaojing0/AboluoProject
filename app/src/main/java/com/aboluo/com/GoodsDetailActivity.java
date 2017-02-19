@@ -269,7 +269,7 @@ public class GoodsDetailActivity extends Activity implements View.OnClickListene
         //end
         WebSettings webviewsetting = goods_detail_webview.getSettings();
         webviewsetting.setDomStorageEnabled(true);
-        //webviewsetting.setJavaScriptEnabled(true);
+        webviewsetting.setJavaScriptEnabled(true);
         webviewsetting.setUseWideViewPort(true);//关键点
         webviewsetting.setLoadWithOverviewMode(true);
 //        webviewsetting.setLoadWithOverviewMode(true);

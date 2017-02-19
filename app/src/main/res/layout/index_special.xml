@@ -3,9 +3,14 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
     <ImageView
+        android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:src="@drawable/special" />
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="8dp"
+        android:background="#f2f2f2"></View>
     <!--pageview 轮播效果-->
     <com.jude.rollviewpager.RollPagerView xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/special_view_pager"
@@ -13,5 +18,41 @@
         android:layout_height="120dp"
         app:rollviewpager_hint_gravity="right"
         app:rollviewpager_play_delay="3000" />
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:gravity="center"
+        android:background="#f2f2f2">
+        <LinearLayout
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent">
+            <View
+                android:layout_marginRight="20dp"
+                android:layout_width="60dp"
+                android:layout_height="1.5dp"
+                android:background="@color/btn_color"></View>
+            <TextView
+                android:textColor="@color/btn_color"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:text="特价专享"/>
+            <View
+                android:layout_marginLeft="20dp"
+                android:layout_width="60dp"
+                android:layout_height="1.5dp"
+                android:background="@color/btn_color"></View>
+        </LinearLayout>
+    </LinearLayout>
+
     <!--pageview 轮播效果 end -->
+    <com.aboluo.widget.MyGridView
+        android:layout_marginTop="8dp"
+        android:id="@+id/special_gridview_bottom"
+        android:layout_width="match_parent"
+        android:numColumns="2"
+        android:layout_height="wrap_content"></com.aboluo.widget.MyGridView>
 </LinearLayout>

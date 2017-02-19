@@ -62,7 +62,7 @@ public class FavorActivity extends Activity implements View.OnClickListener {
         favor_listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(FavorActivity.this, position + "item click", Toast.LENGTH_SHORT).show();
+               // Toast.makeText(FavorActivity.this, position + "item click", Toast.LENGTH_SHORT).show();
             }
         });
         unarydetail_text_back.setOnClickListener(new View.OnClickListener() {
@@ -134,7 +134,7 @@ public class FavorActivity extends Activity implements View.OnClickListener {
             case R.id.favor_item_more:
                 if (tag != null && tag instanceof Integer) { //解决问题：如何知道你点击的按钮是哪一个列表项中的，通过Tag的
                     int position = (Integer) tag;
-                    Toast.makeText(this, "" + position, Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(this, "" + position, Toast.LENGTH_SHORT).show();
                     bottomView = new BottomView(this,
                             R.style.BottomViewTheme_Defalut, R.layout.favor_bottom);
                     bottomView.setAnimation(R.style.BottomToTopAnim);//设置动画，可选

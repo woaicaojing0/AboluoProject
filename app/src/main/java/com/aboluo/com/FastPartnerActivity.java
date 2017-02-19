@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -23,6 +24,8 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.google.gson.Gson;
+import com.handmark.pulltorefresh.library.PullToRefreshBase;
+import com.handmark.pulltorefresh.library.PullToRefreshScrollView;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -50,6 +53,7 @@ public class FastPartnerActivity extends Activity {
     private FastParnterMakeOrderBean fastParnterMakeOrderBean;
     private TextView tv_Amount;
     private ImageView iv_fastpartner;
+    private PullToRefreshScrollView pullToRefreshScrollView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,7 +62,12 @@ public class FastPartnerActivity extends Activity {
         btn_fastpartner.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                fastParnterMakeOrder();
+                if(fastParnterBean ==null)
+                {
+                    Toast.makeText(FastPartnerActivity.this, "请刷新重试", Toast.LENGTH_SHORT).show();
+                }else {
+                    fastParnterMakeOrder();
+                }
             }
         });
         iv_fastpartner.setOnClickListener(new View.OnClickListener() {
@@ -72,6 +81,12 @@ public class FastPartnerActivity extends Activity {
                 String transitionName = "images";
                 ActivityOptionsCompat activityOptionsCompat = ActivityOptionsCompat.makeSceneTransitionAnimation(FastPartnerActivity.this,v, transitionName);
                 startActivity(intent,activityOptionsCompat.toBundle());
+            }
+        });
+        pullToRefreshScrollView.setOnRefreshListener(new PullToRefreshBase.OnRefreshListener<ScrollView>() {
+            @Override
+            public void onRefresh(PullToRefreshBase<ScrollView> refreshView) {
+                initData();
             }
         });
     }
@@ -92,6 +107,7 @@ public class FastPartnerActivity extends Activity {
         btn_fastpartner = (Button) findViewById(R.id.btn_fastpartner);
         tv_Amount = (TextView) findViewById(R.id.tv_Amount);
         iv_fastpartner = (ImageView) findViewById(R.id.iv_fastpartner);
+        pullToRefreshScrollView = (PullToRefreshScrollView) findViewById(R.id.sv_fastparnter);
         initData();
     }
 
@@ -106,10 +122,13 @@ public class FastPartnerActivity extends Activity {
                 if (fastParnterBean.isIsSuccess()) {
                     btn_fastpartner.setText(fastParnterBean.getTypeName());
                     tv_Amount.setText(fastParnterBean.getAmount() + "");
+                    Toast.makeText(FastPartnerActivity.this, "获取成功", Toast.LENGTH_SHORT).show();
                 } else {
                     Toast.makeText(FastPartnerActivity.this, "获取失败", Toast.LENGTH_SHORT).show();
                 }
                 pdialog.dismiss();
+                pullToRefreshScrollView.onRefreshComplete();
+
             }
         }, new Response.ErrorListener() {
             @Override
@@ -119,6 +138,7 @@ public class FastPartnerActivity extends Activity {
 //                Log.i("woaiocaojingerroe", new String(htmlBodyBytes));
                 //sweetAlertDialog.dismiss();
                 pdialog.dismiss();
+                pullToRefreshScrollView.onRefreshComplete();
             }
         }) {
             @Override

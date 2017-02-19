@@ -23,15 +23,12 @@ import com.aboluo.com.address.ProvinceAddressActivity;
 import com.aboluo.com.address.StreetAddressActivity;
 import com.aboluo.model.AddressInfoBean;
 import com.aboluo.model.BaseModel;
-import com.aboluo.model.ProvinceBean22;
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
-import com.bigkoo.pickerview.OptionsPickerView;
-import com.bigkoo.pickerview.model.IPickerViewData;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
@@ -47,11 +44,11 @@ import cn.pedant.SweetAlert.SweetAlertDialog;
 public class AddAddressActivity extends Activity implements TextWatcher, View.OnClickListener {
     private Button add_address_save, update_address_save;//新增按钮，更新按钮
     private EditText edit_receive_name, edit_receive_phone, edit_receive_address, edit_receive_zipcode;
-    private OptionsPickerView pvOptions;
+    //private OptionsPickerView pvOptions;
     private RelativeLayout linelayout_location, address_street; //选择收货地址,街道
-    private ArrayList<ProvinceBean22> options1Items = new ArrayList<>();
+  //  private ArrayList<ProvinceBean22> options1Items = new ArrayList<>();
     private ArrayList<ArrayList<String>> options2Items = new ArrayList<>();
-    private ArrayList<ArrayList<ArrayList<IPickerViewData>>> options3Items = new ArrayList<>();
+    //private ArrayList<ArrayList<ArrayList<IPickerViewData>>> options3Items = new ArrayList<>();
     //显示联动的地址,选择的地址,选择街道,头部表示修改还是新增默认是新增
     private TextView add_address_txtview_location, add_address_txtview_jiedao, toolbar_txt;
     private int address_id = 0, streetid = 0; //选择地址结束后，选择街道需要的id，街道的id
@@ -108,7 +105,7 @@ public class AddAddressActivity extends Activity implements TextWatcher, View.On
         } else {
             add_address_txtview_location.setText(address_name);
         }
-        pvOptions = new OptionsPickerView(this);
+        //pvOptions = new OptionsPickerView(this);
         vMasker = findViewById(R.id.vMasker);
         url = CommonUtils.GetValueByKey(AddAddressActivity.this, "apiurl");
         APPToken = CommonUtils.GetValueByKey(AddAddressActivity.this, "APPToken");

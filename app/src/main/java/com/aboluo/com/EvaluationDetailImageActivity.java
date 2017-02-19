@@ -44,6 +44,11 @@ public class EvaluationDetailImageActivity extends Activity implements View.OnCl
             public void onPhotoTap(View arg0, float arg1, float arg2) {
                 finish();
             }
+
+            @Override
+            public void onOutsidePhotoTap() {
+
+            }
         });
         evaluation_text_delete.setOnClickListener(this);
         evaluation_text_back.setOnClickListener(this);

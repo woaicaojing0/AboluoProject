@@ -276,7 +276,7 @@ public class OrderDetailActivity extends Activity implements View.OnClickListene
                 break;
             case 30://卖家已发货
                 order_detail_topstatus.setText("卖家已发货");
-                oederdetail_findgoods.setVisibility(View.VISIBLE);
+               // oederdetail_findgoods.setVisibility(View.VISIBLE);
                 oederdetail_ok.setVisibility(View.VISIBLE);
                 break;
             case 40://交易成功

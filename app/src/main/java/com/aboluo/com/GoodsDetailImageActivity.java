@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -12,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.aboluo.adapter.BigImageViewPageAdapter;
 import com.jude.rollviewpager.hintview.ColorPointHintView;
@@ -74,6 +76,9 @@ public class GoodsDetailImageActivity extends Activity implements ViewPager.OnPa
         vp.setCurrentItem(position);
         vp.addOnPageChangeListener(this);
         hint.setText(position + 1 + "/" + listurl.size());
+        if(  Build.VERSION.SDK_INT <=20 ) {
+            Toast.makeText(this, "当前手机版本过低，无法缩看", Toast.LENGTH_SHORT).show();
+        }else {}
     }
 
 

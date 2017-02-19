@@ -182,14 +182,20 @@ public class NoreceiveFragment extends Fragment implements View.OnClickListener 
                 break;
             case R.id.txt_findgoods: //点击添加数量按钮，执行相应的处理
                 // 获取 Adapter 中设置的 Tag
+//                if (tag != null && tag instanceof Integer) { //解决问题：如何知道你点击的按钮是哪一个列表项中的，通过Tag的position
+//                    final int position = (Integer) tag;
+//                    Toast.makeText(context, position + "", Toast.LENGTH_SHORT).show();
+//                    Intent intent = new Intent(NoreceiveFragment.this.getActivity(), ExpressDetailActivity.class);
+//                    intent.putExtra("OrderId", orderBean.getResult().get(0).getOrderId());
+//                    intent.putExtra("ExpressId", orderBean.getResult().get(0).getExpressId());
+//                    intent.putExtra("GoodsLogoUrl", orderBean.getResult().get(0).getOrderItemList().get(0).getGoodsLogoUrl().toString());
+//                    startActivity(intent);
+//                    startActivity(intent);
+//                }
                 if (tag != null && tag instanceof Integer) { //解决问题：如何知道你点击的按钮是哪一个列表项中的，通过Tag的position
                     final int position = (Integer) tag;
-                    Toast.makeText(context, position + "", Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(NoreceiveFragment.this.getActivity(), ExpressDetailActivity.class);
-                    intent.putExtra("OrderId", orderBean.getResult().get(0).getOrderId());
-                    intent.putExtra("ExpressId", orderBean.getResult().get(0).getExpressId());
-                    intent.putExtra("GoodsLogoUrl", orderBean.getResult().get(0).getOrderItemList().get(0).getGoodsLogoUrl().toString());
-                    startActivity(intent);
+                    Intent intent = new Intent(NoreceiveFragment.this.getActivity(), OrderDetailActivity.class);
+                    intent.putExtra("orderid", orderBean.getResult().get(position).getOrderId());
                     startActivity(intent);
                 }
                 break;

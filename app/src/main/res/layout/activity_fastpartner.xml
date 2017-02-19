@@ -26,19 +26,23 @@
         </LinearLayout>
 
         <TextView
+
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:text="成为合伙人" />
     </android.support.v7.widget.Toolbar>
 
-    <ScrollView
+    <com.handmark.pulltorefresh.library.PullToRefreshScrollView xmlns:ptr="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/sv_fastparnter"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
+        android:layout_height="wrap_content"
+        android:scrollbars="none"
+        android:paddingRight="6dp"
+        android:paddingLeft="6dp"
+        ptr:ptrAnimationStyle="flip">
         <LinearLayout
-            android:layout_marginLeft="12dp"
-            android:layout_marginRight="12dp"
+
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
@@ -102,5 +106,5 @@
                    android:text="立即成为合伙人"/>
             </RelativeLayout>
         </LinearLayout>
-    </ScrollView>
+    </com.handmark.pulltorefresh.library.PullToRefreshScrollView>
 </LinearLayout>

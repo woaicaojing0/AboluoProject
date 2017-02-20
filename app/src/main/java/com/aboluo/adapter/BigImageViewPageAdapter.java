@@ -24,6 +24,9 @@ import java.util.List;
 
 import uk.co.senab.photoview.PhotoViewAttacher;
 
+import static com.squareup.picasso.MemoryPolicy.NO_CACHE;
+import static com.squareup.picasso.MemoryPolicy.NO_STORE;
+
 
 /**
  * 图片浏览ViewPageAdapter
@@ -52,14 +55,8 @@ public class BigImageViewPageAdapter extends PagerAdapter {
             view.setTag(position);
             final ImageView image = (ImageView) view.findViewById(R.id.image);
             if (isNumeric(images.get(position))) {
-                if(  Build.VERSION.SDK_INT <=20 ) {
-                    Picasso.with(context).load(Integer.valueOf(images.get(position)))
-                            .error(context.getResources().getDrawable(R.drawable.imageview_error))
-                            .placeholder(context.getResources().getDrawable(R.drawable.imagviewloading))
-                            .config(Bitmap.Config.RGB_565).into(image);
-                }else {
                     final PhotoViewAttacher photoViewAttacher = new PhotoViewAttacher(image);
-                    Picasso.with(context).load(Integer.valueOf(images.get(position)))
+                    Picasso.with(context).load(Integer.valueOf(images.get(position))).memoryPolicy(NO_CACHE, NO_STORE)
                             .error(context.getResources().getDrawable(R.drawable.imageview_error))
                             .placeholder(context.getResources().getDrawable(R.drawable.imagviewloading))
                             .config(Bitmap.Config.RGB_565).into(image, new Callback() {
@@ -86,14 +83,8 @@ public class BigImageViewPageAdapter extends PagerAdapter {
                         }
                     });
                     cacheView.put(position, view);
-                }
             } else {
-                if(  Build.VERSION.SDK_INT <=20 ) {
-                    Picasso.with(context).load(images.get(position))
-                            .error(context.getResources().getDrawable(R.drawable.imageview_error))
-                            .placeholder(context.getResources().getDrawable(R.drawable.imagviewloading))
-                            .config(Bitmap.Config.RGB_565).into(image);
-                }else {
+
                     final PhotoViewAttacher photoViewAttacher = new PhotoViewAttacher(image);
                     Picasso.with(context).load(images.get(position))
                             .error(context.getResources().getDrawable(R.drawable.imageview_error))
@@ -122,7 +113,6 @@ public class BigImageViewPageAdapter extends PagerAdapter {
                         }
                     });
                     cacheView.put(position, view);
-                }
             }
         }
         container.addView(view);

@@ -2,12 +2,14 @@ package com.aboluo.XUtils;
 
 import android.app.Activity;
 import android.app.Application;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
+import android.support.multidex.MultiDexApplication;
 import android.util.Log;
 
 import com.aboluo.Gesture.SecondActivity;
@@ -27,11 +29,13 @@ import cn.beecloud.BeeCloud;
 import cn.jpush.android.api.JPushInterface;
 import cn.sharesdk.framework.ShareSDK;
 
+import static com.aboluo.XUtils.DemoCache.context;
+
 /**
  * Created by CJ on 2016/11/2.
  */
 
-public class BaseApplication extends Application {
+public class BaseApplication extends MultiDexApplication {
     public int count = 0;
     public boolean out = false;
     // 如果返回值为null，则全部使用默认参数。
@@ -137,5 +141,4 @@ public class BaseApplication extends Application {
         intent.putExtra(Contants.INTENT_SECONDACTIVITY_KEY, mode);
         activity.startActivityForResult(intent, 1);
     }
-
 }

@@ -79,7 +79,8 @@ public class BigImageViewPageAdapter extends PagerAdapter {
 
                         @Override
                         public void onOutsidePhotoTap() {
-
+                            Activity activity = (Activity) context;
+                            activity.onBackPressed();
                         }
                     });
                     cacheView.put(position, view);
@@ -109,7 +110,8 @@ public class BigImageViewPageAdapter extends PagerAdapter {
 
                         @Override
                         public void onOutsidePhotoTap() {
-
+                            Activity activity = (Activity) context;
+                            activity.onBackPressed();
                         }
                     });
                     cacheView.put(position, view);

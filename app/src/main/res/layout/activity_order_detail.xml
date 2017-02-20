@@ -141,7 +141,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_alignParentLeft="true"
                                 android:layout_centerVertical="true"
-                                android:text="某某某" />
+                                android:text="" />
 
                             <TextView
                                 android:id="@+id/orderdetail_address_phone"
@@ -149,7 +149,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_alignParentRight="true"
                                 android:layout_centerVertical="true"
-                                android:text="10009890987" />
+                                android:text="" />
                         </RelativeLayout>
 
                         <RelativeLayout
@@ -164,7 +164,7 @@
                                 android:layout_height="wrap_content"
                                 android:lineSpacingExtra="6dp"
                                 android:lines="2"
-                                android:text="江苏省淮安市枚乘东路1号 老校区:淮阴工学院北京路校区北京北路89号" />
+                                android:text="" />
                         </RelativeLayout>
                     </LinearLayout>
 
@@ -242,7 +242,7 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
                         android:layout_gravity="right|center_vertical"
-                        android:text="￥10.00" />
+                        android:text="￥0.00" />
                 </RelativeLayout>
 
                 <RelativeLayout
@@ -371,7 +371,7 @@
                     android:layout_alignBottom="@+id/textView10"
                     android:layout_alignParentEnd="true"
                     android:layout_gravity="right|center_vertical"
-                    android:text="￥10.00"
+                    android:text="￥0.00"
                     android:textColor="@color/btn_color"
                     android:textSize="18sp" />
             </RelativeLayout>

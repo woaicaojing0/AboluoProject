@@ -343,13 +343,13 @@
                 android:id="@+id/creditinfodetail"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
-                android:layout_marginBottom="10dp"
+                android:layout_marginBottom="1dp"
                 android:layout_marginTop="10dp"
                 android:background="@color/white"
                 android:orientation="horizontal">
 
                 <ImageView
-                    android:layout_width="wrap_content"
+                    android:layout_width="60dp"
                     android:layout_height="60dp"
                     android:src="@drawable/my_money" />
 
@@ -369,9 +369,12 @@
                 android:orientation="horizontal">
 
                 <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="60dp"
-                    android:src="@drawable/my_money" />
+                    android:layout_marginLeft="6dp"
+                    android:layout_marginRight="2dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:src="@drawable/fast_parnter_icon" />
 
                 <TextView
                     android:layout_width="wrap_content"

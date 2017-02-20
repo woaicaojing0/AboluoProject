@@ -17,6 +17,7 @@
             android:layout_height="match_parent">
 
             <ImageView
+                android:id="@+id/iv_fastpartner_back"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
@@ -26,7 +27,7 @@
         </LinearLayout>
 
         <TextView
-
+            android:id="@+id/fast_parnter_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"

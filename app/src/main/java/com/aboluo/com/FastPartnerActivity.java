@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.ActivityOptionsCompat;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -30,7 +29,6 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
@@ -51,9 +49,10 @@ public class FastPartnerActivity extends Activity {
     private String MemberId;
     private FastParnterBean fastParnterBean;
     private FastParnterMakeOrderBean fastParnterMakeOrderBean;
-    private TextView tv_Amount;
-    private ImageView iv_fastpartner;
+    private TextView tv_Amount, fast_parnter_title;
+    private ImageView iv_fastpartner, iv_fastpartner_back;
     private PullToRefreshScrollView pullToRefreshScrollView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,10 +61,9 @@ public class FastPartnerActivity extends Activity {
         btn_fastpartner.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(fastParnterBean ==null)
-                {
+                if (fastParnterBean == null) {
                     Toast.makeText(FastPartnerActivity.this, "请刷新重试", Toast.LENGTH_SHORT).show();
-                }else {
+                } else {
                     fastParnterMakeOrder();
                 }
             }
@@ -79,14 +77,20 @@ public class FastPartnerActivity extends Activity {
                 intent.putStringArrayListExtra("imgeurl", listimage);
                 intent.putExtra("position", 0);
                 String transitionName = "images";
-                ActivityOptionsCompat activityOptionsCompat = ActivityOptionsCompat.makeSceneTransitionAnimation(FastPartnerActivity.this,v, transitionName);
-                startActivity(intent,activityOptionsCompat.toBundle());
+                ActivityOptionsCompat activityOptionsCompat = ActivityOptionsCompat.makeSceneTransitionAnimation(FastPartnerActivity.this, v, transitionName);
+                startActivity(intent, activityOptionsCompat.toBundle());
             }
         });
         pullToRefreshScrollView.setOnRefreshListener(new PullToRefreshBase.OnRefreshListener<ScrollView>() {
             @Override
             public void onRefresh(PullToRefreshBase<ScrollView> refreshView) {
                 initData();
+            }
+        });
+        iv_fastpartner_back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
             }
         });
     }
@@ -106,14 +110,16 @@ public class FastPartnerActivity extends Activity {
         pdialog.setCancelable(true);
         btn_fastpartner = (Button) findViewById(R.id.btn_fastpartner);
         tv_Amount = (TextView) findViewById(R.id.tv_Amount);
+        fast_parnter_title = (TextView) findViewById(R.id.fast_parnter_title);
         iv_fastpartner = (ImageView) findViewById(R.id.iv_fastpartner);
+        iv_fastpartner_back = (ImageView) findViewById(R.id.iv_fastpartner_back);
         pullToRefreshScrollView = (PullToRefreshScrollView) findViewById(R.id.sv_fastparnter);
         initData();
     }
 
     private void initData() {
         pdialog.show();
-        StringRequest stringRequest = new StringRequest(Request.Method.POST,URL+
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, URL +
                 "/api/PartnerApi/ReceivePartner", new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
@@ -121,6 +127,7 @@ public class FastPartnerActivity extends Activity {
                 fastParnterBean = gson.fromJson(response, FastParnterBean.class);
                 if (fastParnterBean.isIsSuccess()) {
                     btn_fastpartner.setText(fastParnterBean.getTypeName());
+                    //fast_parnter_title.setText(fastParnterBean.getTypeName());
                     tv_Amount.setText(fastParnterBean.getAmount() + "");
                     Toast.makeText(FastPartnerActivity.this, "获取成功", Toast.LENGTH_SHORT).show();
                 } else {
@@ -157,7 +164,7 @@ public class FastPartnerActivity extends Activity {
     private void fastParnterMakeOrder() {
         pdialog.show();
         StringRequest stringRequest = new StringRequest(Request.Method.POST,
-                URL+"/api/PartnerApi/PartnerOrder", new Response.Listener<String>() {
+                URL + "/api/PartnerApi/PartnerOrder", new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 response = response.replace("\\", "");

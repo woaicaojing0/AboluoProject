@@ -920,7 +920,7 @@ public class IndexFragment extends Fragment implements View.OnClickListener, Ada
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> map = new HashMap<>();
-                map.put("ConfigModule", "4");
+                map.put("ConfigModule", "14");
                 map.put("APPToken", APPToken);
                 return map;
             }

@@ -77,7 +77,7 @@ public class GoodsDetailImageActivity extends Activity implements ViewPager.OnPa
         vp.addOnPageChangeListener(this);
         hint.setText(position + 1 + "/" + listurl.size());
         if(  Build.VERSION.SDK_INT <=20 ) {
-            Toast.makeText(this, "当前手机版本过低，无法缩看", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "当前手机版本过低，可能无法缩放", Toast.LENGTH_SHORT).show();
         }else {}
     }
 

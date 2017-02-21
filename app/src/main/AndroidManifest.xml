@@ -42,6 +42,7 @@
         android:protectionLevel="signature" />
     <!--用户权限请求-->
     <uses-permission android:name="com.aboluo.com.permission.JPUSH_MESSAGE" />
+    <uses-permission android:name="android.permission.CALL_PHONE" />
     <application
         android:name="com.aboluo.XUtils.BaseApplication"
         android:allowBackup="true"

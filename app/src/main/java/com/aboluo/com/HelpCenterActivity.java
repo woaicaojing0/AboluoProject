@@ -3,11 +3,13 @@ package com.aboluo.com;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.aboluo.XUtils.CommonUtils;
 import com.aboluo.XUtils.MyApplication;
@@ -46,7 +48,7 @@ public class HelpCenterActivity extends Activity implements View.OnClickListener
     ImageView iv_helpcenter_back;
     MyListview mlv_helpcenter;
     HelpCenterListBean helpCenterListBean;
-
+    TextView tv_phone;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,6 +66,7 @@ public class HelpCenterActivity extends Activity implements View.OnClickListener
                 startActivity(intent);
             }
         });
+        tv_phone.setOnClickListener(this);
     }
 
     private void init() {
@@ -83,6 +86,7 @@ public class HelpCenterActivity extends Activity implements View.OnClickListener
         rl_help_service_protrocol = (RelativeLayout) findViewById(R.id.rl_help_service_protrocol);
         iv_helpcenter_back = (ImageView) findViewById(R.id.iv_helpcenter_back);
         mlv_helpcenter = (MyListview) findViewById(R.id.mlv_helpcenter);
+        tv_phone = (TextView) findViewById(R.id.tv_phone);
         initData();
     }
 
@@ -129,6 +133,13 @@ public class HelpCenterActivity extends Activity implements View.OnClickListener
             case R.id.rl_help_service_protrocol:
                 Intent intent2 = new Intent(HelpCenterActivity.this, ServiceProtocolActivity.class);
                 startActivity(intent2);
+                break;
+            case R.id.tv_phone:
+                Intent in2 = new Intent();
+                in2.setAction(Intent.ACTION_CALL);
+                in2.setData(Uri.parse("tel:"+tv_phone.getText().toString()));
+                startActivity(in2);
+                break;
         }
     }
 }

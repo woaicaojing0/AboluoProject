@@ -41,7 +41,7 @@ public class CouponsActivity extends Activity implements View.OnClickListener {
     private String APPToken;
     private Gson gson;
     private Picasso picasso;
-    private SweetAlertDialog pdialog;
+    private SweetAlertDialog pdialog, dialogmeg;
     private String MemberId;
     private String TotalMoney = "0"; //表明从个人优惠券还是下单的选择优惠券跳转的(0代表是个人中心，非0代表下单)
     private PullToRefreshListView lv_coupons_showcoupons;
@@ -68,6 +68,9 @@ public class CouponsActivity extends Activity implements View.OnClickListener {
         pdialog.setTitleText("加载中");
         pdialog.setCanceledOnTouchOutside(true);
         pdialog.setCancelable(true);
+
+        dialogmeg = new SweetAlertDialog(this, SweetAlertDialog.NORMAL_TYPE);
+        dialogmeg.setTitleText("优惠券详情");
         Intent intent = getIntent();
         TotalMoney = intent.getStringExtra("allmoney");
         lv_coupons_showcoupons = (PullToRefreshListView) findViewById(R.id.lv_coupons_showcoupons);
@@ -107,6 +110,25 @@ public class CouponsActivity extends Activity implements View.OnClickListener {
                     lv_coupons_showcoupons.setAdapter(couponsAdapter);
                     if (TotalMoney.equals("0")) {
                         tv_coupons_clean.setVisibility(View.GONE);
+                        lv_coupons_showcoupons.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                                dialogmeg.setContentText(couponsBean.getMemberCouponList().get(position - 1).getRemark());
+                                dialogmeg.show();
+                                dialogmeg.setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                                    @Override
+                                    public void onClick(SweetAlertDialog sweetAlertDialog) {
+                                        dialogmeg.dismiss();
+                                    }
+                                }).setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                                    @Override
+                                    public void onClick(SweetAlertDialog sweetAlertDialog) {
+                                        dialogmeg.dismiss();
+                                    }
+                                });
+                                dialogmeg.setCancelable(false);
+                            }
+                        });
                     } else {
                         //PullToRefreshListView中的索引是从1开始的，因为多了一个head， header 的位置是0
                         lv_coupons_showcoupons.setOnItemClickListener(new AdapterView.OnItemClickListener() {

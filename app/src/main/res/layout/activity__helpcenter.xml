@@ -52,7 +52,9 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <RelativeLayout
+            <LinearLayout
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:layout_marginTop="1dp"
@@ -64,8 +66,14 @@
                     android:layout_alignParentStart="true"
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="10dp"
-                    android:text="阿波罗客服：0513-80685206" />
-            </RelativeLayout>
+                    android:text="阿波罗客服：" />
+                <TextView
+                    android:textColor="#0000ff"
+                    android:id="@+id/tv_phone"
+                    android:text="0513-80685206"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
 
             <RelativeLayout
                 android:id="@+id/rl_feedback"

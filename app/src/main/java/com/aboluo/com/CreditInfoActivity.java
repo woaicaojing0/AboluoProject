@@ -31,6 +31,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 /**
  * Created by CJ on 2016/12/19.
+ * 我的钱包界面
  */
 
 public class CreditInfoActivity extends Activity {

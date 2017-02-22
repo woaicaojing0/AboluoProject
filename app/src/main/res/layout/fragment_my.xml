@@ -359,6 +359,26 @@
                     android:layout_gravity="center_vertical"
                     android:text="我的钱包"
                     android:textSize="20dp" />
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+                    <TextView
+                        android:layout_centerVertical="true"
+                        android:textSize="20dp"
+                        android:layout_marginRight="8dp"
+                        android:layout_toLeftOf="@+id/iv_my_money"
+                        android:id="@+id/my_allmoney"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+                    <ImageView
+                        android:layout_centerVertical="true"
+                        android:id="@+id/iv_my_money"
+                        android:layout_marginRight="16dp"
+                        android:layout_alignParentRight="true"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/right"/>
+                </RelativeLayout>
             </LinearLayout>
             <LinearLayout
                 android:id="@+id/ll_fast_parnter"
@@ -382,6 +402,17 @@
                     android:layout_gravity="center_vertical"
                     android:text="快速成为合伙人"
                     android:textSize="20dp" />
+                <RelativeLayout
+                    android:gravity="center_vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+                    <ImageView
+                        android:layout_marginRight="16dp"
+                        android:layout_alignParentRight="true"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/right"/>
+                </RelativeLayout>
             </LinearLayout>
             <LinearLayout
                 android:layout_width="match_parent"

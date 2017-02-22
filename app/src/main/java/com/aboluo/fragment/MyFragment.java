@@ -40,6 +40,7 @@ import com.aboluo.com.R;
 import com.aboluo.com.ReFundActivity;
 import com.aboluo.com.SettingActivity;
 import com.aboluo.com.WebActivity.InvitationActivity;
+import com.aboluo.model.CreditInfoBean;
 import com.aboluo.model.ExpressNumBean;
 import com.aboluo.model.MyInfoBean;
 import com.aboluo.model.QiNiuToken;
@@ -79,7 +80,7 @@ public class MyFragment extends TakePhotoFragment implements View.OnClickListene
     private ScrollView my_scrollview;
     private LinearLayout linLayout_my_info, my_nopay, my_nosend, my_noreceive, my_assessment,
             helpcenter, my_favor, my_refund, creditinfodetail, my_invitation,
-            invitation_code, my_agent, my_coupons_center,ll_fast_parnter;
+            invitation_code, my_agent, my_coupons_center, ll_fast_parnter;
     private RelativeLayout my_allorder, my_addressinfo;
     private SharedPreferences sharedPreferences;
     private RequestQueue requestQueue;
@@ -92,10 +93,12 @@ public class MyFragment extends TakePhotoFragment implements View.OnClickListene
     private String MemberId;
     private MyInfoBean myInfoBean;
     private CircleImageView my_fragment_imageview;
-    private TextView tv_my_huiyuan, my_01_num, my_02_num, my_03_num, my_04_num,tv_user_id;
+    private TextView tv_my_huiyuan, my_01_num, my_02_num, my_03_num, my_04_num, tv_user_id;
     private ImageView iv_my_setting;
     private AlertDialog.Builder builder;
     private QiNiuToken qiNiuToken;
+    private CreditInfoBean creditInfoBean;
+    private TextView my_allmoney;
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -172,6 +175,7 @@ public class MyFragment extends TakePhotoFragment implements View.OnClickListene
         my_03_num = (TextView) view.findViewById(R.id.my_03_num);
         my_04_num = (TextView) view.findViewById(R.id.my_04_num);
         tv_user_id = (TextView) view.findViewById(R.id.tv_user_id);
+        my_allmoney = (TextView) view.findViewById(R.id.my_allmoney);
         pdialog = new SweetAlertDialog(MyFragment.this.getContext(), SweetAlertDialog.PROGRESS_TYPE);
         pdialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
         pdialog.setTitleText("加载中");
@@ -232,7 +236,7 @@ public class MyFragment extends TakePhotoFragment implements View.OnClickListene
                             .getIsLeader()));
                     tv_my_huiyuan.setText(myInfoBean.getResult()
                             .getIsLeader() == 0 ? "普通会员" : "合伙人");
-                    tv_user_id.setText("用户编号：10"+ String.valueOf(myInfoBean.getResult().getMemberId()));
+                    tv_user_id.setText("用户编号：10" + String.valueOf(myInfoBean.getResult().getMemberId()));
                 } else {
                     Toast.makeText(MyFragment.this.getContext(), "个人信息获取失败，请重试", Toast.LENGTH_SHORT).show();
                 }
@@ -259,6 +263,7 @@ public class MyFragment extends TakePhotoFragment implements View.OnClickListene
         };
         requestQueue.add(stringRequest);
         ExpressNum();
+        getMoneyData();
     }
 
     private void ExpressNum() {
@@ -534,5 +539,39 @@ public class MyFragment extends TakePhotoFragment implements View.OnClickListene
         } else {
             InitData();
         }
+    }
+
+    private void getMoneyData() {
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, URL + "/api/MemberApi/ReceiveMemberAccount", new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                response = response.replace("\\", "");
+                response = response.substring(1, response.length() - 1);
+                creditInfoBean = gson.fromJson(response, CreditInfoBean.class);
+                if (creditInfoBean.isIsSuccess()) {
+                    my_allmoney.setText("￥" + String.valueOf(creditInfoBean.getTotalMoney()));
+                } else {
+                    Toast.makeText(MyFragment.this.getContext(), "获取金额错误", Toast.LENGTH_SHORT).show();
+                }
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+            }
+        }) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> map = new HashMap<>();
+                map.put("MemberId", MemberId);
+                map.put("APPToken", APPToken);
+                map.put("LoginCheckToken", "123");
+                map.put("LoginPhone", "123");
+                return map;
+            }
+
+            ;
+        };
+        requestQueue.add(stringRequest);
     }
 }

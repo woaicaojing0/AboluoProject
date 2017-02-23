@@ -1322,7 +1322,7 @@ public class GoodsDetailActivity extends Activity implements View.OnClickListene
 
     private void ShareSDKGoodsDetail() {
         String detailurl0 = CommonUtils.GetValueByKey(GoodsDetailActivity.this, "backUrl")
-                + "/moblie/Index?productId=" + goods_id;
+                + "/moblie/ShareProducts?productId=" + goods_id;
         String imgurl = goodsDetailInfo.getResult().getGoodsInfo().getGoodsLogo();
         if (imgurl == null) {
         } else {

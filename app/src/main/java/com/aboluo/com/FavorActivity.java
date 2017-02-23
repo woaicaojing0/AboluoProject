@@ -209,7 +209,7 @@ public class FavorActivity extends Activity implements View.OnClickListener {
 
     private void beginShare(int position2) {
         String detailurl0 = CommonUtils.GetValueByKey(FavorActivity.this, "backUrl")
-                + "/moblie/Index?productId=" + favorBean.getResult().get(position2).getGoodsId();
+                + "/moblie/ShareProducts?productId=" + favorBean.getResult().get(position2).getGoodsId();
         String imageurl = favorBean.getResult().get(position2).getGoodsLogo().toString();
         if (imageurl == null) {
         } else {

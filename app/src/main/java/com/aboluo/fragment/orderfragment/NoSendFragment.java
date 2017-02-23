@@ -32,6 +32,8 @@ import com.google.gson.Gson;
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.handmark.pulltorefresh.library.PullToRefreshBase.OnRefreshListener2;
 import com.handmark.pulltorefresh.library.PullToRefreshListView;
+import com.qiyukf.unicorn.api.ConsultSource;
+import com.qiyukf.unicorn.api.Unicorn;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -181,15 +183,26 @@ public class NoSendFragment extends Fragment implements View.OnClickListener {
                 break;
             case R.id.txt_cuicui:
                 if (tag != null && tag instanceof Integer) { //解决问题：如何知道你点击的按钮是哪一个列表项中的，通过Tag的position
-                    if (checkApkExist(NoSendFragment.this.getContext(), "com.tencent.mobileqq")) {
-                        startActivity(new Intent(Intent.ACTION_VIEW,
-                                Uri.parse("mqqwpa://im/chat?chat_type=wpa&uin="
-                                        + CommonUtils.GetValueByKey(NoSendFragment.this.getContext(),
-                                        "QQNum") + "&version=1")));
-                    } else {
-                        Toast.makeText(NoSendFragment.this.getContext(),
-                                "本机未安装QQ应用", Toast.LENGTH_SHORT).show();
-                    }
+//                    if (checkApkExist(NoSendFragment.this.getContext(), "com.tencent.mobileqq")) {
+//                        startActivity(new Intent(Intent.ACTION_VIEW,
+//                                Uri.parse("mqqwpa://im/chat?chat_type=wpa&uin="
+//                                        + CommonUtils.GetValueByKey(NoSendFragment.this.getContext(),
+//                                        "QQNum") + "&version=1")));
+//                    } else {
+//                        Toast.makeText(NoSendFragment.this.getContext(),
+//                                "本机未安装QQ应用", Toast.LENGTH_SHORT).show();
+//                    }
+                    final int position = (Integer) tag;
+                    String title = "订单列表";
+                    // 设置访客来源，标识访客是从哪个页面发起咨询的，用于客服了解用户是从什么页面进入三个参数分别为来源页面的url，来源页面标题，来源页面额外信息（可自由定义）
+                    // 设置来源后，在客服会话界面的"用户资料"栏的页面项，可以看到这里设置的值。
+                    //String detailurladdress = CommonUtils.GetValueByKey(AllOrderFragment.this.getContext(), "backUrl") + "/moblie/Index?productId=" + goods_id;
+                    ConsultSource source = new ConsultSource(orderBean.getResult().get(position).getOrderCode(), "订单列表", "memberid" + MemberId);
+                    // 请注意： 调用该接口前，应先检查Unicorn.isServiceAvailable(), 如果返回为false，该接口不会有任何动作
+                    Unicorn.openServiceActivity(NoSendFragment.this.getContext(), // 上下文
+                            title, // 聊天窗口的标题
+                            source // 咨询的发起来源，包括发起咨询的url，title，描述信息等
+                    );
                 }
                 break;
             default:

@@ -866,7 +866,7 @@ public class PartnerGoodsDetailActivity extends Activity implements View.OnClick
                 case R.id.goods_detail_layout_btn1: //商品详情按钮
                     id_goods_detail_view.setVisibility(View.VISIBLE);
                     id_goods_pingjia_view.setVisibility(View.GONE);
-                    String detailurl0 = CommonUtils.GetValueByKey(PartnerGoodsDetailActivity.this, "backUrl") + "/moblie/Index?productId=" + goods_id;
+                    String detailurl0 = CommonUtils.GetValueByKey(PartnerGoodsDetailActivity.this, "backUrl") + "/moblie/ShareProducts?productId=" + goods_id;
                     initwebview(detailurl0,null);
                     break;
                 case R.id.goods_pingjia_layout_btn1: //商品评价按钮Moblie/ShowEvaluation?goodsId

@@ -286,7 +286,7 @@ public class SecKillGoodsDetailActivity extends Activity implements View.OnClick
                 seckill_goods_detail_view.setVisibility(View.VISIBLE);
                 seckill_goods_pingjia_view.setVisibility(View.GONE);
                 String detailurl0 = CommonUtils.GetValueByKey(SecKillGoodsDetailActivity.this, "backUrl")
-                        + "/moblie/Index?productId=" + seckillListBean.getGoodsId();
+                        + "/moblie/ShareProducts?productId=" + seckillListBean.getGoodsId();
                 initwebview(detailurl0, null);
                 break;
             case R.id.goods_pingjia_layout_btn:

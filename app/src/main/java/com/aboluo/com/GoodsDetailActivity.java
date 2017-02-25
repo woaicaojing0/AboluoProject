@@ -983,7 +983,7 @@ public class GoodsDetailActivity extends Activity implements View.OnClickListene
                     // 设置访客来源，标识访客是从哪个页面发起咨询的，用于客服了解用户是从什么页面进入三个参数分别为来源页面的url，来源页面标题，来源页面额外信息（可自由定义）
                     // 设置来源后，在客服会话界面的"用户资料"栏的页面项，可以看到这里设置的值。
                     String detailurladdress = CommonUtils.GetValueByKey(GoodsDetailActivity.this, "backUrl") + "/moblie/Index?productId=" + goods_id;
-                    ConsultSource source = new ConsultSource("商品详情", detailurladdress, "custom information string");
+                    ConsultSource source = new ConsultSource(detailurladdress,"商品详情" , "memberid"+MemberId);
                     // 请注意： 调用该接口前，应先检查Unicorn.isServiceAvailable(), 如果返回为false，该接口不会有任何动作
                     Unicorn.openServiceActivity(GoodsDetailActivity.this, // 上下文
                             title, // 聊天窗口的标题
@@ -1327,7 +1327,7 @@ public class GoodsDetailActivity extends Activity implements View.OnClickListene
 
     private void ShareSDKGoodsDetail() {
         String detailurl0 = CommonUtils.GetValueByKey(GoodsDetailActivity.this, "backUrl")
-                + "/moblie/Index?productId=" + goods_id;
+                + "/moblie/ShareProducts?productId=" + goods_id;
         String imgurl = goodsDetailInfo.getResult().getGoodsInfo().getGoodsLogo();
         if (imgurl == null) {
         } else {

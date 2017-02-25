@@ -279,8 +279,8 @@ public class MakeOrderActivity extends Activity implements View.OnClickListener 
                 @Override
                 public void onErrorResponse(VolleyError error) {
                     Toast.makeText(MakeOrderActivity.this, error.toString(), Toast.LENGTH_SHORT).show();
-                    byte[] htmlBodyBytes = error.networkResponse.data;
-                    Log.i("woaicaojingeorror", new String(htmlBodyBytes));
+//                    byte[] htmlBodyBytes = error.networkResponse.data;
+//                    Log.i("woaicaojingeorror", new String(htmlBodyBytes));
                     pdialog.dismiss();
                 }
             }) {

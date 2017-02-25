@@ -356,8 +356,8 @@ public class UnaryActivity extends FragmentActivity implements UnaryAdapter.OnRe
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                String result = new String(error.networkResponse.data);
-                Toast.makeText(mcontext, result, Toast.LENGTH_SHORT).show();
+//                String result = new String(error.networkResponse.data);
+                Toast.makeText(mcontext, error.toString(), Toast.LENGTH_SHORT).show();
             }
         }) {
             @Override
@@ -398,8 +398,8 @@ public class UnaryActivity extends FragmentActivity implements UnaryAdapter.OnRe
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                String result = new String(error.networkResponse.data);
-                Toast.makeText(mcontext, result, Toast.LENGTH_SHORT).show();
+//                String result = new String(error.networkResponse.data);
+                Toast.makeText(mcontext, error.toString(), Toast.LENGTH_SHORT).show();
             }
         }) {
             @Override

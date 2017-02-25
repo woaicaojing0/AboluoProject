@@ -229,9 +229,9 @@ public class RegisterActivity extends Activity implements View.OnClickListener, 
                     }, new Response.ErrorListener() {
                         @Override
                         public void onErrorResponse(VolleyError error) {
-                            byte[] bytecode = error.networkResponse.data;
-                            String s = new String(bytecode);
-                            Toast.makeText(RegisterActivity.this, s, Toast.LENGTH_SHORT).show();
+//                            byte[] bytecode = error.networkResponse.data;
+//                            String s = new String(bytecode);
+                            Toast.makeText(RegisterActivity.this, error.toString(), Toast.LENGTH_SHORT).show();
                         }
                     }) {
                         @Override

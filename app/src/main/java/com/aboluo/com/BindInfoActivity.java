@@ -150,9 +150,6 @@ public class BindInfoActivity extends Activity implements View.OnClickListener, 
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                byte[] htmlBodyBytes = error.networkResponse.data;
-                //Toast.makeText(AddAddressActivity.this, error.toString(), Toast.LENGTH_SHORT).show();
-                Log.i("woaiocaojingerroe", new String(htmlBodyBytes));
                 Toast.makeText(BindInfoActivity.this, error.toString(), Toast.LENGTH_SHORT).show();
             }
         }) {
@@ -202,9 +199,9 @@ public class BindInfoActivity extends Activity implements View.OnClickListener, 
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                byte[] htmlBodyBytes = error.networkResponse.data;
-                //Toast.makeText(AddAddressActivity.this, error.toString(), Toast.LENGTH_SHORT).show();
-                Log.i("woaiocaojingerroe", new String(htmlBodyBytes));
+//                byte[] htmlBodyBytes = error.networkResponse.data;
+//                //Toast.makeText(AddAddressActivity.this, error.toString(), Toast.LENGTH_SHORT).show();
+//                Log.i("woaiocaojingerroe", new String(htmlBodyBytes));
                 Toast.makeText(BindInfoActivity.this, error.toString(), Toast.LENGTH_SHORT).show();
             }
         }) {

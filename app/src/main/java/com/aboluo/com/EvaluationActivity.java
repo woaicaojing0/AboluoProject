@@ -317,10 +317,11 @@ public class EvaluationActivity extends TakePhotoActivity implements View.OnClic
             }, new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
-                    byte[] ErrorCode = error.networkResponse.data;
-                    String result = new String(ErrorCode);
-                    Log.i("EvaluationUpload", result);
-                    Toast.makeText(EvaluationActivity.this, result, Toast.LENGTH_SHORT).show();
+//                    byte[] ErrorCode = error.networkResponse.data;
+//                    String result = new String(ErrorCode);
+//                    Log.i("EvaluationUpload", result);
+//                    Toast.makeText(EvaluationActivity.this, result, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(EvaluationActivity.this, error.toString(), Toast.LENGTH_SHORT).show();
                 }
             }) {
                 @Override
@@ -354,9 +355,10 @@ public class EvaluationActivity extends TakePhotoActivity implements View.OnClic
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                byte[] bytecode = error.networkResponse.data;
-                String s = new String(bytecode);
-                Toast.makeText(EvaluationActivity.this, "Token" + s, Toast.LENGTH_SHORT).show();
+//                byte[] bytecode = error.networkResponse.data;
+//                String s = new String(bytecode);
+//                Toast.makeText(EvaluationActivity.this, "Token" + s, Toast.LENGTH_SHORT).show();
+                Toast.makeText(EvaluationActivity.this, error.toString(), Toast.LENGTH_SHORT).show();
             }
         }) {
             @Override

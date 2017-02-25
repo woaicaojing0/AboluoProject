@@ -138,9 +138,10 @@ public class ExpressDetailActivity extends Activity {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                byte[] data = error.networkResponse.data;
-                Log.i("woaicaojing0", new String(data));
-                Toast.makeText(ExpressDetailActivity.this, new String(data), Toast.LENGTH_LONG).show();
+                //byte[] data = error.networkResponse.data;
+                //Log.i("woaicaojing0", new String(data));
+                //Toast.makeText(ExpressDetailActivity.this, new String(data), Toast.LENGTH_LONG).show();
+                Toast.makeText(ExpressDetailActivity.this,error.toString(), Toast.LENGTH_LONG).show();
                 pdialog.dismiss();
             }
         }) {

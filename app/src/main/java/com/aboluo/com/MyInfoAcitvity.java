@@ -351,9 +351,10 @@ public class MyInfoAcitvity extends TakePhotoActivity implements View.OnClickLis
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                byte[] bytecode = error.networkResponse.data;
-                String s = new String(bytecode);
-                Toast.makeText(MyInfoAcitvity.this, "Token" + s, Toast.LENGTH_SHORT).show();
+//                byte[] bytecode = error.networkResponse.data;
+//                String s = new String(bytecode);
+//                Toast.makeText(MyInfoAcitvity.this, "Token" + s, Toast.LENGTH_SHORT).show();
+                Toast.makeText(MyInfoAcitvity.this, error.toString(), Toast.LENGTH_SHORT).show();
             }
         }) {
             @Override
@@ -384,9 +385,10 @@ public class MyInfoAcitvity extends TakePhotoActivity implements View.OnClickLis
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                byte[] bytecode = error.networkResponse.data;
-                String s = new String(bytecode);
-                Toast.makeText(MyInfoAcitvity.this, s, Toast.LENGTH_SHORT).show();
+//                byte[] bytecode = error.networkResponse.data;
+//                String s = new String(bytecode);
+//                Toast.makeText(MyInfoAcitvity.this, s, Toast.LENGTH_SHORT).show();
+                Toast.makeText(MyInfoAcitvity.this, error.toString(), Toast.LENGTH_SHORT).show();
             }
         }) {
             @Override
@@ -471,9 +473,10 @@ public class MyInfoAcitvity extends TakePhotoActivity implements View.OnClickLis
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                byte[] bytecode = error.networkResponse.data;
-                String s = new String(bytecode);
-                Toast.makeText(MyInfoAcitvity.this, s, Toast.LENGTH_SHORT).show();
+//                byte[] bytecode = error.networkResponse.data;
+//                String s = new String(bytecode);
+//                Toast.makeText(MyInfoAcitvity.this, s, Toast.LENGTH_SHORT).show();
+                Toast.makeText(MyInfoAcitvity.this,error.toString(), Toast.LENGTH_SHORT).show();
                 pdialog.dismiss();
             }
         }) {

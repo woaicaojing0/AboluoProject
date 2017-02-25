@@ -265,9 +265,10 @@ public class AddAddressActivity extends Activity implements TextWatcher, View.On
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                byte[] htmlBodyBytes = error.networkResponse.data;
+//                byte[] htmlBodyBytes = error.networkResponse.data;
+//                Toast.makeText(AddAddressActivity.this, error.toString(), Toast.LENGTH_SHORT).show();
+//                Log.i("woaiocaojingerroe", new String(htmlBodyBytes));
                 Toast.makeText(AddAddressActivity.this, error.toString(), Toast.LENGTH_SHORT).show();
-                Log.i("woaiocaojingerroe", new String(htmlBodyBytes));
                 sweetAlertDialog.dismiss();
             }
         }) {

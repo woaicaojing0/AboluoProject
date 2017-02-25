@@ -321,8 +321,9 @@ public class PartnerActivity extends Activity implements PartnerAdpater.OnRecycl
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                byte[] data = error.networkResponse.data;
-                Toast.makeText(PartnerActivity.this, new String(data), Toast.LENGTH_SHORT).show();
+               // byte[] data = error.networkResponse.data;
+                Toast.makeText(PartnerActivity.this, error.toString()
+                        , Toast.LENGTH_SHORT).show();
             }
         }) {
             @Override

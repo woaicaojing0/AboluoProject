@@ -130,9 +130,9 @@ public class SignInActivity extends Activity implements View.OnClickListener {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                byte[] date = error.networkResponse.data;
-                String s = new String(date);
-                Toast.makeText(SignInActivity.this, new String(date), Toast.LENGTH_SHORT).show();
+//                byte[] date = error.networkResponse.data;
+//                String s = new String(date);
+                Toast.makeText(SignInActivity.this,error.toString(), Toast.LENGTH_SHORT).show();
                 pdialog.dismiss();
             }
         }) {
@@ -177,9 +177,9 @@ public class SignInActivity extends Activity implements View.OnClickListener {
             @Override
             public void onErrorResponse(VolleyError error) {
 
-                byte[] date = error.networkResponse.data;
-                String s= new String (date);
-                Toast.makeText(SignInActivity.this, new String(date), Toast.LENGTH_SHORT).show();
+//                byte[] date = error.networkResponse.data;
+//                String s= new String (date);
+                Toast.makeText(SignInActivity.this, error.toString(), Toast.LENGTH_SHORT).show();
                 pdialog.dismiss();
             }
         }) {

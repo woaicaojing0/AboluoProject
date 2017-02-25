@@ -195,22 +195,27 @@ public class GoodsDetailActivity extends Activity implements View.OnClickListene
 
             @Override
             public void afterTextChanged(Editable s) {
-                if (s.toString().equals("")) {
-                } else {
-                    if (Integer.valueOf(s.toString()) > goodsDetailInfo.getResult().getGoodsInfo().getGoodsQuantity()) {
-                        SweetAlertDialog sweetAlertDialog = new SweetAlertDialog(GoodsDetailActivity.this, SweetAlertDialog.WARNING_TYPE);
-                        sweetAlertDialog.setCanceledOnTouchOutside(true);
-                        sweetAlertDialog.setTitleText("购买数量超过当前库存");
-                        sweetAlertDialog.setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                            @Override
-                            public void onClick(SweetAlertDialog sweetAlertDialog) {
-                                sweetAlertDialog.dismiss();
-                                etAmount.setText(String.valueOf(goodsDetailInfo.getResult().getGoodsInfo().getGoodsQuantity()));
-                            }
-                        });
-                        sweetAlertDialog.show();
+                try {
+                    if (s.toString().equals("")) {
                     } else {
+                        if (Integer.valueOf(s.toString()) > goodsDetailInfo.getResult().getGoodsInfo().getGoodsQuantity()) {
+                            SweetAlertDialog sweetAlertDialog = new SweetAlertDialog(GoodsDetailActivity.this, SweetAlertDialog.WARNING_TYPE);
+                            sweetAlertDialog.setCanceledOnTouchOutside(true);
+                            sweetAlertDialog.setTitleText("购买数量超过当前库存");
+                            sweetAlertDialog.setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                                @Override
+                                public void onClick(SweetAlertDialog sweetAlertDialog) {
+                                    sweetAlertDialog.dismiss();
+                                    etAmount.setText(String.valueOf(goodsDetailInfo.getResult().getGoodsInfo().getGoodsQuantity()));
+                                }
+                            });
+                            sweetAlertDialog.show();
+                        } else {
+                        }
                     }
+                }catch (Exception e)
+                {
+                    Log.i("goodsdetail",e.toString());
                 }
             }
         });

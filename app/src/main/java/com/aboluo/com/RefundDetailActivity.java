@@ -282,9 +282,10 @@ public class RefundDetailActivity extends TakePhotoActivity implements View.OnCl
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                byte[] bytecode = error.networkResponse.data;
-                String s = new String(bytecode);
-                Toast.makeText(RefundDetailActivity.this, "Token" + s, Toast.LENGTH_SHORT).show();
+//                byte[] bytecode = error.networkResponse.data;
+//                String s = new String(bytecode);
+//                Toast.makeText(RefundDetailActivity.this, "Token" + s, Toast.LENGTH_SHORT).show();
+                Toast.makeText(RefundDetailActivity.this,error.toString(), Toast.LENGTH_SHORT).show();
             }
         }) {
             @Override
@@ -350,10 +351,11 @@ public class RefundDetailActivity extends TakePhotoActivity implements View.OnCl
             @Override
             public void onErrorResponse(VolleyError error) {
                 pdialog.dismiss();
-                byte[] ErrorCode = error.networkResponse.data;
-                String result = new String(ErrorCode);
-                Log.i("EvaluationUpload", result);
-                Toast.makeText(RefundDetailActivity.this, result, Toast.LENGTH_SHORT).show();
+//                byte[] ErrorCode = error.networkResponse.data;
+//                String result = new String(ErrorCode);
+//                Log.i("EvaluationUpload", result);
+                Toast.makeText(RefundDetailActivity.this, error.toString()
+                        , Toast.LENGTH_SHORT).show();
             }
         }) {
             @Override

@@ -201,7 +201,7 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler {
             @Override
             public void onErrorResponse(VolleyError error) {
                 pdialog.dismiss();
-                byte[] ss = error.networkResponse.data;
+//                byte[] ss = error.networkResponse.data;
             }
         }) {
             @Override

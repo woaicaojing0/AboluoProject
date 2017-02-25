@@ -148,9 +148,10 @@ public class NoPayFragment extends Fragment implements View.OnClickListener {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                byte[] htmlBodyBytes = error.networkResponse.data;
-                String result = new String(htmlBodyBytes);
-                Log.i("woaicaojingallorder", result);
+//                byte[] htmlBodyBytes = error.networkResponse.data;
+//                String result = new String(htmlBodyBytes);
+//                Log.i("woaicaojingallorder", result);
+                Toast.makeText(NoPayFragment.this.getContext(), error.toString(), Toast.LENGTH_SHORT).show();
             }
         }) {
             @Override

@@ -107,8 +107,8 @@ public class FavorActivity extends Activity implements View.OnClickListener {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                byte[] bytecode = error.networkResponse.data;
-                Log.i("woaicaojing", bytecode.toString());
+//                byte[] bytecode = error.networkResponse.data;
+//                Log.i("woaicaojing", bytecode.toString());
             }
         }) {
             @Override
@@ -177,8 +177,8 @@ public class FavorActivity extends Activity implements View.OnClickListener {
                     }, new Response.ErrorListener() {
                         @Override
                         public void onErrorResponse(VolleyError error) {
-                            byte[] bytescode = error.networkResponse.data;
-                            Log.i("woaicaojing", bytescode.toString());
+//                            byte[] bytescode = error.networkResponse.data;
+//                            Log.i("woaicaojing", bytescode.toString());
                         }
                     }) {
                         @Override

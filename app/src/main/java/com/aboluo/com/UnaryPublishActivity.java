@@ -107,8 +107,9 @@ public class UnaryPublishActivity extends Activity {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                byte[] errorcode = error.networkResponse.data;
-                Log.i("woaicaojing0", errorcode.toString());
+//                byte[] errorcode = error.networkResponse.data;
+//                Log.i("woaicaojing0", errorcode.toString());
+                Toast.makeText(UnaryPublishActivity.this, error.toString(), Toast.LENGTH_SHORT).show();
             }
         }) {
             @Override

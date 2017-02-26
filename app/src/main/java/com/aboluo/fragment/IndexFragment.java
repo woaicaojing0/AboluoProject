@@ -41,6 +41,7 @@ import com.aboluo.adapter.ThemeMidGridViewAdapter;
 import com.aboluo.adapter.index.HotSaleGridViewAdapter;
 import com.aboluo.com.GoodsDetailActivity;
 import com.aboluo.com.GoodsListActivity;
+import com.aboluo.com.InvitationCodeActivity;
 import com.aboluo.com.MainActivity;
 import com.aboluo.com.MessageActivity;
 import com.aboluo.com.PartnerActivity;
@@ -48,6 +49,7 @@ import com.aboluo.com.R;
 import com.aboluo.com.SecKillActivity;
 import com.aboluo.com.SignInActivity;
 import com.aboluo.com.UnaryActivity;
+import com.aboluo.com.WebActivity.InvitationActivity;
 import com.aboluo.model.BaseConfigBean;
 import com.aboluo.model.SecKillAllInfo;
 import com.aboluo.widget.MyGridView;
@@ -1297,6 +1299,15 @@ public class IndexFragment extends Fragment implements View.OnClickListener, Ada
                         Intent intent8 = new Intent(IndexFragment.this.getContext(), GoodsListActivity.class);
                         intent8.putExtra("goods_type_id", 271);
                         startActivity(intent8);
+                        break;
+                    case 57:
+                        if (CommonUtils.IsLogin(IndexFragment.this.getContext())) {
+                            Intent intent14 = new Intent(IndexFragment.this.getActivity(), InvitationActivity.class);
+                            startActivity(intent14);
+                        } else {
+                            Toast.makeText(IndexFragment.this.getActivity(), "请先登录！", Toast.LENGTH_SHORT).show();
+                        }
+                        break;
                 }
             }
         });

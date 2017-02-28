@@ -1,9 +1,11 @@
 package com.aboluo.broadcast;
 
+import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 
 import com.aboluo.XUtils.DataHelper;
@@ -11,6 +13,7 @@ import com.aboluo.XUtils.TimeUtils;
 import com.aboluo.com.MainActivity;
 import com.aboluo.com.MessageActivity;
 import com.aboluo.model.MessageBean;
+import com.google.gson.Gson;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -20,8 +23,10 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 import cn.jpush.android.api.JPushInterface;
+import cn.jpush.android.api.TagAliasCallback;
 
 import static com.bumptech.glide.gifdecoder.GifHeaderParser.TAG;
 
@@ -31,19 +36,16 @@ import static com.bumptech.glide.gifdecoder.GifHeaderParser.TAG;
 
 public class JPushReceiver extends BroadcastReceiver {
 
-
     @Override
     public void onReceive(Context context, Intent intent) {
         Bundle bundle = intent.getExtras();
         Log.d(TAG, "onReceive - " + intent.getAction());
-
         if (JPushInterface.ACTION_REGISTRATION_ID.equals(intent.getAction())) {
         } else if (JPushInterface.ACTION_MESSAGE_RECEIVED.equals(intent
                 .getAction())) {
             // 自定义消息不会展示在通知栏，完全要开发者写代码去处理
             String content = bundle.getString(JPushInterface.EXTRA_MESSAGE);
             String extra = bundle.getString(JPushInterface.EXTRA_EXTRA);
-
             System.out.println("收到了自定义消息@@消息内容是:" + content);
             System.out.println("收到了自定义消息@@消息extra是:" + extra);
 
@@ -67,6 +69,19 @@ public class JPushReceiver extends BroadcastReceiver {
         } else if (JPushInterface.ACTION_NOTIFICATION_RECEIVED.equals(intent
                 .getAction())) {
             System.out.println("收到了通知");
+            Bundle extras = intent.getExtras();
+            String ss = extras.getString(JPushInterface.EXTRA_ALERT);//获取通知的消息
+            String extraJson = extras.getString(JPushInterface.EXTRA_EXTRA);
+            //**************解析推送过来的json数据并存放到集合中 begin******************
+            JSONObject jsonObject;
+            try {
+                jsonObject = new JSONObject(extraJson);
+                String type = jsonObject.getString("aboluoLogin");
+            } catch (JSONException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+
             // 在这里可以做些统计，或者做些其他工作
         } else if (JPushInterface.ACTION_NOTIFICATION_OPENED.equals(intent
                 .getAction())) {

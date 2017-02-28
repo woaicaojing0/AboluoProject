@@ -14,6 +14,7 @@ import android.widget.Toast;
 import com.aboluo.ExceptionUtils.Cockroach;
 import com.aboluo.Gesture.SecondActivity;
 import com.aboluo.GestureUtils.Contants;
+import com.baidu.wallet.core.utils.SharedPreferencesUtils;
 import com.google.gson.Gson;
 import com.leo.gesturelibray.enums.LockMode;
 import com.pgyersdk.crash.PgyCrashManager;
@@ -22,9 +23,14 @@ import com.qiyukf.unicorn.api.StatusBarNotificationConfig;
 import com.qiyukf.unicorn.api.Unicorn;
 import com.qiyukf.unicorn.api.YSFOptions;
 
+import java.util.Set;
+
 import cn.beecloud.BeeCloud;
 import cn.jpush.android.api.JPushInterface;
+import cn.jpush.android.api.TagAliasCallback;
 import cn.sharesdk.framework.ShareSDK;
+
+import static com.bumptech.glide.gifdecoder.GifHeaderParser.TAG;
 
 //
 //import cn.beecloud.BeeCloud;
@@ -61,6 +67,7 @@ public class BaseApplication extends MultiDexApplication {
         //极光推送
         JPushInterface.setDebugMode(true);
         JPushInterface.init(this);
+        //String registrationid= JPushInterface.getRegistrationID(BaseApplication.this);
         //开启测试模式
         BeeCloud.setSandbox(false);
         //此处第二个参数是控制台的test secret

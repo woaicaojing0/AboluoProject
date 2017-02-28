@@ -64,7 +64,9 @@ import com.squareup.picasso.Picasso;
 import org.json.JSONObject;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -198,7 +200,7 @@ public class MyFragment extends TakePhotoFragment implements View.OnClickListene
             public void onErrorResponse(VolleyError error) {
 //                byte[] bytecode = error.networkResponse.data;
 //                String s = new String(bytecode);
-                Toast.makeText(MyFragment.this.getContext(),error.toString(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(MyFragment.this.getContext(), error.toString(), Toast.LENGTH_SHORT).show();
             }
         }) {
             @Override
@@ -375,6 +377,19 @@ public class MyFragment extends TakePhotoFragment implements View.OnClickListene
                 break;
             case R.id.creditinfodetail:
                 Intent intent11 = new Intent(MyFragment.this.getActivity(), CreditInfoActivity.class);
+                Bundle bundle = new Bundle();
+                if (myInfoBean.getResult().getMemberEmail() == null || myInfoBean.getResult().getMemberEmail() == "") {
+                    bundle.putString("email", "0");
+                } else {
+                    bundle.putString("email", myInfoBean.getResult().getMemberEmail().toString());
+                    if (myInfoBean.getResult().getMemberMobile() == null || myInfoBean.getResult().getMemberMobile() == "") {
+                        bundle.putString("phone", "0");
+                    } else {
+                        bundle.putString("phone", myInfoBean.getResult().getMemberMobile().toString());
+                    }
+                }
+                bundle.putDouble("money", creditInfoBean.getTotalMoney());
+                intent11.putExtras(bundle);
                 startActivity(intent11);
                 break;
             case R.id.my_invitation:

@@ -27,11 +27,13 @@
             android:text="亲爱的："
             android:textColor="@color/white"/>
     </LinearLayout>
+
     <ImageView
-        android:layout_marginTop="-6dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="-6dp"
         android:src="@drawable/credutinfo_bg"/>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="100dp">
@@ -232,5 +234,32 @@
 
     </LinearLayout>
 
+    <RelativeLayout
 
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp">
+
+        <Button
+            android:id="@+id/btn_apply_extract_money"
+            android:layout_width="100dp"
+            android:layout_height="40dp"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="8dp"
+            android:background="@drawable/myinfo_btn_login"
+            android:text="申请提现"
+            android:textColor="@color/white"/>
+
+        <Button
+            android:id="@+id/btn_extract_detail"
+            android:layout_width="100dp"
+            android:layout_height="40dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginBottom="8dp"
+            android:background="@drawable/myinfo_btn_login"
+            android:text="查看记录"
+            android:textColor="@color/white"/>
+    </RelativeLayout>
 </LinearLayout>

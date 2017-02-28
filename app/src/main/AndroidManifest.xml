@@ -155,6 +155,7 @@
         <activity android:name=".FastPartnerActivity"></activity>
         <activity android:name=".HelpCenterDetailActivity"></activity>
         <activity android:name=".InvitationInfoActivity"></activity>
+        <activity android:name=".ExtractMoneyActivity"></activity>
         <activity android:name=".wxapi.WXEntryActivity"
             android:exported="true"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" >

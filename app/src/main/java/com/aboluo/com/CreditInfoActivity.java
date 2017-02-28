@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -34,7 +35,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
  * 我的钱包界面
  */
 
-public class CreditInfoActivity extends Activity {
+public class CreditInfoActivity extends Activity implements View.OnClickListener {
     private RequestQueue requestQueue;
     private String ImageUrl;
     private String URL;
@@ -48,6 +49,7 @@ public class CreditInfoActivity extends Activity {
             CanUserScore, cred_nickName;
     private CircleImageView cred_userImage;
     private LinearLayout creditinfo_individual, creditinfo_capital;
+    private Button btn_apply_extract_money, btn_extract_detail;// 申请退款，查看记录
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,6 +70,8 @@ public class CreditInfoActivity extends Activity {
                 startActivity(intent);
             }
         });
+        btn_extract_detail.setOnClickListener(this);
+        btn_apply_extract_money.setOnClickListener(this);
     }
 
     private void init() {
@@ -94,6 +98,8 @@ public class CreditInfoActivity extends Activity {
         cred_userImage = (CircleImageView) findViewById(R.id.cred_userImage);
         creditinfo_individual = (LinearLayout) findViewById(R.id.creditinfo_individual);
         creditinfo_capital = (LinearLayout) findViewById(R.id.creditinfo_capital);
+        btn_apply_extract_money = (Button) findViewById(R.id.btn_apply_extract_money);
+        btn_extract_detail = (Button) findViewById(R.id.btn_extract_detail);
         initData();
     }
 
@@ -152,5 +158,19 @@ public class CreditInfoActivity extends Activity {
             ;
         };
         requestQueue.add(stringRequest);
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.btn_extract_detail:
+                Bundle bundle = getIntent().getExtras();
+                Intent intent = new Intent(CreditInfoActivity.this, ExtractMoneyActivity.class);
+                intent.putExtras(bundle);
+                startActivity(intent);
+                break;
+            case R.id.btn_apply_extract_money:
+                break;
+        }
     }
 }

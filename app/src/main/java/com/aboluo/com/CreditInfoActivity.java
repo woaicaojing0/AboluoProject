@@ -163,13 +163,13 @@ public class CreditInfoActivity extends Activity implements View.OnClickListener
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.btn_extract_detail:
-                Bundle bundle = getIntent().getExtras();
+            case R.id.btn_apply_extract_money:
+                Bundle bundle = this.getIntent().getExtras();
                 Intent intent = new Intent(CreditInfoActivity.this, ExtractMoneyActivity.class);
                 intent.putExtras(bundle);
                 startActivity(intent);
                 break;
-            case R.id.btn_apply_extract_money:
+            case R.id.btn_extract_detail:
                 break;
         }
     }

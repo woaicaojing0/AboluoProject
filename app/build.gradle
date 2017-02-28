@@ -150,4 +150,6 @@ dependencies {
     compile files('libs/BaiduLBS_Android.jar')
     //dalvik 65k问题
     compile 'com.android.support:multidex:1.0.0'
+    //银行卡号格式
+    compile 'com.yuyh.bankcardformat:library:1.0.2'
 }

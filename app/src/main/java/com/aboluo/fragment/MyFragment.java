@@ -64,9 +64,7 @@ import com.squareup.picasso.Picasso;
 import org.json.JSONObject;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -382,11 +380,11 @@ public class MyFragment extends TakePhotoFragment implements View.OnClickListene
                     bundle.putString("email", "0");
                 } else {
                     bundle.putString("email", myInfoBean.getResult().getMemberEmail().toString());
-                    if (myInfoBean.getResult().getMemberMobile() == null || myInfoBean.getResult().getMemberMobile() == "") {
-                        bundle.putString("phone", "0");
-                    } else {
-                        bundle.putString("phone", myInfoBean.getResult().getMemberMobile().toString());
-                    }
+                }
+                if (myInfoBean.getResult().getMemberMobile() == null || myInfoBean.getResult().getMemberMobile() == "") {
+                    bundle.putString("phone", "0");
+                } else {
+                    bundle.putString("phone", myInfoBean.getResult().getMemberMobile().toString());
                 }
                 bundle.putDouble("money", creditInfoBean.getTotalMoney());
                 intent11.putExtras(bundle);

@@ -386,7 +386,7 @@ public class MyFragment extends TakePhotoFragment implements View.OnClickListene
                 } else {
                     bundle.putString("phone", myInfoBean.getResult().getMemberMobile().toString());
                 }
-                bundle.putDouble("money", creditInfoBean.getTotalMoney());
+                bundle.putDouble("money", creditInfoBean.getCanUseMoney());
                 intent11.putExtras(bundle);
                 startActivity(intent11);
                 break;

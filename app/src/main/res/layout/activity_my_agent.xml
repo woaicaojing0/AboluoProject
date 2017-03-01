@@ -139,9 +139,9 @@
             </LinearLayout>
         </RelativeLayout>
     </LinearLayout>
-    <WebView
+    <com.aboluo.XUtils.ProgressWebView
         android:background="@color/white"
         android:id="@+id/wv_agent_detail"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"></WebView>
+        android:layout_height="match_parent"></com.aboluo.XUtils.ProgressWebView>
 </LinearLayout>

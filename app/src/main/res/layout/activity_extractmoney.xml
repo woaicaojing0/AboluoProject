@@ -19,7 +19,7 @@
             android:layout_height="match_parent">
 
             <LinearLayout
-                android:id="@+id/back_last_choose"
+                android:id="@+id/ll_extract"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center_vertical">
@@ -48,6 +48,7 @@
                 android:text="提现申请" />
 
             <TextView
+                android:id="@+id/tv_extract_history"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
@@ -79,7 +80,6 @@
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:hint="真实姓名"
-            android:inputType="number"
             android:minWidth="200dp" />
     </LinearLayout>
 
@@ -140,11 +140,15 @@
             android:enabled="false"
             android:textSize="16sp"
             android:id="@+id/et_extract_bankName"
-            android:layout_width="match_parent"
+            android:layout_weight="1"
+            android:layout_width="wrap_content"
             android:layout_height="40dp"
             android:hint="银行名称"
             android:minWidth="200dp" />
-
+        <ImageView
+            android:id="@+id/iv_brankImage"
+            android:layout_width="40dp"
+            android:layout_height="40dp" />
     </LinearLayout>
 
     <View
@@ -276,7 +280,6 @@
         android:gravity="center">
 
         <Button
-            android:enabled="false"
             android:textSize="18sp"
             android:id="@+id/btn_extract_apply"
             android:layout_width="match_parent"

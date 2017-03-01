@@ -5,13 +5,16 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.aboluo.XUtils.CommonUtils;
+import com.aboluo.XUtils.ProgressWebView;
 import com.aboluo.com.WebActivity.AgentDetailActivity;
 
 
@@ -23,7 +26,7 @@ import com.aboluo.com.WebActivity.AgentDetailActivity;
 public class MyAgentActivity extends Activity implements View.OnClickListener {
     private LinearLayout agent_one, agent_two, agent_three;
     private ImageView agent_back;
-    private WebView wv_agent_detail;
+    private ProgressWebView wv_agent_detail;
     private String MemberId;
 
     @Override
@@ -44,14 +47,8 @@ public class MyAgentActivity extends Activity implements View.OnClickListener {
         webviewsetting.setJavaScriptEnabled(true);
         webviewsetting.setUseWideViewPort(true);//关键点
         webviewsetting.setLoadWithOverviewMode(true);
-        wv_agent_detail.setWebViewClient(new WebViewClient() {
-            @Override
-            public boolean shouldOverrideUrlLoading(WebView view, String url) {
-                view.loadUrl(url);
-                return super.shouldOverrideUrlLoading(view, url);
-            }
-        });
         AgentLevel(1);
+
     }
 
     private void init() {
@@ -59,7 +56,7 @@ public class MyAgentActivity extends Activity implements View.OnClickListener {
         agent_two = (LinearLayout) findViewById(R.id.agent_two);
         agent_three = (LinearLayout) findViewById(R.id.agent_three);
         agent_back = (ImageView) findViewById(R.id.agent_back);
-        wv_agent_detail = (WebView) findViewById(R.id.wv_agent_detail);
+        wv_agent_detail = (ProgressWebView) findViewById(R.id.wv_agent_detail);
         MemberId = CommonUtils.GetMemberId(this);
     }
 

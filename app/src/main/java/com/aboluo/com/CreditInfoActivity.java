@@ -170,6 +170,8 @@ public class CreditInfoActivity extends Activity implements View.OnClickListener
                 startActivity(intent);
                 break;
             case R.id.btn_extract_detail:
+                Intent intent2 = new Intent(CreditInfoActivity.this, ExtractMoneyDetailActivity.class);
+                startActivity(intent2);
                 break;
         }
     }

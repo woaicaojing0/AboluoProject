@@ -31,6 +31,7 @@ import com.aboluo.com.FastPartnerActivity;
 import com.aboluo.com.FavorActivity;
 import com.aboluo.com.HelpCenterActivity;
 import com.aboluo.com.InvitationCodeActivity;
+import com.aboluo.com.InvitationInfoActivity;
 import com.aboluo.com.LoginActivity;
 import com.aboluo.com.MainActivity;
 import com.aboluo.com.MyAgentActivity;
@@ -98,7 +99,7 @@ public class MyFragment extends TakePhotoFragment implements View.OnClickListene
     private AlertDialog.Builder builder;
     private QiNiuToken qiNiuToken;
     private CreditInfoBean creditInfoBean;
-    private TextView my_allmoney;
+    private TextView my_allmoney, tv_findReferrer;
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -176,6 +177,7 @@ public class MyFragment extends TakePhotoFragment implements View.OnClickListene
         my_04_num = (TextView) view.findViewById(R.id.my_04_num);
         tv_user_id = (TextView) view.findViewById(R.id.tv_user_id);
         my_allmoney = (TextView) view.findViewById(R.id.my_allmoney);
+        tv_findReferrer = (TextView) view.findViewById(R.id.tv_findReferrer);
         pdialog = new SweetAlertDialog(MyFragment.this.getContext(), SweetAlertDialog.PROGRESS_TYPE);
         pdialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
         pdialog.setTitleText("加载中");
@@ -264,6 +266,11 @@ public class MyFragment extends TakePhotoFragment implements View.OnClickListene
         requestQueue.add(stringRequest);
         ExpressNum();
         getMoneyData();
+        if (0 == CommonUtils.GetReferrer1Id(MyFragment.this.getContext())) {
+            tv_findReferrer.setText("寻找推荐人");
+            return;
+        }
+        tv_findReferrer.setText("我的上级");
     }
 
     private void ExpressNum() {
@@ -395,8 +402,13 @@ public class MyFragment extends TakePhotoFragment implements View.OnClickListene
                 startActivity(intent13);
                 break;
             case R.id.invitation_code:
-                Intent intent14 = new Intent(MyFragment.this.getActivity(), InvitationCodeActivity.class);
-                startActivity(intent14);
+                if (0 == CommonUtils.GetReferrer1Id(MyFragment.this.getContext())) {
+                    Intent intent14 = new Intent(MyFragment.this.getActivity(), InvitationCodeActivity.class);
+                    startActivity(intent14);
+                    return;
+                }
+                Intent intent19 = new Intent(MyFragment.this.getActivity(), InvitationInfoActivity.class);
+                startActivity(intent19);
                 break;
             case R.id.my_agent:
                 Intent intent15 = new Intent(MyFragment.this.getActivity(), MyAgentActivity.class);

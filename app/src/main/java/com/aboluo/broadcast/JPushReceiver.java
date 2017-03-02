@@ -1,19 +1,17 @@
 package com.aboluo.broadcast;
 
-import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
 import android.util.Log;
 
+import com.aboluo.XUtils.CommonUtils;
 import com.aboluo.XUtils.DataHelper;
 import com.aboluo.XUtils.TimeUtils;
 import com.aboluo.com.MainActivity;
 import com.aboluo.com.MessageActivity;
 import com.aboluo.model.MessageBean;
-import com.google.gson.Gson;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -23,10 +21,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
 
 import cn.jpush.android.api.JPushInterface;
-import cn.jpush.android.api.TagAliasCallback;
 
 import static com.bumptech.glide.gifdecoder.GifHeaderParser.TAG;
 
@@ -41,6 +37,11 @@ public class JPushReceiver extends BroadcastReceiver {
         Bundle bundle = intent.getExtras();
         Log.d(TAG, "onReceive - " + intent.getAction());
         if (JPushInterface.ACTION_REGISTRATION_ID.equals(intent.getAction())) {
+            String regid = bundle.getString(JPushInterface.EXTRA_REGISTRATION_ID);
+            if (null == regid || regid.length() == 0) {
+            } else {
+                CommonUtils.SetRegistationId(context, regid);
+            }
         } else if (JPushInterface.ACTION_MESSAGE_RECEIVED.equals(intent
                 .getAction())) {
             // 自定义消息不会展示在通知栏，完全要开发者写代码去处理

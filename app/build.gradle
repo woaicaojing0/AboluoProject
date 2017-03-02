@@ -34,7 +34,7 @@ android {
         applicationId "com.aboluo.com"
         minSdkVersion 17
         targetSdkVersion 23
-        versionCode 14
+        versionCode 12
         versionName "1.2.1"
         ndk {
             //选择要添加的对应cpu类型的.so库。

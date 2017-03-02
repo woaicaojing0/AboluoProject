@@ -181,7 +181,7 @@ public class CommonUtils {
         return editor.commit();
     }
 
-    public static boolean Login(Context context, String UserName, String UserPwd, String UserId,String isDealer) {
+    public static boolean Login(Context context, String UserName, String UserPwd, String UserId, String isDealer) {
         SharedPreferences.Editor editor = context.getSharedPreferences("aboluoInfo", Context.MODE_PRIVATE).edit();
         editor.putString("UserName", UserName);
         editor.putString("UserPwd", UserPwd);
@@ -189,29 +189,68 @@ public class CommonUtils {
         editor.putString("isDealer", isDealer);
         return editor.commit();
     }
+
     public static boolean LoginImageURl(Context context, String URL) {
         SharedPreferences.Editor editor = context.getSharedPreferences("aboluoInfo", Context.MODE_PRIVATE).edit();
         editor.putString("LoginImageURl", URL);
         return editor.commit();
     }
+
     public static String GetLoginImageURl(Context context) {
         SharedPreferences sharedPreferences = context.getSharedPreferences("aboluoInfo", Context.MODE_PRIVATE);
         String LoginImageURl = sharedPreferences.getString("LoginImageURl", "0");
         return LoginImageURl;
     }
+
     public static String GetMemberId(Context context) {
         SharedPreferences sharedPreferences = context.getSharedPreferences("aboluoInfo", Context.MODE_PRIVATE);
         String memberId = sharedPreferences.getString("UserId", "0");
         return memberId;
     }
+
     public static String GetisDealer(Context context) {
         SharedPreferences sharedPreferences = context.getSharedPreferences("aboluoInfo", Context.MODE_PRIVATE);
         String isDealer = sharedPreferences.getString("isDealer", "0");
         return isDealer;
     }
-    public static boolean SetisDealer(Context context,String isDealer) {
+
+    public static boolean SetisDealer(Context context, String isDealer) {
         SharedPreferences.Editor editor = context.getSharedPreferences("aboluoInfo", Context.MODE_PRIVATE).edit();
         editor.putString("isDealer", isDealer);
+        return editor.commit();
+    }
+
+    /**
+     * 设置我的是否有上级
+     * @param context
+     * @return
+     */
+    public static int GetReferrer1Id(Context context) {
+        SharedPreferences sharedPreferences = context.getSharedPreferences("aboluoInfo", Context.MODE_PRIVATE);
+        int isDealer = sharedPreferences.getInt("ReferrerId", 0);
+        return isDealer;
+    }
+
+    public static boolean SetReferrer1Id(Context context, int ReferrerId) {
+        SharedPreferences.Editor editor = context.getSharedPreferences("aboluoInfo", Context.MODE_PRIVATE).edit();
+        editor.putInt("ReferrerId", ReferrerId);
+        return editor.commit();
+    }
+
+    /**
+     * 获取手机的唯一标识
+     * @param context
+     * @return
+     */
+    public static String  GetRegistationId(Context context) {
+        SharedPreferences sharedPreferences = context.getSharedPreferences("aboluoInfo", Context.MODE_PRIVATE);
+        String isDealer = sharedPreferences.getString("registationid", "0");
+        return isDealer;
+    }
+
+    public static boolean SetRegistationId(Context context, String registationid) {
+        SharedPreferences.Editor editor = context.getSharedPreferences("aboluoInfo", Context.MODE_PRIVATE).edit();
+        editor.putString("registationid", registationid);
         return editor.commit();
     }
     public static String Getpercent(int num1, int num2) {
@@ -227,8 +266,7 @@ public class CommonUtils {
     }
 
     /**
-     *
-     * @param list 需要转化的list
+     * @param list      需要转化的list
      * @param separator 分隔符
      * @return
      */

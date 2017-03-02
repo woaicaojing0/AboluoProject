@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
-import android.media.Image;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -36,6 +35,7 @@ import com.tencent.mm.sdk.openapi.WXAPIFactory;
 import java.util.HashMap;
 import java.util.Map;
 
+import cn.jpush.android.api.JPushInterface;
 import cn.pedant.SweetAlert.SweetAlertDialog;
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -60,6 +60,7 @@ public class LoginActivity extends Activity implements View.OnClickListener, Tex
     private IWXAPI api;
     private CircleImageView iv_login_touxiang;
     private ImageView login_back;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -132,6 +133,11 @@ public class LoginActivity extends Activity implements View.OnClickListener, Tex
                 pDialog.show();
                 final String pwd = edit_userpwd.getText().toString();
                 final String name = edit_username.getText().toString();
+                final String registrationid = JPushInterface.getRegistrationID(LoginActivity.this);
+                if (null == registrationid || registrationid.length() == 0) {
+                    Toast.makeText(this, "设备id 为空", Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 StringRequest stringRequest = new StringRequest(Request.Method.POST, URL + "/api/Login/UserLogin", new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
@@ -144,6 +150,8 @@ public class LoginActivity extends Activity implements View.OnClickListener, Tex
                         pDialog.dismiss();
                         Toast.makeText(LoginActivity.this, loginInfo.getMessage(), Toast.LENGTH_SHORT).show();
                         if (loginInfo.isIsSuccess()) {
+                            CommonUtils.SetReferrer1Id(LoginActivity.this,
+                                    loginInfo.getResult().getMemberEntity().getReferrer1Id());
                             if (CommonUtils.Login(LoginActivity.this,
                                     name, pwd,
                                     String.valueOf(loginInfo.getResult().getMemberEntity().getMemberId()),
@@ -178,6 +186,8 @@ public class LoginActivity extends Activity implements View.OnClickListener, Tex
                         map.put("APPToken", APPToken);
                         map.put("LoginCheckToken", "");
                         map.put("LoginPhone", name);
+                        map.put("MechineCode", registrationid);
+                        map.put("LoginChannel", "1");
                         return map;
                     }
                 };

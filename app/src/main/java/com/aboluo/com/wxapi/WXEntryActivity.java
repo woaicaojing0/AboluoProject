@@ -17,10 +17,8 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
-import com.baidu.paysdk.login.LoginActivity;
 import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
-import com.tencent.mm.sdk.constants.ConstantsAPI;
 import com.tencent.mm.sdk.modelbase.BaseReq;
 import com.tencent.mm.sdk.modelbase.BaseResp;
 import com.tencent.mm.sdk.modelmsg.SendAuth;
@@ -31,6 +29,7 @@ import com.tencent.mm.sdk.openapi.WXAPIFactory;
 import java.util.HashMap;
 import java.util.Map;
 
+import cn.jpush.android.api.JPushInterface;
 import cn.pedant.SweetAlert.SweetAlertDialog;
 
 import static com.tencent.mm.sdk.constants.ConstantsAPI.COMMAND_SENDAUTH;
@@ -167,6 +166,11 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler {
     }
 
     private void WXLoginIn(final WXUserBean wxUserBean) {
+        final String registrationid = JPushInterface.getRegistrationID(WXEntryActivity.this);
+        if (null == registrationid || registrationid.length() == 0) {
+            Toast.makeText(this, "设备id 为空", Toast.LENGTH_SHORT).show();
+            return;
+        }
         StringRequest stringRequest = new StringRequest(Request.Method.POST, URL + "/api/Login/WeChatLogin", new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
@@ -187,6 +191,8 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler {
                             CommonUtils.LoginImageURl(WXEntryActivity.this, loginInfo.getResult().getMemberEntity()
                                     .getWechatLogoUrl());
                         }
+                        CommonUtils.SetReferrer1Id(WXEntryActivity.this,
+                                loginInfo.getResult().getMemberEntity().getReferrer1Id());
                         intent.putExtra("status", "OK");
                         startActivity(intent);
                         finish();
@@ -213,6 +219,9 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler {
                 map.put("LoginCheckToken", "123");
                 map.put("UnionId", wxUserBean.getUnionid().toString());
                 map.put("APPToken", APPToken);
+                map.put("MechineCode", registrationid);
+                map.put("LoginChannel", "1");
+                map.put("WechatLogo", wxUserBean.getHeadimgurl());
                 return map;
             }
         };

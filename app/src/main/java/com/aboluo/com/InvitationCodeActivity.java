@@ -87,6 +87,7 @@ public class InvitationCodeActivity extends Activity implements View.OnClickList
                     BaseModel baseModel = gson.fromJson(response, BaseModel.class);
                     if (baseModel.isIsSuccess()) {
                         finish();
+                        CommonUtils.SetReferrer1Id(InvitationCodeActivity.this, 1);
                     } else {
                     }
                     pdialog.dismiss();

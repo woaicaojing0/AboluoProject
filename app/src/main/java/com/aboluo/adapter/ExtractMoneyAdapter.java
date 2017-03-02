@@ -59,8 +59,10 @@ public class ExtractMoneyAdapter extends BaseAdapter {
         holder.tv_extractdetail_item_extra.setText("提现");
         if (mlist.get(position).getAuditStatus() == 0) {
             holder.tv_extractdetail_item_status.setText("审核中");
-        } else {
+        } else if (mlist.get(position).getAuditStatus() == 1) {
             holder.tv_extractdetail_item_status.setText("审核通过");
+        } else {
+            holder.tv_extractdetail_item_status.setText("审核驳回");
         }
         holder.tv_extractdetail_item_money.setText("￥" + mlist.get(position).getPrice() + "");
         holder.tv_extractdetail_item_time.setText(mlist.get(position).getCreateTime());

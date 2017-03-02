@@ -9,6 +9,8 @@ import android.widget.ListView;
 
 import com.aboluo.XUtils.CommonUtils;
 import com.aboluo.XUtils.MyApplication;
+import com.aboluo.adapter.InvitationInfoAdapter;
+import com.aboluo.model.InvitationInfoBean;
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -19,7 +21,6 @@ import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
@@ -39,6 +40,7 @@ public class InvitationInfoActivity extends Activity implements View.OnClickList
     private Picasso picasso;
     private SweetAlertDialog pdialog;
     private String MemberId;
+    private InvitationInfoAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,11 +69,15 @@ public class InvitationInfoActivity extends Activity implements View.OnClickList
     }
 
     private void initData() {
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, URL + "", new Response.Listener<String>() {
+        StringRequest stringRequest = new StringRequest(Request.Method.POST,
+                URL + "/api/MemberApi/ReceiveUpperLeader", new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 response = response.replace("\\", "");
                 response = response.substring(1, response.length() - 1);
+                InvitationInfoBean bean = gson.fromJson(response, InvitationInfoBean.class);
+                adapter = new InvitationInfoAdapter(InvitationInfoActivity.this, bean.getResult());
+                lv_invitation_info.setAdapter(adapter);
             }
         }, new Response.ErrorListener() {
             @Override
@@ -82,10 +88,10 @@ public class InvitationInfoActivity extends Activity implements View.OnClickList
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> map = new HashMap<>();
-                map.put("MemberId", "1975");
-                map.put("OrderId", "508");
-                map.put("ExpressId", "1");
+                map.put("MemberId", MemberId);
                 map.put("APPToken", APPToken);
+                map.put("LoginCheckToken", "123");
+                map.put("LoginPhone", "123");
                 return map;
             }
 

@@ -19,6 +19,7 @@ import android.widget.Toast;
 import com.aboluo.XUtils.CleanUtils;
 import com.aboluo.XUtils.CommonUtils;
 import com.aboluo.XUtils.MyApplication;
+import com.aboluo.model.BaseModel;
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -27,8 +28,6 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
-
-import org.w3c.dom.Text;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -60,6 +59,7 @@ public class SettingActivity extends Activity implements View.OnClickListener {
         rl_setting_aboutus.setOnClickListener(this);
         rl_setting_cleancache.setOnClickListener(this);
         iv_setting_back.setOnClickListener(this);
+        rl_setting_update.setOnClickListener(this);
         try {
             tv_cache_size.setText(CleanUtils.getTotalCacheSize(SettingActivity.this).toString());
         } catch (Exception e) {
@@ -126,24 +126,37 @@ public class SettingActivity extends Activity implements View.OnClickListener {
     ;
 
     private void getVersionInfo() {
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, URL + "", new Response.Listener<String>() {
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, URL
+                + "/api/ConfigApi/ReceiveUpdateUrl", new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 response = response.replace("\\", "");
                 response = response.substring(1, response.length() - 1);
+                BaseModel baseModel = gson.fromJson(response,BaseModel.class);
+                Toast.makeText(SettingActivity.this, baseModel.getResult().toString(), Toast.LENGTH_SHORT).show();
+                if(baseModel.isIsSuccess())
+                {
+                    Intent intent = new Intent();
+                    intent.setAction("android.intent.action.VIEW");
+                    Uri content_url = Uri.parse(baseModel.getMessage());
+                    intent.setData(content_url);
+                    startActivity(intent);
+                    return;
+                }
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-
+//                byte[] date = error.networkResponse.data;
+//                String result = new String(date);
+//                Toast.makeText(SettingActivity.this, result, Toast.LENGTH_SHORT).show();
             }
         }) {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> map = new HashMap<>();
-                map.put("MemberId", "1975");
-                map.put("OrderId", "508");
-                map.put("ExpressId", "1");
+                map.put("Version", String.valueOf(getAppVersionName(SettingActivity.this).versionCode));
+                map.put("SystemId", "1");
                 map.put("APPToken", APPToken);
                 return map;
             }

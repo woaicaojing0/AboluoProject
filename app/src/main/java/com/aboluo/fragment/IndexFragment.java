@@ -10,6 +10,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -36,12 +37,13 @@ import com.aboluo.XUtils.TimeUtils;
 import com.aboluo.adapter.BannerAdapter;
 import com.aboluo.adapter.BrandGridViewAdapter;
 import com.aboluo.adapter.GridViewAdapter;
+import com.aboluo.adapter.IndexBottomAdpater;
 import com.aboluo.adapter.ThemeGridViewAdapter;
 import com.aboluo.adapter.ThemeMidGridViewAdapter;
 import com.aboluo.adapter.index.HotSaleGridViewAdapter;
 import com.aboluo.com.GoodsDetailActivity;
 import com.aboluo.com.GoodsListActivity;
-import com.aboluo.com.InvitationCodeActivity;
+import com.aboluo.com.LoginActivity;
 import com.aboluo.com.MainActivity;
 import com.aboluo.com.MessageActivity;
 import com.aboluo.com.PartnerActivity;
@@ -51,6 +53,7 @@ import com.aboluo.com.SignInActivity;
 import com.aboluo.com.UnaryActivity;
 import com.aboluo.com.WebActivity.InvitationActivity;
 import com.aboluo.model.BaseConfigBean;
+import com.aboluo.model.GoodsListInfo;
 import com.aboluo.model.SecKillAllInfo;
 import com.aboluo.widget.MyGridView;
 import com.android.volley.AuthFailureError;
@@ -120,6 +123,10 @@ public class IndexFragment extends Fragment implements View.OnClickListener, Ada
     public BDLocationListener myListener = new MyLocationListener();
     private static final int BAIDU_READ_PHONE_STATE = 100;
     private TextView tv_location_address;
+    private GoodsListInfo listBean;
+    private List<GoodsListInfo.ResultBean.GoodsListBean> goodsListBean;
+    private int currentpages = 1;
+    private IndexBottomAdpater indexBottomAdpater;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -188,12 +195,20 @@ public class IndexFragment extends Fragment implements View.OnClickListener, Ada
                 //Toast.makeText(IndexFragment.this.getActivity(), "1", Toast.LENGTH_SHORT).show();
             }
         });
-        pullToRefreshScrollView.setOnRefreshListener(new PullToRefreshBase.OnRefreshListener<ScrollView>() {
+        pullToRefreshScrollView.setOnRefreshListener(new PullToRefreshBase.OnRefreshListener2<ScrollView>() {
             @Override
-            public void onRefresh(PullToRefreshBase<ScrollView> refreshView) {
+            public void onPullDownToRefresh(PullToRefreshBase<ScrollView> refreshView) {
+                currentpages = 1;
                 bannerAdapter.notifyDataSetChanged();
                 initSecKill();
                 initConfig();
+
+            }
+
+            @Override
+            public void onPullUpToRefresh(PullToRefreshBase<ScrollView> refreshView) {
+                currentpages++;
+                initdate(currentpages);
             }
         });
 //        Picasso.with(this.getActivity()).load("http://img.pconline.com.cn/images/upload/upc/tx/wallpaper/1309/05/c5/25283777_1378352004384_800x600.jpg").into(ceshi_imgeview);
@@ -274,23 +289,29 @@ public class IndexFragment extends Fragment implements View.OnClickListener, Ada
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         switch (parent.getId()) {
             case R.id.special_gridview_bottom:  //s特价商品
-                if (themeConfigBean == null) {
-                } else {
-//                    Intent intent4 = new Intent(IndexFragment.this.getContext(), GoodsListActivity.class);
-                    if (themeConfigBean.getAppConfigList().get(position).getParams() == null) {
-                        Toast.makeText(IndexFragment.this.getContext(),
-                                "ChildId is NULL", Toast.LENGTH_SHORT).show();
-                    } else {
+//                if (themeConfigBean == null) {
+//                } else {
+////                    Intent intent4 = new Intent(IndexFragment.this.getContext(), GoodsListActivity.class);
+//                    if (themeConfigBean.getAppConfigList().get(position).getParams() == null) {
 //                        Toast.makeText(IndexFragment.this.getContext(),
-//                                themeConfigBean.getAppConfigList().get(position).getParams().getChildId(), Toast.LENGTH_SHORT).show();
-//                        intent4.putExtra("goods_type_id", themeConfigBean.getAppConfigList().get(position).getParams().getChildId());
-                        int goods_id = themeConfigBean.getAppConfigList().get(position).getParams().getChildId();
-                        Intent intent = new Intent(IndexFragment.this.getContext(), GoodsDetailActivity.class);
-                        intent.putExtra("goods_id", goods_id);
-                        startActivity(intent);
-                    }
-                    //startActivity(intent4);
-                }
+//                                "ChildId is NULL", Toast.LENGTH_SHORT).show();
+//                    } else {
+////                        Toast.makeText(IndexFragment.this.getContext(),
+////                                themeConfigBean.getAppConfigList().get(position).getParams().getChildId(), Toast.LENGTH_SHORT).show();
+////                        intent4.putExtra("goods_type_id", themeConfigBean.getAppConfigList().get(position).getParams().getChildId());
+//                        int goods_id = themeConfigBean.getAppConfigList().get(position).getParams().getChildId();
+//                        Intent intent = new Intent(IndexFragment.this.getContext(), GoodsDetailActivity.class);
+//                        intent.putExtra("goods_id", goods_id);
+//                        startActivity(intent);
+//                    }
+//                    //startActivity(intent4);
+//                }
+                int goods_id = goodsListBean.get(position).getGoodsId();
+                Intent intent = new Intent(IndexFragment.this.getContext(), GoodsDetailActivity.class);
+                intent.putExtra("goods_id", goods_id);
+                String transitionName = "detail";
+                ActivityOptionsCompat transitionActivityOptionsCompat = ActivityOptionsCompat.makeSceneTransitionAnimation(IndexFragment.this.getActivity(), view.findViewById(R.id.indexbottom_goods_image), transitionName);
+                startActivity(intent, transitionActivityOptionsCompat.toBundle());
                 break;
             case R.id.brand_gridview://品牌点击事件
                 if (brandConfigBean == null) {
@@ -629,7 +650,8 @@ public class IndexFragment extends Fragment implements View.OnClickListener, Ada
         initThemeBottomGridview();//主题模块最下面的gridview 4个图
         initBrandBanner(); //品牌banner
         initbrand();   //品牌图片
-        inittejiaGridview(); //主题九宫格
+        //inittejiaGridview(); //主题九宫格
+        initdate(1);
         initSpecial(); //推荐专享banner
     }
 
@@ -1152,6 +1174,64 @@ public class IndexFragment extends Fragment implements View.OnClickListener, Ada
         requestQueue.add(stringRequest);
     }
 
+    //加载特价专享2
+    private void initdate(final int currentpage) {
+        StringRequest requestlist = new StringRequest(Request.Method.POST, URL + "/api/Goods/ReceiveGoodsList", new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                response = response.replace("\\", "");
+                response = response.substring(1, response.length() - 1);
+                Gson gson = new Gson();
+                Log.i("woaicaojing", URL + "/api/Goods/ReceiveGoodsList");
+                Log.i("woaicaojing", response);
+                listBean = gson.fromJson(response, GoodsListInfo.class);
+                if (listBean.getResult().getGoodsList().size() == 0) {
+                    Toast.makeText(IndexFragment.this.getContext(), "当前没有数据啦", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                if (currentpage == 1) {
+                    goodsListBean = listBean.getResult().getGoodsList();
+                    indexBottomAdpater = new IndexBottomAdpater(IndexFragment.this.getContext(),
+                            goodsListBean);
+                    special_gridview_bottom.setAdapter(indexBottomAdpater);
+                } else {
+                    if (goodsListBean == null) {
+                        goodsListBean = listBean.getResult().getGoodsList();
+                        indexBottomAdpater = new IndexBottomAdpater(IndexFragment.this.getContext(),
+                                goodsListBean);
+                        special_gridview_bottom.setAdapter(indexBottomAdpater);
+                    } else {
+                        List<GoodsListInfo.ResultBean.GoodsListBean> goodsListBean2 = listBean.getResult().getGoodsList();
+                        goodsListBean.addAll(goodsListBean2);
+                        special_gridview_bottom.setAdapter(indexBottomAdpater);
+                        pullToRefreshScrollView.onRefreshComplete();
+                    }
+                }
+                pdialog.dismiss();
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                byte[] htmlBodyBytes = error.networkResponse.data;
+                //Toast.makeText(IndexFragment.this.getContext(), error.toString(), Toast.LENGTH_SHORT).show();
+                Log.i("woaiocaojingerroe", new String(htmlBodyBytes));
+                // Log.i("woaicaojing", error.toString());
+            }
+        }) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> map = new HashMap<>();
+                map.put("APPToken", APPToken);
+                map.put("CurrentPage", String.valueOf(currentpage));
+                map.put("PageSize", "20");
+                map.put("isHome", "1");
+                return map;
+            }
+        };
+        requestQueue.add(requestlist);
+    }
+
     //加载推荐专享配置
     private void initSpecial() {
         StringRequest stringRequest = new StringRequest(Request.Method.POST, URL + "/api/ConfigApi/ReceiveHomeConfig", new Response.Listener<String>() {
@@ -1305,6 +1385,8 @@ public class IndexFragment extends Fragment implements View.OnClickListener, Ada
                             Intent intent14 = new Intent(IndexFragment.this.getActivity(), InvitationActivity.class);
                             startActivity(intent14);
                         } else {
+                            Intent intent14 = new Intent(IndexFragment.this.getActivity(), LoginActivity.class);
+                            intent14.putExtra("fromHome",1);
                             Toast.makeText(IndexFragment.this.getActivity(), "请先登录！", Toast.LENGTH_SHORT).show();
                         }
                         break;
@@ -1468,4 +1550,6 @@ public class IndexFragment extends Fragment implements View.OnClickListener, Ada
 
 
     }
+
+
 }

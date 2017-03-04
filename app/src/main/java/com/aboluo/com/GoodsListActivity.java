@@ -26,6 +26,7 @@ import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.aboluo.XUtils.CommonUtils;
 import com.aboluo.XUtils.MyApplication;
@@ -242,6 +243,8 @@ public class GoodsListActivity extends Activity implements RecycleViewAdapter.On
             @Override
             public void onErrorResponse(VolleyError error) {
                 Log.i("woaicaojing", error.toString());
+                pdialog.dismiss();
+                Toast.makeText(GoodsListActivity.this, "加载出错", Toast.LENGTH_SHORT).show();
             }
         }) {
             @Override

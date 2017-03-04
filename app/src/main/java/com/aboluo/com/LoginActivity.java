@@ -19,6 +19,7 @@ import android.widget.Toast;
 
 import com.aboluo.XUtils.CommonUtils;
 import com.aboluo.XUtils.MyApplication;
+import com.aboluo.com.WebActivity.InvitationActivity;
 import com.aboluo.model.LoginInfo;
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -60,12 +61,14 @@ public class LoginActivity extends Activity implements View.OnClickListener, Tex
     private IWXAPI api;
     private CircleImageView iv_login_touxiang;
     private ImageView login_back;
+    private int fromHome = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.login);
+        fromHome = getIntent().getIntExtra("fromHome", 0);
         init();
         txt_register.setOnClickListener(this);
         txt_retrivepwd.setOnClickListener(this);
@@ -122,7 +125,7 @@ public class LoginActivity extends Activity implements View.OnClickListener, Tex
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.txt_register:
-                Intent intent = new Intent(this, RegisterActivity.class);
+                final Intent intent = new Intent(this, RegisterActivity.class);
                 startActivity(intent);
                 break;
             case R.id.txt_retrivepwd:
@@ -162,6 +165,11 @@ public class LoginActivity extends Activity implements View.OnClickListener, Tex
                                     Toast.makeText(LoginActivity.this, "头像获取失败", Toast.LENGTH_SHORT).show();
                                 }
                                 LoginActivity.this.finish();
+                                if (0 == fromHome) {
+                                    return;
+                                }
+                                Intent intent13 = new Intent(LoginActivity.this, InvitationActivity.class);
+                                startActivity(intent13);
                             } else {
 
                             }

@@ -8,7 +8,7 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.aboluo.com.R;
-import com.aboluo.model.MessageBean;
+import com.aboluo.model.RecMsgBean;
 
 import java.util.List;
 
@@ -17,11 +17,11 @@ import java.util.List;
  */
 
 public class MessageAdapter extends BaseAdapter {
-    private List<MessageBean> mlist;
+    private List<RecMsgBean.ListResultBean> mlist;
     private Context mcontext;
     private LayoutInflater layoutInflater;
 
-    public MessageAdapter(List<MessageBean> list, Context context) {
+    public MessageAdapter(List<RecMsgBean.ListResultBean> list, Context context) {
         this.mcontext = context;
         this.mlist = list;
         layoutInflater = LayoutInflater.from(context);
@@ -54,8 +54,8 @@ public class MessageAdapter extends BaseAdapter {
         } else {
             holder = (ViewHolder) convertView.getTag();
         }
-        holder.message_listview_time.setText(mlist.get(position).getCreatetime().toString());
-        holder.message_listview_txt.setText(mlist.get(position).getMessageinfo().toString());
+        holder.message_listview_time.setText(mlist.get(position).getPushTime().toString().replace("T"," "));
+        holder.message_listview_txt.setText(mlist.get(position).getMessageContent().toString());
         return convertView;
     }
 

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:orientation="vertical">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -11,13 +11,12 @@
         android:gravity="center"
         android:orientation="vertical">
 
-        <de.hdodenhof.circleimageview.CircleImageView
-            xmlns:app="http://schemas.android.com/apk/res-auto"
+        <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
             android:id="@+id/cred_userImage"
             android:layout_width="80dp"
             android:layout_height="80dp"
             android:src="@drawable/appstart"
-            app:civ_border_color="#FF000000"/>
+            app:civ_border_color="#FF000000" />
 
         <TextView
             android:id="@+id/cred_nickName"
@@ -25,14 +24,14 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
             android:text="亲爱的："
-            android:textColor="@color/white"/>
+            android:textColor="@color/white" />
     </LinearLayout>
 
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="-6dp"
-        android:src="@drawable/credutinfo_bg"/>
+        android:src="@drawable/credutinfo_bg" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -51,7 +50,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="￥0.00"
-                android:textColor="@color/btn_color"/>
+                android:textColor="@color/btn_color" />
 
             <TextView
 
@@ -59,7 +58,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="12dp"
                 android:text="资产"
-                android:textSize="18dp"/>
+                android:textSize="18dp" />
         </LinearLayout>
 
         <LinearLayout
@@ -74,7 +73,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="普通会员"
-                android:textColor="@color/btn_color"/>
+                android:textColor="@color/btn_color" />
 
             <TextView
 
@@ -82,7 +81,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="12dp"
                 android:text="等级"
-                android:textSize="18dp"/>
+                android:textSize="18dp" />
         </LinearLayout>
 
         <LinearLayout
@@ -98,7 +97,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="0"
-                android:textColor="@color/btn_color"/>
+                android:textColor="@color/btn_color" />
 
             <TextView
 
@@ -106,7 +105,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="12dp"
                 android:text="积分"
-                android:textSize="18dp"/>
+                android:textSize="18dp" />
         </LinearLayout>
 
     </LinearLayout>
@@ -133,19 +132,19 @@
                 android:layout_height="match_parent"
                 android:layout_marginTop="8dp"
                 android:gravity="center"
-                android:text="冻结资金"/>
+                android:text="冻结资金" />
 
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/capital_freemoney"/>
+                android:src="@drawable/capital_freemoney" />
 
             <TextView
                 android:id="@+id/freeMoney"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
-                android:text="￥0.00"/>
+                android:text="￥0.00" />
         </LinearLayout>
 
         <LinearLayout
@@ -160,19 +159,19 @@
                 android:layout_height="match_parent"
                 android:layout_marginTop="8dp"
                 android:gravity="center"
-                android:text="剩余资金"/>
+                android:text="剩余资金" />
 
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/capital_canusermoney"/>
+                android:src="@drawable/capital_canusermoney" />
 
             <TextView
                 android:id="@+id/CanUserMoney"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
-                android:text="￥0.00"/>
+                android:text="￥0.00" />
         </LinearLayout>
 
         <LinearLayout
@@ -187,12 +186,12 @@
                 android:layout_height="match_parent"
                 android:layout_marginTop="8dp"
                 android:gravity="center"
-                android:text="积分"/>
+                android:text="积分" />
 
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/totalscore2"/>
+                android:src="@drawable/totalscore2" />
 
             <TextView
 
@@ -200,7 +199,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
-                android:text="0.00"/>
+                android:text="0.00" />
 
         </LinearLayout>
 
@@ -216,19 +215,19 @@
                 android:layout_height="match_parent"
                 android:layout_marginTop="8dp"
                 android:gravity="center"
-                android:text="剩余可用积分"/>
+                android:text="剩余可用积分" />
 
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/capital_canuserscore"/>
+                android:src="@drawable/capital_canuserscore" />
 
             <TextView
                 android:id="@+id/CanUserScore"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
-                android:text="0.00"/>
+                android:text="0.00" />
         </LinearLayout>
 
 
@@ -241,25 +240,35 @@
         android:paddingLeft="16dp"
         android:paddingRight="16dp">
 
-        <Button
-            android:id="@+id/btn_apply_extract_money"
-            android:layout_width="100dp"
-            android:layout_height="40dp"
-            android:layout_alignParentBottom="true"
-            android:layout_marginBottom="8dp"
-            android:background="@drawable/myinfo_btn_login"
-            android:text="申请提现"
-            android:textColor="@color/white"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true">
 
-        <Button
-            android:id="@+id/btn_extract_detail"
-            android:layout_width="100dp"
-            android:layout_height="40dp"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentRight="true"
-            android:layout_marginBottom="8dp"
-            android:background="@drawable/myinfo_btn_login"
-            android:text="查看记录"
-            android:textColor="@color/white"/>
+            <Button
+                android:id="@+id/btn_apply_extract_money"
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:layout_alignParentBottom="true"
+                android:layout_marginBottom="8dp"
+                android:layout_marginRight="8dp"
+                android:layout_weight="1"
+                android:background="@drawable/myinfo_btn_login"
+                android:text="申请提现"
+                android:textColor="@color/white" />
+
+            <Button
+                android:id="@+id/btn_extract_detail"
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentRight="true"
+                android:layout_marginBottom="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_weight="1"
+                android:background="@drawable/myinfo_btn_login"
+                android:text="查看记录"
+                android:textColor="@color/white" />
+        </LinearLayout>
     </RelativeLayout>
 </LinearLayout>

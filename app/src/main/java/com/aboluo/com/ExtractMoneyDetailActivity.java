@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.aboluo.XUtils.CommonUtils;
 import com.aboluo.XUtils.MyApplication;
@@ -75,6 +76,7 @@ public class ExtractMoneyDetailActivity extends Activity {
     }
 
     private void initData() {
+        pdialog.show();
         StringRequest stringRequest = new StringRequest(Request.Method.POST, URL
                 + "/api/WithdrawApi/ReceiveMemberWithdrawListByMemberId", new Response.Listener<String>() {
             @Override
@@ -82,14 +84,24 @@ public class ExtractMoneyDetailActivity extends Activity {
                 response = response.replace("\\", "");
                 response = response.substring(1, response.length() - 1);
                 ExtractHisotoryBean extractHisotoryBean = gson.fromJson(response, ExtractHisotoryBean.class);
-                extractMoneyAdapter = new ExtractMoneyAdapter(ExtractMoneyDetailActivity.this,
-                        extractHisotoryBean.getResult().getWithdrawalsList());
-                lv_extract_detail.setAdapter(extractMoneyAdapter);
+                if (!extractHisotoryBean.isIsSuccess()) {
+                    Toast.makeText(ExtractMoneyDetailActivity.this, "获取失败", Toast.LENGTH_SHORT).show();
+                } else {
+                    if (0 == extractHisotoryBean.getResult().getWithdrawalsList().size()) {
+                        Toast.makeText(ExtractMoneyDetailActivity.this, "没有提现记录", Toast.LENGTH_SHORT).show();
+                    } else {
+                        extractMoneyAdapter = new ExtractMoneyAdapter(ExtractMoneyDetailActivity.this,
+                                extractHisotoryBean.getResult().getWithdrawalsList());
+                        lv_extract_detail.setAdapter(extractMoneyAdapter);
+                    }
+                }
+                pdialog.dismiss();
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-
+                Toast.makeText(ExtractMoneyDetailActivity.this, error.toString(), Toast.LENGTH_SHORT).show();
+                pdialog.dismiss();
             }
         }) {
             @Override

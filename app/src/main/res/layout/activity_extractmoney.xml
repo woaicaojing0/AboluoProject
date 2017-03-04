@@ -61,6 +61,7 @@
         android:layout_width="match_parent"
         android:layout_height="12dp"
         android:background="#f2f2f2"></View>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="50dp"
@@ -75,18 +76,19 @@
             android:text="真实姓名：" />
 
         <EditText
-            android:textSize="16sp"
             android:id="@+id/et_extract_username"
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:hint="真实姓名"
-            android:minWidth="200dp" />
+            android:minWidth="200dp"
+            android:textSize="16sp" />
     </LinearLayout>
 
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="#f2f2f2"></View>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="50dp"
@@ -100,29 +102,39 @@
             android:layout_height="wrap_content"
             android:text="银行卡号：" />
 
-        <EditText
-            android:textSize="16sp"
-            android:id="@+id/et_extract_bankCard"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="40dp"
-            android:hint="银行卡号"
-            android:inputType="number"
-            android:minWidth="200dp" />
-        <Button
-            android:layout_marginLeft="8dp"
-            android:id="@+id/btn_validate_bank"
-            android:layout_width="50dp"
-            android:layout_height="40dp"
-            android:background="@drawable/btn_sendyzm"
-            android:text="验证"
-            android:textColor="@color/white"
-            android:textSize="14sp" />
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/et_extract_bankCard"
+                android:layout_width="0dp"
+                android:layout_weight="4"
+                android:layout_height="40dp"
+                android:hint="银行卡号"
+                android:inputType="number"
+                android:minWidth="200dp"
+                android:textSize="16sp" />
+
+            <Button
+                android:id="@+id/btn_validate_bank"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="40dp"
+                android:layout_marginLeft="8dp"
+                android:background="@drawable/btn_sendyzm"
+                android:text="验证"
+                android:textColor="@color/white"
+                android:textSize="14sp" />
+        </LinearLayout>
     </LinearLayout>
 
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="#f2f2f2"></View>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="50dp"
@@ -136,15 +148,19 @@
             android:layout_height="wrap_content"
             android:text="银行名称：" />
 
-        <EditText
-            android:enabled="false"
-            android:textSize="16sp"
+        <TextView
             android:id="@+id/et_extract_bankName"
-            android:layout_weight="1"
             android:layout_width="wrap_content"
             android:layout_height="40dp"
+            android:layout_weight="1"
+            android:ellipsize="end"
+            android:enabled="false"
+            android:gravity="center_vertical"
             android:hint="银行名称"
-            android:minWidth="200dp" />
+            android:lines="1"
+            android:minWidth="200dp"
+            android:textSize="16sp" />
+
         <ImageView
             android:id="@+id/iv_brankImage"
             android:layout_width="40dp"
@@ -155,6 +171,7 @@
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="#f2f2f2"></View>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="50dp"
@@ -169,19 +186,20 @@
             android:text="提现金额：" />
 
         <EditText
-            android:textSize="16sp"
             android:id="@+id/et_extract_money"
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:hint="提现金额"
             android:minWidth="100dp"
-            android:numeric="integer" />
+            android:numeric="integer"
+            android:textSize="16sp" />
     </LinearLayout>
 
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="#f2f2f2"></View>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="50dp"
@@ -249,12 +267,12 @@
             android:text="验  证  码：" />
 
         <EditText
-            android:textSize="16sp"
             android:id="@+id/et_extract_authcode"
             android:layout_width="100dp"
             android:layout_height="40dp"
             android:hint="验证码"
-            android:inputType="number" />
+            android:inputType="number"
+            android:textSize="16sp" />
 
         <Button
             android:id="@+id/btn_getinfo"
@@ -280,12 +298,12 @@
         android:gravity="center">
 
         <Button
-            android:textSize="18sp"
             android:id="@+id/btn_extract_apply"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@drawable/register_btn_bg"
             android:text="提交申请"
-            android:textColor="@color/white" />
+            android:textColor="@color/white"
+            android:textSize="18sp" />
     </LinearLayout>
 </LinearLayout>

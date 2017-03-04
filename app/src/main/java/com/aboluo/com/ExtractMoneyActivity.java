@@ -70,7 +70,7 @@ public class ExtractMoneyActivity extends Activity implements View.OnClickListen
     private BindMsgBean messageInfo;
     private ImageView iv_brankImage;
     private LinearLayout ll_extract;
-    private TextView tv_extract_history,et_extract_bankName;
+    private TextView tv_extract_history, et_extract_bankName;
     private static int type = 1;
     private Button btn_extract_apply;
 
@@ -96,7 +96,7 @@ public class ExtractMoneyActivity extends Activity implements View.OnClickListen
                     //Toast.makeText(ExtractMoneyActivity.this, phone + "", Toast.LENGTH_SHORT).show();
                     tv_extract_text.setText(phone);
                 } else if (mspinnerList.get(position).equals("邮箱验证")) {
-                   // Toast.makeText(ExtractMoneyActivity.this, email + "", Toast.LENGTH_SHORT).show();
+                    // Toast.makeText(ExtractMoneyActivity.this, email + "", Toast.LENGTH_SHORT).show();
                     tv_extract_text.setText(email);
                 } else {
                     Toast.makeText(ExtractMoneyActivity.this, "请先绑定手机号或者邮箱", Toast.LENGTH_SHORT).show();
@@ -375,7 +375,7 @@ public class ExtractMoneyActivity extends Activity implements View.OnClickListen
             @Override
             public void onErrorResponse(VolleyError error) {
                 byte[] htmlBodyBytes = error.networkResponse.data;
-               //Toast.makeText(AddAddressActivity.this, error.toString(), Toast.LENGTH_SHORT).show();
+                //Toast.makeText(AddAddressActivity.this, error.toString(), Toast.LENGTH_SHORT).show();
                 Log.i("woaiocaojingerroe", new String(htmlBodyBytes));
                 Toast.makeText(ExtractMoneyActivity.this, error.toString(), Toast.LENGTH_SHORT).show();
             }
@@ -438,7 +438,9 @@ public class ExtractMoneyActivity extends Activity implements View.OnClickListen
                 }, new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-
+                        byte[] bytecode = error.networkResponse.data;
+                        String s = new String(bytecode);
+                        Toast.makeText(ExtractMoneyActivity.this, "申请失败，请联系客服", Toast.LENGTH_SHORT).show();
                     }
                 }) {
                     @Override
@@ -455,16 +457,18 @@ public class ExtractMoneyActivity extends Activity implements View.OnClickListen
                         map.put("bankLogo", bankCardBean.getResult().getLogo());
                         map.put("bankTel", bankCardBean.getResult().getTel());
                         map.put("bankWebsite", bankCardBean.getResult().getWebsite());
-                        map.put("mobile", emailorphpne);
                         map.put("price", extraMoney);
-                        map.put("email", emailorphpne);
                         map.put("realName", realName);
                         if (spinner_extract.getSelectedItem().equals("手机号码验证")) {
                             map.put("validType", "1");
+                            map.put("mobile", emailorphpne);
+                            map.put("email", "");
+
                         } else if (spinner_extract.getSelectedItem().equals("邮箱验证")) {
                             map.put("validType", "2");
+                            map.put("email", emailorphpne);
+                            map.put("mobile", "");
                         }
-                        map.put("validType", String.valueOf(type));
                         map.put("validCode", valiatecode);
                         map.put("APPToken", APPToken);
                         return map;

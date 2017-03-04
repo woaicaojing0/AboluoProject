@@ -55,6 +55,7 @@
         android:layout_height="wrap_content"
         android:lines="8"/>
     <EditText
+        android:inputType="number"
         android:id="@+id/et_phone_fedback"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"

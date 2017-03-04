@@ -65,7 +65,7 @@ public class ExtractMoneyAdapter extends BaseAdapter {
             holder.tv_extractdetail_item_status.setText("审核驳回");
         }
         holder.tv_extractdetail_item_money.setText("￥" + mlist.get(position).getPrice() + "");
-        holder.tv_extractdetail_item_time.setText(mlist.get(position).getCreateTime());
+        holder.tv_extractdetail_item_time.setText(mlist.get(position).getCreateTime().replace("T"," "));
         return convertView;
     }
 

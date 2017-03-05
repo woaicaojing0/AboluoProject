@@ -53,15 +53,15 @@ public class OrderDetailActivity extends Activity implements View.OnClickListene
     private OrderDetailInfo orderDetailInfo;
     private TextView orderdetail_express_status, orderdetail_express_time, orderdetail_address_name,
             orderdetail_address_phone, orderdetail_address_address, orderdetail_pay_allmonney,
-            tv_orderdetail_integral, orderdetail_allmonney,tv_orderdetail_freight,tv_orderdetail_coupons
-            ;
+            tv_orderdetail_integral, orderdetail_allmonney, tv_orderdetail_freight, tv_orderdetail_coupons;
     private MyListview orderdetail_listview;
     private OrderDetailItemAdpater adpater;
     private RelativeLayout order_detail_bottom;
     private LinearLayout orderdetail_expressdetail, order_detail_back;
     private TextView oederdetail_findgoods, oederdetail_ok, oederdetail_cancelorder,
-            oederdetail_payorder, oederdetail_cuicui, order_detail_topstatus,tv_orderdetail_code;
+            oederdetail_payorder, oederdetail_cuicui, order_detail_topstatus, tv_orderdetail_code;
     private MyListview lv_expresslist;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -136,10 +136,14 @@ public class OrderDetailActivity extends Activity implements View.OnClickListene
                 response = response.replace("\\", "");
                 response = response.substring(1, response.length() - 1);
                 orderDetailInfo = gson.fromJson(response, OrderDetailInfo.class);
-                if(orderDetailInfo.getResult().get(0).getOrderExpressList().size() == 0)
-                {} else {
+                if (0 == orderDetailInfo.getResult().get(0).getOrderExpressList().size()) {
+                    lv_expresslist.setVisibility(View.GONE);
+                } else if (null == orderDetailInfo.getResult().get(0).getOrderExpressList().get(0).getLocalInfo()) {
+                    lv_expresslist.setVisibility(View.GONE);
+                } else {
+                    lv_expresslist.setVisibility(View.VISIBLE);
                     ExpressListAdapter expressListAdapter = new ExpressListAdapter(orderDetailInfo
-                    .getResult().get(0).getOrderExpressList(),OrderDetailActivity.this);
+                            .getResult().get(0).getOrderExpressList(), OrderDetailActivity.this);
                     lv_expresslist.setAdapter(expressListAdapter);
                 }
                 orderdetail_address_name.setText(orderDetailInfo.getResult().get(0).getReceiver()
@@ -148,22 +152,22 @@ public class OrderDetailActivity extends Activity implements View.OnClickListene
                         == null ? "" : orderDetailInfo.getResult().get(0).getMobile().toString());
                 orderdetail_address_address.setText(orderDetailInfo.getResult().get(0).getAddress()
                         == null ? "" : orderDetailInfo.getResult().get(0).getAddress().toString());
-                orderdetail_pay_allmonney.setText("￥"+String.valueOf(orderDetailInfo.getResult().get(0).getTotalPrice()));
-                tv_orderdetail_integral.setText("￥"+String.valueOf(orderDetailInfo.getResult().get(0).getTotalPrice()));
+                orderdetail_pay_allmonney.setText("￥" + String.valueOf(orderDetailInfo.getResult().get(0).getTotalPrice()));
+                tv_orderdetail_integral.setText("￥" + String.valueOf(orderDetailInfo.getResult().get(0).getTotalPrice()));
                 double goodsAllPrice = 0; //商品总价
                 for (OrderDetailInfo.ResultBean.OrderItemListBean bean : orderDetailInfo.getResult().get(0).getOrderItemList()) {
-                    goodsAllPrice = goodsAllPrice+(bean.getGoodsQuantity()*bean.getGoodsPrice());
+                    goodsAllPrice = goodsAllPrice + (bean.getGoodsQuantity() * bean.getGoodsPrice());
                 }
-                Log.i("OrderDetailActivity",goodsAllPrice+"");
-                orderdetail_allmonney.setText("￥"+goodsAllPrice);
-                tv_orderdetail_freight.setText("￥"+orderDetailInfo.getResult().get(0).getExpressPrice()+"");
-                tv_orderdetail_coupons.setText("￥"+orderDetailInfo.getResult().get(0).getCouponPrice()+"");
-                tv_orderdetail_integral.setText("￥"+orderDetailInfo.getResult().get(0).getIntegralPrice()+"");
-                tv_orderdetail_code.setText(orderDetailInfo.getResult().get(0).getOrderCode()+"");
+                Log.i("OrderDetailActivity", goodsAllPrice + "");
+                orderdetail_allmonney.setText("￥" + goodsAllPrice);
+                tv_orderdetail_freight.setText("￥" + orderDetailInfo.getResult().get(0).getExpressPrice() + "");
+                tv_orderdetail_coupons.setText("￥" + orderDetailInfo.getResult().get(0).getCouponPrice() + "");
+                tv_orderdetail_integral.setText("￥" + orderDetailInfo.getResult().get(0).getIntegralPrice() + "");
+                tv_orderdetail_code.setText(orderDetailInfo.getResult().get(0).getOrderCode() + "");
                 adpater = new OrderDetailItemAdpater(OrderDetailActivity.this
                         , orderDetailInfo.getResult().get(0).getOrderItemList(),
                         orderDetailInfo.getResult().get(0).getOrderStatus()
-                ,orderDetailInfo.getResult().get(0).getOrderType());
+                        , orderDetailInfo.getResult().get(0).getOrderType());
                 adpater.setEvaluationOnClickListener(OrderDetailActivity.this);
                 adpater.setAfterSaleOnClickListener(OrderDetailActivity.this);
                 orderdetail_listview.setAdapter(adpater);
@@ -276,7 +280,7 @@ public class OrderDetailActivity extends Activity implements View.OnClickListene
                 break;
             case 30://卖家已发货
                 order_detail_topstatus.setText("卖家已发货");
-               // oederdetail_findgoods.setVisibility(View.VISIBLE);
+                // oederdetail_findgoods.setVisibility(View.VISIBLE);
                 oederdetail_ok.setVisibility(View.VISIBLE);
                 break;
             case 40://交易成功

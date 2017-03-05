@@ -112,8 +112,8 @@ public class MessageActivity extends Activity {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                byte[] bytes = error.networkResponse.data;
-                Log.i("woaicaojingseckill", new String(bytes));
+//                byte[] bytes = error.networkResponse.data;
+//                Log.i("woaicaojingseckill", new String(bytes));
                 Toast.makeText(MessageActivity.this, error.toString(), Toast.LENGTH_SHORT).show();
             }
         }) {
@@ -128,8 +128,6 @@ public class MessageActivity extends Activity {
                 map.put("LoginPhone", "123");
                 return map;
             }
-
-            ;
         };
         requestQueue.add(stringRequest);
     }

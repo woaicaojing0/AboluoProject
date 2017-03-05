@@ -374,9 +374,9 @@ public class ExtractMoneyActivity extends Activity implements View.OnClickListen
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                byte[] htmlBodyBytes = error.networkResponse.data;
+//                byte[] htmlBodyBytes = error.networkResponse.data;
                 //Toast.makeText(AddAddressActivity.this, error.toString(), Toast.LENGTH_SHORT).show();
-                Log.i("woaiocaojingerroe", new String(htmlBodyBytes));
+//                Log.i("woaiocaojingerroe", new String(htmlBodyBytes));
                 Toast.makeText(ExtractMoneyActivity.this, error.toString(), Toast.LENGTH_SHORT).show();
             }
         }) {
@@ -438,8 +438,8 @@ public class ExtractMoneyActivity extends Activity implements View.OnClickListen
                 }, new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        byte[] bytecode = error.networkResponse.data;
-                        String s = new String(bytecode);
+//                        byte[] bytecode = error.networkResponse.data;
+//                        String s = new String(bytecode);
                         Toast.makeText(ExtractMoneyActivity.this, "申请失败，请联系客服", Toast.LENGTH_SHORT).show();
                     }
                 }) {

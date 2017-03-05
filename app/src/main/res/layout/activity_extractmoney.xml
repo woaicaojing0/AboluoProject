@@ -110,8 +110,8 @@
             <EditText
                 android:id="@+id/et_extract_bankCard"
                 android:layout_width="0dp"
-                android:layout_weight="4"
                 android:layout_height="40dp"
+                android:layout_weight="4"
                 android:hint="银行卡号"
                 android:inputType="number"
                 android:minWidth="200dp"
@@ -120,9 +120,9 @@
             <Button
                 android:id="@+id/btn_validate_bank"
                 android:layout_width="0dp"
-                android:layout_weight="1"
                 android:layout_height="40dp"
                 android:layout_marginLeft="8dp"
+                android:layout_weight="1"
                 android:background="@drawable/btn_sendyzm"
                 android:text="验证"
                 android:textColor="@color/white"
@@ -266,23 +266,33 @@
             android:layout_height="wrap_content"
             android:text="验  证  码：" />
 
-        <EditText
-            android:id="@+id/et_extract_authcode"
-            android:layout_width="100dp"
-            android:layout_height="40dp"
-            android:hint="验证码"
-            android:inputType="number"
-            android:textSize="16sp" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="horizontal">
 
-        <Button
-            android:id="@+id/btn_getinfo"
-            android:layout_width="85dp"
-            android:layout_height="40dp"
-            android:layout_marginLeft="15dp"
-            android:background="@drawable/btn_sendyzm"
-            android:text="点击获取"
-            android:textColor="@color/white"
-            android:textSize="14sp" />
+            <EditText
+                android:id="@+id/et_extract_authcode"
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:layout_weight="2.5"
+                android:hint="验证码"
+                android:inputType="number"
+                android:textSize="16sp" />
+
+            <Button
+                android:id="@+id/btn_getinfo"
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:layout_marginLeft="15dp"
+                android:layout_weight="2"
+                android:background="@drawable/btn_sendyzm"
+                android:text="点击获取"
+                android:textColor="@color/white"
+                android:textSize="14sp" />
+        </LinearLayout>
+
     </LinearLayout>
 
     <View

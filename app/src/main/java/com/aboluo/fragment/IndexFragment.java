@@ -720,6 +720,7 @@ public class IndexFragment extends Fragment implements View.OnClickListener, Ada
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
+                Toast.makeText(IndexFragment.this.getContext(), "专享商品获取超时，请刷新重试", Toast.LENGTH_SHORT).show();
 //                byte[] data = error.networkResponse.data;
                 //  Toast.makeText(IndexFragment.this.getContext(), new String(data), Toast.LENGTH_SHORT).show();
             }
@@ -1213,9 +1214,9 @@ public class IndexFragment extends Fragment implements View.OnClickListener, Ada
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                byte[] htmlBodyBytes = error.networkResponse.data;
+//                byte[] htmlBodyBytes = error.networkResponse.data;
                 //Toast.makeText(IndexFragment.this.getContext(), error.toString(), Toast.LENGTH_SHORT).show();
-                Log.i("woaiocaojingerroe", new String(htmlBodyBytes));
+//                Log.i("woaiocaojingerroe", new String(htmlBodyBytes));
                 // Log.i("woaicaojing", error.toString());
             }
         }) {
@@ -1386,7 +1387,7 @@ public class IndexFragment extends Fragment implements View.OnClickListener, Ada
                             startActivity(intent14);
                         } else {
                             Intent intent14 = new Intent(IndexFragment.this.getActivity(), LoginActivity.class);
-                            intent14.putExtra("fromHome",1);
+                            intent14.putExtra("fromHome", 1);
                             Toast.makeText(IndexFragment.this.getActivity(), "请先登录！", Toast.LENGTH_SHORT).show();
                         }
                         break;

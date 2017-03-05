@@ -49,7 +49,7 @@ public class OrderPayActivity extends Activity implements View.OnClickListener {
     private RadioButton ck_zfb_pay, ck_wx_pay;
     private ImageView iv_pay_back;
     private SweetAlertDialog finishDialog;
-
+    private boolean isdimiss = true;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -79,7 +79,7 @@ public class OrderPayActivity extends Activity implements View.OnClickListener {
         pdialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
         pdialog.setTitleText("处理中，请稍候...");
         pdialog.setCanceledOnTouchOutside(true);
-        pdialog.setCancelable(true);
+        pdialog.setCancelable(false);
         Intent intent = getIntent();
         String yuanmoney = intent.getStringExtra("payMoney");
         OrderNum = intent.getStringExtra("OrderNum");
@@ -107,6 +107,7 @@ public class OrderPayActivity extends Activity implements View.OnClickListener {
                         finishDialog.dismiss();
                     }
                 });
+        finishDialog.setCancelable(false);
     }
 
     private void Clean() {
@@ -307,10 +308,16 @@ public class OrderPayActivity extends Activity implements View.OnClickListener {
         }
     }
 
-    public boolean onKeyDown (int keyCode, KeyEvent event) {
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
-            finishDialog.show();
+            if (!isdimiss) {
+                finishDialog.dismiss();
+                finishDialog.show();
+            } else {
+                finishDialog.show();
+                isdimiss =false;
+            }
         }
-        return false;
+        return true;
     }
 }

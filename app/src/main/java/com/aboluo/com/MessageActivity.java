@@ -3,7 +3,6 @@ package com.aboluo.com;
 import android.app.Activity;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -101,7 +100,7 @@ public class MessageActivity extends Activity {
             public void onResponse(String response) {
                 response = response.replace("\\", "");
                 list = gson.fromJson(response, RecMsgBean.class);
-                if (list.getListResult().size() == 0) {
+                if (list.getListResult() == null || list.getListResult().size() == 0) {
                     Toast.makeText(MessageActivity.this, "暂无推送消息", Toast.LENGTH_SHORT).show();
                 } else {
                     messageAdapter = new MessageAdapter(list.getListResult(), MessageActivity.this);
@@ -120,7 +119,7 @@ public class MessageActivity extends Activity {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> map = new HashMap<>();
-                map.put("MemberId", MemberId);
+                map.put("MemberId", "3");
                 map.put("APPToken", APPToken);
                 map.put("PageSize", "20");
                 map.put("PageIndex", String.valueOf(currentpages));

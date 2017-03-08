@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.ActivityOptionsCompat;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -185,9 +186,9 @@ public class FastPartnerActivity extends Activity {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-//                byte[] htmlBodyBytes = error.networkResponse.data;
-//                //Toast.makeText(AddAddressActivity.this, error.toString(), Toast.LENGTH_SHORT).show();
-//                Log.i("woaiocaojingerroe", new String(htmlBodyBytes));
+                byte[] htmlBodyBytes = error.networkResponse.data;
+                //Toast.makeText(AddAddressActivity.this, error.toString(), Toast.LENGTH_SHORT).show();
+                Log.i("woaiocaojingerroe", new String(htmlBodyBytes));
 //                //sweetAlertDialog.dismiss();
                 pdialog.dismiss();
             }

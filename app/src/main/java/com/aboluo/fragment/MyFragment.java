@@ -216,6 +216,7 @@ public class MyFragment extends TakePhotoFragment implements View.OnClickListene
     }
 
     private void InitData() {
+        MemberId = CommonUtils.GetMemberId(MyFragment.this.getContext());
         StringRequest stringRequest = new StringRequest(Request.Method.POST, URL + "/api/MemberApi/ReceiveUserInfo", new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
@@ -550,11 +551,12 @@ public class MyFragment extends TakePhotoFragment implements View.OnClickListene
         if (CommonUtils.IsLogin(MyFragment.this.getContext())) {
             btn.setVisibility(View.GONE);
             my_out.setVisibility(View.VISIBLE);
+            InitData();
         } else {
             btn.setVisibility(View.VISIBLE);
             my_out.setVisibility(View.GONE);
         }
-        InitData();
+
     }
 
     @Override

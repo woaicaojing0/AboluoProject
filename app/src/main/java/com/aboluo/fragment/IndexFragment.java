@@ -1226,7 +1226,7 @@ public class IndexFragment extends Fragment implements View.OnClickListener, Ada
                 map.put("APPToken", APPToken);
                 map.put("CurrentPage", String.valueOf(currentpage));
                 map.put("PageSize", "20");
-                map.put("isHome", "1");
+                map.put("IsShowHomePage", "1");
                 return map;
             }
         };
@@ -1389,6 +1389,7 @@ public class IndexFragment extends Fragment implements View.OnClickListener, Ada
                             Intent intent14 = new Intent(IndexFragment.this.getActivity(), LoginActivity.class);
                             intent14.putExtra("fromHome", 1);
                             Toast.makeText(IndexFragment.this.getActivity(), "请先登录！", Toast.LENGTH_SHORT).show();
+                            startActivity(intent14);
                         }
                         break;
                 }

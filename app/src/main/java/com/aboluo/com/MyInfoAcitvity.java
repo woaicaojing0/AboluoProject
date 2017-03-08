@@ -204,7 +204,7 @@ public class MyInfoAcitvity extends TakePhotoActivity implements View.OnClickLis
                 break;
             case R.id.my_info_sex:
                 builder = new AlertDialog.Builder(MyInfoAcitvity.this);
-                final String[] sex = {"男", "女"};
+                final String[] sex = {"女", "男"};
                 //    设置一个单项选择下拉框
                 /**
                  * 第一个参数指定我们要显示的一组下拉单选框的数据集合
@@ -412,9 +412,9 @@ public class MyInfoAcitvity extends TakePhotoActivity implements View.OnClickLis
         my_inf_txt_nicheng.setText(myInfoBean.getResult().getUserNickName() == null ? "未填写"
                 : myInfoBean.getResult().getUserNickName().toString());
         if (myInfoBean.getResult().getMemberSex() == 0) {
-            my_info_txt_sex.setText("男");
-        } else {
             my_info_txt_sex.setText("女");
+        } else {
+            my_info_txt_sex.setText("男");
         }
         my_info_txt_phone.setText(myInfoBean.getResult().getMemberMobile() == null ? "未填写"
                 : myInfoBean.getResult().getMemberMobile().toString());

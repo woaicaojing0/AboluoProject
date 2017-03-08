@@ -30,7 +30,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
-                android:text="上级信息"/>
+                android:text="查看上级"/>
 
         </RelativeLayout>
 

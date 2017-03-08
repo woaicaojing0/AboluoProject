@@ -83,10 +83,13 @@ public class LoginActivity extends Activity implements View.OnClickListener, Tex
         if (intent.getExtras() == null) {
         } else {
             String status = intent.getStringExtra("status");
-            if (status.equals("OK")) {
-                LoginActivity.this.finish();
+            if (null == status) {
             } else {
-                Toast.makeText(this, "登录失败", Toast.LENGTH_SHORT).show();
+                if (status.equals("OK")) {
+                    LoginActivity.this.finish();
+                } else {
+                    Toast.makeText(this, "登录失败", Toast.LENGTH_SHORT).show();
+                }
             }
         }
     }

@@ -119,7 +119,7 @@ public class MessageActivity extends Activity {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> map = new HashMap<>();
-                map.put("MemberId", "3");
+                map.put("MemberId", MemberId);
                 map.put("APPToken", APPToken);
                 map.put("PageSize", "20");
                 map.put("PageIndex", String.valueOf(currentpages));

@@ -62,7 +62,7 @@ public class LoginActivity extends Activity implements View.OnClickListener, Tex
     private CircleImageView iv_login_touxiang;
     private ImageView login_back;
     private int fromHome = 0;
-
+    private String registrationid="";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -139,10 +139,10 @@ public class LoginActivity extends Activity implements View.OnClickListener, Tex
                 pDialog.show();
                 final String pwd = edit_userpwd.getText().toString();
                 final String name = edit_username.getText().toString();
-                final String registrationid = JPushInterface.getRegistrationID(LoginActivity.this);
+                registrationid = JPushInterface.getRegistrationID(LoginActivity.this);
                 if (null == registrationid || registrationid.length() == 0) {
-                    Toast.makeText(this, "设备id 为空", Toast.LENGTH_SHORT).show();
-                    return;
+                    //Toast.makeText(this, "设备id 为空", Toast.LENGTH_SHORT).show();
+                    registrationid="";
                 }
                 StringRequest stringRequest = new StringRequest(Request.Method.POST, URL + "/api/Login/UserLogin", new Response.Listener<String>() {
                     @Override

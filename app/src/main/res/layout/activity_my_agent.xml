@@ -61,6 +61,7 @@
 
 
                 <ImageView
+                    android:id="@+id/iv_agent_one"
                     android:layout_width="match_parent"
                     android:layout_height="36dp"
                     android:src="@drawable/one_agent"/>
@@ -94,9 +95,10 @@
 
 
                 <ImageView
+                    android:id="@+id/iv_agent_two"
                     android:layout_width="match_parent"
                     android:layout_height="36dp"
-                    android:src="@drawable/two_agent"/>
+                    android:src="@drawable/two_agent" />
 
                 <TextView
                     android:layout_width="match_parent"
@@ -123,12 +125,16 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
-
-
-                <ImageView
+                <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="36dp"
-                    android:src="@drawable/three_agent"/>
+                    android:layout_height="36dp">
+                    <ImageView
+                        android:id="@+id/iv_agent_three"
+                        android:layout_width="match_parent"
+                        android:layout_height="36dp"
+                        android:src="@drawable/three_agent"/>
+                </RelativeLayout>
+
 
                 <TextView
                     android:layout_width="match_parent"

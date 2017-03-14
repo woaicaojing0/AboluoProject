@@ -24,8 +24,8 @@ import com.aboluo.com.WebActivity.AgentDetailActivity;
  */
 
 public class MyAgentActivity extends Activity implements View.OnClickListener {
-    private LinearLayout agent_one, agent_two, agent_three;
-    private ImageView agent_back;
+    private LinearLayout agent_one, agent_two,agent_three;
+    private ImageView agent_back,iv_agent_three,iv_agent_two,iv_agent_one;
     private ProgressWebView wv_agent_detail;
     private String MemberId;
 
@@ -48,6 +48,8 @@ public class MyAgentActivity extends Activity implements View.OnClickListener {
         webviewsetting.setUseWideViewPort(true);//关键点
         webviewsetting.setLoadWithOverviewMode(true);
         AgentLevel(1);
+        cleanPic();
+        iv_agent_one.setImageResource( R.drawable.one_agent);
 
     }
 
@@ -56,6 +58,9 @@ public class MyAgentActivity extends Activity implements View.OnClickListener {
         agent_two = (LinearLayout) findViewById(R.id.agent_two);
         agent_three = (LinearLayout) findViewById(R.id.agent_three);
         agent_back = (ImageView) findViewById(R.id.agent_back);
+        iv_agent_three = (ImageView) findViewById(R.id.iv_agent_three);
+        iv_agent_two = (ImageView) findViewById(R.id.iv_agent_two);
+        iv_agent_one = (ImageView) findViewById(R.id.iv_agent_one);
         wv_agent_detail = (ProgressWebView) findViewById(R.id.wv_agent_detail);
         MemberId = CommonUtils.GetMemberId(this);
     }
@@ -64,12 +69,18 @@ public class MyAgentActivity extends Activity implements View.OnClickListener {
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.agent_one:
+                cleanPic();
+                iv_agent_one.setImageResource( R.drawable.one_agent);
                 AgentLevel(1);
                 break;
             case R.id.agent_two:
+                cleanPic();
+                iv_agent_two.setImageResource(R.drawable.two_agent);
                 AgentLevel(2);
                 break;
             case R.id.agent_three:
+                cleanPic();
+                iv_agent_three.setImageResource(R.drawable.three_agent);
                 AgentLevel(3);
                 break;
             case R.id.agent_back:
@@ -108,5 +119,12 @@ public class MyAgentActivity extends Activity implements View.OnClickListener {
                 Log.d("AgentDetailActivity", "当前代理等级" + level + "");
                 break;
         }
+    }
+
+    private  void cleanPic()
+    {
+        iv_agent_three.setImageResource(R.drawable.three_agent_normal);
+        iv_agent_two.setImageResource(R.drawable.two_agent_normal);
+        iv_agent_one.setImageResource(R.drawable.iv_agent_one_normal);
     }
 }

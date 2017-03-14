@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:app="http://schemas.android.com/apk/res-auto"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:orientation="vertical">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
@@ -59,15 +59,30 @@
                 android:gravity="center_vertical"
                 android:orientation="vertical">
 
-
-                <ImageView
-                    android:id="@+id/iv_agent_one"
+                <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="36dp"
-                    android:src="@drawable/one_agent"/>
+                    android:layout_height="40dp">
+                    <ImageView
+                        android:layout_centerVertical="true"
+                        android:layout_centerHorizontal="true"
+                        android:id="@+id/iv_agent_one"
+                        android:layout_width="wrap_content"
+                        android:layout_height="40dp"
+                        android:src="@drawable/agent_bg"
+                        android:layout_alignParentTop="true" />
+                    <TextView
+                        android:text="1"
+                        android:paddingTop="8dp"
+                        android:layout_centerVertical="true"
+                        android:layout_centerHorizontal="true"
+                        android:textColor="@color/white"
+                        android:textSize="18dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                </RelativeLayout>
 
                 <TextView
-                    android:id="@+id/textView12"
+                    android:id="@+id/tv_one"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="6dp"
@@ -94,13 +109,31 @@
                 android:orientation="vertical">
 
 
-                <ImageView
-                    android:id="@+id/iv_agent_two"
+                <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="36dp"
-                    android:src="@drawable/two_agent" />
+                    android:layout_height="40dp">
+                    <ImageView
+                        android:layout_centerVertical="true"
+                        android:layout_centerHorizontal="true"
+                        android:id="@+id/iv_agent_two"
+                        android:layout_width="wrap_content"
+                        android:layout_height="40dp"
+                        android:src="@drawable/agent_bg"
+                        android:layout_alignParentTop="true" />
+                    <TextView
+                        android:text="2"
+                        android:paddingTop="8dp"
+                        android:layout_centerVertical="true"
+                        android:layout_centerHorizontal="true"
+                        android:textColor="@color/white"
+                        android:textSize="18dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                         />
+                </RelativeLayout>
 
                 <TextView
+                    android:id="@+id/tv_two"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="6dp"
@@ -127,16 +160,30 @@
                 android:orientation="vertical">
                 <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="36dp">
+                    android:layout_height="40dp">
                     <ImageView
+                        android:layout_centerVertical="true"
+                        android:layout_centerHorizontal="true"
                         android:id="@+id/iv_agent_three"
-                        android:layout_width="match_parent"
-                        android:layout_height="36dp"
-                        android:src="@drawable/three_agent"/>
+                        android:layout_width="wrap_content"
+                        android:layout_height="40dp"
+                        android:src="@drawable/agent_bg"
+                        android:layout_alignParentTop="true" />
+                    <TextView
+                        android:text="3"
+                        android:paddingTop="8dp"
+                        android:layout_centerVertical="true"
+                        android:layout_centerHorizontal="true"
+                        android:textColor="@color/white"
+                        android:textSize="18dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/textView14" />
                 </RelativeLayout>
 
 
                 <TextView
+                    android:id="@+id/tv_three"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="6dp"

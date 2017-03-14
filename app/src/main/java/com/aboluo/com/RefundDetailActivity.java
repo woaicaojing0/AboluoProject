@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.GridView;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -80,6 +81,7 @@ public class RefundDetailActivity extends TakePhotoActivity implements View.OnCl
     private QiNiuToken qiNiuToken;
     private RadioGroup tuikuan_type;
     private RadioButton goodsAndmoney, only_huanhuo;
+    private ImageView my_refunddetail_text_back;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,6 +90,7 @@ public class RefundDetailActivity extends TakePhotoActivity implements View.OnCl
         init();
         refund_take_photo.setOnClickListener(this);
         begin_refund.setOnClickListener(this);
+        my_refunddetail_text_back.setOnClickListener(this);
         SimpleDateFormat sDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String date = sDateFormat.format(new Date());
         refundetail_time.setText(date);
@@ -134,6 +137,7 @@ public class RefundDetailActivity extends TakePhotoActivity implements View.OnCl
         tuikuan_type = (RadioGroup) findViewById(R.id.tuikuan_type);
         goodsAndmoney = (RadioButton) findViewById(R.id.goodsAndmoney);
         only_huanhuo = (RadioButton) findViewById(R.id.only_huanhuo);
+        my_refunddetail_text_back = (ImageView) findViewById(R.id.my_refunddetail_text_back);
         imageViewsurl = new ArrayList<>();
         tImageArrayList = new ArrayList<>();
         ImageUploadNameList = new ArrayList<>();
@@ -235,6 +239,9 @@ public class RefundDetailActivity extends TakePhotoActivity implements View.OnCl
                     }
                 }
                 break;
+            case R.id.my_refunddetail_text_back:
+                finish();
+                break;
             default:
                 break;
         }
@@ -285,7 +292,7 @@ public class RefundDetailActivity extends TakePhotoActivity implements View.OnCl
 //                byte[] bytecode = error.networkResponse.data;
 //                String s = new String(bytecode);
 //                Toast.makeText(RefundDetailActivity.this, "Token" + s, Toast.LENGTH_SHORT).show();
-                Toast.makeText(RefundDetailActivity.this,error.toString(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(RefundDetailActivity.this, error.toString(), Toast.LENGTH_SHORT).show();
             }
         }) {
             @Override

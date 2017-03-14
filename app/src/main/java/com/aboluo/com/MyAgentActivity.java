@@ -2,6 +2,7 @@ package com.aboluo.com;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -11,6 +12,7 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.aboluo.XUtils.CommonUtils;
@@ -27,6 +29,7 @@ public class MyAgentActivity extends Activity implements View.OnClickListener {
     private LinearLayout agent_one, agent_two,agent_three;
     private ImageView agent_back,iv_agent_three,iv_agent_two,iv_agent_one;
     private ProgressWebView wv_agent_detail;
+    private TextView tv_one,tv_two,tv_three;
     private String MemberId;
 
     @Override
@@ -49,7 +52,8 @@ public class MyAgentActivity extends Activity implements View.OnClickListener {
         webviewsetting.setLoadWithOverviewMode(true);
         AgentLevel(1);
         cleanPic();
-        iv_agent_one.setImageResource( R.drawable.one_agent);
+        iv_agent_one.setImageResource( R.drawable.agent_bg);
+        tv_one.setTextColor(Color.parseColor("#f63995"));
 
     }
 
@@ -61,6 +65,9 @@ public class MyAgentActivity extends Activity implements View.OnClickListener {
         iv_agent_three = (ImageView) findViewById(R.id.iv_agent_three);
         iv_agent_two = (ImageView) findViewById(R.id.iv_agent_two);
         iv_agent_one = (ImageView) findViewById(R.id.iv_agent_one);
+        tv_one = (TextView) findViewById(R.id.tv_one);
+        tv_two = (TextView) findViewById(R.id.tv_two);
+        tv_three = (TextView) findViewById(R.id.tv_three);
         wv_agent_detail = (ProgressWebView) findViewById(R.id.wv_agent_detail);
         MemberId = CommonUtils.GetMemberId(this);
     }
@@ -70,17 +77,20 @@ public class MyAgentActivity extends Activity implements View.OnClickListener {
         switch (v.getId()) {
             case R.id.agent_one:
                 cleanPic();
-                iv_agent_one.setImageResource( R.drawable.one_agent);
+                iv_agent_one.setImageResource( R.drawable.agent_bg);
+                tv_one.setTextColor(Color.parseColor("#f63995"));
                 AgentLevel(1);
                 break;
             case R.id.agent_two:
                 cleanPic();
-                iv_agent_two.setImageResource(R.drawable.two_agent);
+                iv_agent_two.setImageResource(R.drawable.agent_bg);
+                tv_two.setTextColor(Color.parseColor("#f63995"));
                 AgentLevel(2);
                 break;
             case R.id.agent_three:
                 cleanPic();
-                iv_agent_three.setImageResource(R.drawable.three_agent);
+                iv_agent_three.setImageResource(R.drawable.agent_bg);
+                tv_three.setTextColor(Color.parseColor("#f63995"));
                 AgentLevel(3);
                 break;
             case R.id.agent_back:
@@ -123,8 +133,11 @@ public class MyAgentActivity extends Activity implements View.OnClickListener {
 
     private  void cleanPic()
     {
-        iv_agent_three.setImageResource(R.drawable.three_agent_normal);
-        iv_agent_two.setImageResource(R.drawable.two_agent_normal);
-        iv_agent_one.setImageResource(R.drawable.iv_agent_one_normal);
+        iv_agent_three.setImageResource(R.drawable.agent_bg_normal);
+        iv_agent_two.setImageResource(R.drawable.agent_bg_normal);
+        iv_agent_one.setImageResource(R.drawable.agent_bg_normal);
+        tv_two.setTextColor(Color.parseColor("#ACACB6"));
+        tv_one.setTextColor(Color.parseColor("#ACACB6"));
+        tv_three.setTextColor(Color.parseColor("#ACACB6"));
     }
 }

@@ -43,7 +43,6 @@ import com.squareup.picasso.Picasso;
 
 import org.json.JSONObject;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -83,6 +82,7 @@ public class EvaluationActivity extends TakePhotoActivity implements View.OnClic
     private RatingBar room_ratingbar3;
     private CheckBox cb_evaluation_name;
     private int orderItemId;
+    private ImageView my_evaluation_text_back;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,6 +90,7 @@ public class EvaluationActivity extends TakePhotoActivity implements View.OnClic
         setContentView(R.layout.activity_publish_evaluation);
         init();
         evaluation_take_photo.setOnClickListener(this);
+        my_evaluation_text_back.setOnClickListener(this);
         int width = (ScreenUtils.getScreenWidth(this) - CommonUtils.dip2px(this, 12)) / 4;
         evaluation_take_photo.setLayoutParams(new LinearLayout.LayoutParams(width, width));
         take_pic_gridview.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, width * 2));
@@ -145,6 +146,7 @@ public class EvaluationActivity extends TakePhotoActivity implements View.OnClic
         edit_evaluation_content = (EditText) findViewById(R.id.edit_evaluation_content);
         room_ratingbar3 = (RatingBar) findViewById(R.id.room_ratingbar3);
         cb_evaluation_name = (CheckBox) findViewById(R.id.cb_evaluation_name);
+        my_evaluation_text_back = (ImageView) findViewById(R.id.my_evaluation_text_back);
         imageViews = new ArrayList<>();
         imageViewsurl = new ArrayList<>();
         tImageArrayList = new ArrayList<>();
@@ -178,6 +180,9 @@ public class EvaluationActivity extends TakePhotoActivity implements View.OnClic
             case R.id.btn_beginEvaluation:
                 String token = qiNiuToken.getFileUploadToken();
                 UploadImage(imageViewsurl, token);
+                break;
+            case R.id.my_evaluation_text_back:
+                finish();
                 break;
         }
     }
@@ -249,10 +254,9 @@ public class EvaluationActivity extends TakePhotoActivity implements View.OnClic
      * @param filepath 文件的地址
      */
     private void UploadImage(final ArrayList<String> filepath, String token) {
-        if(filepath.size() ==0)
-        {
+        if (filepath.size() == 0) {
             UploadEvaluation();
-        }else {
+        } else {
             num = 0;
             ImageUploadNameList.clear();
             //pdialog.setTitleText("上传中......");
@@ -289,16 +293,15 @@ public class EvaluationActivity extends TakePhotoActivity implements View.OnClic
     private void UploadEvaluation() {
         if (ValidateEvaluation()) {
             String anonymous = "1"; //是否匿名评价（0 不匿名，1 匿名）
-            String evaluationImage =null;
-            if(ImageUploadNameList.size() ==0)
-            {
-                evaluationImage=";";
-            }else {
+            String evaluationImage = null;
+            if (ImageUploadNameList.size() == 0) {
+                evaluationImage = ";";
+            } else {
                 evaluationImage = CommonUtils.listToString(ImageUploadNameList, ';');
             }
 
             final String evaluationContents = edit_evaluation_content.getText().toString();
-            final String evaluationLevel = String.valueOf((int)(room_ratingbar3.getRating()));
+            final String evaluationLevel = String.valueOf((int) (room_ratingbar3.getRating()));
             if (cb_evaluation_name.isChecked()) {
                 anonymous = "0";
             }

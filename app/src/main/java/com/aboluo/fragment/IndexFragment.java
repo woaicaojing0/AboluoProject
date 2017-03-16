@@ -714,7 +714,7 @@ public class IndexFragment extends Fragment implements View.OnClickListener, Ada
                     rollPagerView.getViewPager().getAdapter().notifyDataSetChanged();// 更新banner图片
                     rollPagerView.setFocusable(false);
                 } else {
-                    Toast.makeText(IndexFragment.this.getContext(), indexBannerBean.getMessage().toString(), Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(IndexFragment.this.getContext(), indexBannerBean.getMessage().toString(), Toast.LENGTH_SHORT).show();
                 }
             }
         }, new Response.ErrorListener() {
@@ -776,7 +776,7 @@ public class IndexFragment extends Fragment implements View.OnClickListener, Ada
 
                     }
                 } else {
-                    Toast.makeText(IndexFragment.this.getContext(), huodongbean.getMessage().toString(), Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(IndexFragment.this.getContext(), huodongbean.getMessage().toString(), Toast.LENGTH_SHORT).show();
                 }
             }
         }, new Response.ErrorListener() {
@@ -822,7 +822,7 @@ public class IndexFragment extends Fragment implements View.OnClickListener, Ada
                     }
 
                 } else {
-                    Toast.makeText(IndexFragment.this.getContext(), hotSaleGridViewBean.getMessage().toString(), Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(IndexFragment.this.getContext(), hotSaleGridViewBean.getMessage().toString(), Toast.LENGTH_SHORT).show();
                 }
             }
         }, new Response.ErrorListener() {
@@ -885,7 +885,7 @@ public class IndexFragment extends Fragment implements View.OnClickListener, Ada
                         Toast.makeText(IndexFragment.this.getContext(), "特色专区图片少于5个", Toast.LENGTH_SHORT).show();
                     }
                 } else {
-                    Toast.makeText(IndexFragment.this.getContext(), hotSaleImageBean.getMessage().toString(), Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(IndexFragment.this.getContext(), hotSaleImageBean.getMessage().toString(), Toast.LENGTH_SHORT).show();
                 }
             }
         }, new Response.ErrorListener() {
@@ -932,7 +932,7 @@ public class IndexFragment extends Fragment implements View.OnClickListener, Ada
                     }
                 } else {
                     theme_view_pager.setVisibility(View.GONE);
-                    Toast.makeText(IndexFragment.this.getContext(), themeBannerConfigBean.getMessage().toString(), Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(IndexFragment.this.getContext(), themeBannerConfigBean.getMessage().toString(), Toast.LENGTH_SHORT).show();
                 }
             }
         }, new Response.ErrorListener() {
@@ -1062,7 +1062,7 @@ public class IndexFragment extends Fragment implements View.OnClickListener, Ada
                     }
                 } else {
                     brand_view_pager.setVisibility(View.GONE);
-                    Toast.makeText(IndexFragment.this.getContext(), themeBannerConfigBean.getMessage().toString(), Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(IndexFragment.this.getContext(), themeBannerConfigBean.getMessage().toString(), Toast.LENGTH_SHORT).show();
                 }
             }
         }, new Response.ErrorListener() {
@@ -1099,7 +1099,7 @@ public class IndexFragment extends Fragment implements View.OnClickListener, Ada
                     BrandGridViewAdapter brandGridViewAdapter = new BrandGridViewAdapter(IndexFragment.this.getContext(), arrString);
                     brand_gridview.setAdapter(brandGridViewAdapter);
                 } else {
-                    Toast.makeText(IndexFragment.this.getContext(), brandConfigBean.getMessage().toString(), Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(IndexFragment.this.getContext(), brandConfigBean.getMessage().toString(), Toast.LENGTH_SHORT).show();
                 }
             }
         }, new Response.ErrorListener() {
@@ -1258,7 +1258,7 @@ public class IndexFragment extends Fragment implements View.OnClickListener, Ada
                     }
                 } else {
                     special_view_pager.setVisibility(View.GONE);
-                    Toast.makeText(IndexFragment.this.getContext(), specialConfigBean.getMessage().toString(), Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(IndexFragment.this.getContext(), specialConfigBean.getMessage().toString(), Toast.LENGTH_SHORT).show();
                 }
                 pullToRefreshScrollView.onRefreshComplete();
             }
@@ -1308,7 +1308,7 @@ public class IndexFragment extends Fragment implements View.OnClickListener, Ada
                     }
                 } else {
                     mid_gridview.setVisibility(View.GONE);
-                    Toast.makeText(IndexFragment.this.getContext(), midGridViewConfigBean.getMessage().toString(), Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(IndexFragment.this.getContext(), midGridViewConfigBean.getMessage().toString(), Toast.LENGTH_SHORT).show();
                 }
             }
         }, new Response.ErrorListener() {

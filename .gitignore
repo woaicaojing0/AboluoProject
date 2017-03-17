@@ -8,3 +8,5 @@
 /captures
 /PullToRefresh/build
 PullToRefresh/
+.idea/gradle.xml
+PullToRefresh/

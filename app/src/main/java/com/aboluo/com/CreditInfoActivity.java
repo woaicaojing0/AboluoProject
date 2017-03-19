@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.aboluo.XUtils.CommonUtils;
 import com.aboluo.XUtils.MyApplication;
@@ -164,7 +165,11 @@ public class CreditInfoActivity extends Activity implements View.OnClickListener
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btn_apply_extract_money:
-                Bundle bundle = this.getIntent().getExtras();
+                Bundle bundle = getIntent().getExtras();
+                if ("0".equals(bundle.get("email")) && "0".equals(bundle.get("phone"))) {
+                    Toast.makeText(this, "请先至个人信息绑定手机号或者邮箱", Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 Intent intent = new Intent(CreditInfoActivity.this, ExtractMoneyActivity.class);
                 intent.putExtras(bundle);
                 startActivity(intent);

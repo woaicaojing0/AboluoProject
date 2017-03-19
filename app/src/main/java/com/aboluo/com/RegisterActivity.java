@@ -205,13 +205,13 @@ public class RegisterActivity extends Activity implements View.OnClickListener, 
                 final String pwd = register_edit_pwd.getText().toString().trim();
                 RegisterPhoneNumber = preferences.getString("registerPhoneNumber", "0");
                 if (ValidateUtils.isMiMaRight(pwd)) {
-                    if (!RegisterPhoneNumber.equals(number2)) {
-                        new SweetAlertDialog(this, SweetAlertDialog.ERROR_TYPE)
-                                .setTitleText("提示")
-                                .setContentText("请输入正确的手机号或邮箱!")
-                                .setConfirmText("确定")
-                                .show();
-                    } else {
+//                    if (!RegisterPhoneNumber.equals(number2)) {
+//                        new SweetAlertDialog(this, SweetAlertDialog.ERROR_TYPE)
+//                                .setTitleText("提示")
+//                                .setContentText("请输入正确的手机号或邮箱!")
+//                                .setConfirmText("确定")
+//                                .show();
+//                    } else {
                     StringRequest stringRequest = new StringRequest(Request.Method.POST, URL + "/api/Login/UserRegister", new Response.Listener<String>() {
                         @Override
                         public void onResponse(String response) {
@@ -253,7 +253,7 @@ public class RegisterActivity extends Activity implements View.OnClickListener, 
                         }
                     };
                     requestQueue.add(stringRequest);
-                    }
+//                    }
                 } else {
                     new SweetAlertDialog(this, SweetAlertDialog.ERROR_TYPE)
                             .setTitleText("提示")

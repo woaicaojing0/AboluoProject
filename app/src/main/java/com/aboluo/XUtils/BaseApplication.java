@@ -55,7 +55,7 @@ public class BaseApplication extends MultiDexApplication {
     public void onCreate() {
         super.onCreate();
         //初始化七鱼客服
-        Unicorn.init(this, "219a5cea9ad19bbf6fea3add081a1d27", options(), new PicassoImageLoader()); //
+        //Unicorn.init(this, "219a5cea9ad19bbf6fea3add081a1d27", options(), new PicassoImageLoader()); //
         //初始化volley
         MyApplication.init(this);
         //初始化工具类

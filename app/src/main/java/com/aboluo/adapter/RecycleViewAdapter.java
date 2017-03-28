@@ -13,9 +13,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.aboluo.XUtils.CommonUtils;
+import com.aboluo.XUtils.Utils;
 import com.aboluo.com.R;
 import com.aboluo.model.GoodsListInfo;
 import com.squareup.picasso.Picasso;
+import com.switfpass.pay.utils.XmlUtils;
 
 import java.util.List;
 
@@ -65,7 +67,9 @@ public class RecycleViewAdapter extends RecyclerView.Adapter<RecycleViewAdapter.
             }
             Log.i("woaicaojing", imageurls[0].toString());
             Picasso.with(mcontext).load(imageurls[0]).placeholder(mcontext.getResources().getDrawable(R.drawable.imagviewloading))
+                    .resize(Utils.dp2px(mcontext,250),Utils.dp2px(mcontext,250))
                     .error(mcontext.getResources().getDrawable(R.drawable.imageview_error)).into(holder.goods_image);
+
 
         }
         holder.new_money.setText(String.valueOf(mgoodGoodsListBean.get(position).getHyPrice()));

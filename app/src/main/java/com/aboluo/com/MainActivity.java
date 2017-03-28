@@ -15,6 +15,7 @@ import android.widget.Toast;
 
 import com.aboluo.XUtils.CommonUtils;
 import com.aboluo.XUtils.MyApplication;
+import com.aboluo.XUtils.PicassoImageLoader;
 import com.aboluo.fragment.IndexFragment;
 import com.aboluo.fragment.MenuFragment;
 import com.aboluo.fragment.MyFragment;
@@ -22,6 +23,10 @@ import com.aboluo.fragment.ShopCarFragment;
 import com.pgyersdk.javabean.AppBean;
 import com.pgyersdk.update.PgyUpdateManager;
 import com.pgyersdk.update.UpdateManagerListener;
+import com.qiyukf.unicorn.api.SavePowerConfig;
+import com.qiyukf.unicorn.api.StatusBarNotificationConfig;
+import com.qiyukf.unicorn.api.Unicorn;
+import com.qiyukf.unicorn.api.YSFOptions;
 
 import me.drakeet.materialdialog.MaterialDialog;
 
@@ -38,6 +43,14 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
     private ImageView iv_menu_home, iv_bottom_menu, iv_menu_car, iv_menu_me;
     private TextView tv_menu_home, tv_bottom_menu, tv_menu_car, tv_menu_me;
 
+    // 如果返回值为null，则全部使用默认参数。
+    private YSFOptions options() {
+        YSFOptions options = new YSFOptions();
+        options.statusBarNotificationConfig = new StatusBarNotificationConfig();
+        options.savePowerConfig = new SavePowerConfig();
+        return options;
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,6 +62,7 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
         shopcar_linelayout.setOnClickListener(this);
         my_linelayout.setOnClickListener(this);
         checkUpdate();
+        Unicorn.init(this, "219a5cea9ad19bbf6fea3add081a1d27", options(), new PicassoImageLoader());
     }
 
     private void SwitchFragment(int id) {

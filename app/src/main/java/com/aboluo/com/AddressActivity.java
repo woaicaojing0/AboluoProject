@@ -189,9 +189,9 @@ public class AddressActivity extends Activity implements View.OnClickListener {
                     boolean ischeked = checkBox.isChecked();
                     if (checkBox.isChecked()) {
                         ChageDefaultAddress((Integer) tag, 1);
-
                     } else {
-                        ChageDefaultAddress((Integer) tag, 0);
+                        checkBox.setChecked(true);
+                        //ChageDefaultAddress((Integer) tag, 0);
                     }
                 } else {
                 }

@@ -69,7 +69,7 @@ public class MakeOrderActivity extends Activity implements View.OnClickListener 
     private TextView order_yunfei, tv_order_tishi;
     private double yunfei = 0.0;
     private int choose_address_requestcode = 2;
-    private static int AddressId = 0;
+    private int AddressId = 0;
     private RelativeLayout change_make_sure_location;
     private String MemberId;
     private String payfrom; //从哪边支付
@@ -128,6 +128,7 @@ public class MakeOrderActivity extends Activity implements View.OnClickListener 
     }
 
     private void init() {
+        AddressId = 0;
         txt_allmoney = (TextView) findViewById(R.id.txt_allmoney);
         ck_makerorder_jifeng = (CheckBox) findViewById(R.id.ck_makerorder_jifeng);
         rl_makeorder_usecoupons = (RelativeLayout) findViewById(R.id.rl_makeorder_usecoupons);
@@ -203,7 +204,7 @@ public class MakeOrderActivity extends Activity implements View.OnClickListener 
                 }
 //                    addressInfoBean.getResult().getMemberAddressList().get(0).get
                 else {
-                    Toast.makeText(MakeOrderActivity.this, "获取默认地址出错，请重试！", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MakeOrderActivity.this, "请选择收货地址！", Toast.LENGTH_SHORT).show();
                     Log.i("woaicaojingpay", addressDefaultBean.getResult().toString());
                 }
                 pdialog.dismiss();
@@ -211,7 +212,7 @@ public class MakeOrderActivity extends Activity implements View.OnClickListener 
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(MakeOrderActivity.this, "获取默认地址出错，请重试！" + error.toString(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(MakeOrderActivity.this, "请选择收货地址！", Toast.LENGTH_SHORT).show();
                 pdialog.dismiss();
 
                 Log.i("woaicaojingpay", error.toString());
@@ -341,7 +342,7 @@ public class MakeOrderActivity extends Activity implements View.OnClickListener 
                 SubmitOrder();
                 break;
             case R.id.change_make_sure_location:
-                isFirst=true;
+                isFirst = true;
                 Intent intent = new Intent(MakeOrderActivity.this, ChooseAddressActivtiy.class);
                 startActivityForResult(intent, choose_address_requestcode);
                 break;

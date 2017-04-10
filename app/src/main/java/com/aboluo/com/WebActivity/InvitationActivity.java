@@ -95,7 +95,7 @@ public class InvitationActivity extends Activity {
         // titleUrl是标题的网络链接，仅在人人网和QQ空间使用
         oks.setTitleUrl(detailurl0);
         // text是分享文本，所有平台都需要这个字段
-        oks.setText("点击查看详情");
+        oks.setText("精明购物好助手，美好生活新高度");
 //        Context packageContext = this.createPackageContext(this.getPackageName(),
 //                Context.CONTEXT_RESTRICTED);
 //        Resources resources = packageContext.getResources();

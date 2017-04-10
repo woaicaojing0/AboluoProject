@@ -37,7 +37,8 @@
     <com.handmark.pulltorefresh.library.PullToRefreshScrollView xmlns:ptr="http://schemas.android.com/apk/res-auto"
         android:id="@+id/sv_fastparnter"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
+        android:layout_weight="6"
         android:scrollbars="none"
         android:paddingRight="6dp"
         android:paddingLeft="6dp"
@@ -70,6 +71,16 @@
                 android:layout_marginTop="8dp"
                 android:lineSpacingExtra="8dp"
                 android:text="成为合伙人后第一次购买普通商品后可申请全额退款免单；还可累计分享和消费升级成为股东参与公司季度分红。" />
+
+        </LinearLayout>
+    </com.handmark.pulltorefresh.library.PullToRefreshScrollView>
+    <LinearLayout
+        android:orientation="vertical"
+        android:paddingRight="6dp"
+        android:paddingLeft="6dp"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
@@ -91,21 +102,20 @@
                     android:text="18.8"/>
             </LinearLayout>
         </RelativeLayout>
-            <RelativeLayout
-                android:layout_marginBottom="20dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-               <Button
-                   android:id="@+id/btn_fastpartner"
-                   android:paddingLeft="8dp"
-                   android:paddingRight="8dp"
-                   android:textColor="@color/white"
-                   android:background="@drawable/fastpartner_bg"
-                   android:layout_width="wrap_content"
-                   android:layout_height="wrap_content"
-                   android:layout_alignParentRight="true"
-                   android:text="立即成为合伙人"/>
-            </RelativeLayout>
-        </LinearLayout>
-    </com.handmark.pulltorefresh.library.PullToRefreshScrollView>
+        <RelativeLayout
+            android:layout_marginBottom="4dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <Button
+                android:id="@+id/btn_fastpartner"
+                android:paddingLeft="8dp"
+                android:paddingRight="8dp"
+                android:textColor="@color/white"
+                android:background="@drawable/fastpartner_bg"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:text="立即成为合伙人"/>
+        </RelativeLayout>
+    </LinearLayout>
 </LinearLayout>

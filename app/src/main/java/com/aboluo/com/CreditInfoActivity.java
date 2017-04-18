@@ -114,7 +114,20 @@ public class CreditInfoActivity extends Activity implements View.OnClickListener
                 creditInfoBean = gson.fromJson(response, CreditInfoBean.class);
                 if (creditInfoBean.isIsSuccess()) {
                     totalmoney.setText("￥" + creditInfoBean.getTotalMoney());
-                    memberlevel.setText(creditInfoBean.getIsLeader() == 0 ? "普通用户" : "合伙人");
+                    switch (creditInfoBean.getIsLeader()) {
+                        case 0:
+                            memberlevel.setText("普通会员");
+                            break;
+                        case 1:
+                            memberlevel.setText("合伙人");
+                            break;
+                        case 2:
+                            memberlevel.setText("金牌合伙人");
+                            break;
+                        default:
+                            memberlevel.setText("普通会员");
+                            break;
+                    }
                     totalscore.setText("￥" + creditInfoBean.getTotalScore());
                     freeMoney.setText("￥" + creditInfoBean.getFreeMoney());
                     CanUserMoney.setText("￥" + creditInfoBean.getCanUseMoney());

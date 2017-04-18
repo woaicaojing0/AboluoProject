@@ -237,8 +237,20 @@ public class MyFragment extends TakePhotoFragment implements View.OnClickListene
                     //更新用户的身份
                     CommonUtils.SetisDealer(MyFragment.this.getContext(), String.valueOf(myInfoBean.getResult()
                             .getIsLeader()));
-                    tv_my_huiyuan.setText(myInfoBean.getResult()
-                            .getIsLeader() == 0 ? "普通会员" : "合伙人");
+                    switch (myInfoBean.getResult().getIsLeader()) {
+                        case 0:
+                            tv_my_huiyuan.setText("普通会员");
+                            break;
+                        case 1:
+                            tv_my_huiyuan.setText("合伙人");
+                            break;
+                        case 2:
+                            tv_my_huiyuan.setText("金牌合伙人");
+                            break;
+                        default:
+                            tv_my_huiyuan.setText("普通会员");
+                            break;
+                    }
                     tv_user_id.setText("用户编号：10" + String.valueOf(myInfoBean.getResult().getMemberId()));
                 } else {
                     Toast.makeText(MyFragment.this.getContext(), "个人信息获取失败，请重试", Toast.LENGTH_SHORT).show();

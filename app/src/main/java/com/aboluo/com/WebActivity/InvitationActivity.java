@@ -107,7 +107,7 @@ public class InvitationActivity extends Activity {
 //        Log.i("invitationimageurl",getRealPathFromUri(this,uri));
 //        oks.setImagePath(getRealPathFromUri(this,uri));//确保SDcard下面存在此张图片
         // url仅在微信（包括好友和朋友圈）中使用
-        oks.setImageUrl(detailurl0);
+        oks.setImageUrl("http://back.aboluomall.com/Content/Images/aboluologo.jpg");
         oks.setUrl(detailurl0);
         // comment是我对这条分享的评论，仅在人人网和QQ空间使用
         // site是分享此内容的网站名称，仅在QQ空间使用

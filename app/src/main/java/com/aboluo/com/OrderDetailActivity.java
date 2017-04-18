@@ -16,6 +16,7 @@ import com.aboluo.XUtils.CommonUtils;
 import com.aboluo.XUtils.MyApplication;
 import com.aboluo.adapter.ExpressListAdapter;
 import com.aboluo.adapter.OrderDetailItemAdpater;
+import com.aboluo.model.BaseModel;
 import com.aboluo.model.OrderDetailInfo;
 import com.aboluo.widget.MyListview;
 import com.android.volley.AuthFailureError;
@@ -61,6 +62,7 @@ public class OrderDetailActivity extends Activity implements View.OnClickListene
     private TextView oederdetail_findgoods, oederdetail_ok, oederdetail_cancelorder,
             oederdetail_payorder, oederdetail_cuicui, order_detail_topstatus, tv_orderdetail_code;
     private MyListview lv_expresslist;
+    private SweetAlertDialog finishDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -256,6 +258,26 @@ public class OrderDetailActivity extends Activity implements View.OnClickListene
                 startActivity(intent2);
                 break;
             case R.id.oederdetail_ok:
+                finishDialog = new SweetAlertDialog(OrderDetailActivity.this, SweetAlertDialog.WARNING_TYPE)
+                        .setTitleText("您确定收货")
+                        .setCancelText("稍等片刻")
+                        .setConfirmText("确认收货")
+                        .showCancelButton(true)
+                        .setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                            @Override
+                            public void onClick(SweetAlertDialog sDialog) {
+                                finishDialog.dismiss();
+                            }
+                        })
+                        .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                            @Override
+                            public void onClick(SweetAlertDialog sweetAlertDialog) {
+                                finishDialog.dismiss();
+                                ConfirmOrder(String.valueOf(orderDetailInfo.getResult().get(0).getOrderId()));
+                            }
+                        });
+                finishDialog.setCancelable(false);
+                finishDialog.show();
 
                 break;
             case R.id.order_detail_back:
@@ -298,6 +320,39 @@ public class OrderDetailActivity extends Activity implements View.OnClickListene
         oederdetail_cancelorder.setVisibility(View.GONE);
         oederdetail_payorder.setVisibility(View.GONE);
         oederdetail_cuicui.setVisibility(View.GONE);
+    }
+
+    /**
+     * 确认收货
+     */
+    private void ConfirmOrder(final String OrderId) {
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, URL + "/api/Order/ReceiveConfirmReceipt", new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                response = response.replace("\\", "");
+                response = response.substring(1, response.length() - 1);
+                BaseModel baseModel = gson.fromJson(response, BaseModel.class);
+                Toast.makeText(OrderDetailActivity.this, baseModel.getMessage().toString(), Toast.LENGTH_SHORT).show();
+                OrderDetailActivity.this.finish();
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        }) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> map = new HashMap<>();
+                map.put("MemberId", Memberid);
+                map.put("OrderId", OrderId);
+                map.put("APPToken", APPToken);
+                return map;
+            }
+
+            ;
+        };
+        requestQueue.add(stringRequest);
     }
 
     @Override

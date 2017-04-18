@@ -16,7 +16,6 @@ import android.widget.Toast;
 import com.aboluo.XUtils.CommonUtils;
 import com.aboluo.XUtils.MyApplication;
 import com.aboluo.adapter.AllOrderAdapter;
-import com.aboluo.com.ExpressDetailActivity;
 import com.aboluo.com.OrderDetailActivity;
 import com.aboluo.com.R;
 import com.aboluo.model.BaseModel;
@@ -34,6 +33,8 @@ import com.handmark.pulltorefresh.library.PullToRefreshListView;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import cn.pedant.SweetAlert.SweetAlertDialog;
 
 
 /**
@@ -55,6 +56,7 @@ public class NoreceiveFragment extends Fragment implements View.OnClickListener 
     private String MemberId;
     private int InitPage = 1;
     private LinearLayout allorder_empty;
+    private SweetAlertDialog finishDialog;
 
     @Nullable
     @Override
@@ -202,7 +204,26 @@ public class NoreceiveFragment extends Fragment implements View.OnClickListener 
                 if (tag != null && tag instanceof Integer) { //解决问题：如何知道你点击的按钮是哪一个列表项中的，通过Tag的position
                     final int position = (Integer) tag;
                     //Toast.makeText(context, position + "", Toast.LENGTH_SHORT).show();
-                    ConfirmOrder(String.valueOf(orderBean.getResult().get(position).getOrderId()));
+                    finishDialog = new SweetAlertDialog(context, SweetAlertDialog.WARNING_TYPE)
+                            .setTitleText("您确定收货")
+                            .setCancelText("稍等片刻")
+                            .setConfirmText("确认收货")
+                            .showCancelButton(true)
+                            .setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                                @Override
+                                public void onClick(SweetAlertDialog sDialog) {
+                                    finishDialog.dismiss();
+                                }
+                            })
+                            .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                                @Override
+                                public void onClick(SweetAlertDialog sweetAlertDialog) {
+                                    finishDialog.dismiss();
+                                    ConfirmOrder(String.valueOf(orderBean.getResult().get(position).getOrderId()));
+                                }
+                            });
+                    finishDialog.setCancelable(false);
+                    finishDialog.show();
                 }
                 break;
         }

@@ -74,6 +74,7 @@ import java.util.List;
 import java.util.Map;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
+import cn.sharesdk.onekeyshare.OnekeyShare;
 
 /**
  * Created by CJ on 2016/10/1.
@@ -882,7 +883,8 @@ public class PartnerGoodsDetailActivity extends Activity implements View.OnClick
                     startActivity(intent);
                     break;
                 case R.id.detail_more: //首部更多
-                    showinfopopupwindow();
+//                    showinfopopupwindow();
+                    ShareSDKGoodsDetail();
                     break;
                 case R.id.txt_goods_type: //选择商品类型
                     goods_type_ok.setVisibility(View.GONE);
@@ -1262,6 +1264,45 @@ public class PartnerGoodsDetailActivity extends Activity implements View.OnClick
             return true;
         } catch (PackageManager.NameNotFoundException e) {
             return false;
+        }
+    }
+
+    private void ShareSDKGoodsDetail() {
+        String detailurl0 = CommonUtils.GetValueByKey(PartnerGoodsDetailActivity.this, "backUrl")
+                + "/moblie/ShareProducts?productId=" + goods_id;
+        String imgurl = goodsDetailInfo.getResult().getGoodsInfo().getGoodsLogo();
+        if (imgurl == null) {
+        } else {
+            String[] imageurls = imgurl.split(";");
+            for (int i = 0; i < imageurls.length; i++) {
+                imageurls[i] = ImgUrl + imageurls[i].toString();
+            }
+            Log.i("ShareSDKImageUrl", imageurls[0].toString());
+            Log.i("ShareSDKURLDetail", detailurl0);
+            OnekeyShare oks = new OnekeyShare();
+            //关闭sso授权
+            oks.disableSSOWhenAuthorize();
+// 分享时Notification的图标和文字  2.5.9以后的版本不调用此方法
+            //oks.setNotification(R.drawable.ic_launcher, getString(R.string.app_name));
+            // title标题，印象笔记、邮箱、信息、微信、人人网和QQ空间使用
+            oks.setTitle("阿波罗分享");
+            // titleUrl是标题的网络链接，仅在人人网和QQ空间使用
+            oks.setTitleUrl(detailurl0);
+            // text是分享文本，所有平台都需要这个字段
+            oks.setText(goodsDetailInfo.getResult().getGoodsInfo().getGoodsName().toString());
+            // imagePath是图片的本地路径，Linked-In以外的平台都支持此参数
+            //oks.setImagePath(imageurls[0].toString());//确保SDcard下面存在此张图片
+            oks.setImageUrl(imageurls[0].toString());
+            // url仅在微信（包括好友和朋友圈）中使用
+            oks.setUrl(detailurl0);
+            // comment是我对这条分享的评论，仅在人人网和QQ空间使用
+            oks.setComment("这个商品不错哦");
+            // site是分享此内容的网站名称，仅在QQ空间使用
+            oks.setSite(getString(R.string.app_name));
+            // siteUrl是分享此内容的网站地址，仅在QQ空间使用
+            oks.setSiteUrl(detailurl0);
+            // 启动分享GUI
+            oks.show(this);
         }
     }
 }

@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        app:contentInsetLeft="0dp"
+        app:contentInsetStart="0dp">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:id="@+id/iv_groupbuy_back"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="10dp"
+                android:src="@drawable/back"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="拼团购"/>
+        </RelativeLayout>
+    </android.support.v7.widget.Toolbar>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="32dp"
+        android:background="@drawable/goods_list_type"
+        android:orientation="horizontal">
+        <LinearLayout
+            android:id="@+id/btn_groupbuy_2"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:layout_height="match_parent">
+            <Button
+                android:clickable="false"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:background="@color/transparent"
+                android:text="进行中">
+            </Button>
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+        <View
+            android:id="@+id/top_view1"
+            android:layout_width="0.5dp"
+            android:layout_height="match_parent"
+            android:background="@color/view_color"/>
+        <LinearLayout
+            android:descendantFocusability="blocksDescendants"
+            android:id="@+id/btn_groupbuy_3"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:layout_height="match_parent">
+            <Button
+                android:clickable="false"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:background="@color/transparent"
+                android:text="开团中"/>
+        </LinearLayout>
+
+
+        <View
+            android:id="@+id/top_view3"
+            android:layout_width="0.5dp"
+            android:layout_height="match_parent"
+            android:background="@color/view_color"/>
+        <LinearLayout
+            android:descendantFocusability="blocksDescendants"
+            android:id="@+id/btn_groupbuy_4"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:layout_height="match_parent">
+
+            <Button
+                android:clickable="false"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:background="@color/transparent"
+                android:text="已结束"
+                android:id="@+id/button" />
+        </LinearLayout>
+
+    </LinearLayout>
+    <com.aboluo.XUtils.RBCallbkRecyclerView2
+        android:id="@+id/recycler_groupbuy"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scrollbars="vertical"/>
+</LinearLayout>

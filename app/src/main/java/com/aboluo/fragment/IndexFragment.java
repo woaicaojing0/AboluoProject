@@ -43,6 +43,7 @@ import com.aboluo.adapter.ThemeMidGridViewAdapter;
 import com.aboluo.adapter.index.HotSaleGridViewAdapter;
 import com.aboluo.com.GoodsDetailActivity;
 import com.aboluo.com.GoodsListActivity;
+import com.aboluo.com.GroupBuyActivity;
 import com.aboluo.com.LoginActivity;
 import com.aboluo.com.MainActivity;
 import com.aboluo.com.MessageActivity;
@@ -1368,9 +1369,11 @@ public class IndexFragment extends Fragment implements View.OnClickListener, Ada
                         startActivity(intent5);
                         break;
                     case 59: //9.9专场
-                        Intent intent6 = new Intent(IndexFragment.this.getContext(), GoodsListActivity.class);
-                        intent6.putExtra("goods_type_id", 297);
-                        startActivity(intent6);
+//                        Intent intent6 = new Intent(IndexFragment.this.getContext(), GoodsListActivity.class);
+//                        intent6.putExtra("goods_type_id", 297);
+//                        startActivity(intent6);
+                        Intent intent3 = new Intent(IndexFragment.this.getContext(),GroupBuyActivity.class);
+                        startActivity(intent3);
                         break;
                     case 60: //最新商品
                         Intent intent7 = new Intent(IndexFragment.this.getContext(), GoodsListActivity.class);

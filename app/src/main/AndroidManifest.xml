@@ -157,6 +157,7 @@
         <activity android:name=".InvitationInfoActivity"></activity>
         <activity android:name=".ExtractMoneyActivity"></activity>
         <activity android:name=".ExtractMoneyDetailActivity"></activity>
+        <activity android:name=".GroupBuyActivity"></activity>
         <activity android:name=".wxapi.WXEntryActivity"
             android:exported="true"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" >

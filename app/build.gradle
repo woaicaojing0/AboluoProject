@@ -152,4 +152,6 @@ dependencies {
     compile 'com.android.support:multidex:1.0.0'
     //银行卡号格式
     compile 'com.yuyh.bankcardformat:library:1.0.2'
+    //上拉刷新
+    compile 'com.jcodecraeer:xrecyclerview:1.2.7'
 }

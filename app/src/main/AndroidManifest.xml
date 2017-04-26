@@ -75,11 +75,7 @@
         </activity>
         <activity android:name=".LaunchActivity"></activity>
         <activity android:name=".GuideActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
 
-                <category android:name="android.intent.category.LAUNCHER"/>
-            </intent-filter>
         </activity>
         <activity
             android:name=".LoginActivity"
@@ -157,7 +153,14 @@
         <activity android:name=".InvitationInfoActivity"></activity>
         <activity android:name=".ExtractMoneyActivity"></activity>
         <activity android:name=".ExtractMoneyDetailActivity"></activity>
-        <activity android:name=".GroupBuyActivity"></activity>
+        <activity android:name=".GroupBuyActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+        </activity>
+        <activity android:name=".GroupBuyDetailActivity"></activity>
         <activity android:name=".wxapi.WXEntryActivity"
             android:exported="true"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" >

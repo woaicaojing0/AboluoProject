@@ -2,6 +2,7 @@ package com.aboluo.model;
 
 import com.google.gson.Gson;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -89,7 +90,7 @@ public class GroupBuyBean {
         this.ListResult = ListResult;
     }
 
-    public static class ListResultBean {
+    public static class ListResultBean implements Serializable{
         /**
          * TId : 2
          * GoodsId : 3053

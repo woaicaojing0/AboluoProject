@@ -1,15 +1,18 @@
 package com.aboluo.com;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.util.Log;
+import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
+import com.aboluo.Interface.OnRecyclerViewItemClickListener;
 import com.aboluo.XUtils.CommonUtils;
 import com.aboluo.XUtils.MyApplication;
-import com.aboluo.XUtils.RBCallbkRecyclerView2;
 import com.aboluo.adapter.GroupBuyAdapter;
 import com.aboluo.model.GroupBuyBean;
 import com.android.volley.AuthFailureError;
@@ -19,9 +22,12 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.google.gson.Gson;
+import com.jcodecraeer.xrecyclerview.ProgressStyle;
+import com.jcodecraeer.xrecyclerview.XRecyclerView;
 import com.squareup.picasso.Picasso;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
@@ -31,7 +37,7 @@ import cn.pedant.SweetAlert.SweetAlertDialog;
  * 团购界面
  */
 
-public class GroupBuyActivity extends Activity {
+public class GroupBuyActivity extends Activity implements View.OnClickListener, OnRecyclerViewItemClickListener {
 
     private RequestQueue requestQueue;
     private String ImageUrl;
@@ -42,13 +48,19 @@ public class GroupBuyActivity extends Activity {
     private SweetAlertDialog pdialog;
     private String MemberId;
     private LinearLayout btn_groupbuy_2, btn_groupbuy_3, btn_groupbuy_4;
-    private RBCallbkRecyclerView2 recycler_groupbuy;
+    private XRecyclerView recycler_groupbuy;
     private GroupBuyBean groupBuyBean;
+    private int currentPage;
+    private int currentState;
+    private List<GroupBuyBean.ListResultBean> listResultBean;
+    private GroupBuyAdapter groupBuyAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_groupbuy);
+        currentPage = 1;
+        currentState = 2;
         init();
     }
 
@@ -68,19 +80,66 @@ public class GroupBuyActivity extends Activity {
         btn_groupbuy_2 = (LinearLayout) findViewById(R.id.btn_groupbuy_2);
         btn_groupbuy_3 = (LinearLayout) findViewById(R.id.btn_groupbuy_3);
         btn_groupbuy_4 = (LinearLayout) findViewById(R.id.btn_groupbuy_4);
-        recycler_groupbuy = (RBCallbkRecyclerView2) findViewById(R.id.recycler_groupbuy);
+        btn_groupbuy_2.setOnClickListener(this);
+        btn_groupbuy_3.setOnClickListener(this);
+        btn_groupbuy_4.setOnClickListener(this);
+        recycler_groupbuy = (XRecyclerView) findViewById(R.id.recycler_groupbuy);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         recycler_groupbuy.setLayoutManager(linearLayoutManager);
-        initData(2, 1);
+        loadData(currentState, 1);
+        recycler_groupbuy.setRefreshProgressStyle(ProgressStyle.BallSpinFadeLoader);
+        recycler_groupbuy.setLoadingListener(new XRecyclerView.LoadingListener() {
+            @Override
+            public void onRefresh() {
+                currentPage = 1;
+                loadData(currentState, currentPage);
+            }
+
+            @Override
+            public void onLoadMore() {
+                // load more data here
+                currentPage++;
+                loadData(currentState, currentPage);
+            }
+        });
+        btn_groupbuy_2.setBackgroundColor(Color.WHITE);
     }
 
-    private void initData(final int TeamBuyState, final int currentPage) {
+    /**
+     * @param TeamBuyState 团购状态
+     * @param currentPage  ，当前页数
+     */
+    private void loadData(final int TeamBuyState, final int currentPage) {
         StringRequest stringRequest = new StringRequest(Request.Method.POST, URL + "/api/TeamBuyApi/ReceivTeamBuyList", new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 groupBuyBean = gson.fromJson(response, GroupBuyBean.class);
-                GroupBuyAdapter groupBuyAdapter = new GroupBuyAdapter(groupBuyBean.getListResult(), GroupBuyActivity.this);
-                recycler_groupbuy.setAdapter(groupBuyAdapter);
+                List<GroupBuyBean.ListResultBean> newList = groupBuyBean.getListResult();
+                if (newList.size() == 0) {
+                    recycler_groupbuy.noMoreLoading();
+                    return;
+                }
+                if (currentPage == 1) {
+                    listResultBean = newList;
+                    groupBuyAdapter = new GroupBuyAdapter(listResultBean, GroupBuyActivity.this);
+                    groupBuyAdapter.setOnItemClickListener(GroupBuyActivity.this);
+                    recycler_groupbuy.setAdapter(groupBuyAdapter);
+                    recycler_groupbuy.refreshComplete();
+                    pdialog.dismiss();
+                } else {
+                    if (listResultBean == null) {
+                        listResultBean = newList;
+                        groupBuyAdapter = new GroupBuyAdapter(listResultBean, GroupBuyActivity.this);
+                        recycler_groupbuy.setAdapter(groupBuyAdapter);
+                        groupBuyAdapter.setOnItemClickListener(GroupBuyActivity.this);
+                    } else {
+                        listResultBean.addAll(newList);
+                        groupBuyAdapter.notifyDataSetChanged();
+                        groupBuyAdapter.setOnItemClickListener(GroupBuyActivity.this);
+                    }
+                    recycler_groupbuy.loadMoreComplete();
+                }
+
             }
         }, new Response.ErrorListener() {
             @Override
@@ -95,15 +154,57 @@ public class GroupBuyActivity extends Activity {
                 map.put("TeamBuyState", String.valueOf(TeamBuyState));
                 map.put("TId", "1");
                 map.put("PageIndex", String.valueOf(currentPage));
-                map.put("PageSize", String.valueOf(10));
+                map.put("PageSize", String.valueOf(8));
                 map.put("APPToken", APPToken);
                 map.put("LoginCheckToken", "123");
                 map.put("LoginPhone", "123");
                 return map;
             }
-
-            ;
         };
         requestQueue.add(stringRequest);
+    }
+
+    private void cleanButton() {
+        btn_groupbuy_2.setBackgroundColor(Color.parseColor("#eeeeee"));
+        btn_groupbuy_3.setBackgroundColor(Color.parseColor("#eeeeee"));
+        btn_groupbuy_4.setBackgroundColor(Color.parseColor("#eeeeee"));
+    }
+
+    @Override
+    public void onClick(View v) {
+        pdialog.show();
+        switch (v.getId()) {
+            case R.id.btn_groupbuy_2:
+                cleanButton();
+                btn_groupbuy_2.setBackgroundColor(Color.WHITE);
+                currentPage = 1;
+                currentState = 2;
+                loadData(currentState, currentPage);
+                break;
+            case R.id.btn_groupbuy_3:
+                cleanButton();
+                btn_groupbuy_3.setBackgroundColor(Color.WHITE);
+                currentPage = 1;
+                currentState = 3;
+                loadData(currentState, currentPage);
+                break;
+            case R.id.btn_groupbuy_4:
+                cleanButton();
+                btn_groupbuy_4.setBackgroundColor(Color.WHITE);
+                currentPage = 1;
+                currentState = 4;
+                loadData(currentState, currentPage);
+                break;
+        }
+    }
+
+    @Override
+    public void onItemClick(View view, Object postion) {
+        Toast.makeText(this, postion.toString(), Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent(GroupBuyActivity.this, GroupBuyDetailActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("groupBuyBean", listResultBean.get((Integer)postion));
+        intent.putExtras(bundle);
+        startActivity(intent);
     }
 }

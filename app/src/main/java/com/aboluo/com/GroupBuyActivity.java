@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.Toast;
@@ -206,5 +207,11 @@ public class GroupBuyActivity extends Activity implements View.OnClickListener, 
         bundle.putSerializable("groupBuyBean", listResultBean.get((Integer)postion));
         intent.putExtras(bundle);
         startActivity(intent);
+    }
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            pdialog.dismiss();
+        }
+        return true;
     }
 }

@@ -177,6 +177,7 @@ public class MakeOrderActivity extends Activity implements View.OnClickListener 
         initData();
         if (payfrom.equals("7")) {
             order_yunfei.setText("￥0");
+            goods_smallallmoeny.setText(goodsShoppingCartListBean.get(0).getHyPrice()+"");
             return;
         }
         getIntergralAndFreight();

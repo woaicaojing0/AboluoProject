@@ -55,6 +55,7 @@ public class MakeOrderActivity extends Activity implements View.OnClickListener 
     private TextView address_detailaddress, address_phone, address_name;
     private Volley volley;
     private String url;
+    private String groupBuyUrl;
     private static String APPToken;
     private StringRequest requestlist;
     private RequestQueue requestQueue;
@@ -87,6 +88,7 @@ public class MakeOrderActivity extends Activity implements View.OnClickListener 
     private LinearLayout ll_makerorder_jifeng, order_Line_tishi;
     private int SeckillId; // 秒杀的商品的id
     private boolean isFirst = true;
+    private int TeamBuyId;//拼团购的场次
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -152,6 +154,7 @@ public class MakeOrderActivity extends Activity implements View.OnClickListener 
         change_make_sure_location = (RelativeLayout) findViewById(R.id.change_make_sure_location);
         requestQueue = MyApplication.getRequestQueue();
         url = CommonUtils.GetValueByKey(this, "apiurl");
+        groupBuyUrl = CommonUtils.GetValueByKey(this, "apiurl3");
         APPToken = CommonUtils.GetValueByKey(this, "APPToken");
         gson = new Gson();
         pdialog = new SweetAlertDialog(this, SweetAlertDialog.PROGRESS_TYPE);
@@ -166,11 +169,16 @@ public class MakeOrderActivity extends Activity implements View.OnClickListener 
         payfrom = bundle.get("payfrom").toString();
         OnePurchaseId = bundle.getInt("OnePurchaseId", 0);
         SeckillId = bundle.getInt("SeckillId", 0);
+        TeamBuyId = bundle.getInt("TeamBuyId", 0);
         txt_allmoney.setText(bundle.get("allmoney").toString());
 //        goods_smallallmoeny.setText("￥" + bundle.get("allmoney").toString());
         txt_goods_allnum.setText("共计" + goodsShoppingCartListBean.size() + "件商品");
         Submit_Order.setOnClickListener(this);
         initData();
+        if (payfrom.equals("7")) {
+            order_yunfei.setText("￥0");
+            return;
+        }
         getIntergralAndFreight();
     }
 
@@ -229,6 +237,9 @@ public class MakeOrderActivity extends Activity implements View.OnClickListener 
         requestQueue.add(requestlist);
     }
 
+    /**
+     * 正常下单
+     */
     private void SubmitOrder() {
         final String lastmoney = txt_allmoney.getText().toString();
         List<OrderInfoBean> bean = new ArrayList<>();
@@ -335,11 +346,75 @@ public class MakeOrderActivity extends Activity implements View.OnClickListener 
         }
     }
 
+    /**
+     * 团购下单
+     */
+    private void groupBuyOrder() {
+        if (TeamBuyId == 0) {
+            Toast.makeText(this, "当前拼团购的场次不正确", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if (addressDefaultBean != null || AddressId != 0) {
+            pdialog.show();
+            StringRequest stringRequest = new StringRequest(Request.Method.POST, groupBuyUrl + "/api/OrderManageApi/TeamBuyOrder", new Response.Listener<String>() {
+                @Override
+                public void onResponse(String response) {
+                    Log.e("GroupBuyOrderInfo", response);
+                    BaseModel baseModel = gson.fromJson(response, BaseModel.class);
+                    if (baseModel.isIsSuccess()) {
+                        Intent intent = new Intent(MakeOrderActivity.this, OrderPayActivity.class);
+                        intent.putExtra("payMoney", txt_allmoney.getText().toString());
+                        intent.putExtra("OrderNum", baseModel.getOrderSerialId().toString());
+                        intent.putExtra("payfrom", payfrom);
+                        intent.putExtra("OnePurchaseId", OnePurchaseId);
+                        startActivityForResult(intent, requsetcode);
+                        pdialog.dismiss();
+                    } else {
+                    }
+                    Toast.makeText(MakeOrderActivity.this, baseModel.getMessage().toString(), Toast.LENGTH_SHORT).show();
+                    pdialog.dismiss();
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    byte[] bytes = error.networkResponse.data;
+                    Log.e("GroupOrderBuyError", new String(bytes));
+                    pdialog.dismiss();
+                }
+            }) {
+                @Override
+                protected Map<String, String> getParams() throws AuthFailureError {
+                    Map<String, String> map = new HashMap<>();
+                    map.put("TeamBuyId", String.valueOf(TeamBuyId));
+                    map.put("MemberId", MemberId);
+                    if (AddressId != 0) {
+                        map.put("ReceiveId", String.valueOf(AddressId));
+                    } else {
+                        map.put("ReceiveId", String.valueOf(addressDefaultBean.getResult().getId()));
+                    }
+                    map.put("OrderRemark", edit_remark.getText().toString());
+                    map.put("APPToken", APPToken);
+                    map.put("LoginCheckToken", "123");
+                    map.put("LoginPhone", "123");
+                    return map;
+                }
+            };
+            requestQueue.add(stringRequest);
+        } else {
+            Toast.makeText(this, "请选择收货地址", Toast.LENGTH_SHORT).show();
+        }
+    }
+
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.Submit_Order:
-                SubmitOrder();
+                if (payfrom.equals("1")) {
+                    SubmitOrder();
+                } else if (payfrom.equals("7")) {
+                    groupBuyOrder();
+                } else {
+                }
                 break;
             case R.id.change_make_sure_location:
                 isFirst = true;
@@ -526,6 +601,9 @@ public class MakeOrderActivity extends Activity implements View.OnClickListener 
         if (isFirst) {
             isFirst = false;
         } else {
+            if (payfrom.equals("7")) {
+                return;
+            }
             moeny = oldmoeny;
             getIntergralAndFreight();
         }

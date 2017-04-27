@@ -31,4 +31,5 @@
     <color name="common_bg">#efefef</color>
     <color name="txtColor">#5f646e</color>
     <color name="express_green">#25ae5f</color>
+    <color name="textGrayColor">#8a8a8a</color>
 </resources>

@@ -52,6 +52,8 @@ import com.qiyukf.unicorn.api.ConsultSource;
 import com.qiyukf.unicorn.api.Unicorn;
 import com.squareup.picasso.Picasso;
 
+import org.w3c.dom.Text;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -65,10 +67,6 @@ import cn.sharesdk.onekeyshare.OnekeyShare;
  */
 
 public class GroupBuyDetailActivity extends Activity implements View.OnClickListener {
-    //类型页面中的数量增加和减少
-    private Button btnDecrease, btnIncrease;
-    //数量中间的编辑框
-    private EditText etAmount;
     private RollPagerView rollPagerView;  //首部banner元素
     private String[] imgurl = null;    //首部banner中绑定的图片
     private BannerAdapter bannerAdapter;
@@ -77,63 +75,59 @@ public class GroupBuyDetailActivity extends Activity implements View.OnClickList
     //商品详情和评价按钮下面的横线
     private View id_goods_detail_view, id_goods_pingjia_view;
     //显示详情和评价的webview
-    private WebView goods_detail_webview, goods_pingjia_webview;
+    private WebView goods_detail_webview;
     //首页最右边显示更多操作、首页最上面的购物车，收藏按钮
-    private ImageView detail_more, detail_goods, iv_menu_hot;
-
-    //popwindows中的第一个布局 商品sub布局
+    private ImageView detail_more;
+    private LinearLayout index_bottom_menu;
     private LinearLayout layout_txt_goods_sub;
     //详情返回、商品类型弹出xml中的关闭、商品类型中的图片
-    private ImageView goods_detail_text_back, goods_type_pop_close, goods_detail_type_imageview;
-    //商品类型、名称、会员价、原价、数量、商品列表的价格和数量,商品副标题,积分,商品头部的商品详情
-    private TextView txt_goods_type, txt_goods_name, txt_new_money, txt_old_money, txt_goods_num,
-            goods_detail_type_txtmoney, goods_detail_type_txtnum, txt_goods_sub,
-            goods_detail_jifen, goods_detail_top_txt;
-    private int fHeight; //父容器的高度
-    private int sHeight;  //商品类型的高度
-    //父容器、自容器、商品列表颜色布局、尺寸布局
-    private LinearLayout firstView, secondView, all_color, all_standards;
+    private ImageView goods_detail_text_back;
+    //商品类型、名称、会员价、商品副标题,商品头部的商品详情
+    private TextView txt_goods_name, txt_new_money, txt_goods_sub, goods_detail_top_txt;
     private static int goods_id = 0; //商品的ID
     private RequestQueue requestQueue;
     private StringRequest stringRequest;
     private static String URL = null, ImgUrl = null;
     private static String APPToken = null;
     private GoodsDetailInfo goodsDetailInfo;
-    private static int popwith; //获取当前屏幕的宽度
-    private static boolean isshowtype = false;  //当前商品类型是否显示
-    private LinearLayout index_bottom_shopcar, goods_type_addshopcart, index_bottom_kefu; //1底部加入购车按钮 商品列表中的加入购物车
-    private LinearLayout goods_type_selected, goods_type_ok; // 1 有加入购物车和立即购买按钮。 2 只有确定按钮\
-    private LinearLayout goodsdetail_btn_buynow, pop_goodsdetail_btn_buynow;
-    private Boolean hascolor = false, hasstandards = false;
+    private LinearLayout index_bottom_shopcar, index_bottom_kefu; //1底部加入购车按钮 商品列表中的加入购物车
+    private LinearLayout goodsdetail_btn_buynow;
     private SweetAlertDialog pdialog;
-    private static String goods_type_imgeurl; //需要放大图片的地址
+
     private VerticalScrollView contentscrollView; // 需要监听滑动的scrollview
     private Toolbar toolbar; //渐变显示的toolbar
     private int height;
     private String MemberId;
     private ArrayList<GoodsShoppingCartListBean> goodsShoppingCartListBean; //传入下订单的信息
-    private GroupBuyBean.ListResultBean listResultBean;
+    private GroupBuyBean.ListResultBean groupBuyDetailBean;
+    private TextView tv_colorAndstandard; // 团购商品规格
+    private RelativeLayout relative_farther; //进度条上一层rl
+    private LinearLayout goodbuy_detail_percent_child; //进度条本身
+    private TextView tv_percentNum, goodbuy_detail_record;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_groupbuy_detail);
         MemberId = CommonUtils.GetMemberId(GroupBuyDetailActivity.this);
+        Intent intent = getIntent();
+        groupBuyDetailBean = (GroupBuyBean.ListResultBean) intent.getSerializableExtra("groupBuyBean");
         init();
+        getGoods_detail();
+        initGroupBuyNum();
         goods_pingjia_layout_btn1.setOnClickListener(this);
         goods_detail_layout_btn1.setOnClickListener(this);
         detail_more.setOnClickListener(this);
-        detail_goods.setOnClickListener(this);
         goods_detail_text_back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 finish();
             }
         });
-
         index_bottom_shopcar.setOnClickListener(this);
         index_bottom_kefu.setOnClickListener(this);
         goodsdetail_btn_buynow.setOnClickListener(this);
-        getgoods_detail();
+        goodbuy_detail_record.setOnClickListener(this);
         ViewTreeObserver vto = rollPagerView.getViewTreeObserver();
         vto.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
@@ -166,22 +160,19 @@ public class GroupBuyDetailActivity extends Activity implements View.OnClickList
      * @param detailurl 详情地址
      * @param pingjia   评价地址
      */
-    private void initwebview(String detailurl, String pingjia) {
+    private void initWebView(String detailUrl, String pingJia) {
         //详情地址
         //解决了webview 头部空了一片白的问题
         goods_detail_webview.getSettings().setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
         goods_detail_webview.setVerticalScrollBarEnabled(false);
-        goods_detail_webview.setVerticalScrollbarOverlay(false);
         goods_detail_webview.setHorizontalScrollBarEnabled(false);
-        goods_detail_webview.setHorizontalScrollbarOverlay(false);
         //end
-        WebSettings webviewsetting = goods_detail_webview.getSettings();
-        webviewsetting.setDomStorageEnabled(true);
-        webviewsetting.setJavaScriptEnabled(true);
-        webviewsetting.setUseWideViewPort(true);//关键点
-        webviewsetting.setLoadWithOverviewMode(true);
-//        webviewsetting.setLoadWithOverviewMode(true);
-        goods_detail_webview.loadUrl(detailurl);
+        WebSettings webViewSetting = goods_detail_webview.getSettings();
+        webViewSetting.setDomStorageEnabled(true);
+        webViewSetting.setJavaScriptEnabled(true);
+        webViewSetting.setUseWideViewPort(true);//关键点
+        webViewSetting.setLoadWithOverviewMode(true);
+        goods_detail_webview.loadUrl(detailUrl);
         goods_detail_webview.setWebViewClient(new WebViewClient() {
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
@@ -201,25 +192,7 @@ public class GroupBuyDetailActivity extends Activity implements View.OnClickList
                 goods_detail_webview.measure(w, h);
             }
         });
-        goods_detail_webview.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-//                if (event.getAction() == MotionEvent.ACTION_UP) {
-//                    contentscrollView.requestDisallowInterceptTouchEvent(false);
-//                } else {
-//                    contentscrollView.requestDisallowInterceptTouchEvent(true);
-//                }
-                return true;
-            }
-        });
 
-//        //评价地址
-//        WebSettings webviewsetting2 = goods_pingjia_webview.getSettings();
-//        webviewsetting2.setJavaScriptEnabled(true);
-//        webviewsetting2.setUseWideViewPort(true);//关键点
-//        webviewsetting2.setLoadWithOverviewMode(true);
-//        goods_pingjia_webview.loadUrl("http://t.back.aboluomall.com/Moblie/ShowEvaluationList");
-//        goods_pingjia_webview.setWebViewClient(new WebViewClient());
     }
 
     /**
@@ -227,7 +200,7 @@ public class GroupBuyDetailActivity extends Activity implements View.OnClickList
      *
      * @param imges 图片地址(多个)
      */
-    private void initrollPagerView(final String[] imges) {
+    private void iniTrollPagerView(final String[] imges) {
         final ArrayList<String> listimage = new ArrayList<String>();
         for (int i = 0; i < imges.length; i++) {
             imges[i] = ImgUrl + imges[i].toString();
@@ -264,40 +237,28 @@ public class GroupBuyDetailActivity extends Activity implements View.OnClickList
         id_goods_detail_view = (View) findViewById(R.id.id_goods_detail_view);
         id_goods_pingjia_view = (View) findViewById(R.id.id_goods_pingjia_view);
         goods_detail_webview = (WebView) findViewById(R.id.goods_detail_webview);
-        goods_pingjia_webview = (WebView) findViewById(R.id.goods_pingjia_webview);
         detail_more = (ImageView) findViewById(R.id.detail_more);
-        detail_goods = (ImageView) findViewById(R.id.detail_goods);
-        iv_menu_hot = (ImageView) findViewById(R.id.iv_menu_hot);
+        index_bottom_menu = (LinearLayout) findViewById(R.id.index_bottom_menu);
         goods_detail_text_back = (ImageView) findViewById(R.id.goods_detail_text_back);
-        goods_detail_type_imageview = (ImageView) findViewById(R.id.goods_detail_type_imageview);
         txt_goods_name = (TextView) findViewById(R.id.txt_goods_name);
         txt_new_money = (TextView) findViewById(R.id.txt_new_money);
-        txt_old_money = (TextView) findViewById(R.id.txt_old_money);
-        txt_goods_num = (TextView) findViewById(R.id.txt_goods_num);
         txt_goods_sub = (TextView) findViewById(R.id.txt_goods_sub);
-        goods_detail_jifen = (TextView) findViewById(R.id.goods_detail_jifen);
-        goods_detail_type_txtmoney = (TextView) findViewById(R.id.goods_detail_type_txtmoney);
-        goods_detail_type_txtnum = (TextView) findViewById(R.id.goods_detail_type_txtnum);
-        goods_detail_top_txt = (TextView) findViewById(R.id.goods_detail_top_txt);
-        secondView = (LinearLayout) findViewById(R.id.second_view);
-        firstView = (LinearLayout) findViewById(R.id.first_view);
-        all_color = (LinearLayout) findViewById(R.id.all_color);
-        all_standards = (LinearLayout) findViewById(R.id.all_standards);
-        index_bottom_shopcar = (LinearLayout) findViewById(R.id.index_bottom_shopcar);
         index_bottom_kefu = (LinearLayout) findViewById(R.id.index_bottom_kefu);
-        goods_type_addshopcart = (LinearLayout) findViewById(R.id.goods_type_addshopcart);
-        goods_type_selected = (LinearLayout) findViewById(R.id.goods_type_selected);
-        goods_type_ok = (LinearLayout) findViewById(R.id.goods_type_ok);
+        goods_detail_top_txt = (TextView) findViewById(R.id.goods_detail_top_txt);
         layout_txt_goods_sub = (LinearLayout) findViewById(R.id.layout_txt_goods_sub);
         goodsdetail_btn_buynow = (LinearLayout) findViewById(R.id.goodsdetail_btn_buynow);
-        pop_goodsdetail_btn_buynow = (LinearLayout) findViewById(R.id.pop_goodsdetail_btn_buynow);
+        index_bottom_shopcar = (LinearLayout) findViewById(R.id.index_bottom_shopcar);
         contentscrollView = (VerticalScrollView) findViewById(R.id.contentscrollView);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         pdialog = new SweetAlertDialog(this, SweetAlertDialog.PROGRESS_TYPE);
+        tv_colorAndstandard = (TextView) findViewById(R.id.tv_colorAndstandard);
+        relative_farther = (RelativeLayout) findViewById(R.id.relative_farther);
+        goodbuy_detail_percent_child = (LinearLayout) findViewById(R.id.goodbuy_detail_percent_child);
+        tv_percentNum = (TextView) findViewById(R.id.tv_percentNum);
+        goodbuy_detail_record = (TextView) findViewById(R.id.goodbuy_detail_record);
         pdialog.setTitleText("请稍等");
-        Intent intent = getIntent();
-        listResultBean=(GroupBuyBean.ListResultBean)intent.getSerializableExtra("groupBuyBean");
-        goods_id = listResultBean.getGoodsId();
+
+        goods_id = groupBuyDetailBean.getGoodsId();
         requestQueue = MyApplication.getRequestQueue();
         URL = CommonUtils.GetValueByKey(this, "apiurl");
         ImgUrl = CommonUtils.GetValueByKey(this, "ImgUrl");
@@ -309,7 +270,7 @@ public class GroupBuyDetailActivity extends Activity implements View.OnClickList
     /**
      * 获取商品详情的数据，在这个方法里加载initrollPagerView、initwebview
      */
-    private void getgoods_detail() {
+    private void getGoods_detail() {
         stringRequest = new StringRequest(Request.Method.POST, URL + "/api/Goods/ReceiveGoodsById", new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
@@ -319,7 +280,8 @@ public class GroupBuyDetailActivity extends Activity implements View.OnClickList
                 Gson gson = new Gson();
                 goodsDetailInfo = gson.fromJson(response, GoodsDetailInfo.class);
                 txt_goods_name.setText(goodsDetailInfo.getResult().getGoodsInfo().getGoodsName());
-                txt_new_money.setText(String.valueOf(goodsDetailInfo.getResult().getGoodsInfo().getHyPrice()));
+                txt_new_money.setText(String.valueOf(groupBuyDetailBean.getTeamPrice()));
+                tv_colorAndstandard.setText("颜色 " + groupBuyDetailBean.getGoodsColorName() + " 规格 " + groupBuyDetailBean.getGoodsStanderName());
                 if (goodsDetailInfo.getResult().getGoodsInfo().getGoodsSub() == null) {
                     layout_txt_goods_sub.setVisibility(View.GONE);
                 } else {
@@ -336,11 +298,11 @@ public class GroupBuyDetailActivity extends Activity implements View.OnClickList
                 }
                 if (imgurl == null) {
                 } else {
-                    initrollPagerView(imgurl);
+                    iniTrollPagerView(imgurl);
                 }
                 String detailurl = CommonUtils.GetValueByKey(GroupBuyDetailActivity.this, "backUrl") + "/moblie/Index?productId=" + goods_id;
                 Log.i("woaicaojing", detailurl);
-                initwebview(detailurl, null);
+                initWebView(detailurl, null);
 
             }
         }, new Response.ErrorListener() {
@@ -368,22 +330,19 @@ public class GroupBuyDetailActivity extends Activity implements View.OnClickList
                     id_goods_detail_view.setVisibility(View.VISIBLE);
                     id_goods_pingjia_view.setVisibility(View.GONE);
                     String detailurl0 = CommonUtils.GetValueByKey(GroupBuyDetailActivity.this, "backUrl") + "/moblie/Index?productId=" + goods_id;
-                    initwebview(detailurl0, null);
+                    initWebView(detailurl0, null);
                     break;
-                case R.id.goods_pingjia_layout_btn1: //商品评价按钮Moblie/ShowEvaluation?goodsId
+                case R.id.goods_pingjia_layout_btn1:
                     id_goods_detail_view.setVisibility(View.GONE);
                     id_goods_pingjia_view.setVisibility(View.VISIBLE);
                     String detailurl = CommonUtils.GetValueByKey(GroupBuyDetailActivity.this, "backUrl") + "/Moblie/ShowEvaluation?goodsId=" + goods_id;
-                    //String detailurl = "http://back.aboluomall.com/Moblie/ShowEvaluation?goodsId=12";
-                    initwebview(detailurl, null);
-                    break;
-                case R.id.detail_goods: //首部购物车
-                    Intent intent = new Intent(GroupBuyDetailActivity.this, MainActivity.class);
-                    intent.putExtra("id", 3);
-                    startActivity(intent);
+                    initWebView(detailurl, null);
                     break;
                 case R.id.detail_more: //分享按钮
                     ShareSDKGoodsDetail();
+                    break;
+                case R.id.index_bottom_shopcar:
+                    Toast.makeText(this, "团购商品请直接购买！", Toast.LENGTH_SHORT).show();
                     break;
                 case R.id.goodsdetail_btn_buynow:  //详情底部的立即购买
                     if (CommonUtils.IsLogin(GroupBuyDetailActivity.this)) {
@@ -394,28 +353,24 @@ public class GroupBuyDetailActivity extends Activity implements View.OnClickList
                         startActivity(intent1);
                     }
                     break;
-                case R.id.iv_menu_hot:
+                case R.id.index_bottom_menu:
                     AddFavor(goodsDetailInfo.getResult().getGoodsInfo().getGoodsId());
                     break;
-
                 case R.id.index_bottom_kefu:
-//                    if (checkApkExist(this, "com.tencent.mobileqq")) {
-//                        startActivity(new Intent(Intent.ACTION_VIEW,
-//                                Uri.parse("mqqwpa://im/chat?chat_type=wpa&uin="
-//                                        + CommonUtils.GetValueByKey(GoodsDetailActivity.this, "QQNum") + "&version=1")));
-//                    } else {
-//                        Toast.makeText(this, "本机未安装QQ应用", Toast.LENGTH_SHORT).show();
-//                    }
                     String title = "商品详情";
-                    // 设置访客来源，标识访客是从哪个页面发起咨询的，用于客服了解用户是从什么页面进入三个参数分别为来源页面的url，来源页面标题，来源页面额外信息（可自由定义）
-                    // 设置来源后，在客服会话界面的"用户资料"栏的页面项，可以看到这里设置的值。
                     String detailurladdress = CommonUtils.GetValueByKey(GroupBuyDetailActivity.this, "backUrl") + "/moblie/Index?productId=" + goods_id;
                     ConsultSource source = new ConsultSource(detailurladdress, "商品详情", "memberid" + MemberId);
-                    // 请注意： 调用该接口前，应先检查Unicorn.isServiceAvailable(), 如果返回为false，该接口不会有任何动作
-                    Unicorn.openServiceActivity(GroupBuyDetailActivity.this, // 上下文
-                            title, // 聊天窗口的标题
-                            source // 咨询的发起来源，包括发起咨询的url，title，描述信息等
+                    Unicorn.openServiceActivity(GroupBuyDetailActivity.this,
+                            title,
+                            source
                     );
+                    break;
+                case R.id.goodbuy_detail_record: //团购详情
+                    Intent intent = new Intent(GroupBuyDetailActivity.this, GroupBuyRecordActivity.class);
+                    intent.putExtra("TeamBuyId", groupBuyDetailBean.getTId());
+                    startActivity(intent);
+                    break;
+                default:
                     break;
 
             }
@@ -429,40 +384,15 @@ public class GroupBuyDetailActivity extends Activity implements View.OnClickList
     //立即购买操作
     public void BuyNow() {
         goodsShoppingCartListBean.clear();
-        int colorid = 0;
-        String color = null;
-        int standardsid = 0;
-        String standards = null;
-        double hyprice = goodsDetailInfo.getResult().getGoodsInfo().getHyPrice(); //默认是会员价，如果有规，会根据规格去找价格
-        final RadioButton radioButton =null;
-        final RadioButton radioButton2 = null;
-        if (radioButton != null) {
-            color = radioButton.getText().toString();
-            colorid = radioButton.getId();
-        } else {
-            color = "无";
-        }
-        if (radioButton2 != null) {
-            standards = radioButton2.getText().toString();
-            standardsid = radioButton2.getId();
-            List<GoodsStandardsBean> goodsStandardsBean = goodsDetailInfo.getResult().getGoodsInfo().getGoodsStandards();
-            for (int i = 0; i < goodsStandardsBean.size(); i++) { //根据规格id寻找价格
-                if (goodsStandardsBean.get(i).getGoodsStandardId() == standardsid) {
-                    hyprice = goodsStandardsBean.get(i).getHyPrice();
-
-                }
-            }
-        } else {
-            standards = "无";
-        }
+        double hyprice = groupBuyDetailBean.getTeamPrice();
         GoodsShoppingCartListBean goodsShoppingCartListBean2 = new GoodsShoppingCartListBean(
                 goodsDetailInfo.getResult().getGoodsInfo().getGoodsId(),
-                colorid,
-                color,
-                standardsid,
-                standards,
-                Integer.valueOf(etAmount.getText().toString()),
-                (new Double(goodsDetailInfo.getResult().getGoodsInfo().getYunfei())).intValue(),
+                groupBuyDetailBean.getGoodsColorId(),
+                groupBuyDetailBean.getGoodsColorName(),
+                groupBuyDetailBean.getGoodsStanderId(),
+                groupBuyDetailBean.getGoodsStanderName(),
+                Integer.valueOf(1),
+                0,
                 goodsDetailInfo.getResult().getGoodsInfo().getGoodsName(),
                 goodsDetailInfo.getResult().getGoodsInfo().getGoodsLogo(),
                 hyprice
@@ -470,9 +400,10 @@ public class GroupBuyDetailActivity extends Activity implements View.OnClickList
         goodsShoppingCartListBean.add(goodsShoppingCartListBean2);
         Intent intent1 = new Intent(GroupBuyDetailActivity.this, MakeOrderActivity.class);
         intent1.putExtra("allmoney", String.valueOf(hyprice *
-                Integer.valueOf(etAmount.getText().toString())));
+                Integer.valueOf(1)));
         intent1.putExtra("data", goodsShoppingCartListBean);
-        intent1.putExtra("payfrom", "1"); //代表从购物车结算的
+        intent1.putExtra("payfrom", "7"); //代表从购物车结算的
+        intent1.putExtra("TeamBuyId", groupBuyDetailBean.getTId()); //拼团购的场次
         startActivity(intent1);
     }
 
@@ -549,6 +480,36 @@ public class GroupBuyDetailActivity extends Activity implements View.OnClickList
             // 启动分享GUI
             oks.show(this);
         }
+    }
+
+    private void initGroupBuyNum() {
+        ViewTreeObserver vto2 = relative_farther.getViewTreeObserver();
+        vto2.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                relative_farther.getViewTreeObserver().removeGlobalOnLayoutListener(this);
+                ViewGroup.LayoutParams para = goodbuy_detail_percent_child.getLayoutParams();
+                int all = groupBuyDetailBean.getNeedPerson();
+                int i = groupBuyDetailBean.getBuyedPerson();
+                if (i == 0) {
+                    para.width = 0;
+                    tv_percentNum.setTextColor(Color.BLACK);
+                    tv_percentNum.setText("0%");
+                } else {
+                    para.width = ((relative_farther.getWidth()) * i) / all;
+                    java.text.DecimalFormat df = new java.text.DecimalFormat("#.00");
+                    double num = (100 * i) / all;
+                    String percentNum = df.format(num);
+                    if (num < 50) {
+                        tv_percentNum.setTextColor(Color.BLACK);
+                    } else {
+                        tv_percentNum.setTextColor(Color.WHITE);
+                        tv_percentNum.setText(percentNum + "%");
+                    }
+                }
+                goodbuy_detail_percent_child.setLayoutParams(para);
+            }
+        });
     }
 
 }

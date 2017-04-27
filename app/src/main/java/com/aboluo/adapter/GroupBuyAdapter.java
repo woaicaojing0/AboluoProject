@@ -76,7 +76,7 @@ public class GroupBuyAdapter extends RecyclerView.Adapter<GroupBuyAdapter.MyView
         holder.itemView.setTag(position);
         holder.groupbuy_item_name.setText(mlist.get(position).getGoodsName());
         holder.groupbuy_item_sub.setText(mlist.get(position).getRemarks() == null ? "暂无" : mlist.get(position).getRemarks().toString());
-        holder.groupbuy_item_quantity.setText("团购价：￥" + String.valueOf(mlist.get(position).getTeamPrice()));
+        holder.groupbuy_item_price.setText("团购价：￥" + String.valueOf(mlist.get(position).getTeamPrice()));
         if (mlist.get(position).getGoodsLogo() == null || mlist.get(position).getGoodsLogo() == "") {
             Picasso.with(mcontext).load(R.drawable.imageview_error).into(holder.groupbuy_item_image);
             return;
@@ -101,7 +101,7 @@ public class GroupBuyAdapter extends RecyclerView.Adapter<GroupBuyAdapter.MyView
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
-        private TextView groupbuy_item_name, groupbuy_item_sub, groupbuy_item_quantity, tv_percentNum;
+        private TextView groupbuy_item_name, groupbuy_item_sub, groupbuy_item_price, tv_percentNum;
         private RelativeLayout relative_farther;
         private LinearLayout linelayout_child;
         private ImageView groupbuy_item_image;
@@ -112,7 +112,7 @@ public class GroupBuyAdapter extends RecyclerView.Adapter<GroupBuyAdapter.MyView
             groupbuy_item_name = (TextView) itemView.findViewById(R.id.groupbuy_item_name);
             groupbuy_item_sub = (TextView) itemView.findViewById(R.id.groupbuy_item_sub);
             tv_percentNum = (TextView) itemView.findViewById(R.id.tv_percentNum);
-            groupbuy_item_quantity = (TextView) itemView.findViewById(R.id.groupbuy_item_quantity);
+            groupbuy_item_price = (TextView) itemView.findViewById(R.id.groupbuy_item_price);
             relative_farther = (RelativeLayout) itemView.findViewById(R.id.relative_farther);
             linelayout_child = (LinearLayout) itemView.findViewById(R.id.linelayout_child);
         }

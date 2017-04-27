@@ -161,6 +161,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".GroupBuyDetailActivity"></activity>
+        <activity android:name=".GroupBuyRecordActivity"></activity>
         <activity android:name=".wxapi.WXEntryActivity"
             android:exported="true"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" >

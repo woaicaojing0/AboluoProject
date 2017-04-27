@@ -17,7 +17,6 @@ import com.aboluo.XUtils.Utils;
 import com.aboluo.com.R;
 import com.aboluo.model.GoodsListInfo;
 import com.squareup.picasso.Picasso;
-import com.switfpass.pay.utils.XmlUtils;
 
 import java.util.List;
 

@@ -16,7 +16,10 @@ import com.squareup.picasso.Picasso;
 
 import java.util.HashMap;
 import java.util.Map;
+
 import android.graphics.Color;
+import android.util.Log;
+
 import cn.pedant.SweetAlert.SweetAlertDialog;
 
 /**
@@ -27,7 +30,7 @@ import cn.pedant.SweetAlert.SweetAlertDialog;
  * 每次创建一个activity 都可以参照下面的步骤，初始化一些变量
  * 以后项目，我建议首先创建一个基类，每次acitivity继承这个基类就可以了。
  */
-public class BaseCommActivity  extends Activity{
+public class BaseCommActivity extends Activity {
     private RequestQueue requestQueue;
     private String ImageUrl;
     private String URL;
@@ -36,12 +39,14 @@ public class BaseCommActivity  extends Activity{
     private Picasso picasso;
     private SweetAlertDialog pdialog;
     private String MemberId;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_order);
         init();
     }
+
     private void init() {
         MemberId = CommonUtils.GetMemberId(this);
         requestQueue = MyApplication.getRequestQueue();
@@ -57,17 +62,19 @@ public class BaseCommActivity  extends Activity{
         pdialog.setCancelable(true);
         initData();
     }
+
     private void initData() {
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, URL+"", new Response.Listener<String>() {
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, URL + "", new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                response = response.replace("\\","");
-                response = response.substring(1,response.length()-1);
+                response = response.replace("\\", "");
+                response = response.substring(1, response.length() - 1);
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-
+                byte[] bytes = error.networkResponse.data;
+                Log.d("Error", new String(bytes));
             }
         }) {
             @Override
@@ -78,7 +85,9 @@ public class BaseCommActivity  extends Activity{
                 map.put("ExpressId", "1");
                 map.put("APPToken", APPToken);
                 return map;
-            };
+            }
+
+            ;
         };
         requestQueue.add(stringRequest);
     }

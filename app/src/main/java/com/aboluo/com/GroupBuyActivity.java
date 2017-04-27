@@ -145,8 +145,8 @@ public class GroupBuyActivity extends Activity implements View.OnClickListener, 
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                byte[] bytes = error.networkResponse.data;
-                Log.e("GroupBuyActivityError", new String(bytes));
+//                byte[] bytes = error.networkResponse.data;
+//                Log.e("GroupBuyActivityError", new String(bytes));
             }
         }) {
             @Override
@@ -201,7 +201,7 @@ public class GroupBuyActivity extends Activity implements View.OnClickListener, 
 
     @Override
     public void onItemClick(View view, Object postion) {
-        Toast.makeText(this, postion.toString(), Toast.LENGTH_SHORT).show();
+        //Toast.makeText(this, postion.toString(), Toast.LENGTH_SHORT).show();
         Intent intent = new Intent(GroupBuyActivity.this, GroupBuyDetailActivity.class);
         Bundle bundle = new Bundle();
         bundle.putSerializable("groupBuyBean", listResultBean.get((Integer)postion));

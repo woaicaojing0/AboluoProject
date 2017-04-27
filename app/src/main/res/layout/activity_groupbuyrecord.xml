@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              android:layout_width="match_parent"
+              android:background="@color/white"
+              android:layout_height="match_parent"
+              android:orientation="vertical">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        app:contentInsetLeft="0dp"
+        app:contentInsetStart="0dp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:id="@+id/iv_groupBuyRecord_back"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="10dp"
+                android:src="@drawable/back"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="团购详情"/>
+        </RelativeLayout>
+
+    </android.support.v7.widget.Toolbar>
+    <View
+        android:background="@color/textGrayColor"
+        android:layout_width="match_parent"
+        android:layout_height="0.2dp"></View>
+    <LinearLayout
+        android:paddingLeft="12dp"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:layout_width="match_parent"
+        android:layout_height="48dp">
+        <TextView
+            android:textColor="@color/black"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="参与记录"
+            android:textSize="20sp"
+            />
+        <TextView
+            android:layout_marginLeft="8dp"
+            android:textColor="#9e9e9e"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="(2017-04-01 01:10:10开始)"/>
+    </LinearLayout>
+    <View
+        android:background="@color/textGrayColor"
+        android:layout_width="match_parent"
+        android:layout_height="0.2dp"></View>
+    <com.jcodecraeer.xrecyclerview.XRecyclerView
+        android:id="@+id/recycle_groupBuyRecord"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    </com.jcodecraeer.xrecyclerview.XRecyclerView>
+</LinearLayout>

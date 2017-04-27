@@ -123,7 +123,7 @@ public class GroupBuyBean {
         private int BuyedPerson;
         private String Remarks;
         private String TeamNumber;
-        private int TeamPrice;
+        private double TeamPrice;
 
         public static ListResultBean objectFromData(String str) {
 
@@ -242,11 +242,11 @@ public class GroupBuyBean {
             this.TeamNumber = TeamNumber;
         }
 
-        public int getTeamPrice() {
+        public double getTeamPrice() {
             return TeamPrice;
         }
 
-        public void setTeamPrice(int TeamPrice) {
+        public void setTeamPrice(double TeamPrice) {
             this.TeamPrice = TeamPrice;
         }
     }

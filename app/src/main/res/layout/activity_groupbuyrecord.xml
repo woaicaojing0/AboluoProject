@@ -38,6 +38,12 @@
         android:layout_width="match_parent"
         android:layout_height="0.2dp"></View>
     <LinearLayout
+        android:visibility="gone"
+        android:id="@+id/ll_show_data"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    <LinearLayout
         android:paddingLeft="12dp"
         android:orientation="horizontal"
         android:gravity="center_vertical"
@@ -67,4 +73,31 @@
         android:layout_height="match_parent">
 
     </com.jcodecraeer.xrecyclerview.XRecyclerView>
+    </LinearLayout>
+    <RelativeLayout
+
+        android:id="@+id/rl_show_nodata"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <LinearLayout
+
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <ImageView
+                android:src="@drawable/no_data"
+                android:layout_width="100dp"
+                android:layout_height="100dp" />
+            <TextView
+                android:layout_marginBottom="24dp"
+                android:gravity="center"
+                android:textSize="20sp"
+                android:layout_width="100dp"
+                android:layout_height="32dp"
+                android:text="暂无记录"/>
+        </LinearLayout>
+
+    </RelativeLayout>
 </LinearLayout>

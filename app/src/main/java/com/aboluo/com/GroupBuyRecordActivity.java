@@ -6,6 +6,10 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.util.Log;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 
 import com.aboluo.XUtils.CommonUtils;
 import com.aboluo.XUtils.MyApplication;
@@ -43,16 +47,28 @@ public class GroupBuyRecordActivity extends Activity {
     private int currentPage;
     private static int PageSize = 10;
     private int TeamBuyId;
+    private RelativeLayout rl_show_nodata;
+    private LinearLayout ll_show_data;
+    private ImageView iv_groupBuyRecord_back;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_groupbuyrecord);
         initComponent();
+        iv_groupBuyRecord_back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
     }
 
     private void initComponent() {
         recycle_groupBuyRecord = (XRecyclerView) findViewById(R.id.recycle_groupBuyRecord);
+        rl_show_nodata = (RelativeLayout) findViewById(R.id.rl_show_nodata);
+        ll_show_data = (LinearLayout) findViewById(R.id.ll_show_data);
+        iv_groupBuyRecord_back = (ImageView) findViewById(R.id.iv_groupBuyRecord_back);
         MemberId = CommonUtils.GetMemberId(this);
         requestQueue = MyApplication.getRequestQueue();
         ImageUrl = CommonUtils.GetValueByKey(this, "ImgUrl");
@@ -91,6 +107,10 @@ public class GroupBuyRecordActivity extends Activity {
         StringRequest stringRequest = new StringRequest(Request.Method.POST, URL + "/api/TeamBuyApi/TeamBuyRecords", new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
+                if (response != null) {
+                    ll_show_data.setVisibility(View.GONE);
+                    rl_show_nodata.setVisibility(View.VISIBLE);
+                }
                 Log.i("groupBuyRecordInfo", response);
             }
         }, new Response.ErrorListener() {

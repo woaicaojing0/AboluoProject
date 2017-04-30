@@ -3,11 +3,13 @@ package com.aboluo.com;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
+import android.media.Image;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
@@ -55,7 +57,7 @@ public class GroupBuyActivity extends Activity implements View.OnClickListener, 
     private int currentState;
     private List<GroupBuyBean.ListResultBean> listResultBean;
     private GroupBuyAdapter groupBuyAdapter;
-
+    private ImageView iv_groupbuy_back;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -76,14 +78,16 @@ public class GroupBuyActivity extends Activity implements View.OnClickListener, 
         pdialog = new SweetAlertDialog(this, SweetAlertDialog.PROGRESS_TYPE);
         pdialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
         pdialog.setTitleText("加载中");
-        pdialog.setCanceledOnTouchOutside(true);
+        pdialog.setCanceledOnTouchOutside(false);
         pdialog.setCancelable(true);
         btn_groupbuy_2 = (LinearLayout) findViewById(R.id.btn_groupbuy_2);
         btn_groupbuy_3 = (LinearLayout) findViewById(R.id.btn_groupbuy_3);
         btn_groupbuy_4 = (LinearLayout) findViewById(R.id.btn_groupbuy_4);
+        iv_groupbuy_back = (ImageView) findViewById(R.id.iv_groupbuy_back);
         btn_groupbuy_2.setOnClickListener(this);
         btn_groupbuy_3.setOnClickListener(this);
         btn_groupbuy_4.setOnClickListener(this);
+        iv_groupbuy_back.setOnClickListener(this);
         recycler_groupbuy = (XRecyclerView) findViewById(R.id.recycler_groupbuy);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         recycler_groupbuy.setLayoutManager(linearLayoutManager);
@@ -111,11 +115,14 @@ public class GroupBuyActivity extends Activity implements View.OnClickListener, 
      * @param currentPage  ，当前页数
      */
     private void loadData(final int TeamBuyState, final int currentPage) {
+        pdialog.dismiss();
+        pdialog.show();
         StringRequest stringRequest = new StringRequest(Request.Method.POST, URL + "/api/TeamBuyApi/ReceivTeamBuyList", new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 groupBuyBean = gson.fromJson(response, GroupBuyBean.class);
                 List<GroupBuyBean.ListResultBean> newList = groupBuyBean.getListResult();
+                pdialog.dismiss();
                 if (newList.size() == 0) {
                     recycler_groupbuy.noMoreLoading();
                     return;
@@ -126,7 +133,6 @@ public class GroupBuyActivity extends Activity implements View.OnClickListener, 
                     groupBuyAdapter.setOnItemClickListener(GroupBuyActivity.this);
                     recycler_groupbuy.setAdapter(groupBuyAdapter);
                     recycler_groupbuy.refreshComplete();
-                    pdialog.dismiss();
                 } else {
                     if (listResultBean == null) {
                         listResultBean = newList;
@@ -147,6 +153,7 @@ public class GroupBuyActivity extends Activity implements View.OnClickListener, 
             public void onErrorResponse(VolleyError error) {
 //                byte[] bytes = error.networkResponse.data;
 //                Log.e("GroupBuyActivityError", new String(bytes));
+                pdialog.dismiss();
             }
         }) {
             @Override
@@ -173,7 +180,6 @@ public class GroupBuyActivity extends Activity implements View.OnClickListener, 
 
     @Override
     public void onClick(View v) {
-        pdialog.show();
         switch (v.getId()) {
             case R.id.btn_groupbuy_2:
                 cleanButton();
@@ -196,6 +202,11 @@ public class GroupBuyActivity extends Activity implements View.OnClickListener, 
                 currentState = 4;
                 loadData(currentState, currentPage);
                 break;
+            case  R.id.iv_groupbuy_back:
+                finish();
+                break;
+            default:
+                break;
         }
     }
 
@@ -207,11 +218,5 @@ public class GroupBuyActivity extends Activity implements View.OnClickListener, 
         bundle.putSerializable("groupBuyBean", listResultBean.get((Integer)postion));
         intent.putExtras(bundle);
         startActivity(intent);
-    }
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (keyCode == KeyEvent.KEYCODE_BACK) {
-            pdialog.dismiss();
-        }
-        return true;
     }
 }

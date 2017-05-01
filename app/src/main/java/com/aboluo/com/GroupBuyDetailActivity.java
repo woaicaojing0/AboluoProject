@@ -128,6 +128,7 @@ public class GroupBuyDetailActivity extends Activity implements View.OnClickList
         index_bottom_kefu.setOnClickListener(this);
         goodsdetail_btn_buynow.setOnClickListener(this);
         goodbuy_detail_record.setOnClickListener(this);
+        index_bottom_menu.setOnClickListener(this);
         ViewTreeObserver vto = rollPagerView.getViewTreeObserver();
         vto.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override

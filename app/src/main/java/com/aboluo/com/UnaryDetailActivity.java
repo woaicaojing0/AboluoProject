@@ -70,7 +70,7 @@ public class UnaryDetailActivity extends Activity implements View.OnClickListene
     private ImageView unarydetail_text_back;
     private String MemberId;
     private UnaryDetailBean unaryDetailBean;
-    private TextView tv_last_winner,tv_unary_record,tv_nickName,tv_addTimes;
+    private TextView tv_last_winner,tv_unary_record,tv_nickName,tv_addTimes,tv_now_winner,tv_onetimes;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -143,6 +143,8 @@ public class UnaryDetailActivity extends Activity implements View.OnClickListene
         tv_unary_record = (TextView) findViewById(R.id.tv_unary_record);
         tv_nickName = (TextView) findViewById(R.id.tv_nickName);
         tv_addTimes = (TextView) findViewById(R.id.tv_addTimes);
+        tv_now_winner = (TextView) findViewById(R.id.tv_now_winner);
+        tv_onetimes = (TextView) findViewById(R.id.tv_onetimes);
         unary_toolbar = (Toolbar) findViewById(R.id.unary_toolbar);
         unary_detail_scollview = (VerticalScrollView) findViewById(R.id.unary_detail_scollview);
         unary_startgoods = (LinearLayout) findViewById(R.id.unary_startgoods);
@@ -212,10 +214,11 @@ public class UnaryDetailActivity extends Activity implements View.OnClickListene
                 {
                     tv_last_winner.setText(unaryDetailBean.getLastWinLotteryNumber());
                     tv_nickName.setText(unaryDetailBean.getMemberNickName());
-                    tv_addTimes.setText(String.valueOf(unaryDetailBean.getOneTimes()));
+                    tv_addTimes.setText(String.valueOf(unaryDetailBean.getAddTotalCount()));
+                    tv_now_winner.setText(String.valueOf(unaryDetailBean.getThisWinLotteryNumber()));
+                    tv_onetimes.setText(String.valueOf(unaryDetailBean.getOneTimes()));
                 }
                 Toast.makeText(UnaryDetailActivity.this,"获取成功" , Toast.LENGTH_SHORT).show();
-
             }
         }, new Response.ErrorListener() {
             @Override

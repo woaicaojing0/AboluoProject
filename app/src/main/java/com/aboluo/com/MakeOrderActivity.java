@@ -410,11 +410,10 @@ public class MakeOrderActivity extends Activity implements View.OnClickListener 
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.Submit_Order:
-                if (payfrom.equals("1")) {
-                    SubmitOrder();
-                } else if (payfrom.equals("7")) {
+                if (payfrom.equals("7")) {
                     groupBuyOrder();
                 } else {
+                    SubmitOrder();
                 }
                 break;
             case R.id.change_make_sure_location:

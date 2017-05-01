@@ -1369,11 +1369,10 @@ public class IndexFragment extends Fragment implements View.OnClickListener, Ada
                         startActivity(intent5);
                         break;
                     case 59: //9.9专场
-//                        Intent intent6 = new Intent(IndexFragment.this.getContext(), GoodsListActivity.class);
-//                        intent6.putExtra("goods_type_id", 297);
-//                        startActivity(intent6);
-                        Intent intent3 = new Intent(IndexFragment.this.getContext(),GroupBuyActivity.class);
-                        startActivity(intent3);
+                        Intent intent6 = new Intent(IndexFragment.this.getContext(), GoodsListActivity.class);
+                        intent6.putExtra("goods_type_id", 297);
+                        startActivity(intent6);
+
                         break;
                     case 60: //最新商品
                         Intent intent7 = new Intent(IndexFragment.this.getContext(), GoodsListActivity.class);
@@ -1394,6 +1393,16 @@ public class IndexFragment extends Fragment implements View.OnClickListener, Ada
                             Toast.makeText(IndexFragment.this.getActivity(), "请先登录！", Toast.LENGTH_SHORT).show();
                             startActivity(intent14);
                         }
+                        break;
+                    case 89:
+                        Intent intent3 = new Intent(IndexFragment.this.getContext(), GroupBuyActivity.class);
+                        startActivity(intent3);
+                        break;
+                    case 88:
+                        Intent intent4 = new Intent(IndexFragment.this.getContext(), UnaryActivity.class);
+                        startActivity(intent4);
+                        break;
+                    default:
                         break;
                 }
             }

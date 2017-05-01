@@ -59,6 +59,8 @@ public class GroupBuyRecordActivity extends Activity {
     private GroupBuyRecordAdapter groupBuyRecordAdapter;
     private List<GroupBuyRecordBean.GroupBuyRecordItemBean> groupBuyRecordItemBean;
     private TextView tv_top_time;
+    private String openTime;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -92,6 +94,8 @@ public class GroupBuyRecordActivity extends Activity {
         pdialog.setCancelable(true);
         Intent intent = getIntent();
         TeamBuyId = intent.getIntExtra("TeamBuyId", 0);
+        openTime = intent.getStringExtra("openTime");
+        tv_top_time.setText(openTime.replace("T", " " + "开始"));
         //recyclerview 初始化设置
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         recycle_groupBuyRecord.setLayoutManager(linearLayoutManager);

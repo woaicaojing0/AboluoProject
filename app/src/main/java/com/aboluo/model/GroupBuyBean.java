@@ -108,7 +108,7 @@ public class GroupBuyBean {
          * TeamNumber : 2017425722882
          * TeamPrice : 100
          */
-
+        private String OpenTime;
         private int TId;
         private int GoodsId;
         private String GoodsName;
@@ -128,6 +128,14 @@ public class GroupBuyBean {
         public static ListResultBean objectFromData(String str) {
 
             return new Gson().fromJson(str, ListResultBean.class);
+        }
+
+        public String getOpenTime() {
+            return OpenTime;
+        }
+
+        public void setOpenTime(String openTime) {
+            OpenTime = openTime;
         }
 
         public int getTId() {

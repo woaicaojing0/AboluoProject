@@ -22,6 +22,7 @@ import com.aboluo.XUtils.MyApplication;
 import com.aboluo.XUtils.ScreenUtils;
 import com.aboluo.adapter.BannerAdapter;
 import com.aboluo.model.ShopCarBean;
+import com.aboluo.model.UnaryDetailBean;
 import com.aboluo.model.UnaryListBean;
 import com.aboluo.widget.VerticalScrollView;
 import com.android.volley.AuthFailureError;
@@ -67,6 +68,9 @@ public class UnaryDetailActivity extends Activity implements View.OnClickListene
     private TextView unarydetail_text_title;
     private Toolbar unary_toolbar;
     private ImageView unarydetail_text_back;
+    private String MemberId;
+    private UnaryDetailBean unaryDetailBean;
+    private TextView tv_last_winner,tv_unary_record,tv_nickName,tv_addTimes;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -116,9 +120,10 @@ public class UnaryDetailActivity extends Activity implements View.OnClickListene
     private void init() {
         requestQueue = MyApplication.getRequestQueue();
         ImageUrl = CommonUtils.GetValueByKey(this, "ImgUrl");
-        URL = CommonUtils.GetValueByKey(this, "apiurl");
+        URL = CommonUtils.GetValueByKey(this, "apiurl3");
         APPToken = CommonUtils.GetValueByKey(this, "APPToken");
         picasso = Picasso.with(this);
+        MemberId = CommonUtils.GetMemberId(this);
         gson = new Gson();
         pdialog = new SweetAlertDialog(this, SweetAlertDialog.PROGRESS_TYPE);
         pdialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
@@ -134,6 +139,10 @@ public class UnaryDetailActivity extends Activity implements View.OnClickListene
         unary_goods_title = (TextView) findViewById(R.id.unary_goods_title);
         unary_goods_sub = (TextView) findViewById(R.id.unary_goods_sub);
         unarydetail_text_title = (TextView) findViewById(R.id.unarydetail_text_title);
+        tv_last_winner = (TextView) findViewById(R.id.tv_last_winner);
+        tv_unary_record = (TextView) findViewById(R.id.tv_unary_record);
+        tv_nickName = (TextView) findViewById(R.id.tv_nickName);
+        tv_addTimes = (TextView) findViewById(R.id.tv_addTimes);
         unary_toolbar = (Toolbar) findViewById(R.id.unary_toolbar);
         unary_detail_scollview = (VerticalScrollView) findViewById(R.id.unary_detail_scollview);
         unary_startgoods = (LinearLayout) findViewById(R.id.unary_startgoods);
@@ -144,6 +153,7 @@ public class UnaryDetailActivity extends Activity implements View.OnClickListene
         unarydetail_view_pager.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, screenWidth));
         initDetailData();
         goodsShoppingCartListBean = new ArrayList<>();
+        initData();
     }
 
     private void initWebview() {
@@ -192,25 +202,37 @@ public class UnaryDetailActivity extends Activity implements View.OnClickListene
     }
 
     private void initData() {
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, URL + "", new Response.Listener<String>() {
+        StringRequest stringRequest = new StringRequest(Request.Method.POST,
+                URL + "/api/OnePurchaseApi/ReceiveOnePurchaseDetail", new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                response = response.replace("\\", "");
-                response = response.substring(1, response.length() - 1);
+                Log.i("unaryDetailActivity", response);
+                unaryDetailBean = gson.fromJson(response,UnaryDetailBean.class);
+                if(unaryDetailBean.isIsSuccess())
+                {
+                    tv_last_winner.setText(unaryDetailBean.getLastWinLotteryNumber());
+                    tv_nickName.setText(unaryDetailBean.getMemberNickName());
+                    tv_addTimes.setText(String.valueOf(unaryDetailBean.getOneTimes()));
+                }
+                Toast.makeText(UnaryDetailActivity.this,"获取成功" , Toast.LENGTH_SHORT).show();
+
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-
+                byte[] bytes = error.networkResponse.data;
+                Log.i("unaryDetailActivity",new String(bytes));
+                Toast.makeText(UnaryDetailActivity.this,  new String(bytes), Toast.LENGTH_SHORT).show();
             }
         }) {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> map = new HashMap<>();
-                map.put("MemberId", "1975");
-                map.put("OrderId", "508");
-                map.put("ExpressId", "1");
+                map.put("MemberId", "2174");
+                map.put("OnePurchaseId", String.valueOf(listResultBean.getId()));
                 map.put("APPToken", APPToken);
+                map.put("LoginPhone", "123");
+                map.put("LoginCheckToken", "123");
                 return map;
             }
 

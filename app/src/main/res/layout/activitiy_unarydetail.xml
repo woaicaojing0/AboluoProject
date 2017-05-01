@@ -276,23 +276,6 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="4dp"
-                        android:orientation="horizontal">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="18dp"
-                            android:text="申明:" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="1111111111" />
-                    </LinearLayout>
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -307,9 +290,10 @@
                             android:text="往期揭晓:" />
 
                         <TextView
+                            android:id="@+id/tv_last_winner"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="1111111111" />
+                            android:text="" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -325,9 +309,11 @@
                             android:text="参与记录:" />
 
                         <TextView
+                            android:textColor="@color/btn_color"
+                            android:id="@+id/tv_unary_record"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="1111111111" />
+                            android:text="查看详情" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -343,9 +329,10 @@
                             android:text="名字:" />
 
                         <TextView
+                            android:id="@+id/tv_nickName"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="1111111111" />
+                            android:text="" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -358,12 +345,17 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="18dp"
-                            android:text="参与了1000人次" />
-
+                            android:text="参与了" />
+                        <TextView
+                            android:textColor="@color/btn_color"
+                            android:id="@+id/tv_addTimes"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="1000" />
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="1111111111" />
+                            android:text="人次" />
                     </LinearLayout>
                 </LinearLayout>
 

@@ -369,6 +369,7 @@ public class GroupBuyDetailActivity extends Activity implements View.OnClickList
                 case R.id.goodbuy_detail_record: //团购详情
                     Intent intent = new Intent(GroupBuyDetailActivity.this, GroupBuyRecordActivity.class);
                     intent.putExtra("TeamBuyId", groupBuyDetailBean.getTId());
+                    intent.putExtra("openTime", groupBuyDetailBean.getOpenTime());
                     startActivity(intent);
                     break;
                 default:

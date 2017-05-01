@@ -3,15 +3,11 @@ package com.aboluo.com;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
-import android.media.Image;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
-import android.util.Log;
-import android.view.KeyEvent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.Toast;
 
 import com.aboluo.Interface.OnRecyclerViewItemClickListener;
 import com.aboluo.XUtils.CommonUtils;
@@ -58,6 +54,8 @@ public class GroupBuyActivity extends Activity implements View.OnClickListener, 
     private List<GroupBuyBean.ListResultBean> listResultBean;
     private GroupBuyAdapter groupBuyAdapter;
     private ImageView iv_groupbuy_back;
+    private View recycle_empty_item;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -84,6 +82,7 @@ public class GroupBuyActivity extends Activity implements View.OnClickListener, 
         btn_groupbuy_3 = (LinearLayout) findViewById(R.id.btn_groupbuy_3);
         btn_groupbuy_4 = (LinearLayout) findViewById(R.id.btn_groupbuy_4);
         iv_groupbuy_back = (ImageView) findViewById(R.id.iv_groupbuy_back);
+        recycle_empty_item = findViewById(R.id.recycle_empty_item);
         btn_groupbuy_2.setOnClickListener(this);
         btn_groupbuy_3.setOnClickListener(this);
         btn_groupbuy_4.setOnClickListener(this);
@@ -123,15 +122,12 @@ public class GroupBuyActivity extends Activity implements View.OnClickListener, 
                 groupBuyBean = gson.fromJson(response, GroupBuyBean.class);
                 List<GroupBuyBean.ListResultBean> newList = groupBuyBean.getListResult();
                 pdialog.dismiss();
-                if (newList.size() == 0) {
-                    recycler_groupbuy.noMoreLoading();
-                    return;
-                }
                 if (currentPage == 1) {
                     listResultBean = newList;
                     groupBuyAdapter = new GroupBuyAdapter(listResultBean, GroupBuyActivity.this);
                     groupBuyAdapter.setOnItemClickListener(GroupBuyActivity.this);
                     recycler_groupbuy.setAdapter(groupBuyAdapter);
+                    recycler_groupbuy.setEmptyView(recycle_empty_item);
                     recycler_groupbuy.refreshComplete();
                 } else {
                     if (listResultBean == null) {
@@ -202,7 +198,7 @@ public class GroupBuyActivity extends Activity implements View.OnClickListener, 
                 currentState = 4;
                 loadData(currentState, currentPage);
                 break;
-            case  R.id.iv_groupbuy_back:
+            case R.id.iv_groupbuy_back:
                 finish();
                 break;
             default:
@@ -215,7 +211,7 @@ public class GroupBuyActivity extends Activity implements View.OnClickListener, 
         //Toast.makeText(this, postion.toString(), Toast.LENGTH_SHORT).show();
         Intent intent = new Intent(GroupBuyActivity.this, GroupBuyDetailActivity.class);
         Bundle bundle = new Bundle();
-        bundle.putSerializable("groupBuyBean", listResultBean.get((Integer)postion));
+        bundle.putSerializable("groupBuyBean", listResultBean.get((Integer) postion));
         intent.putExtras(bundle);
         startActivity(intent);
     }

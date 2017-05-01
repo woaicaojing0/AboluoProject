@@ -423,6 +423,7 @@ public class ShopCarFragment extends Fragment implements View.OnClickListener {
                         carAdapter.setMck_by_linelayout(listener);
                         carAdapter.setMhopcar_standards(listener);
                         carAdapter.setMetAmount(focusChangeListener);
+                        carAdapter.setMshopcar_image(listener);
                         carAdapter.registerDataSetObserver(AdapterDataSetObserver);
                     }
                 } else {

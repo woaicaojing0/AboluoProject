@@ -10,9 +10,13 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.aboluo.XUtils.CommonUtils;
 import com.aboluo.XUtils.MyApplication;
+import com.aboluo.adapter.GroupBuyRecordAdapter;
+import com.aboluo.model.GroupBuyRecordBean;
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -25,6 +29,7 @@ import com.jcodecraeer.xrecyclerview.XRecyclerView;
 import com.squareup.picasso.Picasso;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
@@ -50,7 +55,10 @@ public class GroupBuyRecordActivity extends Activity {
     private RelativeLayout rl_show_nodata;
     private LinearLayout ll_show_data;
     private ImageView iv_groupBuyRecord_back;
-
+    private GroupBuyRecordBean groupBuyRecordBean;
+    private GroupBuyRecordAdapter groupBuyRecordAdapter;
+    private List<GroupBuyRecordBean.GroupBuyRecordItemBean> groupBuyRecordItemBean;
+    private TextView tv_top_time;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -69,6 +77,7 @@ public class GroupBuyRecordActivity extends Activity {
         rl_show_nodata = (RelativeLayout) findViewById(R.id.rl_show_nodata);
         ll_show_data = (LinearLayout) findViewById(R.id.ll_show_data);
         iv_groupBuyRecord_back = (ImageView) findViewById(R.id.iv_groupBuyRecord_back);
+        tv_top_time = (TextView) findViewById(R.id.tv_top_time);
         MemberId = CommonUtils.GetMemberId(this);
         requestQueue = MyApplication.getRequestQueue();
         ImageUrl = CommonUtils.GetValueByKey(this, "ImgUrl");
@@ -107,17 +116,41 @@ public class GroupBuyRecordActivity extends Activity {
         StringRequest stringRequest = new StringRequest(Request.Method.POST, URL + "/api/TeamBuyApi/TeamBuyRecords", new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                if (response != null) {
-                    ll_show_data.setVisibility(View.GONE);
-                    rl_show_nodata.setVisibility(View.VISIBLE);
-                }
                 Log.i("groupBuyRecordInfo", response);
+                groupBuyRecordBean = gson.fromJson(response, GroupBuyRecordBean.class);
+                if (groupBuyRecordBean.isIsSuccess()) {
+                    List<GroupBuyRecordBean.GroupBuyRecordItemBean> newList = groupBuyRecordBean.getListResult();
+                    if (currentPage == 1) {
+                        if (groupBuyRecordBean.getListResult().size() == 0) {
+                            ll_show_data.setVisibility(View.GONE);
+                            rl_show_nodata.setVisibility(View.VISIBLE);
+                            return;
+                        }
+                        groupBuyRecordItemBean = newList;
+                        groupBuyRecordAdapter = new GroupBuyRecordAdapter(GroupBuyRecordActivity.this, groupBuyRecordItemBean);
+                        recycle_groupBuyRecord.setAdapter(groupBuyRecordAdapter);
+                        recycle_groupBuyRecord.refreshComplete();
+                    } else {
+                        if (groupBuyRecordBean == null) {
+                            groupBuyRecordItemBean = newList;
+                            groupBuyRecordAdapter = new GroupBuyRecordAdapter(GroupBuyRecordActivity.this, groupBuyRecordItemBean);
+                            recycle_groupBuyRecord.setAdapter(groupBuyRecordAdapter);
+                        } else {
+                            groupBuyRecordItemBean.addAll(newList);
+                            groupBuyRecordAdapter.notifyDataSetChanged();
+                        }
+                        recycle_groupBuyRecord.loadMoreComplete();
+                    }
+                } else {
+                    Toast.makeText(GroupBuyRecordActivity.this, groupBuyRecordBean.getMessage().toString(), Toast.LENGTH_SHORT).show();
+                }
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                byte[] bytes = error.networkResponse.data;
-                Log.d("groupBuyRecordError", new String(bytes));
+//                byte[] bytes = error.networkResponse.data;
+//                Log.d("groupBuyRecordError", new String(bytes));
+                Toast.makeText(GroupBuyRecordActivity.this, "网络异常", Toast.LENGTH_SHORT).show();
             }
         }) {
             @Override

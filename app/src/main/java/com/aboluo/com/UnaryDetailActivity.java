@@ -42,6 +42,7 @@ import cn.pedant.SweetAlert.SweetAlertDialog;
 
 /**
  * Created by CJ on 2016/12/3.
+ * 一元详情
  */
 
 public class UnaryDetailActivity extends Activity implements View.OnClickListener {

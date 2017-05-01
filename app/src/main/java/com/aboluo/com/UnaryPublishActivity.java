@@ -30,6 +30,7 @@ import cn.pedant.SweetAlert.SweetAlertDialog;
 
 /**
  * Created by CJ on 2016/12/9.
+ * 最新揭晓
  */
 
 public class UnaryPublishActivity extends Activity {

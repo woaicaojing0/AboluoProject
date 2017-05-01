@@ -74,7 +74,7 @@ public class UnaryActivity extends FragmentActivity implements UnaryAdapter.OnRe
     private ArrayList<ShopCarBean.ResultBean.GoodsShoppingCartListBean> goodsShoppingCartListBean; //传入下订单的信息
     private ImageView iv_unary_back;
     private LargeImageView lgiv_unary_introduce;
-
+    private List<UnaryListBean.ListResultBean> listResult;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -343,14 +343,37 @@ public class UnaryActivity extends FragmentActivity implements UnaryAdapter.OnRe
                 response = response.substring(1, response.length() - 1);
                 unaryListBean = gson.fromJson(response, UnaryListBean.class);
                 if (unaryListBean.isIsSuccess()) {
-                    final FullyGridLayoutManager manager = new FullyGridLayoutManager(UnaryActivity.this, 2);
-                    manager.setOrientation(GridLayoutManager.VERTICAL);
-                    manager.setSmoothScrollbarEnabled(true);
-                    unary_recyclerView.setLayoutManager(manager);
-                    unary_recyclerView.setNestedScrollingEnabled(false);
-                    adapter.notifyDataSetChanged();
-                    adapter.setOnItemClickListener(UnaryActivity.this);
-                    adapter.setOnBeginClickListener(UnaryActivity.this);
+                    if (unaryListBean.getListResult().size() == 0) {
+                        Toast.makeText(mcontext, "暂无数据", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                    List<UnaryListBean.ListResultBean> newListResult= unaryListBean.getListResult();
+                    if (page == 1) {
+                        listResult = newListResult;
+                        unary_recyclerView.setNestedScrollingEnabled(false);
+                        adapter = new UnaryAdapter(listResult, UnaryActivity.this);
+                        unary_recyclerView.setAdapter(adapter);
+                        adapter.setOnItemClickListener(UnaryActivity.this);
+                        adapter.setOnBeginClickListener(UnaryActivity.this);
+                    }else
+                    {
+                        if(listResult ==null)
+                        {
+                            listResult = newListResult;
+                            unary_recyclerView.setNestedScrollingEnabled(false);
+                            adapter = new UnaryAdapter(listResult, UnaryActivity.this);
+                            unary_recyclerView.setAdapter(adapter);
+                            adapter.setOnItemClickListener(UnaryActivity.this);
+                            adapter.setOnBeginClickListener(UnaryActivity.this);
+                        }else
+                        {
+                            listResult.addAll(newListResult);
+                            adapter.notifyDataSetChanged();
+                            adapter.setOnItemClickListener(UnaryActivity.this);
+                        }
+                    }
+
+
                 }
             }
         }, new Response.ErrorListener() {
@@ -388,8 +411,16 @@ public class UnaryActivity extends FragmentActivity implements UnaryAdapter.OnRe
                 response = response.substring(1, response.length() - 1);
                 unaryListBean = gson.fromJson(response, UnaryListBean.class);
                 if (unaryListBean.isIsSuccess()) {
-                    unary_recyclerView.setLayoutManager(new FullyGridLayoutManager(UnaryActivity.this, 2));
-                    adapter = new UnaryAdapter(unaryListBean.getListResult(), UnaryActivity.this);
+                    if (unaryListBean.getListResult().size() == 0) {
+                        Toast.makeText(mcontext, "暂无数据", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                    listResult = unaryListBean.getListResult();
+                    FullyGridLayoutManager manager = new FullyGridLayoutManager(UnaryActivity.this, 2);
+                    manager.setOrientation(GridLayoutManager.VERTICAL);
+                    manager.setSmoothScrollbarEnabled(true);
+                    unary_recyclerView.setLayoutManager(manager);
+                    adapter = new UnaryAdapter(listResult, UnaryActivity.this);
                     unary_recyclerView.setAdapter(adapter);
                     adapter.setOnItemClickListener(UnaryActivity.this);
                     adapter.setOnBeginClickListener(UnaryActivity.this);

@@ -167,7 +167,7 @@
                             <LinearLayout
                                 android:id="@+id/goodbuy_detail_percent_child"
                                 android:layout_width="0dp"
-                                android:layout_height="15dp"
+                                android:layout_height="16dp"
                                 android:background="@drawable/groupbuy_recycle_item_progress2"
                                 android:orientation="vertical"></LinearLayout>
 

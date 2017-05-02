@@ -131,7 +131,7 @@
                         <LinearLayout
                             android:id="@+id/linelayout_child"
                             android:layout_width="0dp"
-                            android:layout_height="14dp"
+                            android:layout_height="15dp"
                             android:background="@drawable/groupbuy_recycle_item_progress2"
                             android:orientation="vertical"></LinearLayout>
 

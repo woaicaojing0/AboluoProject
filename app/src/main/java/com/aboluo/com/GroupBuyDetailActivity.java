@@ -4,25 +4,18 @@ package com.aboluo.com;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
-import android.graphics.Paint;
 import android.os.Bundle;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v7.widget.Toolbar;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.Log;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RadioButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -33,8 +26,6 @@ import com.aboluo.XUtils.ScreenUtils;
 import com.aboluo.adapter.BannerAdapter;
 import com.aboluo.model.BaseModel;
 import com.aboluo.model.GoodsDetailInfo;
-import com.aboluo.model.GoodsDetailInfo.ResultBean.GoodsInfoBean.GoodsColorStandardListBean;
-import com.aboluo.model.GoodsDetailInfo.ResultBean.GoodsInfoBean.GoodsStandardsBean;
 import com.aboluo.model.GroupBuyBean;
 import com.aboluo.model.ShopCarBean.ResultBean.GoodsShoppingCartListBean;
 import com.aboluo.widget.VerticalScrollView;
@@ -50,13 +41,9 @@ import com.jude.rollviewpager.RollPagerView;
 import com.jude.rollviewpager.hintview.ColorPointHintView;
 import com.qiyukf.unicorn.api.ConsultSource;
 import com.qiyukf.unicorn.api.Unicorn;
-import com.squareup.picasso.Picasso;
-
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
@@ -104,6 +91,7 @@ public class GroupBuyDetailActivity extends Activity implements View.OnClickList
     private RelativeLayout relative_farther; //进度条上一层rl
     private LinearLayout goodbuy_detail_percent_child; //进度条本身
     private TextView tv_percentNum, goodbuy_detail_record;
+    private int currentState;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -112,6 +100,7 @@ public class GroupBuyDetailActivity extends Activity implements View.OnClickList
         MemberId = CommonUtils.GetMemberId(GroupBuyDetailActivity.this);
         Intent intent = getIntent();
         groupBuyDetailBean = (GroupBuyBean.ListResultBean) intent.getSerializableExtra("groupBuyBean");
+        currentState = intent.getIntExtra("currentState", 0);
         init();
         getGoods_detail();
         initGroupBuyNum();
@@ -152,14 +141,16 @@ public class GroupBuyDetailActivity extends Activity implements View.OnClickList
                 });
             }
         });
+        if (currentState != 2) {
+            goodsdetail_btn_buynow.setEnabled(false);
+            goodsdetail_btn_buynow.setBackgroundColor(Color.parseColor("#d6d3d6"));
+        }
 
     }
 
     /**
      * 初始化底部webivew（获取数据之后）
      *
-     * @param detailurl 详情地址
-     * @param pingjia   评价地址
      */
     private void initWebView(String detailUrl, String pingJia) {
         //详情地址
@@ -492,7 +483,7 @@ public class GroupBuyDetailActivity extends Activity implements View.OnClickList
                 relative_farther.getViewTreeObserver().removeGlobalOnLayoutListener(this);
                 ViewGroup.LayoutParams para = goodbuy_detail_percent_child.getLayoutParams();
                 int all = groupBuyDetailBean.getNeedPerson();
-                int i = groupBuyDetailBean.getBuyedPerson();
+                int i = groupBuyDetailBean.getBuyPerson();
                 if (i == 0) {
                     para.width = 0;
                     tv_percentNum.setTextColor(Color.BLACK);

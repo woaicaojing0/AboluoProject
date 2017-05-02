@@ -156,7 +156,6 @@ public class GroupBuyActivity extends Activity implements View.OnClickListener, 
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> map = new HashMap<>();
                 map.put("TeamBuyState", String.valueOf(TeamBuyState));
-                map.put("TId", "1");
                 map.put("PageIndex", String.valueOf(currentPage));
                 map.put("PageSize", String.valueOf(8));
                 map.put("APPToken", APPToken);
@@ -212,6 +211,7 @@ public class GroupBuyActivity extends Activity implements View.OnClickListener, 
         Intent intent = new Intent(GroupBuyActivity.this, GroupBuyDetailActivity.class);
         Bundle bundle = new Bundle();
         bundle.putSerializable("groupBuyBean", listResultBean.get((Integer) postion));
+        bundle.putInt("currentState", currentState);
         intent.putExtras(bundle);
         startActivity(intent);
     }

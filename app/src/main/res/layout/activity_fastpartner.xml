@@ -33,16 +33,22 @@
             android:layout_gravity="center"
             android:text="成为合伙人" />
     </android.support.v7.widget.Toolbar>
+    <com.aboluo.XUtils.ProgressWebView
+        android:background="@color/white"
+        android:id="@+id/wv_fastParnter"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="6"></com.aboluo.XUtils.ProgressWebView>
 
     <com.handmark.pulltorefresh.library.PullToRefreshScrollView xmlns:ptr="http://schemas.android.com/apk/res-auto"
         android:id="@+id/sv_fastparnter"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="6"
-        android:scrollbars="none"
-        android:paddingRight="6dp"
         android:paddingLeft="6dp"
+        android:paddingRight="6dp"
+        android:scrollbars="none"
         ptr:ptrAnimationStyle="flip">
+
         <LinearLayout
 
             android:layout_width="match_parent"
@@ -52,17 +58,17 @@
 
 
             <TextView
-                android:layout_marginBottom="8dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
                 android:lineSpacingExtra="8dp"
                 android:text="阿波罗联购又名阿波罗108商城，成立于2016年3月。阿波罗联购是南通阿波罗电子商务有限公司旗下的支柱项目，阿波罗108商城创始于江苏南通，区别于淘宝和京东，是一个020的综合业务平台，在线销售生活日化、饰品箱包、家用电器、手机数码、运动器材、服饰玩具、图书音像以及虚拟服务等12大类近2万种商品。阿波罗联购以新型的商业模式，给予广大用户更大的便利；让生活更轻松，让购物更快乐。" />
 
             <ImageView
                 android:id="@+id/iv_fastpartner"
-                android:scaleType="fitXY"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:scaleType="fitXY"
                 android:src="@drawable/fastparnter" />
 
             <TextView
@@ -74,48 +80,53 @@
 
         </LinearLayout>
     </com.handmark.pulltorefresh.library.PullToRefreshScrollView>
+
     <LinearLayout
-        android:orientation="vertical"
-        android:paddingRight="6dp"
-        android:paddingLeft="6dp"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1">
+        android:layout_weight="1"
+        android:orientation="vertical"
+       >
+
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
+
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:orientation="horizontal">
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="￥"/>
+                    android:text="￥" />
+
                 <TextView
                     android:id="@+id/tv_Amount"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="24sp"
+                    android:text="18.8"
                     android:textColor="@color/btn_color"
-                    android:text="18.8"/>
+                    android:textSize="24sp" />
             </LinearLayout>
         </RelativeLayout>
+
         <RelativeLayout
-            android:layout_marginBottom="4dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
+
             <Button
                 android:id="@+id/btn_fastpartner"
-                android:paddingLeft="8dp"
-                android:paddingRight="8dp"
-                android:textColor="@color/white"
-                android:background="@drawable/fastpartner_bg"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
-                android:text="立即成为合伙人"/>
+                android:background="@color/btn_color"
+                android:paddingLeft="8dp"
+                android:paddingRight="8dp"
+                android:text="立即成为合伙人"
+                android:textColor="@color/white" />
         </RelativeLayout>
     </LinearLayout>
 </LinearLayout>

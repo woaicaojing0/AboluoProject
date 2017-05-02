@@ -132,14 +132,13 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
-                        android:src="@drawable/appstart" />
+                        />
 
                     <TextView
                         android:id="@+id/unary_txt_01"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_horizontal"
-                        android:text="正在揭晓"
                         android:textColor="@color/btn_color"
                         android:textSize="18dp" />
                 </LinearLayout>
@@ -160,14 +159,13 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
-                        android:src="@drawable/appstart" />
+                         />
 
                     <TextView
                         android:id="@+id/unary_txt_02"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_horizontal"
-                        android:text="中奖名称"
                         android:textColor="@color/btn_color"
                         android:textSize="18dp" />
                 </LinearLayout>
@@ -182,15 +180,13 @@
                         android:id="@+id/unary_image_03"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:src="@drawable/appstart" />
+                        android:layout_weight="1" />
 
                     <TextView
                         android:id="@+id/unary_txt_03"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_horizontal"
-                        android:text="中奖名称"
                         android:textColor="@color/btn_color"
                         android:textSize="18dp" />
                 </LinearLayout>

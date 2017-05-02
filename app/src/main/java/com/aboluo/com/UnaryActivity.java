@@ -75,6 +75,7 @@ public class UnaryActivity extends FragmentActivity implements UnaryAdapter.OnRe
     private ImageView iv_unary_back;
     private LargeImageView lgiv_unary_introduce;
     private List<UnaryListBean.ListResultBean> listResult;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -136,6 +137,7 @@ public class UnaryActivity extends FragmentActivity implements UnaryAdapter.OnRe
         unary_publish = (LinearLayout) findViewById(R.id.unary_publish);
         lgiv_unary_introduce = (LargeImageView) findViewById(R.id.lgiv_unary_introduce);
         unary_popularity.setTextColor(UnaryActivity.this.getResources().getColor(R.color.btn_color));
+        initThreeImage();
         initBannerImage();
         initNewOpen();
         InitUnaryListBean();
@@ -211,14 +213,17 @@ public class UnaryActivity extends FragmentActivity implements UnaryAdapter.OnRe
                     if (listResult.size() >= 3) {
                         picasso.load(ImageUrl + listResult.get(0).getGoodsLogo())
                                 .placeholder(UnaryActivity.this.getResources().getDrawable(R.drawable.imagviewloading))
+                                .error(UnaryActivity.this.getResources().getDrawable(R.drawable.imageview_error))
                                 .into(unary_image_01);
                         unary_txt_01.setText(listResult.get(0).getGoodsName());
                         picasso.load(ImageUrl + listResult.get(1).getGoodsLogo())
                                 .placeholder(UnaryActivity.this.getResources().getDrawable(R.drawable.imagviewloading))
+                                .error(UnaryActivity.this.getResources().getDrawable(R.drawable.imageview_error))
                                 .into(unary_image_02);
                         unary_txt_02.setText(listResult.get(1).getGoodsName());
                         picasso.load(ImageUrl + listResult.get(2).getGoodsLogo())
                                 .placeholder(UnaryActivity.this.getResources().getDrawable(R.drawable.imagviewloading))
+                                .error(UnaryActivity.this.getResources().getDrawable(R.drawable.imageview_error))
                                 .into(unary_image_03);
                         unary_txt_03.setText(listResult.get(2).getGoodsName());
                     }
@@ -347,7 +352,7 @@ public class UnaryActivity extends FragmentActivity implements UnaryAdapter.OnRe
                         Toast.makeText(mcontext, "暂无数据", Toast.LENGTH_SHORT).show();
                         return;
                     }
-                    List<UnaryListBean.ListResultBean> newListResult= unaryListBean.getListResult();
+                    List<UnaryListBean.ListResultBean> newListResult = unaryListBean.getListResult();
                     if (page == 1) {
                         listResult = newListResult;
                         unary_recyclerView.setNestedScrollingEnabled(false);
@@ -355,18 +360,15 @@ public class UnaryActivity extends FragmentActivity implements UnaryAdapter.OnRe
                         unary_recyclerView.setAdapter(adapter);
                         adapter.setOnItemClickListener(UnaryActivity.this);
                         adapter.setOnBeginClickListener(UnaryActivity.this);
-                    }else
-                    {
-                        if(listResult ==null)
-                        {
+                    } else {
+                        if (listResult == null) {
                             listResult = newListResult;
                             unary_recyclerView.setNestedScrollingEnabled(false);
                             adapter = new UnaryAdapter(listResult, UnaryActivity.this);
                             unary_recyclerView.setAdapter(adapter);
                             adapter.setOnItemClickListener(UnaryActivity.this);
                             adapter.setOnBeginClickListener(UnaryActivity.this);
-                        }else
-                        {
+                        } else {
                             listResult.addAll(newListResult);
                             adapter.notifyDataSetChanged();
                             adapter.setOnItemClickListener(UnaryActivity.this);
@@ -458,4 +460,17 @@ public class UnaryActivity extends FragmentActivity implements UnaryAdapter.OnRe
         unary_new.setTextColor(Color.parseColor("#737373"));
         unary_introduce.setTextColor(Color.parseColor("#737373"));
     }
+
+    /**
+     * 初始化中间三个待揭晓图片
+     */
+    private void initThreeImage() {
+        picasso.load(R.drawable.imagviewloading).into(unary_image_01);
+        unary_txt_01.setText("暂无");
+        picasso.load(R.drawable.imagviewloading).into(unary_image_02);
+        unary_txt_02.setText("暂无");
+        picasso.load(R.drawable.imagviewloading).into(unary_image_03);
+        unary_txt_03.setText("暂无");
+    }
+
 }

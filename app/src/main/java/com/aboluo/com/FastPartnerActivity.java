@@ -7,6 +7,9 @@ import android.os.Bundle;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.util.Log;
 import android.view.View;
+import android.webkit.WebSettings;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ScrollView;
@@ -15,6 +18,7 @@ import android.widget.Toast;
 
 import com.aboluo.XUtils.CommonUtils;
 import com.aboluo.XUtils.MyApplication;
+import com.aboluo.XUtils.ProgressWebView;
 import com.aboluo.model.FastParnterBean;
 import com.aboluo.model.FastParnterMakeOrderBean;
 import com.android.volley.AuthFailureError;
@@ -53,6 +57,8 @@ public class FastPartnerActivity extends Activity {
     private TextView tv_Amount, fast_parnter_title;
     private ImageView iv_fastpartner, iv_fastpartner_back;
     private PullToRefreshScrollView pullToRefreshScrollView;
+    private ProgressWebView wv_fastParnter;
+    private String webUrl;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -100,6 +106,7 @@ public class FastPartnerActivity extends Activity {
         MemberId = CommonUtils.GetMemberId(this);
         requestQueue = MyApplication.getRequestQueue();
         ImageUrl = CommonUtils.GetValueByKey(this, "ImgUrl");
+        webUrl = CommonUtils.GetValueByKey(this, "backUrl");
         URL = CommonUtils.GetValueByKey(this, "apiurl2");
         APPToken = CommonUtils.GetValueByKey(this, "APPToken");
         picasso = Picasso.with(this);
@@ -115,7 +122,9 @@ public class FastPartnerActivity extends Activity {
         iv_fastpartner = (ImageView) findViewById(R.id.iv_fastpartner);
         iv_fastpartner_back = (ImageView) findViewById(R.id.iv_fastpartner_back);
         pullToRefreshScrollView = (PullToRefreshScrollView) findViewById(R.id.sv_fastparnter);
+        wv_fastParnter = (ProgressWebView) findViewById(R.id.wv_fastParnter);
         initData();
+        initWebView(webUrl + "/Moblie/ShowHelpCenter?helpMenuId=10");
     }
 
     private void initData() {
@@ -215,5 +224,43 @@ public class FastPartnerActivity extends Activity {
         } else {
             finish();
         }
+    }
+
+    /**
+     * 初始化底部webivew（获取数据之后）
+     */
+    private void initWebView(String detailUrl) {
+        //详情地址
+        //解决了webview 头部空了一片白的问题
+        wv_fastParnter.getSettings().setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
+        wv_fastParnter.setVerticalScrollBarEnabled(false);
+        wv_fastParnter.setHorizontalScrollBarEnabled(false);
+        //end
+        WebSettings webViewSetting = wv_fastParnter.getSettings();
+        webViewSetting.setDomStorageEnabled(true);
+        webViewSetting.setJavaScriptEnabled(true);
+        webViewSetting.setUseWideViewPort(true);//关键点
+        webViewSetting.setLoadWithOverviewMode(true);
+        wv_fastParnter.loadUrl(detailUrl);
+        wv_fastParnter.setWebViewClient(new WebViewClient() {
+            @Override
+            public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                view.loadUrl(url);
+                return super.shouldOverrideUrlLoading(view, url);
+            }
+
+            @Override
+            public void onPageFinished(WebView view, String url) {
+                super.onPageFinished(view, url);
+                //这个是一定要加上那个的,配合scrollView和WebView的height=wrap_content属性使用
+                int w = View.MeasureSpec.makeMeasureSpec(0,
+                        View.MeasureSpec.UNSPECIFIED);
+                int h = View.MeasureSpec.makeMeasureSpec(0,
+                        View.MeasureSpec.UNSPECIFIED);
+                //重新测量
+                wv_fastParnter.measure(w, h);
+            }
+        });
+
     }
 }

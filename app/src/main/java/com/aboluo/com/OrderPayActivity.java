@@ -13,6 +13,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -26,6 +27,7 @@ import cn.beecloud.BCPay;
 import cn.beecloud.async.BCCallback;
 import cn.beecloud.async.BCResult;
 import cn.beecloud.entity.BCPayResult;
+import cn.iwgang.countdownview.CountdownView;
 import cn.pedant.SweetAlert.SweetAlertDialog;
 
 /**
@@ -50,6 +52,10 @@ public class OrderPayActivity extends Activity implements View.OnClickListener {
     private ImageView iv_pay_back;
     private SweetAlertDialog finishDialog;
     private boolean isdimiss = true;
+    private CountdownView cv_countdownViewpay;
+    private RelativeLayout rl_time;
+    private TextView tv_endTime;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -75,6 +81,9 @@ public class OrderPayActivity extends Activity implements View.OnClickListener {
         iv_pay_back = (ImageView) findViewById(R.id.iv_pay_back);
         ck_zfb_pay = (RadioButton) findViewById(R.id.ck_zfb_pay);
         ck_wx_pay = (RadioButton) findViewById(R.id.ck_wx_pay);
+        cv_countdownViewpay = (CountdownView) findViewById(R.id.cv_countdownViewpay);
+        rl_time = (RelativeLayout) findViewById(R.id.rl_time);
+        tv_endTime = (TextView) findViewById(R.id.tv_endTime);
         pdialog = new SweetAlertDialog(this, SweetAlertDialog.PROGRESS_TYPE);
         pdialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
         pdialog.setTitleText("处理中，请稍候...");
@@ -108,6 +117,20 @@ public class OrderPayActivity extends Activity implements View.OnClickListener {
                     }
                 });
         finishDialog.setCancelable(false);
+        if (payfrom.equals("7")) { //这是团购付款
+            rl_time.setVisibility(View.VISIBLE);
+            cv_countdownViewpay.start(30 * 1000); // 毫秒
+            cv_countdownViewpay.setOnCountdownEndListener(new CountdownView.OnCountdownEndListener() {
+                @Override
+                public void onEnd(CountdownView cv) {
+//                cv.setVisibility(View.GONE);
+                    cv_countdownViewpay.setVisibility(View.GONE);
+                    tv_endTime.setText("请重新下单");
+                    Toast.makeText(OrderPayActivity.this, "当前订单失效，请重新下单", Toast.LENGTH_SHORT).show();
+                    sure_pay.setEnabled(false);
+                }
+            });
+        }
     }
 
     private void Clean() {
@@ -249,7 +272,6 @@ public class OrderPayActivity extends Activity implements View.OnClickListener {
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.sure_pay:
-
                 if (ck_zfb_pay.isChecked()) {
                     pdialog.show();
                     Map<String, String> mapOptional = new HashMap<String, String>();
@@ -315,7 +337,7 @@ public class OrderPayActivity extends Activity implements View.OnClickListener {
                 finishDialog.show();
             } else {
                 finishDialog.show();
-                isdimiss =false;
+                isdimiss = false;
             }
         }
         return true;

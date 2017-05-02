@@ -56,7 +56,7 @@ public class GroupBuyAdapter extends RecyclerView.Adapter<GroupBuyAdapter.MyView
                 ViewGroup.LayoutParams para = holder.linelayout_child.getLayoutParams();
                 int with = holder.relative_farther.getWidth();
                 int all = mlist.get(position).getNeedPerson();
-                int i = mlist.get(position).getBuyedPerson();
+                int i = mlist.get(position).getBuyPerson();
                 if (i == 0) {
                     para.width = 0;
                     holder.tv_percentNum.setTextColor(Color.BLACK);
@@ -68,6 +68,7 @@ public class GroupBuyAdapter extends RecyclerView.Adapter<GroupBuyAdapter.MyView
                     String percentNum = df.format(num);
                     if (num < 50) {
                         holder.tv_percentNum.setTextColor(Color.BLACK);
+                        holder.tv_percentNum.setText(percentNum + "%");
                     } else {
                         holder.tv_percentNum.setTextColor(Color.WHITE);
                         holder.tv_percentNum.setText(percentNum + "%");
@@ -76,7 +77,7 @@ public class GroupBuyAdapter extends RecyclerView.Adapter<GroupBuyAdapter.MyView
                 holder.linelayout_child.setLayoutParams(para);
             }
         });
-        holder.tv_people_num.setText(String.valueOf(mlist.get(position).getNeedPerson()));
+        holder.tv_people_num.setText(String.valueOf(mlist.get(position).getBuyPerson()));
         holder.itemView.setTag(position);
         holder.groupbuy_item_name.setText(mlist.get(position).getGoodsName());
         holder.groupbuy_item_sub.setText(mlist.get(position).getRemarks() == null ? "暂无" : mlist.get(position).getRemarks().toString());

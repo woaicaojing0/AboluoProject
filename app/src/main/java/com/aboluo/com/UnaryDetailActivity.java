@@ -14,6 +14,7 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -70,7 +71,11 @@ public class UnaryDetailActivity extends Activity implements View.OnClickListene
     private ImageView unarydetail_text_back;
     private String MemberId;
     private UnaryDetailBean unaryDetailBean;
-    private TextView tv_last_winner,tv_unary_record,tv_nickName,tv_addTimes,tv_now_winner,tv_onetimes;
+    private TextView tv_last_winner, tv_unary_record, tv_nickName, tv_addTimes, tv_now_winner, tv_onetimes;
+    private RelativeLayout relative_farther;
+    private LinearLayout unary_detail_percent_child;
+    private TextView tv_percentNum, unary_detail_record;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -108,6 +113,7 @@ public class UnaryDetailActivity extends Activity implements View.OnClickListene
                     finish();
                 }
             });
+            unary_detail_record.setOnClickListener(this);
         } else {
             finish();
             Toast.makeText(this, "请先登录！", Toast.LENGTH_SHORT).show();
@@ -145,17 +151,22 @@ public class UnaryDetailActivity extends Activity implements View.OnClickListene
         tv_addTimes = (TextView) findViewById(R.id.tv_addTimes);
         tv_now_winner = (TextView) findViewById(R.id.tv_now_winner);
         tv_onetimes = (TextView) findViewById(R.id.tv_onetimes);
+        unary_detail_record = (TextView) findViewById(R.id.unary_detail_record);
         unary_toolbar = (Toolbar) findViewById(R.id.unary_toolbar);
         unary_detail_scollview = (VerticalScrollView) findViewById(R.id.unary_detail_scollview);
         unary_startgoods = (LinearLayout) findViewById(R.id.unary_startgoods);
         unary_buy_now = (LinearLayout) findViewById(R.id.unary_buy_now);
         unarydetail_text_back = (ImageView) findViewById(R.id.unarydetail_text_back);
         unary_goodsdetail_webview = (WebView) findViewById(R.id.unary_goodsdetail_webview);
+        relative_farther = (RelativeLayout) findViewById(R.id.relative_farther);
+        unary_detail_percent_child = (LinearLayout) findViewById(R.id.unary_detail_percent_child);
+        tv_percentNum = (TextView) findViewById(R.id.tv_percentNum);
         int screenWidth = ScreenUtils.getScreenWidth(this);
         unarydetail_view_pager.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, screenWidth));
         initDetailData();
         goodsShoppingCartListBean = new ArrayList<>();
         initData();
+        initUnaryProgress();
     }
 
     private void initWebview() {
@@ -203,29 +214,31 @@ public class UnaryDetailActivity extends Activity implements View.OnClickListene
         }
     }
 
+    /**
+     * 场次编号、参与人次、期数
+     */
     private void initData() {
         StringRequest stringRequest = new StringRequest(Request.Method.POST,
                 URL + "/api/OnePurchaseApi/ReceiveOnePurchaseDetail", new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 Log.i("unaryDetailActivity", response);
-                unaryDetailBean = gson.fromJson(response,UnaryDetailBean.class);
-                if(unaryDetailBean.isIsSuccess())
-                {
+                unaryDetailBean = gson.fromJson(response, UnaryDetailBean.class);
+                if (unaryDetailBean.isIsSuccess()) {
                     tv_last_winner.setText(unaryDetailBean.getLastWinLotteryNumber());
                     tv_nickName.setText(unaryDetailBean.getMemberNickName());
                     tv_addTimes.setText(String.valueOf(unaryDetailBean.getAddTotalCount()));
                     tv_now_winner.setText(String.valueOf(unaryDetailBean.getThisWinLotteryNumber()));
                     tv_onetimes.setText(String.valueOf(unaryDetailBean.getOneTimes()));
                 }
-                Toast.makeText(UnaryDetailActivity.this,"获取成功" , Toast.LENGTH_SHORT).show();
+                Toast.makeText(UnaryDetailActivity.this, "获取成功", Toast.LENGTH_SHORT).show();
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
                 byte[] bytes = error.networkResponse.data;
-                Log.i("unaryDetailActivity",new String(bytes));
-                Toast.makeText(UnaryDetailActivity.this,  new String(bytes), Toast.LENGTH_SHORT).show();
+                Log.i("unaryDetailActivity", new String(bytes));
+                Toast.makeText(UnaryDetailActivity.this, new String(bytes), Toast.LENGTH_SHORT).show();
             }
         }) {
             @Override
@@ -255,6 +268,11 @@ public class UnaryDetailActivity extends Activity implements View.OnClickListene
                     Intent intent1 = new Intent(UnaryDetailActivity.this, LoginActivity.class);
                     startActivity(intent1);
                 }
+                break;
+            case R.id.unary_detail_record:
+                Toast.makeText(this, "123", Toast.LENGTH_SHORT).show();
+                break;
+            default:
                 break;
         }
     }
@@ -286,5 +304,38 @@ public class UnaryDetailActivity extends Activity implements View.OnClickListene
         intent1.putExtra("payfrom", "4"); //代表从一元购结算的
         intent1.putExtra("OnePurchaseId", listResultBean.getId()); //代表从一元购结算的
         startActivity(intent1);
+    }
+
+    /**
+     * 一元购 进度条
+     */
+    private void initUnaryProgress() {
+        ViewTreeObserver vto2 = relative_farther.getViewTreeObserver();
+        vto2.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                relative_farther.getViewTreeObserver().removeGlobalOnLayoutListener(this);
+                ViewGroup.LayoutParams para = unary_detail_percent_child.getLayoutParams();
+                int all = listResultBean.getNeedPersonCount();
+                int i = listResultBean.getJoinCount();
+                if (i == 0) {
+                    para.width = 0;
+                    tv_percentNum.setTextColor(Color.BLACK);
+                    tv_percentNum.setText("0%");
+                } else {
+                    para.width = ((relative_farther.getWidth()) * i) / all;
+                    java.text.DecimalFormat df = new java.text.DecimalFormat("#");
+                    double num = (100 * i) / all;
+                    String percentNum = df.format(num);
+                    if (num < 50) {
+                        tv_percentNum.setTextColor(Color.BLACK);
+                    } else {
+                        tv_percentNum.setTextColor(Color.WHITE);
+                        tv_percentNum.setText(percentNum + "%");
+                    }
+                }
+                unary_detail_percent_child.setLayoutParams(para);
+            }
+        });
     }
 }

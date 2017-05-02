@@ -120,7 +120,7 @@ public class GroupBuyBean {
         private String GoodsColorName;
         private int GoodsColorStanderId;
         private int NeedPerson;
-        private int BuyedPerson;
+        private int BuyPerson;
         private String Remarks;
         private String TeamNumber;
         private double TeamPrice;
@@ -226,12 +226,12 @@ public class GroupBuyBean {
             this.NeedPerson = NeedPerson;
         }
 
-        public int getBuyedPerson() {
-            return BuyedPerson;
+        public int getBuyPerson() {
+            return BuyPerson;
         }
 
-        public void setBuyedPerson(int BuyedPerson) {
-            this.BuyedPerson = BuyedPerson;
+        public void setBuyPerson(int BuyedPerson) {
+            this.BuyPerson = BuyedPerson;
         }
 
         public String getRemarks() {

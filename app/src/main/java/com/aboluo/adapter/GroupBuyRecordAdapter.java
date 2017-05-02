@@ -66,9 +66,14 @@ public class GroupBuyRecordAdapter extends RecyclerView.Adapter<GroupBuyRecordAd
             stringBuffer.append("男士");
         }
         holder.tv_item_useraddress.setText(stringBuffer.toString());
-        mpicasso.load(mlist.get(position).getMemberLogo()).placeholder(mcontext.getResources().getDrawable(R.drawable.imagviewloading))
-                .resize(Utils.dp2px(mcontext, 250), Utils.dp2px(mcontext, 250))
-                .error(mcontext.getResources().getDrawable(R.drawable.imageview_error)).into(holder.iv_profile_image);
+        String logUrl = mlist.get(position).getMemberLogo();
+        if (logUrl == null || logUrl.length() <= 0) {
+            mpicasso.load(R.drawable.imagviewloading).into(holder.iv_profile_image);
+        } else {
+            mpicasso.load(mlist.get(position).getMemberLogo()).placeholder(mcontext.getResources().getDrawable(R.drawable.imagviewloading))
+                    .resize(Utils.dp2px(mcontext, 250), Utils.dp2px(mcontext, 250))
+                    .error(mcontext.getResources().getDrawable(R.drawable.imageview_error)).into(holder.iv_profile_image);
+        }
     }
 
     @Override

@@ -25,10 +25,12 @@ public class OrderSureListViewAdapter extends BaseAdapter {
     private List<GoodsShoppingCartListBean> mlist;
     private Context mcontext;
     private LayoutInflater layoutInflater;
+    private String mpayfrom;
 
-    public OrderSureListViewAdapter(List<GoodsShoppingCartListBean> list, Context context) {
+    public OrderSureListViewAdapter(List<GoodsShoppingCartListBean> list, Context context, String payfrom) {
         this.mcontext = context;
         this.mlist = list;
+        this.mpayfrom = payfrom;
         layoutInflater = LayoutInflater.from(mcontext);
     }
 
@@ -81,14 +83,22 @@ public class OrderSureListViewAdapter extends BaseAdapter {
         if (mlist.get(position).getGoodsLogo() == null) {
         } else {
             String[] imges = mlist.get(position).getGoodsLogo().toString().split(";");
-            if (ImgeURL == null) {
-                ImgeURL = CommonUtils.GetValueByKey(mcontext, "ImgUrl");
-            } else {
+            ImgeURL = CommonUtils.GetValueByKey(mcontext, "ImgUrl");
+            if (imges.length != 0 && imges[0] != "") {
+                if (mpayfrom.equals("7")) //全地址
+                {
+                    Log.i("woaicaojingshopimg7", imges[0]);
+                    Picasso.with(mcontext).load(imges[0]).placeholder(mcontext.getResources().getDrawable(R.drawable.imagviewloading))
+                            .error(mcontext.getResources().getDrawable(R.drawable.imageview_error))
+                            .into(holder.order_image);
+                } else {
+                    Log.i("woaicaojingshopimg", ImgeURL + imges[0]);
+                    Picasso.with(mcontext).load(ImgeURL + imges[0]).placeholder(mcontext.getResources().getDrawable(R.drawable.imagviewloading))
+                            .error(mcontext.getResources().getDrawable(R.drawable.imageview_error))
+                            .into(holder.order_image);
+                }
             }
-            Log.i("woaicaojingshopimg", ImgeURL + imges[0]);
-            Picasso.with(mcontext).load(ImgeURL + imges[0]).placeholder(mcontext.getResources().getDrawable(R.drawable.imagviewloading))
-                    .error(mcontext.getResources().getDrawable(R.drawable.imageview_error))
-                    .into(holder.order_image);
+
         }
         return convertView;
     }

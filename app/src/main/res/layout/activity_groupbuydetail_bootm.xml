@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <!-- 底部菜单栏-->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="54dp"
+        android:background="@color/white"
+        android:layout_alignParentBottom="true">
+
+        <View
+            android:id="@+id/bottom_view"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/view_color" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/white"
+            android:orientation="horizontal">
+                <!-- 我的 -->
+                <LinearLayout
+                    android:id="@+id/index_bottom_me"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.4"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:paddingLeft="2dp"
+                    android:paddingTop="2dp">
+
+                    <LinearLayout
+                        android:id="@+id/goodsdetail_btn_buynow"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="#fd5e89"
+                        android:gravity="center">
+
+                        <TextView
+                            android:id="@+id/tv_menu_me"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="立即购买"
+                            android:textColor="@color/white"
+                            android:textSize="18sp" />
+                    </LinearLayout>
+                </LinearLayout>
+        </LinearLayout>
+    </RelativeLayout>
+</LinearLayout>

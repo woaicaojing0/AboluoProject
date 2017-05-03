@@ -128,6 +128,7 @@
         <activity android:name=".ExpressDetailActivity"></activity>
         <activity android:name=".OrderDetailActivity"></activity>
         <activity android:name=".UnaryPublishActivity"></activity>
+        <activity android:name=".UnaryRecordActivity"></activity>
         <activity android:name=".FavorActivity"></activity>
         <activity android:name=".ReFundActivity"></activity>
         <activity android:name=".RefundDetailActivity" android:windowSoftInputMode="adjustPan|stateHidden"></activity>

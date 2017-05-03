@@ -270,7 +270,9 @@ public class UnaryDetailActivity extends Activity implements View.OnClickListene
                 }
                 break;
             case R.id.unary_detail_record:
-                Toast.makeText(this, "123", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(UnaryDetailActivity.this, UnaryRecordActivity.class);
+                intent.putExtra("PurchaseId", listResultBean.getId());
+                startActivity(intent);
                 break;
             default:
                 break;

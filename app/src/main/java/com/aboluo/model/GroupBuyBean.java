@@ -124,7 +124,7 @@ public class GroupBuyBean {
         private String Remarks;
         private String TeamNumber;
         private double TeamPrice;
-
+        private String  GoodsPicture;
         public static ListResultBean objectFromData(String str) {
 
             return new Gson().fromJson(str, ListResultBean.class);
@@ -256,6 +256,14 @@ public class GroupBuyBean {
 
         public void setTeamPrice(double TeamPrice) {
             this.TeamPrice = TeamPrice;
+        }
+
+        public String getGoodsPicture() {
+            return GoodsPicture;
+        }
+
+        public void setGoodsPicture(String goodsPicture) {
+            GoodsPicture = goodsPicture;
         }
     }
 }

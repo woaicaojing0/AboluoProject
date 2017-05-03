@@ -25,7 +25,6 @@ import com.aboluo.XUtils.MyApplication;
 import com.aboluo.XUtils.ScreenUtils;
 import com.aboluo.adapter.BannerAdapter;
 import com.aboluo.model.BaseModel;
-import com.aboluo.model.GoodsDetailInfo;
 import com.aboluo.model.GroupBuyBean;
 import com.aboluo.model.ShopCarBean.ResultBean.GoodsShoppingCartListBean;
 import com.aboluo.widget.VerticalScrollView;
@@ -76,7 +75,6 @@ public class GroupBuyDetailActivity extends Activity implements View.OnClickList
     private StringRequest stringRequest;
     private static String URL = null, ImgUrl = null;
     private static String APPToken = null;
-    private GoodsDetailInfo goodsDetailInfo;
     private LinearLayout index_bottom_shopcar, index_bottom_kefu; //1底部加入购车按钮 商品列表中的加入购物车
     private LinearLayout goodsdetail_btn_buynow;
     private SweetAlertDialog pdialog;
@@ -102,7 +100,7 @@ public class GroupBuyDetailActivity extends Activity implements View.OnClickList
         groupBuyDetailBean = (GroupBuyBean.ListResultBean) intent.getSerializableExtra("groupBuyBean");
         currentState = intent.getIntExtra("currentState", 0);
         init();
-        getGoods_detail();
+        initData();
         initGroupBuyNum();
         goods_pingjia_layout_btn1.setOnClickListener(this);
         goods_detail_layout_btn1.setOnClickListener(this);
@@ -113,11 +111,12 @@ public class GroupBuyDetailActivity extends Activity implements View.OnClickList
                 finish();
             }
         });
-        index_bottom_shopcar.setOnClickListener(this);
-        index_bottom_kefu.setOnClickListener(this);
+//        index_bottom_shopcar.setOnClickListener(this);
+//        index_bottom_kefu.setOnClickListener(this);
+//        index_bottom_menu.setOnClickListener(this);
         goodsdetail_btn_buynow.setOnClickListener(this);
         goodbuy_detail_record.setOnClickListener(this);
-        index_bottom_menu.setOnClickListener(this);
+
         ViewTreeObserver vto = rollPagerView.getViewTreeObserver();
         vto.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
@@ -150,7 +149,6 @@ public class GroupBuyDetailActivity extends Activity implements View.OnClickList
 
     /**
      * 初始化底部webivew（获取数据之后）
-     *
      */
     private void initWebView(String detailUrl, String pingJia) {
         //详情地址
@@ -195,7 +193,6 @@ public class GroupBuyDetailActivity extends Activity implements View.OnClickList
     private void iniTrollPagerView(final String[] imges) {
         final ArrayList<String> listimage = new ArrayList<String>();
         for (int i = 0; i < imges.length; i++) {
-            imges[i] = ImgUrl + imges[i].toString();
             listimage.add(imges[i]);
         }
         //窗口的宽度
@@ -259,60 +256,66 @@ public class GroupBuyDetailActivity extends Activity implements View.OnClickList
 
     }
 
-    /**
-     * 获取商品详情的数据，在这个方法里加载initrollPagerView、initwebview
-     */
-    private void getGoods_detail() {
-        stringRequest = new StringRequest(Request.Method.POST, URL + "/api/Goods/ReceiveGoodsById", new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                response = response.replace("\\", "");
-                response = response.substring(1, response.length() - 1);
-                Log.i("groupBuyDetailInfo", response);
-                Gson gson = new Gson();
-                goodsDetailInfo = gson.fromJson(response, GoodsDetailInfo.class);
-                txt_goods_name.setText(goodsDetailInfo.getResult().getGoodsInfo().getGoodsName());
-                txt_new_money.setText(String.valueOf(groupBuyDetailBean.getTeamPrice()));
-                tv_colorAndstandard.setText("颜色 " + groupBuyDetailBean.getGoodsColorName() + " 规格 " + groupBuyDetailBean.getGoodsStanderName());
-                if (goodsDetailInfo.getResult().getGoodsInfo().getGoodsSub() == null) {
-                    layout_txt_goods_sub.setVisibility(View.GONE);
-                } else {
-                    txt_goods_sub.setText(goodsDetailInfo.getResult().getGoodsInfo().getGoodsSub().toString());
-                }
-                //有些商品没有图片，但肯定有logo图片
-                if (goodsDetailInfo.getResult().getGoodsInfo().getGoodsPicture() == null) {
-                    if (goodsDetailInfo.getResult().getGoodsInfo().getGoodsLogo() == null) {
-                    } else {
-                        imgurl = goodsDetailInfo.getResult().getGoodsInfo().getGoodsLogo().split(";");
-                    }
-                } else {
-                    imgurl = goodsDetailInfo.getResult().getGoodsInfo().getGoodsPicture().split(";");
-                }
-                if (imgurl == null) {
-                } else {
-                    iniTrollPagerView(imgurl);
-                }
-                String detailurl = CommonUtils.GetValueByKey(GroupBuyDetailActivity.this, "backUrl") + "/moblie/Index?productId=" + goods_id;
-                Log.i("woaicaojing", detailurl);
-                initWebView(detailurl, null);
-
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Log.i("woaicoajing", error.toString());
-            }
-        }) {
-            @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-                Map<String, String> map = new HashMap<>();
-                map.put("GoodsId", String.valueOf(goods_id));
-                map.put("APPToken", APPToken);
-                return map;
-            }
-        };
-        requestQueue.add(stringRequest);
+    private void initData() {
+        txt_goods_name.setText(groupBuyDetailBean.getGoodsName());
+        txt_new_money.setText(String.valueOf(groupBuyDetailBean.getTeamPrice()));
+        tv_colorAndstandard.setText("颜色 " + groupBuyDetailBean.getGoodsColorName() + " 规格 " + groupBuyDetailBean.getGoodsStanderName());
+        if (groupBuyDetailBean.getRemarks() == null) {
+            layout_txt_goods_sub.setVisibility(View.GONE);
+        } else {
+            txt_goods_sub.setText(groupBuyDetailBean.getRemarks().toString());
+        }
+        imgurl = groupBuyDetailBean.getGoodsPicture().split(";");
+        iniTrollPagerView(imgurl);
+        String detailurl = CommonUtils.GetValueByKey(GroupBuyDetailActivity.this, "backUrl") + "/moblie/Index?productId=" + goods_id;
+        Log.i("woaicaojing", detailurl);
+        initWebView(detailurl, null);
     }
+//    /**
+//     * 获取商品详情的数据，在这个方法里加载initrollPagerView、initwebview
+//     */
+//    private void getGoods_detail() {
+//        stringRequest = new StringRequest(Request.Method.POST, URL + "/api/Goods/ReceiveGoodsById", new Response.Listener<String>() {
+//            @Override
+//            public void onResponse(String response) {
+//                response = response.replace("\\", "");
+//                response = response.substring(1, response.length() - 1);
+//                Log.i("groupBuyDetailInfo", response);
+//                Gson gson = new Gson();
+//                goodsDetailInfo = gson.fromJson(response, GoodsDetailInfo.class);
+//
+//                //有些商品没有图片，但肯定有logo图片
+//                if (goodsDetailInfo.getResult().getGoodsInfo().getGoodsPicture() == null) {
+//                    if (goodsDetailInfo.getResult().getGoodsInfo().getGoodsLogo() == null) {
+//                    } else {
+//                        imgurl = goodsDetailInfo.getResult().getGoodsInfo().getGoodsLogo().split(";");
+//                    }
+//                } else {
+//                    imgurl = goodsDetailInfo.getResult().getGoodsInfo().getGoodsPicture().split(";");
+//                }
+//                if (imgurl == null) {
+//                } else {
+//                    iniTrollPagerView(imgurl);
+//                }
+//
+//
+//            }
+//        }, new Response.ErrorListener() {
+//            @Override
+//            public void onErrorResponse(VolleyError error) {
+//                Log.i("woaicoajing", error.toString());
+//            }
+//        }) {
+//            @Override
+//            protected Map<String, String> getParams() throws AuthFailureError {
+//                Map<String, String> map = new HashMap<>();
+//                map.put("GoodsId", String.valueOf(goods_id));
+//                map.put("APPToken", APPToken);
+//                return map;
+//            }
+//        };
+//        requestQueue.add(stringRequest);
+//    }
 
     @Override
     public void onClick(View v) {
@@ -346,7 +349,7 @@ public class GroupBuyDetailActivity extends Activity implements View.OnClickList
                     }
                     break;
                 case R.id.index_bottom_menu:
-                    AddFavor(goodsDetailInfo.getResult().getGoodsInfo().getGoodsId());
+                    AddFavor(groupBuyDetailBean.getGoodsId());
                     break;
                 case R.id.index_bottom_kefu:
                     String title = "商品详情";
@@ -379,15 +382,15 @@ public class GroupBuyDetailActivity extends Activity implements View.OnClickList
         goodsShoppingCartListBean.clear();
         double hyprice = groupBuyDetailBean.getTeamPrice();
         GoodsShoppingCartListBean goodsShoppingCartListBean2 = new GoodsShoppingCartListBean(
-                goodsDetailInfo.getResult().getGoodsInfo().getGoodsId(),
+                groupBuyDetailBean.getGoodsId(),
                 groupBuyDetailBean.getGoodsColorId(),
                 groupBuyDetailBean.getGoodsColorName(),
                 groupBuyDetailBean.getGoodsStanderId(),
                 groupBuyDetailBean.getGoodsStanderName(),
                 Integer.valueOf(1),
                 0,
-                goodsDetailInfo.getResult().getGoodsInfo().getGoodsName(),
-                goodsDetailInfo.getResult().getGoodsInfo().getGoodsLogo(),
+                groupBuyDetailBean.getGoodsName(),
+                groupBuyDetailBean.getGoodsLogo(),
                 hyprice
         );
         goodsShoppingCartListBean.add(goodsShoppingCartListBean2);
@@ -439,7 +442,7 @@ public class GroupBuyDetailActivity extends Activity implements View.OnClickList
     private void ShareSDKGoodsDetail() {
         String detailurl0 = CommonUtils.GetValueByKey(GroupBuyDetailActivity.this, "backUrl")
                 + "/moblie/ShareProducts?productId=" + goods_id;
-        String imgurl = goodsDetailInfo.getResult().getGoodsInfo().getGoodsLogo();
+        String imgurl = groupBuyDetailBean.getGoodsLogo();
         if (imgurl == null) {
         } else {
             String[] imageurls = imgurl.split(";");
@@ -458,7 +461,7 @@ public class GroupBuyDetailActivity extends Activity implements View.OnClickList
             // titleUrl是标题的网络链接，仅在人人网和QQ空间使用
             oks.setTitleUrl(detailurl0);
             // text是分享文本，所有平台都需要这个字段
-            oks.setText(goodsDetailInfo.getResult().getGoodsInfo().getGoodsName().toString());
+            oks.setText(groupBuyDetailBean.getGoodsName().toString());
             // imagePath是图片的本地路径，Linked-In以外的平台都支持此参数
             //oks.setImagePath(imageurls[0].toString());//确保SDcard下面存在此张图片
             oks.setImageUrl(imageurls[0].toString());

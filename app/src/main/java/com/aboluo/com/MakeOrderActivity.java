@@ -98,7 +98,7 @@ public class MakeOrderActivity extends Activity implements View.OnClickListener 
         OrderList = (MyListview) findViewById(R.id.orderlist);
         MemberId = CommonUtils.GetMemberId(MakeOrderActivity.this);
         init();
-        orderSureListViewAdapter = new OrderSureListViewAdapter(goodsShoppingCartListBean, this);
+        orderSureListViewAdapter = new OrderSureListViewAdapter(goodsShoppingCartListBean, this,payfrom);
         OrderList.setAdapter(orderSureListViewAdapter);
         for (int i = 0; i < goodsShoppingCartListBean.size(); i++) {
             yunfei = yunfei + goodsShoppingCartListBean.get(i).getYunfei();
@@ -175,11 +175,11 @@ public class MakeOrderActivity extends Activity implements View.OnClickListener 
         txt_goods_allnum.setText("共计" + goodsShoppingCartListBean.size() + "件商品");
         Submit_Order.setOnClickListener(this);
         initData();
-        if (payfrom.equals("7")) {
-            order_yunfei.setText("￥0");
-            goods_smallallmoeny.setText(goodsShoppingCartListBean.get(0).getHyPrice() + "");
-            return;
-        }
+//        if (payfrom.equals("7")) {
+//            order_yunfei.setText("￥0");
+//            goods_smallallmoeny.setText(goodsShoppingCartListBean.get(0).getHyPrice() + "");
+//            return;
+//        }
         getIntergralAndFreight();
     }
 
@@ -601,9 +601,9 @@ public class MakeOrderActivity extends Activity implements View.OnClickListener 
         if (isFirst) {
             isFirst = false;
         } else {
-            if (payfrom.equals("7")) {
-                return;
-            }
+//            if (payfrom.equals("7")) {
+//                return;
+//            }
             moeny = oldmoeny;
             getIntergralAndFreight();
         }

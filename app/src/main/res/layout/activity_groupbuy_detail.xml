@@ -306,6 +306,7 @@
                         android:textColor="#00000000"/>
 
                     <ImageView
+                        android:visibility="gone"
                         android:id="@+id/detail_more"
                         android:layout_width="32dp"
                         android:layout_height="32dp"
@@ -328,8 +329,8 @@
     </LinearLayout>
 
     <include
-        android:id="@+id/id_goodsdetail_bottom"
-        layout="@layout/activity_goodsdetail_bootm"
+        android:id="@+id/id_groupdetail_bottom"
+        layout="@layout/activity_groupbuydetail_bootm"
         android:layout_width="fill_parent"
         android:layout_height="54dp"
         android:layout_alignParentBottom="true"/>

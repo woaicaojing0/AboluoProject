@@ -58,8 +58,7 @@ public class GroupBuyRecordAdapter extends RecyclerView.Adapter<GroupBuyRecordAd
         }
         StringBuffer stringBuffer = new StringBuffer();
         stringBuffer.append(mlist.get(position).getProvince()
-                + mlist.get(position).getCity() +
-                mlist.get(position).getMemberNick());
+                + mlist.get(position).getCity());
         if (mlist.get(position).getMemberSex() == 0) {
             stringBuffer.append("女士");
         } else {

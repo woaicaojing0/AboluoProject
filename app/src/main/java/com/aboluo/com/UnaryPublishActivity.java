@@ -1,9 +1,13 @@
 package com.aboluo.com;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -33,7 +37,7 @@ import cn.pedant.SweetAlert.SweetAlertDialog;
  * 最新揭晓
  */
 
-public class UnaryPublishActivity extends Activity {
+public class UnaryPublishActivity extends Activity implements AdapterView.OnItemClickListener {
     private RequestQueue requestQueue;
     private String ImageUrl;
     private String URL;
@@ -46,7 +50,7 @@ public class UnaryPublishActivity extends Activity {
     private UnaryListBean unaryListBean;
     private UnaryPublishAdapter unaryPublishAdapter;
     private List<UnaryListBean.ListResultBean> listResult;
-
+    private LinearLayout ll_unary_publish_text_back;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -70,6 +74,12 @@ public class UnaryPublishActivity extends Activity {
                 initData(InitPage);
             }
         });
+        ll_unary_publish_text_back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
     }
 
     private void init() {
@@ -85,6 +95,7 @@ public class UnaryPublishActivity extends Activity {
         pdialog.setCanceledOnTouchOutside(true);
         pdialog.setCancelable(true);
         unary_publish_listview = (PullToRefreshListView) findViewById(R.id.unary_publish_listview);
+        ll_unary_publish_text_back = (LinearLayout) findViewById(R.id.ll_unary_publish_text_back);
         initData(InitPage);
     }
 
@@ -96,10 +107,24 @@ public class UnaryPublishActivity extends Activity {
                 response = response.substring(1, response.length() - 1);
                 unaryListBean = gson.fromJson(response, UnaryListBean.class);
                 if (unaryListBean.isIsSuccess()) {
-                    listResult = unaryListBean.getListResult();
-                    unaryPublishAdapter = new UnaryPublishAdapter(UnaryPublishActivity.this,
-                            listResult, ImageUrl);
-                    unary_publish_listview.setAdapter(unaryPublishAdapter);
+                    if (currentpage == 1) {
+                        listResult = unaryListBean.getListResult();
+                        unaryPublishAdapter = new UnaryPublishAdapter(UnaryPublishActivity.this,
+                                listResult, ImageUrl);
+                        unary_publish_listview.setAdapter(unaryPublishAdapter);
+                        unary_publish_listview.setOnItemClickListener(UnaryPublishActivity.this);
+                    } else {
+                        if (listResult == null) {
+                            listResult = unaryListBean.getListResult();
+                            unaryPublishAdapter = new UnaryPublishAdapter(UnaryPublishActivity.this,
+                                    listResult, ImageUrl);
+                            unary_publish_listview.setAdapter(unaryPublishAdapter);
+                        } else {
+                            listResult.addAll(unaryListBean.getListResult());
+                            unaryPublishAdapter.notifyDataSetChanged();
+                        }
+                    }
+                    unary_publish_listview.setOnItemClickListener(UnaryPublishActivity.this);
                 } else {
                     Toast.makeText(UnaryPublishActivity.this, "数据获取失败", Toast.LENGTH_SHORT).show();
                 }
@@ -116,12 +141,12 @@ public class UnaryPublishActivity extends Activity {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> map = new HashMap<>();
-                map.put("State", "3");
+                map.put("State", "-1");
                 map.put("IsPaging", "true");
                 map.put("CurrentPage", String.valueOf(currentpage));
                 map.put("PageSize", "20");
                 map.put("SortValue", "finishTime");
-                map.put("SortType", "asc");
+                map.put("SortType", "desc");
                 map.put("TopCount", "0");
                 map.put("APPToken", APPToken);
                 return map;
@@ -130,5 +155,16 @@ public class UnaryPublishActivity extends Activity {
             ;
         };
         requestQueue.add(stringRequest);
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        UnaryListBean.ListResultBean listResultBean = listResult.get(position-1);
+        Intent intent = new Intent(UnaryPublishActivity.this, UnaryDetailActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putParcelable("data", listResultBean);
+        intent.putExtra("type", 1); //代表从 最新揭晓跳转的
+        intent.putExtras(bundle);
+        startActivity(intent);
     }
 }

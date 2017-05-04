@@ -187,7 +187,7 @@ public class IndexFragment extends Fragment implements View.OnClickListener, Ada
         brand_gridview.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, screenWidth / 2));
 //        theme_gridview.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, screenWidth / 2));
         theme_top_gridview.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, screenWidth / 2));
-        mid_gridview.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, (screenWidth / 2 + CommonUtils.dip2px(this.getContext(), 16))));
+        mid_gridview.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ((screenWidth / 5) * 2 + CommonUtils.dip2px(this.getContext(), 16))));
         ll_hotsale_main.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, screenWidth));
         initConfig();
         rollPagerView.setOnItemClickListener(new OnItemClickListener() {

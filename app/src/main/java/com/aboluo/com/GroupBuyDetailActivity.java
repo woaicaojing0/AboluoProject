@@ -500,8 +500,8 @@ public class GroupBuyDetailActivity extends Activity implements View.OnClickList
                         tv_percentNum.setTextColor(Color.BLACK);
                     } else {
                         tv_percentNum.setTextColor(Color.WHITE);
-                        tv_percentNum.setText(percentNum + "%");
                     }
+                    tv_percentNum.setText(percentNum + "%");
                 }
                 goodbuy_detail_percent_child.setLayoutParams(para);
             }

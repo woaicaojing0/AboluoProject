@@ -290,6 +290,10 @@ public class MyFragment extends TakePhotoFragment implements View.OnClickListene
         StringRequest stringRequest = new StringRequest(Request.Method.POST, URL + "/api/Order/ReceiveOrderCountByMemberId", new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
+                my_01_num.setVisibility(View.GONE);
+                my_02_num.setVisibility(View.GONE);
+                my_03_num.setVisibility(View.GONE);
+                my_04_num.setVisibility(View.GONE);
                 response = response.replace("\\", "");
                 response = response.substring(1, response.length() - 1);
                 ExpressNumBean bean = gson.fromJson(response, ExpressNumBean.class);

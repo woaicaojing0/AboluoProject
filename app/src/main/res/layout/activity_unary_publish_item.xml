@@ -3,6 +3,7 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 <LinearLayout
+    android:id="@+id/ll_publish_item"
     android:paddingLeft="8dp"
     android:paddingRight="8dp"
     android:layout_width="match_parent"

@@ -71,10 +71,11 @@ public class UnaryDetailActivity extends Activity implements View.OnClickListene
     private ImageView unarydetail_text_back;
     private String MemberId;
     private UnaryDetailBean unaryDetailBean;
-    private TextView tv_last_winner, tv_unary_record, tv_nickName, tv_addTimes, tv_now_winner, tv_onetimes;
+    private TextView tv_last_winner, tv_nickName, tv_addTimes, tv_now_winner, tv_onetimes;
     private RelativeLayout relative_farther;
     private LinearLayout unary_detail_percent_child;
     private TextView tv_percentNum, unary_detail_record;
+    private int type;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,7 +83,13 @@ public class UnaryDetailActivity extends Activity implements View.OnClickListene
         setContentView(R.layout.activitiy_unarydetail);
         if (CommonUtils.IsLogin(UnaryDetailActivity.this)) {
             init();
-            unary_buy_now.setOnClickListener(this);
+            if (type == 1) {
+                unary_buy_now.setEnabled(false);
+                unary_buy_now.setBackgroundColor(Color.parseColor("#d6d3d6"));
+            }
+            else {
+                unary_buy_now.setOnClickListener(this);
+            }
             ViewTreeObserver vto = unarydetail_view_pager.getViewTreeObserver();
             vto.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
                 @Override
@@ -136,8 +143,10 @@ public class UnaryDetailActivity extends Activity implements View.OnClickListene
         pdialog.setTitleText("加载中");
         pdialog.setCanceledOnTouchOutside(true);
         pdialog.setCancelable(true);
-        Bundle bundle = getIntent().getExtras();
+        Intent intent = getIntent();
+        Bundle bundle = intent.getExtras();
         listResultBean = bundle.getParcelable("data");
+        type = intent.getIntExtra("type", 0);
         goodsstatus = bundle.getInt("GoodsStatus");
         unarydetail_view_pager = (RollPagerView) findViewById(R.id.unarydetail_view_pager);
         unary_need_txt = (TextView) findViewById(R.id.unary_need_txt);
@@ -146,7 +155,6 @@ public class UnaryDetailActivity extends Activity implements View.OnClickListene
         unary_goods_sub = (TextView) findViewById(R.id.unary_goods_sub);
         unarydetail_text_title = (TextView) findViewById(R.id.unarydetail_text_title);
         tv_last_winner = (TextView) findViewById(R.id.tv_last_winner);
-        tv_unary_record = (TextView) findViewById(R.id.tv_unary_record);
         tv_nickName = (TextView) findViewById(R.id.tv_nickName);
         tv_addTimes = (TextView) findViewById(R.id.tv_addTimes);
         tv_now_winner = (TextView) findViewById(R.id.tv_now_winner);
@@ -163,6 +171,7 @@ public class UnaryDetailActivity extends Activity implements View.OnClickListene
         tv_percentNum = (TextView) findViewById(R.id.tv_percentNum);
         int screenWidth = ScreenUtils.getScreenWidth(this);
         unarydetail_view_pager.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, screenWidth));
+
         initDetailData();
         goodsShoppingCartListBean = new ArrayList<>();
         initData();
@@ -231,7 +240,7 @@ public class UnaryDetailActivity extends Activity implements View.OnClickListene
                     tv_now_winner.setText(String.valueOf(unaryDetailBean.getThisWinLotteryNumber()));
                     tv_onetimes.setText(String.valueOf(unaryDetailBean.getOneTimes()));
                 }
-                Toast.makeText(UnaryDetailActivity.this, "获取成功", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(UnaryDetailActivity.this, "获取成功", Toast.LENGTH_SHORT).show();
             }
         }, new Response.ErrorListener() {
             @Override
@@ -244,15 +253,13 @@ public class UnaryDetailActivity extends Activity implements View.OnClickListene
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> map = new HashMap<>();
-                map.put("MemberId", "2174");
+                map.put("MemberId", MemberId);
                 map.put("OnePurchaseId", String.valueOf(listResultBean.getId()));
                 map.put("APPToken", APPToken);
                 map.put("LoginPhone", "123");
                 map.put("LoginCheckToken", "123");
                 return map;
             }
-
-            ;
         };
         requestQueue.add(stringRequest);
     }
@@ -333,8 +340,8 @@ public class UnaryDetailActivity extends Activity implements View.OnClickListene
                         tv_percentNum.setTextColor(Color.BLACK);
                     } else {
                         tv_percentNum.setTextColor(Color.WHITE);
-                        tv_percentNum.setText(percentNum + "%");
                     }
+                    tv_percentNum.setText(percentNum + "%");
                 }
                 unary_detail_percent_child.setLayoutParams(para);
             }

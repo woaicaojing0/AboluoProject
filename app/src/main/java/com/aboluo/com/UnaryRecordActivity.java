@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
@@ -48,16 +49,24 @@ public class UnaryRecordActivity extends Activity {
     private int purchaseId;
     private int currentPage;
     private UnaryRecordAdapter unaryRecordAdapter;
-    private XRecyclerView  recycle_unaryRecord;
+    private XRecyclerView recycle_unaryRecord;
     private RelativeLayout rl_show_nodata;
     private LinearLayout ll_show_data;
     private UnaryRecordBean unaryRecordBean;
-    private  List<UnaryRecordBean.ListResultBean> listResultBeen;
+    private List<UnaryRecordBean.ListResultBean> listResultBeen;
+    private ImageView iv_unaryrecord_back;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_unaryrecord);
         init();
+        iv_unaryrecord_back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
     }
 
     private void init() {
@@ -76,9 +85,10 @@ public class UnaryRecordActivity extends Activity {
         Intent intent = getIntent();
         purchaseId = intent.getIntExtra("PurchaseId", 0);
         currentPage = 1;
-        recycle_unaryRecord= (XRecyclerView) findViewById(R.id.recycle_unaryRecord);
+        recycle_unaryRecord = (XRecyclerView) findViewById(R.id.recycle_unaryRecord);
         rl_show_nodata = (RelativeLayout) findViewById(R.id.rl_unary_show_nodata);
         ll_show_data = (LinearLayout) findViewById(R.id.ll_unary_show_data);
+        iv_unaryrecord_back = (ImageView) findViewById(R.id.iv_unaryrecord_back);
         //recyclerview 初始化设置
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         recycle_unaryRecord.setLayoutManager(linearLayoutManager);

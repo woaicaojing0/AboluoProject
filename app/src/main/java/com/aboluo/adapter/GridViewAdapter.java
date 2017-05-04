@@ -61,7 +61,7 @@ public class GridViewAdapter extends BaseAdapter {
             holder.imageView = (ImageView) view.findViewById(R.id.img_mid_gridview_item);
             holder.textView = (TextView) view.findViewById(R.id.txt_mid_gridview_item);
             int screenWidth = ScreenUtils.getScreenWidth(mContext);
-            holder.imageView.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, screenWidth / 4));
+            holder.imageView.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, screenWidth / 5));
             view.setTag(holder);
         }else {
             holder = (ViewHolder) view.getTag();

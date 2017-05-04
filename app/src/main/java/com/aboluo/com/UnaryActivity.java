@@ -6,6 +6,8 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebSettings;
@@ -16,11 +18,13 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.aboluo.Interface.OnRecyclerViewItemClickListener;
 import com.aboluo.XUtils.CommonUtils;
 import com.aboluo.XUtils.MyApplication;
 import com.aboluo.XUtils.RBCallbkRecyclerView;
 import com.aboluo.XUtils.ScreenUtils;
 import com.aboluo.adapter.BannerAdapter;
+import com.aboluo.adapter.ThreeImageAdapter;
 import com.aboluo.adapter.UnaryAdapter;
 import com.aboluo.model.BaseConfigBean;
 import com.aboluo.model.ShopCarBean;
@@ -49,7 +53,8 @@ import java.util.Map;
  * Created by CJ on 2016/12/2.
  */
 
-public class UnaryActivity extends FragmentActivity implements UnaryAdapter.OnRecyclerViewItemClickListener, View.OnClickListener {
+public class UnaryActivity extends FragmentActivity implements
+        UnaryAdapter.OnRecyclerViewItemClickListener, View.OnClickListener, OnRecyclerViewItemClickListener {
     private RequestQueue requestQueue;
     private String ImageUrl;
     private String URL;
@@ -60,8 +65,7 @@ public class UnaryActivity extends FragmentActivity implements UnaryAdapter.OnRe
     private BaseConfigBean unaryConfigBean;
     private BannerAdapter bannerAdapter;
     private RollPagerView unary__view_pager;
-    private ImageView unary_image_03, unary_image_02, unary_image_01;
-    private TextView unary_txt_02, unary_txt_01, unary_txt_03, tv_unary_introduce;
+    private TextView tv_unary_introduce;
     private RBCallbkRecyclerView unary_recyclerView;
     private UnaryAdapter adapter;
     private UnaryListBean unaryListBean;
@@ -75,6 +79,8 @@ public class UnaryActivity extends FragmentActivity implements UnaryAdapter.OnRe
     private ImageView iv_unary_back;
     private LargeImageView lgiv_unary_introduce;
     private List<UnaryListBean.ListResultBean> listResult;
+    private List<UnaryListBean.ListResultBean> threeImageListResult;
+    private RecyclerView recycle_unary_threeImage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -121,13 +127,8 @@ public class UnaryActivity extends FragmentActivity implements UnaryAdapter.OnRe
         gson = new Gson();
         picasso = Picasso.with(mcontext);
         unary__view_pager = (RollPagerView) findViewById(R.id.unary__view_pager);
-        unary_image_03 = (ImageView) findViewById(R.id.unary_image_03);
-        unary_image_02 = (ImageView) findViewById(R.id.unary_image_02);
-        unary_image_01 = (ImageView) findViewById(R.id.unary_image_01);
+
         iv_unary_back = (ImageView) findViewById(R.id.iv_unary_back);
-        unary_txt_02 = (TextView) findViewById(R.id.unary_txt_02);
-        unary_txt_01 = (TextView) findViewById(R.id.unary_txt_01);
-        unary_txt_03 = (TextView) findViewById(R.id.unary_txt_03);
         unary_popularity = (TextView) findViewById(R.id.unary_popularity);
         unary_new = (TextView) findViewById(R.id.unary_new);
         unary_introduce = (TextView) findViewById(R.id.unary_introduce);
@@ -136,10 +137,13 @@ public class UnaryActivity extends FragmentActivity implements UnaryAdapter.OnRe
         webview_introduce = (WebView) findViewById(R.id.webview_introduce);
         unary_publish = (LinearLayout) findViewById(R.id.unary_publish);
         lgiv_unary_introduce = (LargeImageView) findViewById(R.id.lgiv_unary_introduce);
+        recycle_unary_threeImage = (RecyclerView) findViewById(R.id.recycle_unary_threeImage);
         unary_popularity.setTextColor(UnaryActivity.this.getResources().getColor(R.color.btn_color));
-        initThreeImage();
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+        linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
+        recycle_unary_threeImage.setLayoutManager(linearLayoutManager);
         initBannerImage();
-        initNewOpen();
+        initThreeImageUrl();
         InitUnaryListBean();
         initWebview();
         goodsShoppingCartListBean = new ArrayList<>();
@@ -201,7 +205,7 @@ public class UnaryActivity extends FragmentActivity implements UnaryAdapter.OnRe
     /**
      * 加载显示的正在揭晓的一元购
      */
-    private void initNewOpen() {
+    private void initThreeImageUrl() {
         StringRequest stringRequest = new StringRequest(Request.Method.POST, URL + "/api/OnepurchaseApi/ReceiveOnePurchaseData", new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
@@ -209,24 +213,10 @@ public class UnaryActivity extends FragmentActivity implements UnaryAdapter.OnRe
                 response = response.substring(1, response.length() - 1);
                 unaryListBean = gson.fromJson(response, UnaryListBean.class);
                 if (unaryListBean.isIsSuccess()) {
-                    List<UnaryListBean.ListResultBean> listResult = unaryListBean.getListResult();
-                    if (listResult.size() >= 3) {
-                        picasso.load(ImageUrl + listResult.get(0).getGoodsLogo())
-                                .placeholder(UnaryActivity.this.getResources().getDrawable(R.drawable.imagviewloading))
-                                .error(UnaryActivity.this.getResources().getDrawable(R.drawable.imageview_error))
-                                .into(unary_image_01);
-                        unary_txt_01.setText(listResult.get(0).getGoodsName());
-                        picasso.load(ImageUrl + listResult.get(1).getGoodsLogo())
-                                .placeholder(UnaryActivity.this.getResources().getDrawable(R.drawable.imagviewloading))
-                                .error(UnaryActivity.this.getResources().getDrawable(R.drawable.imageview_error))
-                                .into(unary_image_02);
-                        unary_txt_02.setText(listResult.get(1).getGoodsName());
-                        picasso.load(ImageUrl + listResult.get(2).getGoodsLogo())
-                                .placeholder(UnaryActivity.this.getResources().getDrawable(R.drawable.imagviewloading))
-                                .error(UnaryActivity.this.getResources().getDrawable(R.drawable.imageview_error))
-                                .into(unary_image_03);
-                        unary_txt_03.setText(listResult.get(2).getGoodsName());
-                    }
+                    threeImageListResult = unaryListBean.getListResult();
+                    ThreeImageAdapter threeImageAdapter = new ThreeImageAdapter(UnaryActivity.this, threeImageListResult);
+                    recycle_unary_threeImage.setAdapter(threeImageAdapter);
+                    threeImageAdapter.setOnRecyclerViewItemClickListener(UnaryActivity.this);
                 }
             }
         }, new Response.ErrorListener() {
@@ -245,7 +235,7 @@ public class UnaryActivity extends FragmentActivity implements UnaryAdapter.OnRe
                 map.put("CurrentPage", "1");
                 map.put("PageSize", "5");
                 map.put("SortValue", "finishTime");
-                map.put("SortType", "asc");
+                map.put("SortType", "desc");
                 map.put("TopCount", "3");
                 map.put("APPToken", APPToken);
                 return map;
@@ -461,16 +451,20 @@ public class UnaryActivity extends FragmentActivity implements UnaryAdapter.OnRe
         unary_introduce.setTextColor(Color.parseColor("#737373"));
     }
 
-    /**
-     * 初始化中间三个待揭晓图片
-     */
-    private void initThreeImage() {
-        picasso.load(R.drawable.imagviewloading).into(unary_image_01);
-        unary_txt_01.setText("暂无");
-        picasso.load(R.drawable.imagviewloading).into(unary_image_02);
-        unary_txt_02.setText("暂无");
-        picasso.load(R.drawable.imagviewloading).into(unary_image_03);
-        unary_txt_03.setText("暂无");
+    // threeimage 点击事件
+    @Override
+    public void onItemClick(View view, Object postion) {
+        int postionIndex = Integer.parseInt(String.valueOf(postion));
+        if (threeImageListResult.size() >= (postionIndex + 1)) {
+            UnaryListBean.ListResultBean listResultBean = threeImageListResult.get(postionIndex);
+            Intent intent = new Intent(UnaryActivity.this, UnaryDetailActivity.class);
+            Bundle bundle = new Bundle();
+            bundle.putParcelable("data", listResultBean);
+            intent.putExtra("type",1); //代表从 最新揭晓跳转的
+            intent.putExtras(bundle);
+            startActivity(intent);
+        }
     }
+
 
 }

@@ -69,7 +69,7 @@ public class UnaryPublishAdapter extends BaseAdapter {
         holder.unary_publish_item_price.setText(String.valueOf(list.get(position).getGoodsPrice()));
         holder.unary_publish_item_name.setText("暂无中奖人数据");
         holder.unary_publish_item_count.setText(String.valueOf(list.get(position).getNeedPersonCount()));
-        holder.unary_publish_item_time.setText(list.get(position).getStartTime().toString());
+        holder.unary_publish_item_time.setText(list.get(position).getStartTime().toString().replace("T"," "));
         picasso.load(ImageUrl + list.get(position).getGoodsLogo()).placeholder(mcontext.getResources().getDrawable(
                 R.drawable.imagviewloading)).error(mcontext.getResources().getDrawable(R.drawable.imageview_error))
                 .into(holder.unary_publish_item_image);

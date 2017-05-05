@@ -141,7 +141,7 @@ public class UnaryPublishActivity extends Activity implements AdapterView.OnItem
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> map = new HashMap<>();
-                map.put("State", "-1");
+                map.put("State", "3");
                 map.put("IsPaging", "true");
                 map.put("CurrentPage", String.valueOf(currentpage));
                 map.put("PageSize", "20");

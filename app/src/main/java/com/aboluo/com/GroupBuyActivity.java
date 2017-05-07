@@ -150,6 +150,8 @@ public class GroupBuyActivity extends Activity implements View.OnClickListener, 
 //                byte[] bytes = error.networkResponse.data;
 //                Log.e("GroupBuyActivityError", new String(bytes));
                 pdialog.dismiss();
+                recycler_groupbuy.refreshComplete();
+                recycler_groupbuy.loadMoreComplete();
             }
         }) {
             @Override

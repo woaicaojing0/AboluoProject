@@ -155,6 +155,8 @@ public class GroupBuyRecordActivity extends Activity {
 //                byte[] bytes = error.networkResponse.data;
 //                Log.d("groupBuyRecordError", new String(bytes));
                 Toast.makeText(GroupBuyRecordActivity.this, "网络异常", Toast.LENGTH_SHORT).show();
+                recycle_groupBuyRecord.refreshComplete();
+                recycle_groupBuyRecord.loadMoreComplete();
             }
         }) {
             @Override

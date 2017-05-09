@@ -41,6 +41,7 @@ import com.jude.rollviewpager.hintview.ColorPointHintView;
 import java.util.ArrayList;
 
 import cn.iwgang.countdownview.CountdownView;
+import cn.sharesdk.onekeyshare.OnekeyShare;
 
 /**
  * Created by CJ on 2016/10/1.
@@ -66,9 +67,11 @@ public class SecKillGoodsDetailActivity extends Activity implements View.OnClick
     private String Seckill_endtime;
     private ImageView seckillgoods_detail_image_back;
     private ArrayList<ShopCarBean.ResultBean.GoodsShoppingCartListBean> goodsShoppingCartListBean; //传入下订单的信息
-    private RelativeLayout goods_pingjia_layout_btn,goods_detail_layout_btn;
+    private RelativeLayout goods_pingjia_layout_btn, goods_detail_layout_btn;
     //商品详情和评价按钮下面的横线
     private View seckill_goods_detail_view, seckill_goods_pingjia_view;
+    private ImageView seckill_share;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -101,6 +104,7 @@ public class SecKillGoodsDetailActivity extends Activity implements View.OnClick
         goods_detail_layout_btn.setOnClickListener(this);
         seckillgoods_detail_image_back.setOnClickListener(this);
         goods_pingjia_layout_btn.setOnClickListener(this);
+        seckill_share.setOnClickListener(this);
 
     }
 
@@ -160,6 +164,7 @@ public class SecKillGoodsDetailActivity extends Activity implements View.OnClick
 //        goods_pingjia_webview.loadUrl("http://t.back.aboluomall.com/Moblie/ShowEvaluationList");
 //        goods_pingjia_webview.setWebViewClient(new WebViewClient());
     }
+
     /**
      * 加载头部banner(获取数据之后)
      *
@@ -186,8 +191,8 @@ public class SecKillGoodsDetailActivity extends Activity implements View.OnClick
                 intent.putStringArrayListExtra("imgeurl", listimage);
                 intent.putExtra("position", position);
                 String transitionName = "images";
-                ActivityOptionsCompat activityOptionsCompat = ActivityOptionsCompat.makeSceneTransitionAnimation(SecKillGoodsDetailActivity.this,rollPagerView, transitionName);
-                startActivity(intent,activityOptionsCompat.toBundle());
+                ActivityOptionsCompat activityOptionsCompat = ActivityOptionsCompat.makeSceneTransitionAnimation(SecKillGoodsDetailActivity.this, rollPagerView, transitionName);
+                startActivity(intent, activityOptionsCompat.toBundle());
             }
         });
     }
@@ -217,6 +222,7 @@ public class SecKillGoodsDetailActivity extends Activity implements View.OnClick
         goods_pingjia_layout_btn = (RelativeLayout) findViewById(R.id.goods_pingjia_layout_btn);
         seckill_goods_detail_view = (View) findViewById(R.id.seckill_goods_detail_view);
         seckill_goods_pingjia_view = (View) findViewById(R.id.seckill_goods_pingjia_view);
+        seckill_share = (ImageView) findViewById(R.id.seckill_share);
         Bundle bundle = getIntent().getExtras();
         seckillListBean = bundle.getParcelable("data");
         Seckill_endtime = bundle.getString("endtime");
@@ -297,6 +303,11 @@ public class SecKillGoodsDetailActivity extends Activity implements View.OnClick
                 //String detailurl = "http://back.aboluomall.com/Moblie/ShowEvaluation?goodsId=12";
                 initwebview(detailurl, null);
                 break;
+            case R.id.seckill_share:
+                ShareSDKGoodsDetail();
+                break;
+            default:
+                break;
         }
     }
 
@@ -329,5 +340,44 @@ public class SecKillGoodsDetailActivity extends Activity implements View.OnClick
         intent1.putExtra("payfrom", "3"); //代表从秒杀结算的
         intent1.putExtra("SeckillId", seckillListBean.getSeckillId()); //代表秒杀商品的id
         startActivity(intent1);
+    }
+
+    private void ShareSDKGoodsDetail() {
+        String detailurl0 = CommonUtils.GetValueByKey(SecKillGoodsDetailActivity.this, "backUrl")
+                + "/moblie/ShareProducts?productId=" + seckillListBean.getGoodsId();
+        String imgurl = seckillListBean.getGoodsLogo();
+        if (imgurl == null) {
+        } else {
+            String[] imageurls = imgurl.split(";");
+            for (int i = 0; i < imageurls.length; i++) {
+                imageurls[i] = ImgUrl + imageurls[i].toString();
+            }
+            Log.i("ShareSDKImageUrl", imageurls[0].toString());
+            Log.i("ShareSDKURLDetail", detailurl0);
+            OnekeyShare oks = new OnekeyShare();
+            //关闭sso授权
+            oks.disableSSOWhenAuthorize();
+// 分享时Notification的图标和文字  2.5.9以后的版本不调用此方法
+            //oks.setNotification(R.drawable.ic_launcher, getString(R.string.app_name));
+            // title标题，印象笔记、邮箱、信息、微信、人人网和QQ空间使用
+            oks.setTitle("阿波罗分享");
+            // titleUrl是标题的网络链接，仅在人人网和QQ空间使用
+            oks.setTitleUrl(detailurl0);
+            // text是分享文本，所有平台都需要这个字段
+            oks.setText(seckillListBean.getGoodsName().toString());
+            // imagePath是图片的本地路径，Linked-In以外的平台都支持此参数
+            //oks.setImagePath(imageurls[0].toString());//确保SDcard下面存在此张图片
+            oks.setImageUrl(imageurls[0].toString());
+            // url仅在微信（包括好友和朋友圈）中使用
+            oks.setUrl(detailurl0);
+            // comment是我对这条分享的评论，仅在人人网和QQ空间使用
+            oks.setComment("这个商品不错哦");
+            // site是分享此内容的网站名称，仅在QQ空间使用
+            oks.setSite(getString(R.string.app_name));
+            // siteUrl是分享此内容的网站地址，仅在QQ空间使用
+            oks.setSiteUrl(detailurl0);
+            // 启动分享GUI
+            oks.show(this);
+        }
     }
 }

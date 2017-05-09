@@ -255,8 +255,8 @@
                 android:id="@+id/unary_recyclerView"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginLeft="24dp"
-                android:layout_marginRight="20dp"></com.aboluo.XUtils.RBCallbkRecyclerView>
+                android:layout_marginLeft="4dp"
+                android:layout_marginRight="4dp"></com.aboluo.XUtils.RBCallbkRecyclerView>
             <com.shizhefei.view.largeimage.LargeImageView
                 android:visibility="gone"
                 android:id="@+id/lgiv_unary_introduce"

@@ -63,7 +63,7 @@ public class GroupBuyDetailActivity extends Activity implements View.OnClickList
     //显示详情和评价的webview
     private WebView goods_detail_webview;
     //首页最右边显示更多操作、首页最上面的购物车，收藏按钮
-    private ImageView detail_more;
+    private ImageView groupbuy_share;
     private LinearLayout index_bottom_menu;
     private LinearLayout layout_txt_goods_sub;
     //详情返回、商品类型弹出xml中的关闭、商品类型中的图片
@@ -104,7 +104,7 @@ public class GroupBuyDetailActivity extends Activity implements View.OnClickList
         initGroupBuyNum();
         goods_pingjia_layout_btn1.setOnClickListener(this);
         goods_detail_layout_btn1.setOnClickListener(this);
-        detail_more.setOnClickListener(this);
+        groupbuy_share.setOnClickListener(this);
         goods_detail_text_back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -226,7 +226,7 @@ public class GroupBuyDetailActivity extends Activity implements View.OnClickList
         id_goods_detail_view = (View) findViewById(R.id.id_goods_detail_view);
         id_goods_pingjia_view = (View) findViewById(R.id.id_goods_pingjia_view);
         goods_detail_webview = (WebView) findViewById(R.id.goods_detail_webview);
-        detail_more = (ImageView) findViewById(R.id.detail_more);
+        groupbuy_share = (ImageView) findViewById(R.id.groupbuy_share);
         index_bottom_menu = (LinearLayout) findViewById(R.id.index_bottom_menu);
         goods_detail_text_back = (ImageView) findViewById(R.id.goods_detail_text_back);
         txt_goods_name = (TextView) findViewById(R.id.txt_goods_name);
@@ -246,7 +246,6 @@ public class GroupBuyDetailActivity extends Activity implements View.OnClickList
         tv_percentNum = (TextView) findViewById(R.id.tv_percentNum);
         goodbuy_detail_record = (TextView) findViewById(R.id.goodbuy_detail_record);
         pdialog.setTitleText("请稍等");
-
         goods_id = groupBuyDetailBean.getGoodsId();
         requestQueue = MyApplication.getRequestQueue();
         URL = CommonUtils.GetValueByKey(this, "apiurl");
@@ -333,9 +332,6 @@ public class GroupBuyDetailActivity extends Activity implements View.OnClickList
                     String detailurl = CommonUtils.GetValueByKey(GroupBuyDetailActivity.this, "backUrl") + "/Moblie/ShowEvaluation?goodsId=" + goods_id;
                     initWebView(detailurl, null);
                     break;
-                case R.id.detail_more: //分享按钮
-                    ShareSDKGoodsDetail();
-                    break;
                 case R.id.index_bottom_shopcar:
                     Toast.makeText(this, "团购商品请直接购买！", Toast.LENGTH_SHORT).show();
                     break;
@@ -365,6 +361,9 @@ public class GroupBuyDetailActivity extends Activity implements View.OnClickList
                     intent.putExtra("TeamBuyId", groupBuyDetailBean.getTId());
                     intent.putExtra("openTime", groupBuyDetailBean.getOpenTime());
                     startActivity(intent);
+                    break;
+                case R.id.groupbuy_share:
+                    ShareSDKGoodsDetail();
                     break;
                 default:
                     break;
@@ -442,13 +441,10 @@ public class GroupBuyDetailActivity extends Activity implements View.OnClickList
     private void ShareSDKGoodsDetail() {
         String detailurl0 = CommonUtils.GetValueByKey(GroupBuyDetailActivity.this, "backUrl")
                 + "/moblie/ShareProducts?productId=" + goods_id;
-        String imgurl = groupBuyDetailBean.getGoodsLogo();
+        String imgurl = groupBuyDetailBean.getGoodsLogo(); //这个地址是全地址
         if (imgurl == null) {
         } else {
             String[] imageurls = imgurl.split(";");
-            for (int i = 0; i < imageurls.length; i++) {
-                imageurls[i] = ImgUrl + imageurls[i].toString();
-            }
             Log.i("ShareSDKImageUrl", imageurls[0].toString());
             Log.i("ShareSDKURLDetail", detailurl0);
             OnekeyShare oks = new OnekeyShare();

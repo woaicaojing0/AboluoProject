@@ -457,7 +457,7 @@ public class GroupBuyDetailActivity extends Activity implements View.OnClickList
             // titleUrl是标题的网络链接，仅在人人网和QQ空间使用
             oks.setTitleUrl(detailurl0);
             // text是分享文本，所有平台都需要这个字段
-            oks.setText(groupBuyDetailBean.getGoodsName().toString());
+            oks.setText("快来和我一起拼团"+groupBuyDetailBean.getGoodsName().toString());
             // imagePath是图片的本地路径，Linked-In以外的平台都支持此参数
             //oks.setImagePath(imageurls[0].toString());//确保SDcard下面存在此张图片
             oks.setImageUrl(imageurls[0].toString());

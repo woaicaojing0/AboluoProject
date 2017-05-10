@@ -295,6 +295,7 @@ public class OrderPayActivity extends Activity implements View.OnClickListener {
                     mapOptional.put("consumptioncode", "consumptionCode");
                     mapOptional.put("money", "2");
                     mapOptional.put("payfrom", payfrom);  //标识从哪边支付的，1购物车 2个人中心（待付款） 3秒杀 4一元购
+                    mapOptional.put("OnePurchaseId", String.valueOf(OnePurchaseId));  //标识从一元夺宝的场次，默认是0
                     //对于微信支付, 手机内存太小会有OutOfResourcesException造成的卡顿, 以致无法完成支付
                     //这个是微信自身存在的问题
                     if (BCPay.isWXAppInstalledAndSupported() &&

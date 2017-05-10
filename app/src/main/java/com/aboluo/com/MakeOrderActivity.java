@@ -98,7 +98,7 @@ public class MakeOrderActivity extends Activity implements View.OnClickListener 
         OrderList = (MyListview) findViewById(R.id.orderlist);
         MemberId = CommonUtils.GetMemberId(MakeOrderActivity.this);
         init();
-        orderSureListViewAdapter = new OrderSureListViewAdapter(goodsShoppingCartListBean, this,payfrom);
+        orderSureListViewAdapter = new OrderSureListViewAdapter(goodsShoppingCartListBean, this, payfrom);
         OrderList.setAdapter(orderSureListViewAdapter);
         for (int i = 0; i < goodsShoppingCartListBean.size(); i++) {
             yunfei = yunfei + goodsShoppingCartListBean.get(i).getYunfei();
@@ -310,6 +310,7 @@ public class MakeOrderActivity extends Activity implements View.OnClickListener 
                     map.put("Remark", edit_remark.getText().toString());
                     map.put("Products", Products);
                     map.put("OrderType", payfrom);
+                    map.put("OnePurchaseId", String.valueOf(OnePurchaseId));
                     map.put("ExpressPrice", String.valueOf(makerOrderIntergralBean.getResult().getExpressPrice()));
                     switch (discountType) {
                         case "0":

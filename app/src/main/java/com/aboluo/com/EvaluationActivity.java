@@ -260,9 +260,9 @@ public class EvaluationActivity extends TakePhotoActivity implements View.OnClic
             num = 0;
             ImageUploadNameList.clear();
             //pdialog.setTitleText("上传中......");
-            Configuration config = new Configuration.Builder().zone(Zone.zone0).build();
-//  重用uploadManager。一般地，只需要创建一个uploadManager对象
-            UploadManager uploadManager = new UploadManager(config);
+//            Configuration config = new Configuration.Builder().zone(Zone.zone0).build();
+////  重用uploadManager。一般地，只需要创建一个uploadManager对象
+           UploadManager uploadManager = new UploadManager();
             for (int i = 0; i < filepath.size(); i++) {
                 String key = "evaluateImage/android/" + UUID.randomUUID().toString();
                 final int finalI = i;

@@ -34,7 +34,8 @@ public class UnaryAdapter extends RecyclerView.Adapter<UnaryAdapter.MyviewHolder
         this.onBeginClickListener = onBeginClickListener;
     }
 
-    private View.OnClickListener  onBeginClickListener;
+    private View.OnClickListener onBeginClickListener;
+
     public UnaryAdapter(List<ListResultBean> list, Context context) {
         this.mlist = list;
         this.context = context;
@@ -64,7 +65,7 @@ public class UnaryAdapter extends RecyclerView.Adapter<UnaryAdapter.MyviewHolder
                 if (i == 0) {
                     para.width = 0;
                 } else {
-                    para.width = ((holder.relative_farther.getWidth())* i)/all;
+                    para.width = ((holder.relative_farther.getWidth()) * i) / all;
                 }
                 holder.linelayout_child.setLayoutParams(para);
             }
@@ -72,6 +73,8 @@ public class UnaryAdapter extends RecyclerView.Adapter<UnaryAdapter.MyviewHolder
         String result = CommonUtils.Getpercent(mlist.get(position).getJoinCount(),
                 mlist.get(position).getNeedPersonCount());
         holder.textView.setText(mlist.get(position).getGoodsName());
+        holder.tv_needNum.setText(String.valueOf(mlist.get(position).getNeedPersonCount()));
+        holder.tv_joinNum.setText(String.valueOf(mlist.get(position).getJoinCount()));
         holder.uanry_listview_item_percent.setText(result);
         holder.unary_begin.setOnClickListener(onBeginClickListener);
         holder.unary_begin.setTag(position);
@@ -94,15 +97,17 @@ public class UnaryAdapter extends RecyclerView.Adapter<UnaryAdapter.MyviewHolder
     }
 
     class MyviewHolder extends RecyclerView.ViewHolder {
-        public TextView textView, uanry_listview_item_percent, unary_begin;
+        public TextView textView, uanry_listview_item_percent, unary_begin, tv_needNum, tv_joinNum;
         public ImageView unary_listview_image;
         public RelativeLayout relative_farther;
-        public LinearLayout linelayout_child,all_linelayout;
+        public LinearLayout linelayout_child, all_linelayout;
 
         public MyviewHolder(View itemView) {
             super(itemView);
             textView = (TextView) itemView.findViewById(R.id.unary_listview_title);
             unary_begin = (TextView) itemView.findViewById(R.id.unary_begin);
+            tv_needNum = (TextView) itemView.findViewById(R.id.tv_needNum);
+            tv_joinNum = (TextView) itemView.findViewById(R.id.tv_joinNum);
             uanry_listview_item_percent = (TextView) itemView.findViewById(R.id.uanry_listview_item_percent);
             unary_listview_image = (ImageView) itemView.findViewById(R.id.unary_listview_image);
             relative_farther = (RelativeLayout) itemView.findViewById(R.id.relative_farther);

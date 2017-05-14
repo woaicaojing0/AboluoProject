@@ -342,13 +342,13 @@ public class UnaryDetailActivity extends Activity implements View.OnClickListene
                     para.width = ((relative_farther.getWidth()) * i) / all;
                     java.text.DecimalFormat df = new java.text.DecimalFormat("#");
                     double num = (100 * i) / all;
-                    String percentNum = df.format(num);
+                    String percentNum = CommonUtils.Getpercent(i,all);
                     if (num < 50) {
                         tv_percentNum.setTextColor(Color.BLACK);
                     } else {
                         tv_percentNum.setTextColor(Color.WHITE);
                     }
-                    tv_percentNum.setText(percentNum + "%");
+                    tv_percentNum.setText(percentNum);
                 }
                 unary_detail_percent_child.setLayoutParams(para);
             }

@@ -495,9 +495,9 @@ public class MyFragment extends TakePhotoFragment implements View.OnClickListene
 
     private void UploadImage(String filepath, String key, String token) {
         //pdialog.setTitleText("上传中......");
-        Configuration config = new Configuration.Builder().zone(Zone.zone0).build();
+//        Configuration config = new Configuration.Builder().zone(Zone.zone0).build();
 //  重用uploadManager。一般地，只需要创建一个uploadManager对象
-        UploadManager uploadManager = new UploadManager(config);
+        UploadManager uploadManager = new UploadManager();
         uploadManager.put(filepath, key, token,
                 new UpCompletionHandler() {
                     @Override

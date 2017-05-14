@@ -7,7 +7,9 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true">
 
         <com.aboluo.widget.VerticalScrollView
             android:id="@+id/unary_detail_scollview"
@@ -50,6 +52,7 @@
                         android:textColor="@color/btn_color" />
 
                     <LinearLayout
+                        android:layout_marginLeft="8dp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:orientation="vertical">
@@ -515,17 +518,16 @@
                     android:textColor="#00000000" />
                 <ImageView
                     android:id="@+id/unary_share"
-                    android:layout_width="32dp"
-                    android:layout_height="32dp"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
                     android:background="#00000000"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
                     android:layout_marginRight="20dp"
-                    android:src="@drawable/share"/>
+                    android:src="@drawable/more_gray"/>
             </RelativeLayout>
         </android.support.v7.widget.Toolbar>
     </RelativeLayout>
-
     <LinearLayout
         android:id="@+id/unary_buy_now"
         android:layout_width="match_parent"
@@ -537,7 +539,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="立 即 购 买"
+            android:text="立 即 夺 宝"
             android:textColor="@color/white"
             android:textSize="20sp" />
     </LinearLayout>

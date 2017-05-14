@@ -13,6 +13,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.aboluo.Interface.OnRecyclerViewItemClickListener;
+import com.aboluo.XUtils.CommonUtils;
 import com.aboluo.XUtils.Utils;
 import com.aboluo.com.R;
 import com.aboluo.model.GroupBuyBean.ListResultBean;
@@ -65,13 +66,13 @@ public class GroupBuyAdapter extends RecyclerView.Adapter<GroupBuyAdapter.MyView
                     para.width = ((holder.relative_farther.getWidth()) * i) / all;
                     java.text.DecimalFormat df = new java.text.DecimalFormat("#.00");
                     double num = (100 * i) / all;
-                    String percentNum = df.format(num);
+                    String percentNum = CommonUtils.Getpercent(i,all);
                     if (num < 50) {
                         holder.tv_percentNum.setTextColor(Color.BLACK);
-                        holder.tv_percentNum.setText(percentNum + "%");
+                        holder.tv_percentNum.setText(percentNum);
                     } else {
                         holder.tv_percentNum.setTextColor(Color.WHITE);
-                        holder.tv_percentNum.setText(percentNum + "%");
+                        holder.tv_percentNum.setText(percentNum);
                     }
                 }
                 holder.linelayout_child.setLayoutParams(para);

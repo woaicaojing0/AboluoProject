@@ -8,12 +8,11 @@ import com.google.gson.Gson;
 
 public class ExtractBean {
 
-    //"{"IsSuccess":false,"Message":null,"Result":null,"ListResult":null}"
 
     /**
      * IsSuccess : true
      * Message : null
-     * Result : {"WithdrawalsInfo":{"Id":51,"memberId":2172,"bankCard":"6013826110012617946","bankCardName":"长城电子借记卡","bankProvince":"江苏","bankCity":"淮安","bankType":"借记卡","bankCardLength":19,"bankName":"中国银行","bankLogo":"http://api.jisuapi.com/bankcard/upload/80/4.png","bankTel":"95566","bankWebsite":"http://www.boc.cn","mobile":"18360733212","price":1,"email":"18360733212","realName":"曹静","reason":"","validType":1,"auditStatus":0,"createTime":"2017-03-01T23:49:32","auditor":"","auditTime":"1900-01-01T00:00:00","flag":1,"WechatLogoUrl":"http://oi0lhaaeo.bkt.clouddn.com/memberLogo/android/7f999d92-4d3d-4d97-a97d-0d785cf05bfb","TotalMoney":1005.85,"FreezeMoney":5.85,"CanUserMoney":1000,"TotalRemaidMoney":0},"APPToken":null,"LoginCheckToken":null,"LoginPhone":null}
+     * Result : {"WithdrawalsInfo":{"Id":66,"memberId":2172,"bankCard":"6013826110012617946","bankCardName":"长城电子借记卡","bankProvince":"江苏","bankCity":"淮安","bankType":"借记卡","bankCardLength":19,"bankName":"中国银行","bankLogo":"http://api.jisuapi.com/bankcard/upload/80/4.png","bankTel":"95566","bankWebsite":"http://www.boc.cn","mobile":null,"price":10,"email":"1206067690@qq.com","realName":"曹静","reason":"无佣金记录","validType":2,"auditStatus":2,"createTime":"2017-03-05T01:29:30","auditor":"caozong108","auditTime":"2017-03-07T12:59:30","flag":1,"WechatLogoUrl":"http://oj987uf2i.bkt.clouddn.com/memberLogo/android/23c9bd6a-93e9-4add-b29e-d6f1e4c491be","TotalMoney":1017.1,"FreezeMoney":-19.8,"CanUserMoney":31.05,"TotalRemaidMoney":0},"APPToken":null,"LoginCheckToken":null,"LoginPhone":null}
      * ListResult : null
      */
 
@@ -61,7 +60,7 @@ public class ExtractBean {
 
     public static class ResultBean {
         /**
-         * WithdrawalsInfo : {"Id":51,"memberId":2172,"bankCard":"6013826110012617946","bankCardName":"长城电子借记卡","bankProvince":"江苏","bankCity":"淮安","bankType":"借记卡","bankCardLength":19,"bankName":"中国银行","bankLogo":"http://api.jisuapi.com/bankcard/upload/80/4.png","bankTel":"95566","bankWebsite":"http://www.boc.cn","mobile":"18360733212","price":1,"email":"18360733212","realName":"曹静","reason":"","validType":1,"auditStatus":0,"createTime":"2017-03-01T23:49:32","auditor":"","auditTime":"1900-01-01T00:00:00","flag":1,"WechatLogoUrl":"http://oi0lhaaeo.bkt.clouddn.com/memberLogo/android/7f999d92-4d3d-4d97-a97d-0d785cf05bfb","TotalMoney":1005.85,"FreezeMoney":5.85,"CanUserMoney":1000,"TotalRemaidMoney":0}
+         * WithdrawalsInfo : {"Id":66,"memberId":2172,"bankCard":"6013826110012617946","bankCardName":"长城电子借记卡","bankProvince":"江苏","bankCity":"淮安","bankType":"借记卡","bankCardLength":19,"bankName":"中国银行","bankLogo":"http://api.jisuapi.com/bankcard/upload/80/4.png","bankTel":"95566","bankWebsite":"http://www.boc.cn","mobile":null,"price":10,"email":"1206067690@qq.com","realName":"曹静","reason":"无佣金记录","validType":2,"auditStatus":2,"createTime":"2017-03-05T01:29:30","auditor":"caozong108","auditTime":"2017-03-07T12:59:30","flag":1,"WechatLogoUrl":"http://oj987uf2i.bkt.clouddn.com/memberLogo/android/23c9bd6a-93e9-4add-b29e-d6f1e4c491be","TotalMoney":1017.1,"FreezeMoney":-19.8,"CanUserMoney":31.05,"TotalRemaidMoney":0}
          * APPToken : null
          * LoginCheckToken : null
          * LoginPhone : null
@@ -111,7 +110,7 @@ public class ExtractBean {
 
         public static class WithdrawalsInfoBean {
             /**
-             * Id : 51
+             * Id : 66
              * memberId : 2172
              * bankCard : 6013826110012617946
              * bankCardName : 长城电子借记卡
@@ -123,21 +122,21 @@ public class ExtractBean {
              * bankLogo : http://api.jisuapi.com/bankcard/upload/80/4.png
              * bankTel : 95566
              * bankWebsite : http://www.boc.cn
-             * mobile : 18360733212
-             * price : 1
-             * email : 18360733212
+             * mobile : null
+             * price : 10
+             * email : 1206067690@qq.com
              * realName : 曹静
-             * reason :
-             * validType : 1
-             * auditStatus : 0
-             * createTime : 2017-03-01T23:49:32
-             * auditor :
-             * auditTime : 1900-01-01T00:00:00
+             * reason : 无佣金记录
+             * validType : 2
+             * auditStatus : 2
+             * createTime : 2017-03-05T01:29:30
+             * auditor : caozong108
+             * auditTime : 2017-03-07T12:59:30
              * flag : 1
-             * WechatLogoUrl : http://oi0lhaaeo.bkt.clouddn.com/memberLogo/android/7f999d92-4d3d-4d97-a97d-0d785cf05bfb
-             * TotalMoney : 1005.85
-             * FreezeMoney : 5.85
-             * CanUserMoney : 1000
+             * WechatLogoUrl : http://oj987uf2i.bkt.clouddn.com/memberLogo/android/23c9bd6a-93e9-4add-b29e-d6f1e4c491be
+             * TotalMoney : 1017.1
+             * FreezeMoney : -19.8
+             * CanUserMoney : 31.05
              * TotalRemaidMoney : 0
              */
 
@@ -153,7 +152,7 @@ public class ExtractBean {
             private String bankLogo;
             private String bankTel;
             private String bankWebsite;
-            private String mobile;
+            private Object mobile;
             private int price;
             private String email;
             private String realName;
@@ -167,8 +166,8 @@ public class ExtractBean {
             private String WechatLogoUrl;
             private double TotalMoney;
             private double FreezeMoney;
-            private int CanUserMoney;
-            private int TotalRemaidMoney;
+            private double CanUserMoney;
+            private double TotalRemaidMoney;
 
             public static WithdrawalsInfoBean objectFromData(String str) {
 
@@ -271,11 +270,11 @@ public class ExtractBean {
                 this.bankWebsite = bankWebsite;
             }
 
-            public String getMobile() {
+            public Object getMobile() {
                 return mobile;
             }
 
-            public void setMobile(String mobile) {
+            public void setMobile(Object mobile) {
                 this.mobile = mobile;
             }
 
@@ -383,24 +382,21 @@ public class ExtractBean {
                 this.FreezeMoney = FreezeMoney;
             }
 
-            public int getCanUserMoney() {
+            public double getCanUserMoney() {
                 return CanUserMoney;
             }
 
-            public void setCanUserMoney(int CanUserMoney) {
+            public void setCanUserMoney(double CanUserMoney) {
                 this.CanUserMoney = CanUserMoney;
             }
 
-            public int getTotalRemaidMoney() {
+            public double getTotalRemaidMoney() {
                 return TotalRemaidMoney;
             }
 
-            public void setTotalRemaidMoney(int TotalRemaidMoney) {
+            public void setTotalRemaidMoney(double TotalRemaidMoney) {
                 this.TotalRemaidMoney = TotalRemaidMoney;
             }
         }
     }
-
-
-
 }

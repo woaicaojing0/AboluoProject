@@ -37,9 +37,7 @@ import com.jph.takephoto.compress.CompressConfig;
 import com.jph.takephoto.model.TResult;
 import com.leo.gesturelibray.enums.LockMode;
 import com.leo.gesturelibray.util.StringUtils;
-import com.qiniu.android.common.Zone;
 import com.qiniu.android.http.ResponseInfo;
-import com.qiniu.android.storage.Configuration;
 import com.qiniu.android.storage.UpCompletionHandler;
 import com.qiniu.android.storage.UploadManager;
 import com.squareup.picasso.Picasso;
@@ -230,11 +228,9 @@ public class MyInfoAcitvity extends TakePhotoActivity implements View.OnClickLis
                 }
                 break;
             case R.id.rl_change_phone:
-                if (myInfoBean.getResult().getMemberMobile() == "") {
-                    Intent intent1 = new Intent(MyInfoAcitvity.this, BindInfoActivity.class);
-                    intent1.putExtra("bindType", 1);
-                    startActivityForResult(intent1, BindInfoCode);
-                }
+                Intent intent1 = new Intent(MyInfoAcitvity.this, BindInfoActivity.class);
+                intent1.putExtra("bindType", 1);
+                startActivityForResult(intent1, BindInfoCode);
                 break;
             default:
                 break;
@@ -320,9 +316,9 @@ public class MyInfoAcitvity extends TakePhotoActivity implements View.OnClickLis
 
     private void UploadImage(String filepath, String key, String token) {
         //pdialog.setTitleText("上传中......");
-        Configuration config = new Configuration.Builder().zone(Zone.zone0).build();
+//        Configuration config = new Configuration.Builder().zone(Zone.zone0).build();
 //  重用uploadManager。一般地，只需要创建一个uploadManager对象
-        UploadManager uploadManager = new UploadManager(config);
+        UploadManager uploadManager = new UploadManager();
         uploadManager.put(filepath, key, token,
                 new UpCompletionHandler() {
                     @Override
@@ -476,7 +472,7 @@ public class MyInfoAcitvity extends TakePhotoActivity implements View.OnClickLis
 //                byte[] bytecode = error.networkResponse.data;
 //                String s = new String(bytecode);
 //                Toast.makeText(MyInfoAcitvity.this, s, Toast.LENGTH_SHORT).show();
-                Toast.makeText(MyInfoAcitvity.this,error.toString(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(MyInfoAcitvity.this, error.toString(), Toast.LENGTH_SHORT).show();
                 pdialog.dismiss();
             }
         }) {

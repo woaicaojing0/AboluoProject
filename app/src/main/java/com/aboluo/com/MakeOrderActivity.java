@@ -281,7 +281,8 @@ public class MakeOrderActivity extends Activity implements View.OnClickListener 
                         intent.putExtra("OrderNum", baseModel.getOrderSerialId().toString());
                         intent.putExtra("payfrom", payfrom);
                         intent.putExtra("OnePurchaseId", OnePurchaseId);
-                        startActivityForResult(intent, requsetcode);
+                        startActivity(intent);
+                        finish();
                         pdialog.dismiss();
                     } else {
                     }
@@ -369,7 +370,8 @@ public class MakeOrderActivity extends Activity implements View.OnClickListener 
                         intent.putExtra("OrderNum", baseModel.getResult().toString());
                         intent.putExtra("payfrom", payfrom);
                         intent.putExtra("OnePurchaseId", OnePurchaseId);
-                        startActivityForResult(intent, requsetcode);
+                        startActivity(intent);
+                        finish();
                         pdialog.dismiss();
                     } else {
                     }

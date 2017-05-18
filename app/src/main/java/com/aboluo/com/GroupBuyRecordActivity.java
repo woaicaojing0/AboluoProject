@@ -140,6 +140,12 @@ public class GroupBuyRecordActivity extends Activity {
                             groupBuyRecordAdapter = new GroupBuyRecordAdapter(GroupBuyRecordActivity.this, groupBuyRecordItemBean);
                             recycle_groupBuyRecord.setAdapter(groupBuyRecordAdapter);
                         } else {
+                            if (newList.size() == 0) {
+                                Toast.makeText(GroupBuyRecordActivity.this, "已经到底了！", Toast.LENGTH_SHORT).show();
+                                recycle_groupBuyRecord.noMoreLoading();
+                                recycle_groupBuyRecord.loadMoreComplete();
+                                return;
+                            }
                             groupBuyRecordItemBean.addAll(newList);
                             groupBuyRecordAdapter.notifyDataSetChanged();
                         }

@@ -109,6 +109,15 @@ public class GroupBuyRecordBean {
         private int MemberSex;
         private String Province;
         private String City;
+        private int  TeamBuyId;
+
+        public int getTeamBuyId() {
+            return TeamBuyId;
+        }
+
+        public void setTeamBuyId(int teamBuyId) {
+            TeamBuyId = teamBuyId;
+        }
 
         public static GroupBuyRecordItemBean objectFromData(String str) {
 

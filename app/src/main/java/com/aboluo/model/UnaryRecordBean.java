@@ -107,6 +107,23 @@ public class UnaryRecordBean {
         private int IsWinLottery;
         private int IsDealer;
         private int TotalBuyCount;
+        private String LotteryNumber;
+        private int PurchaseId;
+        public String getLotteryNumber() {
+            return LotteryNumber;
+        }
+
+        public void setLotteryNumber(String lotteryNumber) {
+            LotteryNumber = lotteryNumber;
+        }
+
+        public int getPurchaseId() {
+            return PurchaseId;
+        }
+
+        public void setPurchaseId(int purchaseId) {
+            PurchaseId = purchaseId;
+        }
 
         public static ListResultBean objectFromData(String str) {
 

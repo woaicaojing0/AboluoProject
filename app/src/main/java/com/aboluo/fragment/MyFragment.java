@@ -35,6 +35,7 @@ import com.aboluo.com.InvitationInfoActivity;
 import com.aboluo.com.LoginActivity;
 import com.aboluo.com.MainActivity;
 import com.aboluo.com.MyAgentActivity;
+import com.aboluo.com.MyEventActivity;
 import com.aboluo.com.MyInfoAcitvity;
 import com.aboluo.com.OrderActivity;
 import com.aboluo.com.R;
@@ -81,7 +82,7 @@ public class MyFragment extends TakePhotoFragment implements View.OnClickListene
     private ScrollView my_scrollview;
     private LinearLayout linLayout_my_info, my_nopay, my_nosend, my_noreceive, my_assessment,
             helpcenter, my_favor, my_refund, creditinfodetail, my_invitation,
-            invitation_code, my_agent, my_coupons_center, ll_fast_parnter;
+            invitation_code, my_agent, my_coupons_center, ll_fast_parnter, ll_my_activcity;
     private RelativeLayout my_allorder, my_addressinfo;
     private SharedPreferences sharedPreferences;
     private RequestQueue requestQueue;
@@ -130,6 +131,7 @@ public class MyFragment extends TakePhotoFragment implements View.OnClickListene
         iv_my_setting.setOnClickListener(this);
         my_fragment_imageview.setOnClickListener(this);
         ll_fast_parnter.setOnClickListener(this);
+        ll_my_activcity.setOnClickListener(this);
         if (CommonUtils.IsLogin(MyFragment.this.getContext())) {
             btn.setVisibility(View.GONE);
             my_out.setVisibility(View.VISIBLE);
@@ -167,6 +169,7 @@ public class MyFragment extends TakePhotoFragment implements View.OnClickListene
         my_agent = (LinearLayout) view.findViewById(R.id.my_agent);
         my_coupons_center = (LinearLayout) view.findViewById(R.id.my_coupons_center);
         ll_fast_parnter = (LinearLayout) view.findViewById(R.id.ll_fast_parnter);
+        ll_my_activcity = (LinearLayout) view.findViewById(R.id.ll_my_activcity);
         sharedPreferences = MyFragment.this.getContext().getSharedPreferences("aboluo", Context.MODE_PRIVATE);
         my_fragment_imageview = (CircleImageView) view.findViewById(R.id.my_fragment_imageview);
         tv_my_huiyuan = (TextView) view.findViewById(R.id.tv_my_huiyuan);
@@ -471,6 +474,12 @@ public class MyFragment extends TakePhotoFragment implements View.OnClickListene
             case R.id.ll_fast_parnter:
                 Intent intent18 = new Intent(MyFragment.this.getActivity(), FastPartnerActivity.class);
                 startActivity(intent18);
+                break;
+            case R.id.ll_my_activcity:
+                Intent intent20 = new Intent(MyFragment.this.getActivity(), MyEventActivity.class);
+                startActivity(intent20);
+                break;
+            default:
                 break;
 
         }

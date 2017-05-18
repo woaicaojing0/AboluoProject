@@ -151,10 +151,11 @@ public class FastPartnerActivity extends Activity {
             @Override
             public void onErrorResponse(VolleyError error) {
 //                byte[] htmlBodyBytes = error.networkResponse.data;
-//                //Toast.makeText(AddAddressActivity.this, error.toString(), Toast.LENGTH_SHORT).show();
+//                //
 //                Log.i("woaiocaojingerroe", new String(htmlBodyBytes));
                 //sweetAlertDialog.dismiss();
                 pdialog.dismiss();
+                Toast.makeText(FastPartnerActivity.this, "加载数据异常", Toast.LENGTH_SHORT).show();
                 pullToRefreshScrollView.onRefreshComplete();
             }
         }) {

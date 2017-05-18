@@ -162,6 +162,9 @@
         </activity>
         <activity android:name=".GroupBuyDetailActivity"></activity>
         <activity android:name=".GroupBuyRecordActivity"></activity>
+        <activity android:name=".MyUnaryRecordActivity"></activity>
+        <activity android:name=".MyEventActivity"></activity>
+        <activity android:name=".MyGroupRecordActivity"></activity>
         <activity android:name=".wxapi.WXEntryActivity"
             android:exported="true"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" >

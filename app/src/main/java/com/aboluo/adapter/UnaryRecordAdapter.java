@@ -42,6 +42,7 @@ public class UnaryRecordAdapter extends RecyclerView.Adapter<UnaryRecordAdapter.
     public void onBindViewHolder(UnaryRecordViewHolder holder, int position) {
         holder.tv_unary_nickName.setText(mlist.get(position).getWechatNickName() == null ? "暂无" : mlist.get(position).getWechatNickName());
         holder.tv_unary_joinTime.setText(mlist.get(position).getJoinTime().replace("T", " "));
+        holder.tv_unary_num.setText(mlist.get(position).getLotteryNumber() == null ? "暂无" : mlist.get(position).getLotteryNumber());
         switch (mlist.get(position).getIsDealer()) {
             case 0:
                 holder.tv_unary_level.setText("普通会员");
@@ -84,7 +85,7 @@ public class UnaryRecordAdapter extends RecyclerView.Adapter<UnaryRecordAdapter.
     public class UnaryRecordViewHolder extends RecyclerView.ViewHolder {
         private TextView tv_unary_nickName, tv_unary_TotalBuyCount,
                 tv_unary_level, tv_unary_joinTime, tv_IsWinLottery,
-                tv_unary_TotalBuyCountPrefix,tv_unary_TotalBuyCountSuffix;
+                tv_unary_TotalBuyCountPrefix, tv_unary_TotalBuyCountSuffix, tv_unary_num;
         private ImageView iv_unary_profile_image;
 
         public UnaryRecordViewHolder(View itemView) {
@@ -96,6 +97,7 @@ public class UnaryRecordAdapter extends RecyclerView.Adapter<UnaryRecordAdapter.
             tv_IsWinLottery = (TextView) itemView.findViewById(R.id.tv_IsWinLottery);
             tv_unary_TotalBuyCountPrefix = (TextView) itemView.findViewById(R.id.tv_unary_TotalBuyCountPrefix);
             tv_unary_TotalBuyCountSuffix = (TextView) itemView.findViewById(R.id.tv_unary_TotalBuyCountSuffix);
+            tv_unary_num = (TextView) itemView.findViewById(R.id.tv_unary_num);
             iv_unary_profile_image = (ImageView) itemView.findViewById(R.id.iv_unary_profile_image);
         }
     }

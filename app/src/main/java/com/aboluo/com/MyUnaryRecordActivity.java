@@ -1,19 +1,19 @@
 package com.aboluo.com;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.util.Log;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.aboluo.XUtils.CommonUtils;
 import com.aboluo.XUtils.MyApplication;
+import com.aboluo.adapter.MyUnaryRecordAdpater;
 import com.aboluo.adapter.UnaryRecordAdapter;
 import com.aboluo.model.UnaryRecordBean;
 import com.android.volley.AuthFailureError;
@@ -34,10 +34,10 @@ import java.util.Map;
 import cn.pedant.SweetAlert.SweetAlertDialog;
 
 /**
- * Created by cj on 2017/5/1.
+ * Created by cj34920 on 2017/5/18.
  */
 
-public class UnaryRecordActivity extends Activity {
+public class MyUnaryRecordActivity extends Activity {
     private RequestQueue requestQueue;
     private String ImageUrl;
     private String URL;
@@ -46,22 +46,21 @@ public class UnaryRecordActivity extends Activity {
     private Picasso picasso;
     private SweetAlertDialog pdialog;
     private String MemberId;
-    private int purchaseId;
     private int currentPage;
-    private UnaryRecordAdapter unaryRecordAdapter;
-    private XRecyclerView recycle_unaryRecord;
+    private XRecyclerView xRecyclerView;
+    private UnaryRecordBean unaryRecordBean;
     private RelativeLayout rl_show_nodata;
     private LinearLayout ll_show_data;
-    private UnaryRecordBean unaryRecordBean;
-    private List<UnaryRecordBean.ListResultBean> listResultBeen;
-    private ImageView iv_unaryrecord_back;
+    private MyUnaryRecordAdpater myUnaryRecordAdpater;
+    private List<UnaryRecordBean.ListResultBean> listResultBean;
+    private TextView tv_my_unary_record_back;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_unaryrecord);
+        setContentView(R.layout.activity_my_unary_record);
         init();
-        iv_unaryrecord_back.setOnClickListener(new View.OnClickListener() {
+        tv_my_unary_record_back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 finish();
@@ -82,18 +81,16 @@ public class UnaryRecordActivity extends Activity {
         pdialog.setTitleText("加载中");
         pdialog.setCanceledOnTouchOutside(true);
         pdialog.setCancelable(true);
-        Intent intent = getIntent();
-        purchaseId = intent.getIntExtra("PurchaseId", 0);
-        currentPage = 1;
-        recycle_unaryRecord = (XRecyclerView) findViewById(R.id.recycle_unaryRecord);
+        xRecyclerView = (XRecyclerView) findViewById(R.id.recycle_my_unary);
         rl_show_nodata = (RelativeLayout) findViewById(R.id.rl_unary_show_nodata);
         ll_show_data = (LinearLayout) findViewById(R.id.ll_unary_show_data);
-        iv_unaryrecord_back = (ImageView) findViewById(R.id.iv_unaryrecord_back);
+        tv_my_unary_record_back = (TextView) findViewById(R.id.tv_my_unary_record_back);
+        currentPage = 1;
         //recyclerview 初始化设置
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
-        recycle_unaryRecord.setLayoutManager(linearLayoutManager);
-        recycle_unaryRecord.setRefreshProgressStyle(ProgressStyle.BallSpinFadeLoader);
-        recycle_unaryRecord.setLoadingListener(new XRecyclerView.LoadingListener() {
+        xRecyclerView.setLayoutManager(linearLayoutManager);
+        xRecyclerView.setRefreshProgressStyle(ProgressStyle.BallSpinFadeLoader);
+        xRecyclerView.setLoadingListener(new XRecyclerView.LoadingListener() {
             @Override
             public void onRefresh() {
                 currentPage = 1;
@@ -106,11 +103,11 @@ public class UnaryRecordActivity extends Activity {
                 initData(currentPage);
             }
         });
-        initData(currentPage);
+        initData(1);
     }
 
     private void initData(final int currentPage) {
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, URL + "/api/OnePurchaseApi/ReceiveOnePurchaseRecords", new Response.Listener<String>() {
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, URL + "api/OnePurchaseApi/ReceiveOnePurchaseRecords", new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 Log.i("UnaryRecordInfo", response);
@@ -124,29 +121,29 @@ public class UnaryRecordActivity extends Activity {
                             rl_show_nodata.setVisibility(View.VISIBLE);
                             return;
                         }
-                        listResultBeen = newList;
-                        unaryRecordAdapter = new UnaryRecordAdapter(UnaryRecordActivity.this, listResultBeen);
-                        recycle_unaryRecord.setAdapter(unaryRecordAdapter);
-                        recycle_unaryRecord.refreshComplete();
+                        listResultBean = newList;
+                        myUnaryRecordAdpater = new MyUnaryRecordAdpater(MyUnaryRecordActivity.this, listResultBean);
+                        xRecyclerView.setAdapter(myUnaryRecordAdpater);
+                        xRecyclerView.refreshComplete();
                     } else {
                         if (unaryRecordBean == null) {
-                            listResultBeen = newList;
-                            unaryRecordAdapter = new UnaryRecordAdapter(UnaryRecordActivity.this, listResultBeen);
-                            recycle_unaryRecord.setAdapter(unaryRecordAdapter);
+                            listResultBean = newList;
+                            myUnaryRecordAdpater = new MyUnaryRecordAdpater(MyUnaryRecordActivity.this, listResultBean);
+                            xRecyclerView.setAdapter(myUnaryRecordAdpater);
                         } else {
                             if (newList.size() == 0) {
-                                Toast.makeText(UnaryRecordActivity.this, "已经到底了！", Toast.LENGTH_SHORT).show();
-                                recycle_unaryRecord.noMoreLoading();
-                                recycle_unaryRecord.loadMoreComplete();
+                                Toast.makeText(MyUnaryRecordActivity.this, "已经到底了！", Toast.LENGTH_SHORT).show();
+                                xRecyclerView.noMoreLoading();
+                                xRecyclerView.loadMoreComplete();
                                 return;
                             }
-                            listResultBeen.addAll(newList);
-                            unaryRecordAdapter.notifyDataSetChanged();
+                            listResultBean.addAll(newList);
+                            myUnaryRecordAdpater.notifyDataSetChanged();
                         }
-                        recycle_unaryRecord.loadMoreComplete();
+                        xRecyclerView.loadMoreComplete();
                     }
                 } else {
-                    Toast.makeText(UnaryRecordActivity.this, unaryRecordBean.getMessage().toString(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MyUnaryRecordActivity.this, unaryRecordBean.getMessage().toString(), Toast.LENGTH_SHORT).show();
                 }
             }
         }, new Response.ErrorListener() {
@@ -159,16 +156,15 @@ public class UnaryRecordActivity extends Activity {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> map = new HashMap<>();
-                map.put("PurchaseId", String.valueOf(purchaseId));
                 map.put("PageIndex", String.valueOf(currentPage));
                 map.put("PageSize", "10");
                 map.put("LoginCheckToken", "123");
                 map.put("LoginPhone", "123");
                 map.put("APPToken", APPToken);
+//                map.put("MemberId", "2174");
+                map.put("MemberId", MemberId);
                 return map;
             }
-
-            ;
         };
         requestQueue.add(stringRequest);
     }

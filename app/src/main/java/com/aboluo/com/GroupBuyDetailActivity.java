@@ -440,7 +440,7 @@ public class GroupBuyDetailActivity extends Activity implements View.OnClickList
 
     private void ShareSDKGoodsDetail() {
         String detailurl0 = CommonUtils.GetValueByKey(GroupBuyDetailActivity.this, "backUrl")
-                + "/moblie/ShareProducts?productId=" + goods_id;
+                + "/Moblie/TeamBuyProductDetail?teamBuyId=" + groupBuyDetailBean.getTId();
         String imgurl = groupBuyDetailBean.getGoodsLogo(); //这个地址是全地址
         if (imgurl == null) {
         } else {

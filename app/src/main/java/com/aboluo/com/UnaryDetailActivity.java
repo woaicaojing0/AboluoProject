@@ -357,7 +357,7 @@ public class UnaryDetailActivity extends Activity implements View.OnClickListene
 
     private void ShareSDKGoodsDetail() {
         String detailurl0 = CommonUtils.GetValueByKey(UnaryDetailActivity.this, "backUrl")
-                + "/moblie/ShareProducts?productId=" + listResultBean.getGoodsId();
+                + "/Moblie/OnePurchaseProductDetail?onePurchaseId=" + listResultBean.getId();
         String imgurl = listResultBean.getGoodsLogo();
         if (imgurl == null) {
         } else {

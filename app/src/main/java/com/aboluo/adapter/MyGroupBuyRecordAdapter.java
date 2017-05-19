@@ -43,7 +43,7 @@ public class MyGroupBuyRecordAdapter extends RecyclerView.Adapter<MyGroupBuyReco
     public void onBindViewHolder(MyGroupBuyRecordViewHolder holder, int position) {
         holder.tv_my_group_nickName.setText(mlist.get(position).getMemberNick());
         holder.tv_my_group_id.setText(mlist.get(position).getTeamBuyId() + "");
-        holder.tv_my_group_joinTime.setText(mlist.get(position).getPayTime().replace("T", ""));
+        holder.tv_my_group_joinTime.setText(mlist.get(position).getPayTime().replace("T", " "));
         String logUrl = mlist.get(position).getMemberLogo();
         if (logUrl == null || logUrl.length() <= 0) {
             mpicasso.load(R.drawable.imagviewloading).into(holder.iv_my_group_profile_image);

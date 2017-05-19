@@ -158,8 +158,8 @@ public class MyGroupRecordActivity extends Activity {
                 map.put("APPToken", APPToken);
                 map.put("LoginCheckToken", "123");
                 map.put("LoginPhone", "123");
-//                map.put("MemberId", MemberId);
-                map.put("MemberId", "2174");
+               map.put("MemberId", MemberId);
+//                map.put("MemberId", "2174");
                 return map;
             }
 

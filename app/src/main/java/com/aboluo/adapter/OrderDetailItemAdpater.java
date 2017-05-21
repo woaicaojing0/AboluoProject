@@ -130,7 +130,7 @@ public class OrderDetailItemAdpater extends BaseAdapter {
         holder.tordetail_item_yuanprice.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG);
         holder.tordetail_item_yuanprice.setText("￥" + String.valueOf(mlist.get(position).getGoodsPrice()));
         holder.ordetail_item__goods_num.setText(String.valueOf("X" + String.valueOf(mlist.get(position).getGoodsQuantity())));
-        if (morderType == 5 || morderType == 4) { //合伙人和一元购不能申请售后
+        if (morderType == 5 || morderType == 4 || morderType == 3 || morderType == 7) { //合伙人和一元购秒杀拼团购不能申请售后
             holder.txt_orderdetail_after_sale.setVisibility(View.GONE);
         } else {
             if (mlist.get(position).getRefundStatus() == -1) {

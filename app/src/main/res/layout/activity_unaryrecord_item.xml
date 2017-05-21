@@ -1,131 +1,157 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="80dp"
-        android:gravity="center_vertical"
-        android:orientation="horizontal"
-        android:paddingLeft="12dp"
-        android:paddingRight="12dp">
-
-        <com.aboluo.widget.XCRoundRectImageView
-            android:id="@+id/iv_unary_profile_image"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            android:scaleType="fitXY"
-            android:src="@drawable/test_image" />
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="80dp"
-            android:orientation="vertical">
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingLeft="12dp"
+            android:paddingRight="12dp">
+
+            <com.aboluo.widget.XCRoundRectImageView
+                android:id="@+id/iv_unary_profile_image"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:scaleType="fitXY"
+                android:src="@drawable/test_image" />
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:gravity="center_vertical"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:id="@+id/tv_unary_nickName"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="16dp"
-                    android:layout_weight="1"
-                    android:text="用户昵称"
-                    android:textColor="#8a8a8a" />
+                android:layout_height="80dp"
+                android:orientation="vertical">
 
                 <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1.5"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical"
                     android:orientation="horizontal">
 
                     <TextView
-                        android:id="@+id/tv_unary_TotalBuyCountPrefix"
+                        android:maxLines="1"
+                        android:id="@+id/tv_unary_nickName"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="16dp"
+                        android:layout_weight="1"
+                        android:ellipsize="end"
+                        android:text="用户昵称"
+                        android:textColor="#8a8a8a" />
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1.5"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/tv_unary_TotalBuyCountPrefix"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="总参与 "
+                            android:textColor="#8a8a8a" />
+
+                        <TextView
+                            android:id="@+id/tv_unary_TotalBuyCount"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/tv_unary_TotalBuyCountSuffix"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text=" 次"
+                            android:textColor="#8a8a8a" />
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/tv_IsWinLottery"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.5"
+                        android:text="中奖"
+                        android:textColor="@color/btn_color"
+                        android:visibility="gone" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="总参与 "
+                        android:layout_marginLeft="16dp"
+                        android:text="号码："
                         android:textColor="#8a8a8a" />
 
                     <TextView
-                        android:id="@+id/tv_unary_TotalBuyCount"
+                        android:id="@+id/tv_unary_num"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:id="@+id/tv_unary_TotalBuyCountSuffix"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text=" 次"
+                        android:text=""
                         android:textColor="#8a8a8a" />
                 </LinearLayout>
 
-                <TextView
-                    android:id="@+id/tv_IsWinLottery"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="0.5"
-                    android:text="中奖"
-                    android:textColor="@color/btn_color"
-                    android:visibility="gone" />
-            </LinearLayout>
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:gravity="center_vertical"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="16dp"
-                    android:text="号码："
-                    android:textColor="#8a8a8a" />
-
-                <TextView
-                    android:id="@+id/tv_unary_num"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text=""
-                    android:textColor="#8a8a8a" />
-            </LinearLayout>
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:gravity="center_vertical"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:id="@+id/tv_unary_level"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="16dp"
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
                     android:layout_weight="1"
-                    android:text="会员等级"
-                    android:textColor="#8a8a8a" />
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
 
-                <TextView
-                    android:id="@+id/tv_unary_joinTime"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="2"
-                    android:text="2017-04-20  22:12:22"
-                    android:textColor="#8a8a8a" />
+                    <TextView
+                        android:id="@+id/tv_unary_level"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="16dp"
+                        android:layout_weight="1"
+                        android:text="会员等级"
+                        android:textColor="#8a8a8a" />
+
+                    <TextView
+                        android:id="@+id/tv_unary_joinTime"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="2"
+                        android:text="2017-04-20  22:12:22"
+                        android:textColor="#8a8a8a" />
+                </LinearLayout>
             </LinearLayout>
         </LinearLayout>
-    </LinearLayout>
 
-    <View
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.2dp"
+            android:background="@color/textGrayColor"></View>
+    </LinearLayout>
+    <RelativeLayout
+        android:id="@+id/rl_winlottery"
         android:layout_width="match_parent"
-        android:layout_height="0.2dp"
-        android:background="@color/textGrayColor"></View>
-</LinearLayout>
+        android:layout_height="80dp"
+        android:paddingLeft="12dp"
+        android:paddingRight="12dp"
+        android:visibility="gone">
+
+        <ImageView
+            android:id="@+id/imageView6"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:src="@drawable/winlottery"/>
+    </RelativeLayout>
+</RelativeLayout>

@@ -268,7 +268,8 @@ public class MakeOrderActivity extends Activity implements View.OnClickListener 
             final String Products = gson.toJson(bean);
             pdialog.setTitleText("提交中");
             pdialog.show();
-            StringRequest stringRequest = new StringRequest(Request.Method.POST, url + "/api/Order/SubOrder", new Response.Listener<String>() {
+            //
+            StringRequest stringRequest = new StringRequest(Request.Method.POST, groupBuyUrl+"/api/OrderManageApi/SubOrder", new Response.Listener<String>() {
                 @Override
                 public void onResponse(String response) {
                     response = response.replace("\\", "");

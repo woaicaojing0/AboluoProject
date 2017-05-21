@@ -217,4 +217,10 @@ public class GroupBuyActivity extends Activity implements View.OnClickListener, 
         intent.putExtras(bundle);
         startActivity(intent);
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        loadData(currentState, 1);
+    }
 }

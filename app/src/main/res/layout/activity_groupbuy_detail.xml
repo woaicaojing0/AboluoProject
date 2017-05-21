@@ -315,7 +315,7 @@
                         android:layout_centerVertical="true"
                         android:layout_marginRight="20dp"
                         android:background="#00000000"
-                        android:src="@drawable/share"/>
+                        android:src="@drawable/more_gray"/>
 
                 </RelativeLayout>
             </android.support.v7.widget.Toolbar>

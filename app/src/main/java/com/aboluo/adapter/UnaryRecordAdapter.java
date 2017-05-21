@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.aboluo.XUtils.Utils;
@@ -75,6 +76,12 @@ public class UnaryRecordAdapter extends RecyclerView.Adapter<UnaryRecordAdapter.
                     .resize(Utils.dp2px(mcontext, 250), Utils.dp2px(mcontext, 250))
                     .error(mcontext.getResources().getDrawable(R.drawable.imageview_error)).into(holder.iv_unary_profile_image);
         }
+        if (mlist.get(position).getIsWinLottery() == 1) {
+            holder.rl_winlottery.setVisibility(View.VISIBLE);
+        } else {
+            holder.rl_winlottery.setVisibility(View.GONE);
+        }
+
     }
 
     @Override
@@ -87,6 +94,7 @@ public class UnaryRecordAdapter extends RecyclerView.Adapter<UnaryRecordAdapter.
                 tv_unary_level, tv_unary_joinTime, tv_IsWinLottery,
                 tv_unary_TotalBuyCountPrefix, tv_unary_TotalBuyCountSuffix, tv_unary_num;
         private ImageView iv_unary_profile_image;
+        private RelativeLayout rl_winlottery;
 
         public UnaryRecordViewHolder(View itemView) {
             super(itemView);
@@ -99,6 +107,7 @@ public class UnaryRecordAdapter extends RecyclerView.Adapter<UnaryRecordAdapter.
             tv_unary_TotalBuyCountSuffix = (TextView) itemView.findViewById(R.id.tv_unary_TotalBuyCountSuffix);
             tv_unary_num = (TextView) itemView.findViewById(R.id.tv_unary_num);
             iv_unary_profile_image = (ImageView) itemView.findViewById(R.id.iv_unary_profile_image);
+            rl_winlottery = (RelativeLayout) itemView.findViewById(R.id.rl_winlottery);
         }
     }
 }

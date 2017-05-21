@@ -117,7 +117,7 @@ public class OrderPayActivity extends Activity implements View.OnClickListener {
                     }
                 });
         finishDialog.setCancelable(false);
-        if (payfrom.equals("7")) { //这是团购付款
+        if (payfrom.equals("7")||payfrom.equals("4")) { //这是团购付款
             rl_time.setVisibility(View.VISIBLE);
             cv_countdownViewpay.start(30 * 1000); // 毫秒
             cv_countdownViewpay.setOnCountdownEndListener(new CountdownView.OnCountdownEndListener() {
@@ -279,7 +279,7 @@ public class OrderPayActivity extends Activity implements View.OnClickListener {
                     mapOptional.put("客户端支付宝", "安卓");
                     mapOptional.put("consumptioncode", "consumptionCode");
                     mapOptional.put("money", "2");
-                    mapOptional.put("payfrom", payfrom);  //标识从哪边支付的，1购物车 2个人中心（待付款） 3秒杀 4一元购
+                    mapOptional.put("payfrom", payfrom);  //标识从哪边支付的，1购物车 2个人中心（待付款） 3秒杀 4一元购 7拼团购
                     mapOptional.put("OnePurchaseId", String.valueOf(OnePurchaseId));  //标识从一元夺宝的场次，默认是0
                     BCPay.getInstance(OrderPayActivity.this).reqAliPaymentAsync(
                             "阿波罗商铺支付宝支付",

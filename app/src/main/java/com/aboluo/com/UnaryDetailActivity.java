@@ -322,6 +322,12 @@ public class UnaryDetailActivity extends Activity implements View.OnClickListene
         startActivity(intent1);
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        initData();
+    }
+
     /**
      * 一元购 进度条
      */

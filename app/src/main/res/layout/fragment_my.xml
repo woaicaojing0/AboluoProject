@@ -442,9 +442,10 @@
                     android:layout_gravity="center_vertical"
                     android:layout_marginLeft="6dp"
                     android:layout_marginRight="2dp"
-                    android:src="@drawable/fast_parnter_icon"/>
+                    android:src="@drawable/jiangbei"/>
 
                 <TextView
+                    android:layout_marginLeft="4dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"

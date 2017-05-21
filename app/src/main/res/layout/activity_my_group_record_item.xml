@@ -32,6 +32,8 @@
                 android:orientation="horizontal">
 
                 <TextView
+                    android:maxLines="1"
+                    android:ellipsize="end"
                     android:id="@+id/tv_my_group_nickName"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"

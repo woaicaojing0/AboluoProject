@@ -431,7 +431,7 @@ public class UnaryActivity extends FragmentActivity implements
                 Map<String, String> map = new HashMap<>();
                 map.put("State", "1");
                 map.put("Current", "1");
-                map.put("PageSize", "20");
+                map.put("PageSize", "200");
                 map.put("SortValue", "joinCount");
                 map.put("SortType", "desc");
                 map.put("TopCount", "0");
@@ -466,5 +466,12 @@ public class UnaryActivity extends FragmentActivity implements
         }
     }
 
-
+    @Override
+    protected void onResume() {
+        super.onResume();
+        initBannerImage();
+        initThreeImageUrl();
+        InitUnaryListBean();
+        initWebview();
+    }
 }

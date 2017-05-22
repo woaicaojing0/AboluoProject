@@ -69,7 +69,8 @@ public class GroupBuyDetailActivity extends Activity implements View.OnClickList
     //详情返回、商品类型弹出xml中的关闭、商品类型中的图片
     private ImageView goods_detail_text_back;
     //商品类型、名称、会员价、商品副标题,商品头部的商品详情
-    private TextView txt_goods_name, txt_new_money, txt_goods_sub, goods_detail_top_txt;
+    private TextView txt_goods_name, txt_new_money, txt_goods_sub, goods_detail_top_txt,
+            tv_detail_need_num, tv_detail_join_num;
     private static int goods_id = 0; //商品的ID
     private RequestQueue requestQueue;
     private StringRequest stringRequest;
@@ -259,6 +260,8 @@ public class GroupBuyDetailActivity extends Activity implements View.OnClickList
         txt_goods_name.setText(groupBuyDetailBean.getGoodsName());
         txt_new_money.setText(String.valueOf(groupBuyDetailBean.getTeamPrice()));
         tv_colorAndstandard.setText("颜色 " + groupBuyDetailBean.getGoodsColorName() + " 规格 " + groupBuyDetailBean.getGoodsStanderName());
+        tv_detail_join_num.setText(String.valueOf(groupBuyDetailBean.getBuyPerson()));
+        tv_detail_need_num.setText(String.valueOf(groupBuyDetailBean.getNeedPerson()));
         if (groupBuyDetailBean.getRemarks() == null) {
             layout_txt_goods_sub.setVisibility(View.GONE);
         } else {
@@ -270,7 +273,7 @@ public class GroupBuyDetailActivity extends Activity implements View.OnClickList
         Log.i("woaicaojing", detailurl);
         initWebView(detailurl, null);
     }
-//    /**
+    //    /**
 //     * 获取商品详情的数据，在这个方法里加载initrollPagerView、initwebview
 //     */
 //    private void getGoods_detail() {
@@ -457,7 +460,7 @@ public class GroupBuyDetailActivity extends Activity implements View.OnClickList
             // titleUrl是标题的网络链接，仅在人人网和QQ空间使用
             oks.setTitleUrl(detailurl0);
             // text是分享文本，所有平台都需要这个字段
-            oks.setText("快来和我一起拼团"+groupBuyDetailBean.getGoodsName().toString());
+            oks.setText("快来和我一起拼团" + groupBuyDetailBean.getGoodsName().toString());
             // imagePath是图片的本地路径，Linked-In以外的平台都支持此参数
             //oks.setImagePath(imageurls[0].toString());//确保SDcard下面存在此张图片
             oks.setImageUrl(imageurls[0].toString());
@@ -491,7 +494,7 @@ public class GroupBuyDetailActivity extends Activity implements View.OnClickList
                     para.width = ((relative_farther.getWidth()) * i) / all;
                     java.text.DecimalFormat df = new java.text.DecimalFormat("#.00");
                     double num = (100 * i) / all;
-                    String percentNum = CommonUtils.Getpercent(i,all);
+                    String percentNum = CommonUtils.Getpercent(i, all);
                     if (num < 50) {
                         tv_percentNum.setTextColor(Color.BLACK);
                     } else {

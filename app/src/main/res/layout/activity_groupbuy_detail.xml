@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:app="http://schemas.android.com/apk/res-auto"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@color/white">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white">
 
 
     <LinearLayout
@@ -38,7 +38,7 @@
                         android:layout_height="240dp"
                         android:transitionName="detail"
                         app:rollviewpager_hint_gravity="center"
-                        app:rollviewpager_play_delay="3000"/>
+                        app:rollviewpager_play_delay="3000" />
                     <!--pageview 轮播效果 end -->
 
                     <LinearLayout
@@ -53,7 +53,7 @@
                             android:layout_marginLeft="8dp"
                             android:background="@drawable/aboluoziying"
                             android:text=" 阿波罗自营"
-                            android:textColor="#fd5e89"/>
+                            android:textColor="#fd5e89" />
 
                         <TextView
                             android:id="@+id/txt_goods_name"
@@ -65,7 +65,7 @@
                             android:lines="2"
                             android:text="商品名称"
                             android:textColor="@color/black"
-                            android:textSize="18sp"/>
+                            android:textSize="18sp" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -90,14 +90,14 @@
                             android:gravity="center_vertical"
                             android:lines="1"
                             android:text=""
-                            android:textSize="18sp"/>
+                            android:textSize="18sp" />
                     </LinearLayout>
 
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="0.2dp"
                         android:layout_above="@+id/id_goodsdetail_bottom"
-                        android:background="@color/view_color"/>
+                        android:background="@color/view_color" />
 
 
                     <LinearLayout
@@ -107,16 +107,16 @@
                         android:orientation="horizontal">
 
                         <LinearLayout
-                            android:layout_marginRight="8dp"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginLeft="8dp">
+                            android:layout_marginLeft="8dp"
+                            android:layout_marginRight="8dp">
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="￥"
-                                android:textColor="@color/red"/>
+                                android:textColor="@color/red" />
 
                             <TextView
                                 android:id="@+id/txt_new_money"
@@ -124,14 +124,15 @@
                                 android:layout_height="wrap_content"
                                 android:text="400.00"
                                 android:textColor="@color/red"
-                                android:textSize="24sp"/>
+                                android:textSize="24sp" />
                         </LinearLayout>
 
                         <LinearLayout
-                            android:orientation="horizontal"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:layout_marginLeft="6dp">
+                            android:layout_marginLeft="6dp"
+                            android:orientation="horizontal">
+
                             <RelativeLayout
                                 android:id="@+id/relative_farther"
                                 android:layout_width="0dp"
@@ -156,17 +157,42 @@
                                     android:paddingRight="10dp"
                                     android:text="25%"
                                     android:textColor="@color/white"
-                                    android:textSize="12sp"/>
+                                    android:textSize="12sp" />
                             </RelativeLayout>
-                            <TextView
-                                android:id="@+id/goodbuy_detail_record"
-                                android:layout_width="0dp"
+
+                            <LinearLayout
+                                android:layout_marginRight="4dp"
+                                android:layout_marginLeft="4dp"
+                                android:layout_width="wrap_content"
                                 android:layout_height="match_parent"
-                                android:layout_margin="8dp"
-                                android:layout_weight="1"
-                                android:gravity="center"
-                                android:text="团购详情"
-                                android:textColor="@color/btn_color"/>
+                                android:gravity="center_vertical">
+
+                                <TextView
+                                    android:id="@+id/tv_detail_join_num"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="12"
+                                    android:textColor="@color/btn_color" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="/"
+                                    android:textColor="@color/btn_color" />
+
+                                <TextView
+                                    android:id="@+id/tv_detail_need_num"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="123"
+                                    android:textColor="@color/btn_color" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="参团"
+                                    android:textColor="@color/btn_color" />
+                            </LinearLayout>
                         </LinearLayout>
 
                     </LinearLayout>
@@ -183,14 +209,26 @@
                         android:orientation="horizontal"
                         android:paddingLeft="8dp"
                         android:paddingRight="8dp">
+
                         <TextView
                             android:id="@+id/tv_colorAndstandard"
-                            android:layout_width="match_parent"
+                            android:layout_width="0dp"
                             android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:gravity="center_vertical"
                             android:paddingLeft="16dp"
                             android:text="200.00"
-                            android:gravity="center_vertical"
-                            android:textColor="@color/gray"/>
+                            android:textColor="@color/gray" />
+
+                        <TextView
+                            android:id="@+id/goodbuy_detail_record"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_margin="8dp"
+                            android:layout_weight="1"
+                            android:gravity="center|right"
+                            android:text="团购详情"
+                            android:textColor="@color/btn_color" />
 
 
                     </LinearLayout>
@@ -267,7 +305,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:minHeight="60dp"
-                        android:scrollbars="none"/>
+                        android:scrollbars="none" />
 
                     <WebView
                         android:id="@+id/goods_pingjia_webview"
@@ -297,7 +335,7 @@
                         android:layout_marginLeft="10dp"
                         android:background="#00000000"
                         android:src="@drawable/back"
-                        android:text="返回"/>
+                        android:text="返回" />
 
                     <TextView
                         android:id="@+id/goods_detail_top_txt"
@@ -305,7 +343,7 @@
                         android:layout_height="wrap_content"
                         android:layout_centerInParent="true"
                         android:text="商品详情"
-                        android:textColor="#00000000"/>
+                        android:textColor="#00000000" />
 
                     <ImageView
                         android:id="@+id/groupbuy_share"
@@ -315,7 +353,7 @@
                         android:layout_centerVertical="true"
                         android:layout_marginRight="20dp"
                         android:background="#00000000"
-                        android:src="@drawable/more_gray"/>
+                        android:src="@drawable/more_gray" />
 
                 </RelativeLayout>
             </android.support.v7.widget.Toolbar>
@@ -334,5 +372,5 @@
         layout="@layout/activity_groupbuydetail_bootm"
         android:layout_width="fill_parent"
         android:layout_height="54dp"
-        android:layout_alignParentBottom="true"/>
+        android:layout_alignParentBottom="true" />
 </RelativeLayout>

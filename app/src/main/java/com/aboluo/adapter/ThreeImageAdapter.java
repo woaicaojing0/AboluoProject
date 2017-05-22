@@ -62,7 +62,14 @@ public class ThreeImageAdapter extends RecyclerView.Adapter<ThreeImageAdapter.Th
                         .error(mcontext.getResources().getDrawable(R.drawable.imageview_error))
                         .into(holder.unary_threeimage);
             }
-            holder.unary_threetext.setText("正在揭晓");
+            if (mlist.get(position).getState() == 2) {
+                holder.unary_threetext.setText("正在揭晓");
+            } else if (mlist.get(position).getState() == 3 || mlist.get(position).getState() == 4) {
+                holder.unary_threetext.setText("已开奖");
+            } else {
+                holder.unary_threetext.setText("正在揭晓");
+            }
+
             holder.rl_farther.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

@@ -380,7 +380,7 @@ public class UnaryActivity extends FragmentActivity implements
                 //最先开奖的放在前面
                 Map<String, String> map = new HashMap<>();
                 map.put("State", status);
-                map.put("Current", String.valueOf(page));
+                map.put("CurrentPage", String.valueOf(page));
                 map.put("PageSize", "20");
                 map.put("SortValue", sort);
                 map.put("SortType", sorttype);

@@ -246,6 +246,8 @@ public class GroupBuyDetailActivity extends Activity implements View.OnClickList
         goodbuy_detail_percent_child = (LinearLayout) findViewById(R.id.goodbuy_detail_percent_child);
         tv_percentNum = (TextView) findViewById(R.id.tv_percentNum);
         goodbuy_detail_record = (TextView) findViewById(R.id.goodbuy_detail_record);
+        tv_detail_join_num = (TextView) findViewById(R.id.tv_detail_join_num);
+        tv_detail_need_num = (TextView) findViewById(R.id.tv_detail_need_num);
         pdialog.setTitleText("请稍等");
         goods_id = groupBuyDetailBean.getGoodsId();
         requestQueue = MyApplication.getRequestQueue();

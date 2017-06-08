@@ -167,8 +167,8 @@ public class ExtractHisotoryBean {
             private String WechatLogoUrl;
             private double TotalMoney;
             private double FreezeMoney;
-            private int CanUserMoney;
-            private int TotalRemaidMoney;
+            private double CanUserMoney;
+            private double TotalRemaidMoney;
 
             public static WithdrawalsListBean objectFromData(String str) {
 
@@ -383,19 +383,19 @@ public class ExtractHisotoryBean {
                 this.FreezeMoney = FreezeMoney;
             }
 
-            public int getCanUserMoney() {
+            public double getCanUserMoney() {
                 return CanUserMoney;
             }
 
-            public void setCanUserMoney(int CanUserMoney) {
+            public void setCanUserMoney(double CanUserMoney) {
                 this.CanUserMoney = CanUserMoney;
             }
 
-            public int getTotalRemaidMoney() {
+            public double getTotalRemaidMoney() {
                 return TotalRemaidMoney;
             }
 
-            public void setTotalRemaidMoney(int TotalRemaidMoney) {
+            public void setTotalRemaidMoney(double TotalRemaidMoney) {
                 this.TotalRemaidMoney = TotalRemaidMoney;
             }
         }

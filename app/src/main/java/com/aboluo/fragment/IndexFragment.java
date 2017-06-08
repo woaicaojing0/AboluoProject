@@ -1188,6 +1188,7 @@ public class IndexFragment extends Fragment implements View.OnClickListener, Ada
                 Log.i("woaicaojing", response);
                 listBean = gson.fromJson(response, GoodsListInfo.class);
                 if (listBean.getResult().getGoodsList().size() == 0) {
+                    pullToRefreshScrollView.onRefreshComplete();
                     Toast.makeText(IndexFragment.this.getContext(), "当前没有数据啦", Toast.LENGTH_SHORT).show();
                     return;
                 }
@@ -1206,8 +1207,8 @@ public class IndexFragment extends Fragment implements View.OnClickListener, Ada
                         List<GoodsListInfo.ResultBean.GoodsListBean> goodsListBean2 = listBean.getResult().getGoodsList();
                         goodsListBean.addAll(goodsListBean2);
                         special_gridview_bottom.setAdapter(indexBottomAdpater);
-                        pullToRefreshScrollView.onRefreshComplete();
                     }
+                    pullToRefreshScrollView.onRefreshComplete();
                 }
                 pdialog.dismiss();
 

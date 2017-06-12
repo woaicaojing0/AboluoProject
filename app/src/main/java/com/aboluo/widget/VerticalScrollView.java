@@ -20,8 +20,7 @@ public class VerticalScrollView extends ScrollView{
 
     @Override
     public boolean onInterceptTouchEvent(MotionEvent ev) {
-        return super.onInterceptTouchEvent(ev)
-                && mGestureDetector.onTouchEvent(ev);
+        return super.onInterceptTouchEvent(ev);
     }
 
     //添加滑动监听，api23以上才会自带监听的效果

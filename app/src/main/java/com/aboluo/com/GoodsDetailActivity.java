@@ -15,7 +15,6 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v7.widget.Toolbar;
@@ -46,13 +45,16 @@ import com.aboluo.XUtils.CommonUtils;
 import com.aboluo.XUtils.MyApplication;
 import com.aboluo.XUtils.ScreenUtils;
 import com.aboluo.adapter.BannerAdapter;
+import com.aboluo.adapter.IndexBottomAdpater;
 import com.aboluo.model.AddShopCarBean;
 import com.aboluo.model.BaseModel;
 import com.aboluo.model.GoodsDetailInfo;
 import com.aboluo.model.GoodsDetailInfo.ResultBean.GoodsInfoBean.GoodsColorBean;
 import com.aboluo.model.GoodsDetailInfo.ResultBean.GoodsInfoBean.GoodsColorStandardListBean;
 import com.aboluo.model.GoodsDetailInfo.ResultBean.GoodsInfoBean.GoodsStandardsBean;
+import com.aboluo.model.GoodsListInfo;
 import com.aboluo.model.ShopCarBean.ResultBean.GoodsShoppingCartListBean;
+import com.aboluo.widget.MyGridView;
 import com.aboluo.widget.MyRadioGroup;
 import com.aboluo.widget.VerticalScrollView;
 import com.android.volley.AuthFailureError;
@@ -133,6 +135,9 @@ public class GoodsDetailActivity extends Activity implements View.OnClickListene
     private int height;
     private String MemberId;
     private ArrayList<GoodsShoppingCartListBean> goodsShoppingCartListBean; //传入下订单的信息
+    private MyGridView gv_goodsdetail_recommend;
+    private List<GoodsListInfo.ResultBean.GoodsListBean> goodsListBean;
+    private int currentpages = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -213,9 +218,8 @@ public class GoodsDetailActivity extends Activity implements View.OnClickListene
                         } else {
                         }
                     }
-                }catch (Exception e)
-                {
-                    Log.i("goodsdetail",e.toString());
+                } catch (Exception e) {
+                    Log.i("goodsdetail", e.toString());
                 }
             }
         });
@@ -254,7 +258,8 @@ public class GoodsDetailActivity extends Activity implements View.OnClickListene
                 });
             }
         });
-
+        //使gridview不获取焦点
+        gv_goodsdetail_recommend.setFocusable(false);
     }
 
     /**
@@ -263,60 +268,89 @@ public class GoodsDetailActivity extends Activity implements View.OnClickListene
      * @param detailurl 详情地址
      * @param pingjia   评价地址
      */
-    private void initwebview(String detailurl, String pingjia) {
-        //详情地址
-        //解决了webview 头部空了一片白的问题
-        goods_detail_webview.getSettings().setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
-        goods_detail_webview.setVerticalScrollBarEnabled(false);
-        goods_detail_webview.setVerticalScrollbarOverlay(false);
-        goods_detail_webview.setHorizontalScrollBarEnabled(false);
-        goods_detail_webview.setHorizontalScrollbarOverlay(false);
-        //end
-        WebSettings webviewsetting = goods_detail_webview.getSettings();
-        webviewsetting.setDomStorageEnabled(true);
-        webviewsetting.setJavaScriptEnabled(true);
-        webviewsetting.setUseWideViewPort(true);//关键点
-        webviewsetting.setLoadWithOverviewMode(true);
-//        webviewsetting.setLoadWithOverviewMode(true);
-        goods_detail_webview.loadUrl(detailurl);
-        goods_detail_webview.setWebViewClient(new WebViewClient() {
-            @Override
-            public boolean shouldOverrideUrlLoading(WebView view, String url) {
-                view.loadUrl(url);
-                return super.shouldOverrideUrlLoading(view, url);
-            }
+    private void initwebview(String detailurl, int type) {
+        goods_pingjia_webview.setVisibility(View.GONE);
+        goods_detail_webview.setVisibility(View.GONE);
+        if (type == 0) {
+            goods_detail_webview.setVisibility(View.VISIBLE);
+            //详情地址
+            //解决了webview 头部空了一片白的问题
+            goods_detail_webview.getSettings().setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
+            goods_detail_webview.setVerticalScrollBarEnabled(false);
+            goods_detail_webview.setHorizontalScrollBarEnabled(false);
+            //end
+            WebSettings webviewsetting = goods_detail_webview.getSettings();
+            webviewsetting.setDomStorageEnabled(true);
+            webviewsetting.setJavaScriptEnabled(true);
+            webviewsetting.setUseWideViewPort(true);//关键点
+            webviewsetting.setLoadWithOverviewMode(true);
+            goods_detail_webview.loadUrl(detailurl);
+            goods_detail_webview.setWebViewClient(new WebViewClient() {
+                @Override
+                public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                    view.loadUrl(url);
+                    return super.shouldOverrideUrlLoading(view, url);
+                }
 
-            @Override
-            public void onPageFinished(WebView view, String url) {
-                super.onPageFinished(view, url);
-                //这个是一定要加上那个的,配合scrollView和WebView的height=wrap_content属性使用
-                int w = View.MeasureSpec.makeMeasureSpec(0,
-                        View.MeasureSpec.UNSPECIFIED);
-                int h = View.MeasureSpec.makeMeasureSpec(0,
-                        View.MeasureSpec.UNSPECIFIED);
-                //重新测量
-                goods_detail_webview.measure(w, h);
-            }
-        });
-        goods_detail_webview.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-//                if (event.getAction() == MotionEvent.ACTION_UP) {
-//                    contentscrollView.requestDisallowInterceptTouchEvent(false);
-//                } else {
-//                    contentscrollView.requestDisallowInterceptTouchEvent(true);
-//                }
-                return true;
-            }
-        });
+                @Override
+                public void onPageFinished(WebView view, String url) {
+                    super.onPageFinished(view, url);
+                    //这个是一定要加上那个的,配合scrollView和WebView的height=wrap_content属性使用
+                    int w = View.MeasureSpec.makeMeasureSpec(0,
+                            View.MeasureSpec.UNSPECIFIED);
+                    int h = View.MeasureSpec.makeMeasureSpec(0,
+                            View.MeasureSpec.UNSPECIFIED);
+                    //重新测量
+                    goods_detail_webview.measure(w, h);
+                }
+            });
+            goods_detail_webview.setOnTouchListener(new View.OnTouchListener() {
+                @Override
+                public boolean onTouch(View v, MotionEvent event) {
+                    return true;
+                }
+            });
+        } else {
+            goods_pingjia_webview.setVisibility(View.VISIBLE);
+            //详情地址
+            //解决了webview 头部空了一片白的问题
+            goods_pingjia_webview.getSettings().setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
+            goods_pingjia_webview.setVerticalScrollBarEnabled(false);
+            goods_pingjia_webview.setHorizontalScrollBarEnabled(false);
+            //end
+            WebSettings webviewsetting = goods_pingjia_webview.getSettings();
+            webviewsetting.setDomStorageEnabled(true);
+            webviewsetting.setJavaScriptEnabled(true);
+            webviewsetting.setUseWideViewPort(true);//关键点
+            webviewsetting.setLoadWithOverviewMode(true);
+            goods_pingjia_webview.loadUrl(detailurl);
+            goods_pingjia_webview.setWebViewClient(new WebViewClient() {
+                @Override
+                public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                    view.loadUrl(url);
+                    return super.shouldOverrideUrlLoading(view, url);
+                }
 
-//        //评价地址
-//        WebSettings webviewsetting2 = goods_pingjia_webview.getSettings();
-//        webviewsetting2.setJavaScriptEnabled(true);
-//        webviewsetting2.setUseWideViewPort(true);//关键点
-//        webviewsetting2.setLoadWithOverviewMode(true);
-//        goods_pingjia_webview.loadUrl("http://t.back.aboluomall.com/Moblie/ShowEvaluationList");
-//        goods_pingjia_webview.setWebViewClient(new WebViewClient());
+                @Override
+                public void onPageFinished(WebView view, String url) {
+                    super.onPageFinished(view, url);
+                    //这个是一定要加上那个的,配合scrollView和WebView的height=wrap_content属性使用
+                    int w = View.MeasureSpec.makeMeasureSpec(0,
+                            View.MeasureSpec.UNSPECIFIED);
+                    int h = View.MeasureSpec.makeMeasureSpec(0,
+                            View.MeasureSpec.UNSPECIFIED);
+                    //重新测量
+                    goods_detail_webview.measure(w, h);
+                }
+            });
+            goods_pingjia_webview.setOnTouchListener(new View.OnTouchListener() {
+                @Override
+                public boolean onTouch(View v, MotionEvent event) {
+                    return true;
+                }
+            });
+        }
+
     }
 
     /**
@@ -345,8 +379,8 @@ public class GoodsDetailActivity extends Activity implements View.OnClickListene
                 intent.putStringArrayListExtra("imgeurl", listimage);
                 intent.putExtra("position", position);
                 String transitionName = "images";
-                ActivityOptionsCompat activityOptionsCompat = ActivityOptionsCompat.makeSceneTransitionAnimation(GoodsDetailActivity.this,rollPagerView, transitionName);
-                startActivity(intent,activityOptionsCompat.toBundle());
+                ActivityOptionsCompat activityOptionsCompat = ActivityOptionsCompat.makeSceneTransitionAnimation(GoodsDetailActivity.this, rollPagerView, transitionName);
+                startActivity(intent, activityOptionsCompat.toBundle());
             }
         });
         goods_type_imgeurl = imges[0];
@@ -402,6 +436,7 @@ public class GoodsDetailActivity extends Activity implements View.OnClickListene
         layout_txt_goods_sub = (LinearLayout) findViewById(R.id.layout_txt_goods_sub);
         goodsdetail_btn_buynow = (LinearLayout) findViewById(R.id.goodsdetail_btn_buynow);
         pop_goodsdetail_btn_buynow = (LinearLayout) findViewById(R.id.pop_goodsdetail_btn_buynow);
+        gv_goodsdetail_recommend = (MyGridView) findViewById(R.id.gv_goodsdetail_recommend);
         contentscrollView = (VerticalScrollView) findViewById(R.id.contentscrollView);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         pdialog = new SweetAlertDialog(this, SweetAlertDialog.PROGRESS_TYPE);
@@ -413,7 +448,7 @@ public class GoodsDetailActivity extends Activity implements View.OnClickListene
         ImgUrl = CommonUtils.GetValueByKey(this, "ImgUrl");
         APPToken = CommonUtils.GetValueByKey(this, "APPToken");
         goodsShoppingCartListBean = new ArrayList<>();
-
+        initdate(1);
     }
 
     /**
@@ -487,7 +522,7 @@ public class GoodsDetailActivity extends Activity implements View.OnClickListene
                 }
                 String detailurl = CommonUtils.GetValueByKey(GoodsDetailActivity.this, "backUrl") + "/moblie/Index?productId=" + goods_id;
                 Log.i("woaicaojing", detailurl);
-                initwebview(detailurl, null);
+                initwebview(detailurl, 0);
 
             }
         }, new Response.ErrorListener() {
@@ -870,14 +905,14 @@ public class GoodsDetailActivity extends Activity implements View.OnClickListene
                     id_goods_detail_view.setVisibility(View.VISIBLE);
                     id_goods_pingjia_view.setVisibility(View.GONE);
                     String detailurl0 = CommonUtils.GetValueByKey(GoodsDetailActivity.this, "backUrl") + "/moblie/Index?productId=" + goods_id;
-                    initwebview(detailurl0, null);
+                    initwebview(detailurl0, 0);
                     break;
                 case R.id.goods_pingjia_layout_btn1: //商品评价按钮Moblie/ShowEvaluation?goodsId
                     id_goods_detail_view.setVisibility(View.GONE);
                     id_goods_pingjia_view.setVisibility(View.VISIBLE);
                     String detailurl = CommonUtils.GetValueByKey(GoodsDetailActivity.this, "backUrl") + "/Moblie/ShowEvaluation?goodsId=" + goods_id;
                     //String detailurl = "http://back.aboluomall.com/Moblie/ShowEvaluation?goodsId=12";
-                    initwebview(detailurl, null);
+                    initwebview(detailurl, 1);
                     break;
                 case R.id.detail_goods: //首部购物车
                     Intent intent = new Intent(GoodsDetailActivity.this, MainActivity.class);
@@ -983,7 +1018,7 @@ public class GoodsDetailActivity extends Activity implements View.OnClickListene
                     // 设置访客来源，标识访客是从哪个页面发起咨询的，用于客服了解用户是从什么页面进入三个参数分别为来源页面的url，来源页面标题，来源页面额外信息（可自由定义）
                     // 设置来源后，在客服会话界面的"用户资料"栏的页面项，可以看到这里设置的值。
                     String detailurladdress = CommonUtils.GetValueByKey(GoodsDetailActivity.this, "backUrl") + "/moblie/Index?productId=" + goods_id;
-                    ConsultSource source = new ConsultSource(detailurladdress,"商品详情" , "memberid"+MemberId);
+                    ConsultSource source = new ConsultSource(detailurladdress, "商品详情", "memberid" + MemberId);
                     // 请注意： 调用该接口前，应先检查Unicorn.isServiceAvailable(), 如果返回为false，该接口不会有任何动作
                     Unicorn.openServiceActivity(GoodsDetailActivity.this, // 上下文
                             title, // 聊天窗口的标题
@@ -1382,4 +1417,62 @@ public class GoodsDetailActivity extends Activity implements View.OnClickListene
             return false;
         }
     }
+
+    private void initdate(final int currentpage) {
+        StringRequest requestlist = new StringRequest(Request.Method.POST, URL + "/api/Goods/ReceiveGoodsList", new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                IndexBottomAdpater indexBottomAdpater = null;
+                response = response.replace("\\", "");
+                response = response.substring(1, response.length() - 1);
+                Gson gson = new Gson();
+                Log.i("woaicaojing", URL + "/api/Goods/ReceiveGoodsList");
+                Log.i("woaicaojing", response);
+                GoodsListInfo listBean = gson.fromJson(response, GoodsListInfo.class);
+                if (listBean.getResult().getGoodsList().size() == 0) {
+                    Toast.makeText(GoodsDetailActivity.this, "当前没有数据啦", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                if (currentpage == 1) {
+                    goodsListBean = listBean.getResult().getGoodsList();
+                    indexBottomAdpater = new IndexBottomAdpater(GoodsDetailActivity.this,
+                            goodsListBean);
+                    gv_goodsdetail_recommend.setAdapter(indexBottomAdpater);
+                } else {
+                    if (goodsListBean == null) {
+                        goodsListBean = listBean.getResult().getGoodsList();
+                        indexBottomAdpater = new IndexBottomAdpater(GoodsDetailActivity.this,
+                                goodsListBean);
+                        gv_goodsdetail_recommend.setAdapter(indexBottomAdpater);
+                    } else {
+                        List<GoodsListInfo.ResultBean.GoodsListBean> goodsListBean2 = listBean.getResult().getGoodsList();
+                        goodsListBean.addAll(goodsListBean2);
+                        gv_goodsdetail_recommend.setAdapter(indexBottomAdpater);
+                    }
+                }
+                pdialog.dismiss();
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+//                byte[] htmlBodyBytes = error.networkResponse.data;
+                //Toast.makeText(IndexFragment.this.getContext(), error.toString(), Toast.LENGTH_SHORT).show();
+//                Log.i("woaiocaojingerroe", new String(htmlBodyBytes));
+                // Log.i("woaicaojing", error.toString());
+            }
+        }) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> map = new HashMap<>();
+                map.put("APPToken", APPToken);
+                map.put("CurrentPage", String.valueOf(currentpage));
+                map.put("PageSize", "200");
+                map.put("IsShowHomePage", "1");
+                return map;
+            }
+        };
+        requestQueue.add(requestlist);
+    }
+
 }

@@ -31,6 +31,7 @@ import android.view.ViewTreeObserver;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -45,14 +46,14 @@ import com.aboluo.XUtils.CommonUtils;
 import com.aboluo.XUtils.MyApplication;
 import com.aboluo.XUtils.ScreenUtils;
 import com.aboluo.adapter.BannerAdapter;
-import com.aboluo.adapter.IndexBottomAdpater;
+import com.aboluo.adapter.GoodsRecommendAdpater;
 import com.aboluo.model.AddShopCarBean;
 import com.aboluo.model.BaseModel;
 import com.aboluo.model.GoodsDetailInfo;
 import com.aboluo.model.GoodsDetailInfo.ResultBean.GoodsInfoBean.GoodsColorBean;
 import com.aboluo.model.GoodsDetailInfo.ResultBean.GoodsInfoBean.GoodsColorStandardListBean;
 import com.aboluo.model.GoodsDetailInfo.ResultBean.GoodsInfoBean.GoodsStandardsBean;
-import com.aboluo.model.GoodsListInfo;
+import com.aboluo.model.GoodsRecommend;
 import com.aboluo.model.ShopCarBean.ResultBean.GoodsShoppingCartListBean;
 import com.aboluo.widget.MyGridView;
 import com.aboluo.widget.MyRadioGroup;
@@ -119,7 +120,7 @@ public class GoodsDetailActivity extends Activity implements View.OnClickListene
     private static int goods_id = 0; //商品的ID
     private RequestQueue requestQueue;
     private StringRequest stringRequest;
-    private static String URL = null, ImgUrl = null;
+    private static String URL = null, ImgUrl = null, URL2 = null;
     private static String APPToken = null;
     private GoodsDetailInfo goodsDetailInfo;
     private static int popwith; //获取当前屏幕的宽度
@@ -136,8 +137,7 @@ public class GoodsDetailActivity extends Activity implements View.OnClickListene
     private String MemberId;
     private ArrayList<GoodsShoppingCartListBean> goodsShoppingCartListBean; //传入下订单的信息
     private MyGridView gv_goodsdetail_recommend;
-    private List<GoodsListInfo.ResultBean.GoodsListBean> goodsListBean;
-    private int currentpages = 1;
+    private List<GoodsRecommend.ListResultBean> goodsListBean;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -260,6 +260,15 @@ public class GoodsDetailActivity extends Activity implements View.OnClickListene
         });
         //使gridview不获取焦点
         gv_goodsdetail_recommend.setFocusable(false);
+        gv_goodsdetail_recommend.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                int goodsId = goodsListBean.get(position).getGoodsId();
+                Intent intent = new Intent(GoodsDetailActivity.this, GoodsDetailActivity.class);
+                intent.putExtra("goods_id", goodsId);
+                startActivity(intent);
+            }
+        });
     }
 
     /**
@@ -445,10 +454,11 @@ public class GoodsDetailActivity extends Activity implements View.OnClickListene
         goods_id = intent.getIntExtra("goods_id", 0);
         requestQueue = MyApplication.getRequestQueue();
         URL = CommonUtils.GetValueByKey(this, "apiurl");
+        URL2 = CommonUtils.GetValueByKey(this, "apiurl2");
         ImgUrl = CommonUtils.GetValueByKey(this, "ImgUrl");
         APPToken = CommonUtils.GetValueByKey(this, "APPToken");
         goodsShoppingCartListBean = new ArrayList<>();
-        initdate(1);
+        initdate();
     }
 
     /**
@@ -1418,57 +1428,34 @@ public class GoodsDetailActivity extends Activity implements View.OnClickListene
         }
     }
 
-    private void initdate(final int currentpage) {
-        StringRequest requestlist = new StringRequest(Request.Method.POST, URL + "/api/Goods/ReceiveGoodsList", new Response.Listener<String>() {
+    private void initdate() {
+        StringRequest requestlist = new StringRequest(Request.Method.POST, URL2 + "/api/GoodsApi/ReceiveGoodsListByGoodsId", new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                IndexBottomAdpater indexBottomAdpater = null;
-                response = response.replace("\\", "");
-                response = response.substring(1, response.length() - 1);
+                GoodsRecommendAdpater goodsRecommendAdpater = null;
                 Gson gson = new Gson();
-                Log.i("woaicaojing", URL + "/api/Goods/ReceiveGoodsList");
+                Log.i("woaicaojing", URL + "api//GoodsApi/ReceiveGoodsListByGoodsId");
                 Log.i("woaicaojing", response);
-                GoodsListInfo listBean = gson.fromJson(response, GoodsListInfo.class);
-                if (listBean.getResult().getGoodsList().size() == 0) {
-                    Toast.makeText(GoodsDetailActivity.this, "当前没有数据啦", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                if (currentpage == 1) {
-                    goodsListBean = listBean.getResult().getGoodsList();
-                    indexBottomAdpater = new IndexBottomAdpater(GoodsDetailActivity.this,
-                            goodsListBean);
-                    gv_goodsdetail_recommend.setAdapter(indexBottomAdpater);
-                } else {
-                    if (goodsListBean == null) {
-                        goodsListBean = listBean.getResult().getGoodsList();
-                        indexBottomAdpater = new IndexBottomAdpater(GoodsDetailActivity.this,
-                                goodsListBean);
-                        gv_goodsdetail_recommend.setAdapter(indexBottomAdpater);
-                    } else {
-                        List<GoodsListInfo.ResultBean.GoodsListBean> goodsListBean2 = listBean.getResult().getGoodsList();
-                        goodsListBean.addAll(goodsListBean2);
-                        gv_goodsdetail_recommend.setAdapter(indexBottomAdpater);
-                    }
-                }
-                pdialog.dismiss();
-
+                GoodsRecommend listBean = gson.fromJson(response, GoodsRecommend.class);
+                goodsListBean = listBean.getListResult();
+                goodsRecommendAdpater = new GoodsRecommendAdpater(GoodsDetailActivity.this,
+                        goodsListBean);
+                gv_goodsdetail_recommend.setAdapter(goodsRecommendAdpater);
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
 //                byte[] htmlBodyBytes = error.networkResponse.data;
-                //Toast.makeText(IndexFragment.this.getContext(), error.toString(), Toast.LENGTH_SHORT).show();
+////                Toast.makeText(IndexFragment.this.getContext(), error.toString(), Toast.LENGTH_SHORT).show();
 //                Log.i("woaiocaojingerroe", new String(htmlBodyBytes));
-                // Log.i("woaicaojing", error.toString());
+//                Log.i("woaicaojing", error.toString());
             }
         }) {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> map = new HashMap<>();
                 map.put("APPToken", APPToken);
-                map.put("CurrentPage", String.valueOf(currentpage));
-                map.put("PageSize", "200");
-                map.put("IsShowHomePage", "1");
+                map.put("GoodsId", String.valueOf(goods_id));
                 return map;
             }
         };

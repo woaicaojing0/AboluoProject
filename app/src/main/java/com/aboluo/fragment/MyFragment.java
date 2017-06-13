@@ -30,6 +30,7 @@ import com.aboluo.com.CreditInfoActivity;
 import com.aboluo.com.FastPartnerActivity;
 import com.aboluo.com.FavorActivity;
 import com.aboluo.com.HelpCenterActivity;
+import com.aboluo.com.IdentityIntroduceActivity;
 import com.aboluo.com.InvitationCodeActivity;
 import com.aboluo.com.InvitationInfoActivity;
 import com.aboluo.com.LoginActivity;
@@ -56,9 +57,7 @@ import com.google.gson.Gson;
 import com.jph.takephoto.app.TakePhotoFragment;
 import com.jph.takephoto.compress.CompressConfig;
 import com.jph.takephoto.model.TResult;
-import com.qiniu.android.common.Zone;
 import com.qiniu.android.http.ResponseInfo;
-import com.qiniu.android.storage.Configuration;
 import com.qiniu.android.storage.UpCompletionHandler;
 import com.qiniu.android.storage.UploadManager;
 import com.squareup.picasso.Picasso;
@@ -95,13 +94,13 @@ public class MyFragment extends TakePhotoFragment implements View.OnClickListene
     private String MemberId;
     private MyInfoBean myInfoBean;
     private CircleImageView my_fragment_imageview;
-    private TextView tv_my_huiyuan, my_01_num, my_02_num, my_03_num, my_04_num, tv_user_id;
+    private TextView tv_my_huiyuan, my_01_num, my_02_num, my_03_num, my_04_num, tv_user_id, tv_user_name;
     private ImageView iv_my_setting;
     private AlertDialog.Builder builder;
     private QiNiuToken qiNiuToken;
     private CreditInfoBean creditInfoBean;
     private TextView my_allmoney, tv_findReferrer;
-
+    private RelativeLayout rv_identity;
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         if (view == null) {
@@ -132,6 +131,7 @@ public class MyFragment extends TakePhotoFragment implements View.OnClickListene
         my_fragment_imageview.setOnClickListener(this);
         ll_fast_parnter.setOnClickListener(this);
         ll_my_activcity.setOnClickListener(this);
+        rv_identity.setOnClickListener(this);
         if (CommonUtils.IsLogin(MyFragment.this.getContext())) {
             btn.setVisibility(View.GONE);
             my_out.setVisibility(View.VISIBLE);
@@ -179,8 +179,10 @@ public class MyFragment extends TakePhotoFragment implements View.OnClickListene
         my_03_num = (TextView) view.findViewById(R.id.my_03_num);
         my_04_num = (TextView) view.findViewById(R.id.my_04_num);
         tv_user_id = (TextView) view.findViewById(R.id.tv_user_id);
+        tv_user_name = (TextView) view.findViewById(R.id.tv_user_name);
         my_allmoney = (TextView) view.findViewById(R.id.my_allmoney);
         tv_findReferrer = (TextView) view.findViewById(R.id.tv_findReferrer);
+        rv_identity = (RelativeLayout) view.findViewById(R.id.rv_identity);
         pdialog = new SweetAlertDialog(MyFragment.this.getContext(), SweetAlertDialog.PROGRESS_TYPE);
         pdialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
         pdialog.setTitleText("加载中");
@@ -255,6 +257,7 @@ public class MyFragment extends TakePhotoFragment implements View.OnClickListene
                             break;
                     }
                     tv_user_id.setText("用户编号：10" + String.valueOf(myInfoBean.getResult().getMemberId()));
+                    tv_user_name.setText("用户昵称：" + String.valueOf(myInfoBean.getResult().getUserNickName()));
                 } else {
                     Toast.makeText(MyFragment.this.getContext(), "个人信息获取失败，请重试", Toast.LENGTH_SHORT).show();
                 }
@@ -478,6 +481,10 @@ public class MyFragment extends TakePhotoFragment implements View.OnClickListene
             case R.id.ll_my_activcity:
                 Intent intent20 = new Intent(MyFragment.this.getActivity(), MyEventActivity.class);
                 startActivity(intent20);
+                break;
+            case R.id.rv_identity:
+                Intent intent21 = new Intent(MyFragment.this.getActivity(), IdentityIntroduceActivity.class);
+                startActivity(intent21);
                 break;
             default:
                 break;

@@ -32,4 +32,6 @@
     <color name="txtColor">#5f646e</color>
     <color name="express_green">#25ae5f</color>
     <color name="textGrayColor">#8a8a8a</color>
+    <color name="huiYuanColor">#ff0403</color>
+    <color name="gray_progress">#d5d5d5</color>
 </resources>

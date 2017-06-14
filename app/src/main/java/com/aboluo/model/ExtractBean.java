@@ -168,6 +168,15 @@ public class ExtractBean {
             private double FreezeMoney;
             private double CanUserMoney;
             private double TotalRemaidMoney;
+            private String alipayAccount;
+
+            public String getAlipayAccount() {
+                return alipayAccount;
+            }
+
+            public void setAlipayAccount(String alipayAccount) {
+                this.alipayAccount = alipayAccount;
+            }
 
             public static WithdrawalsInfoBean objectFromData(String str) {
 

@@ -109,7 +109,7 @@ public class ExtractMoneyDetailActivity extends Activity {
                 Map<String, String> map = new HashMap<>();
                 map.put("MemberId", MemberId);
                 map.put("CurrentPage", "1");
-                map.put("PageSize", "10");
+                map.put("PageSize", "100");
                 map.put("APPToken", APPToken);
                 return map;
             }

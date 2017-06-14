@@ -63,7 +63,7 @@ public class ExtractMoneyActivity extends Activity implements View.OnClickListen
     private List<String> mspinnerList;
     private TextView tv_extract_text;
     private EditText et_extract_money, et_extract_bankCard,
-            et_extract_username, et_extract_authcode;
+            et_extract_username, et_extract_authcode, et_aliayName;
     private Button btn_validate_bank, btn_getinfo;
     private BankCardBean bankCardBean;
     private CountDownTimer time;
@@ -73,12 +73,17 @@ public class ExtractMoneyActivity extends Activity implements View.OnClickListen
     private TextView tv_extract_history, et_extract_bankName;
     private static int type = 1;
     private Button btn_extract_apply;
+    private int fromType = 0;
+    private LinearLayout ll_bankNum, ll_bankName, ll_aliayName;
+    private View view_bankNum;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_extractmoney);
-        Bundle bundle = getIntent().getExtras();
+        Intent intent = getIntent();
+        fromType = intent.getIntExtra("fromType", 0);
+        Bundle bundle = intent.getExtras();
         email = (bundle.get("email") == null ? "0" : bundle.get("email").toString());
         phone = (bundle.get("phone") == null ? "0" : bundle.get("phone").toString());
         money = (bundle.get("money") == null ? 0 : (double) bundle.get("money"));
@@ -131,7 +136,14 @@ public class ExtractMoneyActivity extends Activity implements View.OnClickListen
                 }
             }
         });
-        initData();
+        if (fromType == 0) {//银行卡
+        } else { //支付宝
+            view_bankNum.setVisibility(View.GONE);
+            ll_bankNum.setVisibility(View.GONE);
+            ll_bankName.setVisibility(View.GONE);
+            ll_aliayName.setVisibility(View.VISIBLE);
+        }
+        initData(fromType);
     }
 
     private void init() {
@@ -155,11 +167,16 @@ public class ExtractMoneyActivity extends Activity implements View.OnClickListen
         et_extract_bankName = (TextView) findViewById(R.id.et_extract_bankName);
         et_extract_username = (EditText) findViewById(R.id.et_extract_username);
         et_extract_authcode = (EditText) findViewById(R.id.et_extract_authcode);
+        et_aliayName = (EditText) findViewById(R.id.et_aliayName);
         btn_validate_bank = (Button) findViewById(R.id.btn_validate_bank);
         btn_extract_apply = (Button) findViewById(R.id.btn_extract_apply);
         btn_getinfo = (Button) findViewById(R.id.btn_getinfo);
         iv_brankImage = (ImageView) findViewById(R.id.iv_brankImage);
         ll_extract = (LinearLayout) findViewById(R.id.ll_extract);
+        ll_bankNum = (LinearLayout) findViewById(R.id.ll_bankNum);
+        ll_bankName = (LinearLayout) findViewById(R.id.ll_bankName);
+        ll_aliayName = (LinearLayout) findViewById(R.id.ll_aliayName);
+        view_bankNum = findViewById(R.id.view_bankNum);
         tv_extract_history = (TextView) findViewById(R.id.tv_extract_history);
         mspinnerList = new ArrayList<>();
         time = new TimeCount(60000, 1000);//构造CountDownTimer对象register_edit_auth.addTextChangedListener(this);
@@ -187,7 +204,7 @@ public class ExtractMoneyActivity extends Activity implements View.OnClickListen
         spinner_extract.setSelection(0);
     }
 
-    private void initData() {
+    private void initData(final int fromType) {
         StringRequest stringRequest = new StringRequest(Request.Method.POST,
                 URL + "/api/WithdrawApi/ReceiveMemberWithdrawInfoByMemberId", new Response.Listener<String>() {
             @Override
@@ -196,16 +213,21 @@ public class ExtractMoneyActivity extends Activity implements View.OnClickListen
                 response = response.substring(1, response.length() - 1);
                 ExtractBean extractBean = gson.fromJson(response, ExtractBean.class);
                 if (extractBean.isIsSuccess() && null != extractBean.getResult()) {
-                    initBankCardBean(extractBean);
                     et_extract_username.setText(extractBean.getResult().getWithdrawalsInfo().getRealName());
-                    et_extract_bankCard.setText(extractBean.getResult().getWithdrawalsInfo().getBankCard());
-                    et_extract_bankName.setText(extractBean.getResult().getWithdrawalsInfo().getBankProvince()
-                            + extractBean.getResult().getWithdrawalsInfo().getBankCity() +
-                            extractBean.getResult().getWithdrawalsInfo().getBankName() +
-                            extractBean.getResult().getWithdrawalsInfo().getBankCardName());
-                    picasso.load(extractBean.getResult().getWithdrawalsInfo().getBankLogo()).error(R.drawable.imageview_error)
-                            .placeholder(R.drawable.image_placeholder).into(iv_brankImage);
-                } else {
+                    if (fromType == 0) {
+                        initBankCardBean(extractBean);
+                        et_extract_bankCard.setText(extractBean.getResult().getWithdrawalsInfo().getBankCard());
+                        et_extract_bankName.setText(extractBean.getResult().getWithdrawalsInfo().getBankProvince()
+                                + extractBean.getResult().getWithdrawalsInfo().getBankCity() +
+                                extractBean.getResult().getWithdrawalsInfo().getBankName() +
+                                extractBean.getResult().getWithdrawalsInfo().getBankCardName());
+                        picasso.load(extractBean.getResult().getWithdrawalsInfo().getBankLogo()).error(R.drawable.imageview_error)
+                                .placeholder(R.drawable.image_placeholder).into(iv_brankImage);
+                        et_extract_money.setHint("当前最多可以提现 ￥" + Math.floor(extractBean.getResult().getWithdrawalsInfo().getCanUserMoney()));
+                    } else {
+                        et_aliayName.setText(extractBean.getResult().getWithdrawalsInfo().getAlipayAccount() == null ? "" : extractBean.getResult().getWithdrawalsInfo().getAlipayAccount());
+                    }
+
                 }
                 initSpinner();
             }
@@ -222,6 +244,7 @@ public class ExtractMoneyActivity extends Activity implements View.OnClickListen
                 Map<String, String> map = new HashMap<>();
                 map.put("MemberId", MemberId);
                 map.put("APPToken", APPToken);
+                map.put("WithdrawType", String.valueOf(fromType));
                 map.put("LoginCheckToken", "123");
                 map.put("LoginPhone", "123");
                 return map;
@@ -277,7 +300,11 @@ public class ExtractMoneyActivity extends Activity implements View.OnClickListen
                 finish();
                 break;
             case R.id.btn_extract_apply:
-                applyForExtract();
+                if (fromType == 0) {
+                    applyForExtract();
+                } else {
+                    applyForExtractAliay();
+                }
                 break;
         }
     }
@@ -412,6 +439,9 @@ public class ExtractMoneyActivity extends Activity implements View.OnClickListen
         }
     }
 
+    /**
+     * 银行提现
+     */
     private void applyForExtract() {
         final String realName = et_extract_username.getText().toString();
         String bankNum = et_extract_bankCard.getText().toString();
@@ -458,6 +488,7 @@ public class ExtractMoneyActivity extends Activity implements View.OnClickListen
                         map.put("bankTel", bankCardBean.getResult().getTel());
                         map.put("bankWebsite", bankCardBean.getResult().getWebsite());
                         map.put("price", extraMoney);
+                        map.put("withdrawType", String.valueOf(fromType));
                         map.put("realName", realName);
                         if (spinner_extract.getSelectedItem().equals("手机号码验证")) {
                             map.put("validType", "1");
@@ -478,6 +509,66 @@ public class ExtractMoneyActivity extends Activity implements View.OnClickListen
             } else {
                 Toast.makeText(this, "银行信息有误，请退出重试", Toast.LENGTH_SHORT).show();
             }
+        } else {
+            Toast.makeText(this, "请将信息填写完整", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    /**
+     * 支付宝提现
+     */
+    private void applyForExtractAliay() {
+        final String realName = et_extract_username.getText().toString();
+        final String aliayName = et_aliayName.getText().toString();
+        final String extraMoney = et_extract_money.getText().toString();
+        final String valiatecode = et_extract_authcode.getText().toString();
+        final String emailorphpne = tv_extract_text.getText().toString();
+        if (realName.length() > 0 && extraMoney.length() > 0 && valiatecode.length() > 0 && aliayName.length() > 0) {
+            StringRequest stringRequest = new StringRequest(Request.Method.POST,
+                    URL + "/api/WithdrawApi/ReceiveMemberWithdrawSubmit", new Response.Listener<String>() {
+                @Override
+                public void onResponse(String response) {
+                    response = response.replace("\\", "");
+                    response = response.substring(1, response.length() - 1);
+                    BaseModel baseModel = gson.fromJson(response, BaseModel.class);
+                    if (baseModel.isIsSuccess()) {
+                        finish();
+                    } else {
+                    }
+                    Toast.makeText(ExtractMoneyActivity.this, baseModel.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+//                        byte[] bytecode = error.networkResponse.data;
+//                        String s = new String(bytecode);
+                    Toast.makeText(ExtractMoneyActivity.this, "申请失败，请联系客服", Toast.LENGTH_SHORT).show();
+                }
+            }) {
+                @Override
+                protected Map<String, String> getParams() throws AuthFailureError {
+                    Map<String, String> map = new HashMap<>();
+                    map.put("memberId", MemberId);
+                    map.put("price", extraMoney);
+                    map.put("alipayAccount", aliayName);
+                    map.put("withdrawType", String.valueOf(fromType));
+                    map.put("realName", realName);
+                    if (spinner_extract.getSelectedItem().equals("手机号码验证")) {
+                        map.put("validType", "1");
+                        map.put("mobile", emailorphpne);
+                        map.put("email", "");
+
+                    } else if (spinner_extract.getSelectedItem().equals("邮箱验证")) {
+                        map.put("validType", "2");
+                        map.put("email", emailorphpne);
+                        map.put("mobile", "");
+                    }
+                    map.put("validCode", valiatecode);
+                    map.put("APPToken", APPToken);
+                    return map;
+                }
+            };
+            requestQueue.add(stringRequest);
         } else {
             Toast.makeText(this, "请将信息填写完整", Toast.LENGTH_SHORT).show();
         }

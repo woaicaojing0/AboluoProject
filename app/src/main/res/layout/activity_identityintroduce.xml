@@ -26,7 +26,18 @@
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
-
+                    <TextView
+                        android:id="@+id/tv_back"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_centerVertical="true"
+                        android:paddingBottom="2dp"
+                        android:paddingLeft="8dp"
+                        android:paddingRight="8dp"
+                        android:paddingTop="2dp"
+                        android:text="返回"
+                        android:textColor="@color/white" />
                     <TextView
                         android:id="@+id/tv_introduce_groupup"
                         android:layout_width="wrap_content"
@@ -53,8 +64,8 @@
                     android:id="@+id/my_fragment_imageview"
                     android:layout_width="65dp"
                     android:layout_height="65dp"
-                    android:layout_marginLeft="20dp"
                     android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="20dp"
                     android:src="@drawable/logo"
                     app:civ_border_color="#FF000000" />
 
@@ -171,6 +182,7 @@
                     android:text="还差" />
 
                 <TextView
+                    android:id="@+id/tv_need_groupup"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="一" />
@@ -178,9 +190,10 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="步成长值到" />
+                    android:text="成长值到" />
 
                 <TextView
+                    android:id="@+id/tv_next_level"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="V1" />
@@ -207,6 +220,7 @@
                     android:orientation="horizontal">
 
                     <ImageView
+                        android:id="@+id/mv_level1"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:src="@drawable/n1_selected" />
@@ -228,11 +242,13 @@
                     android:orientation="horizontal">
 
                     <ImageView
+                        android:id="@+id/mv_level2"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:src="@drawable/v1_unselected" />
 
                     <ImageView
+
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
@@ -249,11 +265,13 @@
                     android:orientation="horizontal">
 
                     <ImageView
+                        android:id="@+id/mv_level3"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:src="@drawable/v2_unselected" />
 
                     <ImageView
+
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
@@ -270,7 +288,7 @@
                     android:orientation="horizontal">
 
                     <ImageView
-                        android:id="@+id/imageView7"
+                        android:id="@+id/mv_level4"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:src="@drawable/s1_unselected" />
@@ -278,13 +296,58 @@
 
             </LinearLayout>
 
-            <ImageView
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="right"
-                android:layout_marginRight="60dp"
-                android:background="@drawable/diandian"
-                android:lines="1" />
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="right"
+                        android:layout_marginLeft="20dp"
+                        android:background="@drawable/diandian"
+                        android:lines="1" />
+                </LinearLayout>
+
+            </LinearLayout>
+
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -306,7 +369,7 @@
                     android:orientation="horizontal">
 
                     <ImageView
-                        android:id="@+id/imageView8"
+                        android:id="@+id/mv_level7"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:src="@drawable/s4_unselected" />
@@ -328,6 +391,7 @@
                     android:orientation="horizontal">
 
                     <ImageView
+                        android:id="@+id/mv_level6"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:src="@drawable/s3_unselected" />
@@ -349,6 +413,7 @@
                     android:orientation="horizontal">
 
                     <ImageView
+                        android:id="@+id/mv_level5"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:src="@drawable/s2_unselected" />

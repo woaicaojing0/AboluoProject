@@ -101,6 +101,8 @@ public class MyFragment extends TakePhotoFragment implements View.OnClickListene
     private CreditInfoBean creditInfoBean;
     private TextView my_allmoney, tv_findReferrer;
     private RelativeLayout rv_identity;
+    private String nickName, userNum, userIdentity;
+
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         if (view == null) {
@@ -244,20 +246,28 @@ public class MyFragment extends TakePhotoFragment implements View.OnClickListene
                             .getIsLeader()));
                     switch (myInfoBean.getResult().getIsLeader()) {
                         case 0:
-                            tv_my_huiyuan.setText("普通会员");
+                            userIdentity = "普通会员";
                             break;
                         case 1:
-                            tv_my_huiyuan.setText("合伙人");
+                            userIdentity = "合伙人";
                             break;
                         case 2:
-                            tv_my_huiyuan.setText("金牌合伙人");
+                            userIdentity = "金牌合伙人";
+
                             break;
                         default:
-                            tv_my_huiyuan.setText("普通会员");
+                            userIdentity = "普通会员";
                             break;
                     }
-                    tv_user_id.setText("用户编号：10" + String.valueOf(myInfoBean.getResult().getMemberId()));
-                    tv_user_name.setText("用户昵称：" + String.valueOf(myInfoBean.getResult().getUserNickName()));
+                    tv_my_huiyuan.setText(userIdentity);
+                    nickName = String.valueOf(myInfoBean.getResult().getUserNickName());
+                    userNum = String.valueOf(myInfoBean.getResult().getMemberId());
+                    tv_user_id.setText("10" + userNum);
+                    if (nickName == null) {
+                        tv_user_name.setText("暂无昵称");
+                    } else {
+                        tv_user_name.setText("" + nickName);
+                    }
                 } else {
                     Toast.makeText(MyFragment.this.getContext(), "个人信息获取失败，请重试", Toast.LENGTH_SHORT).show();
                 }
@@ -484,6 +494,9 @@ public class MyFragment extends TakePhotoFragment implements View.OnClickListene
                 break;
             case R.id.rv_identity:
                 Intent intent21 = new Intent(MyFragment.this.getActivity(), IdentityIntroduceActivity.class);
+                intent21.putExtra("userIdentity", userIdentity);
+                intent21.putExtra("nickName", nickName);
+                intent21.putExtra("userNum", userNum);
                 startActivity(intent21);
                 break;
             default:

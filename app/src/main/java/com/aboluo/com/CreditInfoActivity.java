@@ -1,12 +1,14 @@
 package com.aboluo.com;
 
 import android.app.Activity;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -49,30 +51,19 @@ public class CreditInfoActivity extends Activity implements View.OnClickListener
     private TextView totalmoney, memberlevel, totalscore, freeMoney, CanUserMoney, totalscore2,
             CanUserScore, cred_nickName;
     private CircleImageView cred_userImage;
-    private LinearLayout creditinfo_individual, creditinfo_capital;
-    private Button btn_apply_extract_money, btn_extract_detail;// 申请退款，查看记录
+    private LinearLayout creditinfo_individual, creditinfo_capital, ll_back, ll_tixian;
+    private AlertDialog.Builder builder;
+    private View cunstomView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_creditinfo);
         init();
-        creditinfo_individual.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(CreditInfoActivity.this, IntegralActivity.class);
-                startActivity(intent);
-            }
-        });
-        creditinfo_capital.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(CreditInfoActivity.this, CapitalActivity.class);
-                startActivity(intent);
-            }
-        });
-        btn_extract_detail.setOnClickListener(this);
-        btn_apply_extract_money.setOnClickListener(this);
+        creditinfo_individual.setOnClickListener(this);
+        creditinfo_capital.setOnClickListener(this);
+        ll_back.setOnClickListener(this);
+        ll_tixian.setOnClickListener(this);
     }
 
     private void init() {
@@ -99,8 +90,8 @@ public class CreditInfoActivity extends Activity implements View.OnClickListener
         cred_userImage = (CircleImageView) findViewById(R.id.cred_userImage);
         creditinfo_individual = (LinearLayout) findViewById(R.id.creditinfo_individual);
         creditinfo_capital = (LinearLayout) findViewById(R.id.creditinfo_capital);
-        btn_apply_extract_money = (Button) findViewById(R.id.btn_apply_extract_money);
-        btn_extract_detail = (Button) findViewById(R.id.btn_extract_detail);
+        ll_back = (LinearLayout) findViewById(R.id.ll_back);
+        ll_tixian = (LinearLayout) findViewById(R.id.ll_tixian);
         initData();
     }
 
@@ -177,19 +168,52 @@ public class CreditInfoActivity extends Activity implements View.OnClickListener
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.btn_apply_extract_money:
-                Bundle bundle = getIntent().getExtras();
+            case R.id.ll_tixian:
+                cunstomView = LayoutInflater.from(this).inflate(R.layout.customtitle, null);
+                final Bundle bundle = getIntent().getExtras();
                 if ("0".equals(bundle.get("email")) && "0".equals(bundle.get("phone"))) {
                     Toast.makeText(this, "请先至个人信息绑定手机号或者邮箱", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                Intent intent = new Intent(CreditInfoActivity.this, ExtractMoneyActivity.class);
-                intent.putExtras(bundle);
+                builder = new AlertDialog.Builder(CreditInfoActivity.this);
+                //    指定下拉列表的显示数据
+                final String[] cities = {"银行卡", "支付宝"};
+                //    设置一个下拉的列表选择项
+                builder.setItems(cities, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        switch (which) {
+                            case 0:
+                                Intent intent = new Intent(CreditInfoActivity.this, ExtractMoneyActivity.class);
+                                intent.putExtra("fromType", 0);
+                                intent.putExtras(bundle);
+                                startActivity(intent);
+                                break;
+                            case 1:
+                                Intent intent1 = new Intent(CreditInfoActivity.this, ExtractMoneyActivity.class);
+                                intent1.putExtra("fromType", 1);
+                                intent1.putExtras(bundle);
+                                startActivity(intent1);
+                                break;
+                            //dialog.dismiss();
+                        }
+                        //Toast.makeText(MyInfoAcitvity.this, "选择的城市为：" + cities[which], Toast.LENGTH_SHORT).show();
+                    }
+                }).setCustomTitle(cunstomView);
+                builder.show();
+                break;
+            case R.id.ll_back:
+                finish();
+                break;
+            case R.id.creditinfo_individual:
+                Intent intent = new Intent(CreditInfoActivity.this, IntegralActivity.class);
                 startActivity(intent);
                 break;
-            case R.id.btn_extract_detail:
-                Intent intent2 = new Intent(CreditInfoActivity.this, ExtractMoneyDetailActivity.class);
+            case R.id.creditinfo_capital:
+                Intent intent2 = new Intent(CreditInfoActivity.this, CapitalActivity.class);
                 startActivity(intent2);
+                break;
+            default:
                 break;
         }
     }

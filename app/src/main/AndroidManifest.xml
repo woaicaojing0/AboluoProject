@@ -166,6 +166,7 @@
         <activity android:name=".MyGroupRecordActivity"></activity>
         <activity android:name=".IdentityIntroduceActivity"></activity>
         <activity android:name=".IdentityWebIntroduceActivity"></activity>
+        <activity android:name=".FastParnterIntroduceActivity"></activity>
         <activity android:name=".wxapi.WXEntryActivity"
             android:exported="true"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" >

@@ -55,10 +55,9 @@ public class FastPartnerActivity extends Activity {
     private FastParnterBean fastParnterBean;
     private FastParnterMakeOrderBean fastParnterMakeOrderBean;
     private TextView tv_Amount, fast_parnter_title;
-    private ImageView iv_fastpartner, iv_fastpartner_back;
-    private PullToRefreshScrollView pullToRefreshScrollView;
-    private ProgressWebView wv_fastParnter;
+    private ImageView  iv_fastpartner_back;
     private String webUrl;
+    private TextView tv_agent_book;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,29 +74,17 @@ public class FastPartnerActivity extends Activity {
                 }
             }
         });
-        iv_fastpartner.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(FastPartnerActivity.this, GoodsDetailImageActivity.class);
-                ArrayList<String> listimage = new ArrayList<String>();
-                listimage.add(String.valueOf(R.drawable.fastparnter));
-                intent.putStringArrayListExtra("imgeurl", listimage);
-                intent.putExtra("position", 0);
-                String transitionName = "images";
-                ActivityOptionsCompat activityOptionsCompat = ActivityOptionsCompat.makeSceneTransitionAnimation(FastPartnerActivity.this, v, transitionName);
-                startActivity(intent, activityOptionsCompat.toBundle());
-            }
-        });
-        pullToRefreshScrollView.setOnRefreshListener(new PullToRefreshBase.OnRefreshListener<ScrollView>() {
-            @Override
-            public void onRefresh(PullToRefreshBase<ScrollView> refreshView) {
-                initData();
-            }
-        });
         iv_fastpartner_back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 finish();
+            }
+        });
+        tv_agent_book.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(FastPartnerActivity.this, FastParnterIntroduceActivity.class);
+                startActivity(intent);
             }
         });
     }
@@ -119,12 +106,10 @@ public class FastPartnerActivity extends Activity {
         btn_fastpartner = (Button) findViewById(R.id.btn_fastpartner);
         tv_Amount = (TextView) findViewById(R.id.tv_Amount);
         fast_parnter_title = (TextView) findViewById(R.id.fast_parnter_title);
-        iv_fastpartner = (ImageView) findViewById(R.id.iv_fastpartner);
+        tv_agent_book = (TextView) findViewById(R.id.tv_agent_book);
         iv_fastpartner_back = (ImageView) findViewById(R.id.iv_fastpartner_back);
-        pullToRefreshScrollView = (PullToRefreshScrollView) findViewById(R.id.sv_fastparnter);
-        wv_fastParnter = (ProgressWebView) findViewById(R.id.wv_fastParnter);
         initData();
-        initWebView(webUrl + "/Moblie/ShowHelpCenter?helpMenuId=10");
+//        initWebView(webUrl + "/Moblie/ShowHelpCenter?helpMenuId=10");
     }
 
     private void initData() {
@@ -144,7 +129,6 @@ public class FastPartnerActivity extends Activity {
                     Toast.makeText(FastPartnerActivity.this, "获取失败", Toast.LENGTH_SHORT).show();
                 }
                 pdialog.dismiss();
-                pullToRefreshScrollView.onRefreshComplete();
 
             }
         }, new Response.ErrorListener() {
@@ -156,7 +140,6 @@ public class FastPartnerActivity extends Activity {
                 //sweetAlertDialog.dismiss();
                 pdialog.dismiss();
                 Toast.makeText(FastPartnerActivity.this, "加载数据异常", Toast.LENGTH_SHORT).show();
-                pullToRefreshScrollView.onRefreshComplete();
             }
         }) {
             @Override
@@ -230,38 +213,38 @@ public class FastPartnerActivity extends Activity {
     /**
      * 初始化底部webivew（获取数据之后）
      */
-    private void initWebView(String detailUrl) {
-        //详情地址
-        //解决了webview 头部空了一片白的问题
-        wv_fastParnter.getSettings().setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
-        wv_fastParnter.setVerticalScrollBarEnabled(false);
-        wv_fastParnter.setHorizontalScrollBarEnabled(false);
-        //end
-        WebSettings webViewSetting = wv_fastParnter.getSettings();
-        webViewSetting.setDomStorageEnabled(true);
-        webViewSetting.setJavaScriptEnabled(true);
-        webViewSetting.setUseWideViewPort(true);//关键点
-        webViewSetting.setLoadWithOverviewMode(true);
-        wv_fastParnter.loadUrl(detailUrl);
-        wv_fastParnter.setWebViewClient(new WebViewClient() {
-            @Override
-            public boolean shouldOverrideUrlLoading(WebView view, String url) {
-                view.loadUrl(url);
-                return super.shouldOverrideUrlLoading(view, url);
-            }
-
-            @Override
-            public void onPageFinished(WebView view, String url) {
-                super.onPageFinished(view, url);
-                //这个是一定要加上那个的,配合scrollView和WebView的height=wrap_content属性使用
-                int w = View.MeasureSpec.makeMeasureSpec(0,
-                        View.MeasureSpec.UNSPECIFIED);
-                int h = View.MeasureSpec.makeMeasureSpec(0,
-                        View.MeasureSpec.UNSPECIFIED);
-                //重新测量
-                wv_fastParnter.measure(w, h);
-            }
-        });
-
-    }
+//    private void initWebView(String detailUrl) {
+//        //详情地址
+//        //解决了webview 头部空了一片白的问题
+//        wv_fastParnter.getSettings().setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
+//        wv_fastParnter.setVerticalScrollBarEnabled(false);
+//        wv_fastParnter.setHorizontalScrollBarEnabled(false);
+//        //end
+//        WebSettings webViewSetting = wv_fastParnter.getSettings();
+//        webViewSetting.setDomStorageEnabled(true);
+//        webViewSetting.setJavaScriptEnabled(true);
+//        webViewSetting.setUseWideViewPort(true);//关键点
+//        webViewSetting.setLoadWithOverviewMode(true);
+//        wv_fastParnter.loadUrl(detailUrl);
+//        wv_fastParnter.setWebViewClient(new WebViewClient() {
+//            @Override
+//            public boolean shouldOverrideUrlLoading(WebView view, String url) {
+//                view.loadUrl(url);
+//                return super.shouldOverrideUrlLoading(view, url);
+//            }
+//
+//            @Override
+//            public void onPageFinished(WebView view, String url) {
+//                super.onPageFinished(view, url);
+//                //这个是一定要加上那个的,配合scrollView和WebView的height=wrap_content属性使用
+//                int w = View.MeasureSpec.makeMeasureSpec(0,
+//                        View.MeasureSpec.UNSPECIFIED);
+//                int h = View.MeasureSpec.makeMeasureSpec(0,
+//                        View.MeasureSpec.UNSPECIFIED);
+//                //重新测量
+//                wv_fastParnter.measure(w, h);
+//            }
+//        });
+//
+//    }
 }

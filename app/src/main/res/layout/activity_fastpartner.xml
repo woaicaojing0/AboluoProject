@@ -55,8 +55,8 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="56dp"
-                android:layout_marginBottom="16dp"
-                android:layout_marginTop="16dp"
+                android:layout_marginBottom="8dp"
+                android:layout_marginTop="8dp"
                 android:background="@color/white"
                 android:orientation="horizontal">
 
@@ -93,7 +93,6 @@
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
-
                     <Button
                         android:id="@+id/btn_fastpartner"
                         android:layout_width="wrap_content"
@@ -123,17 +122,15 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="8dp"
-                    android:layout_marginTop="8dp"
                     android:lineSpacingExtra="8dp"
-                    android:text="支付即代表同意《代理协议书》" />
+                    android:text="2.支付即代表同意《代理协议书》" />
 
                 <TextView
+                    android:layout_marginBottom="32dp"
                     android:id="@+id/tv_agent_book"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:lineSpacingExtra="8dp"
-                    android:text="《代理协议书》"
+                    android:text="3.《代理协议书》"
                     android:textColor="@color/btn_color" />
             </LinearLayout>
         </LinearLayout>

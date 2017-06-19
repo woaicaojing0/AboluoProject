@@ -1434,13 +1434,17 @@ public class GoodsDetailActivity extends Activity implements View.OnClickListene
             public void onResponse(String response) {
                 GoodsRecommendAdpater goodsRecommendAdpater = null;
                 Gson gson = new Gson();
-                Log.i("woaicaojing", URL + "api//GoodsApi/ReceiveGoodsListByGoodsId");
+                Log.i("woaicaojing", URL + "/api//GoodsApi/ReceiveGoodsListByGoodsId");
                 Log.i("woaicaojing", response);
                 GoodsRecommend listBean = gson.fromJson(response, GoodsRecommend.class);
-                goodsListBean = listBean.getListResult();
-                goodsRecommendAdpater = new GoodsRecommendAdpater(GoodsDetailActivity.this,
-                        goodsListBean);
-                gv_goodsdetail_recommend.setAdapter(goodsRecommendAdpater);
+                if (listBean.isIsSuccess()) {
+                    goodsListBean = listBean.getListResult();
+                    if(goodsListBean !=null) {
+                        goodsRecommendAdpater = new GoodsRecommendAdpater(GoodsDetailActivity.this,
+                                goodsListBean);
+                        gv_goodsdetail_recommend.setAdapter(goodsRecommendAdpater);
+                    }
+                }
             }
         }, new Response.ErrorListener() {
             @Override

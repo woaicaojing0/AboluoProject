@@ -1249,7 +1249,7 @@ public class IndexFragment extends Fragment implements View.OnClickListener, Ada
                         arrString[i] = ImageUrl + specialConfigBean.getAppConfigList().get(i).getImage();
                     }
                     if (arrString.length == 0) {
-                        theme_view_pager.setVisibility(View.GONE);
+                        special_view_pager.setVisibility(View.GONE);
                     } else {
                         //头部滚动banner
                         special_view_pager.setVisibility(View.VISIBLE);

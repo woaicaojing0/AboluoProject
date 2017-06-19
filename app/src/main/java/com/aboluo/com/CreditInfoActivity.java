@@ -48,13 +48,13 @@ public class CreditInfoActivity extends Activity implements View.OnClickListener
     private SweetAlertDialog pdialog;
     private String MemberId;
     private CreditInfoBean creditInfoBean;
-    private TextView totalmoney, memberlevel, totalscore, freeMoney, CanUserMoney, totalscore2,
-            CanUserScore, cred_nickName;
+    private TextView totalmoney, memberlevel, totalscore, freeMoney, CanUserMoney, tv_totalTurnover,
+            CanUserScore, cred_nickName, tv_parnter_month_money, tv_my_month_money;
     private CircleImageView cred_userImage;
     private LinearLayout creditinfo_individual, creditinfo_capital, ll_back, ll_tixian;
     private AlertDialog.Builder builder;
     private View cunstomView;
-
+    private LinearLayout ll_showtitle;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,6 +64,7 @@ public class CreditInfoActivity extends Activity implements View.OnClickListener
         creditinfo_capital.setOnClickListener(this);
         ll_back.setOnClickListener(this);
         ll_tixian.setOnClickListener(this);
+        ll_showtitle.setOnClickListener(this);
     }
 
     private void init() {
@@ -84,9 +85,12 @@ public class CreditInfoActivity extends Activity implements View.OnClickListener
         totalscore = (TextView) findViewById(R.id.totalscore);
         freeMoney = (TextView) findViewById(R.id.freeMoney);
         CanUserMoney = (TextView) findViewById(R.id.CanUserMoney);
-        totalscore2 = (TextView) findViewById(R.id.totalscore2);
+        tv_totalTurnover = (TextView) findViewById(R.id.tv_totalTurnover);
         CanUserScore = (TextView) findViewById(R.id.CanUserScore);
         cred_nickName = (TextView) findViewById(R.id.cred_nickName);
+        ll_showtitle = (LinearLayout) findViewById(R.id.ll_showtitle);
+        tv_parnter_month_money = (TextView) findViewById(R.id.tv_parnter_month_money);
+        tv_my_month_money = (TextView) findViewById(R.id.tv_my_month_money);
         cred_userImage = (CircleImageView) findViewById(R.id.cred_userImage);
         creditinfo_individual = (LinearLayout) findViewById(R.id.creditinfo_individual);
         creditinfo_capital = (LinearLayout) findViewById(R.id.creditinfo_capital);
@@ -122,8 +126,10 @@ public class CreditInfoActivity extends Activity implements View.OnClickListener
                     totalscore.setText("￥" + creditInfoBean.getTotalScore());
                     freeMoney.setText("￥" + creditInfoBean.getFreeMoney());
                     CanUserMoney.setText("￥" + creditInfoBean.getCanUseMoney());
-                    totalscore2.setText("￥" + creditInfoBean.getTotalScore());
+                    tv_totalTurnover.setText("￥" + creditInfoBean.getTotalTurnover());
                     CanUserScore.setText("￥" + creditInfoBean.getCanUseScore());
+                    tv_parnter_month_money.setText("￥" + creditInfoBean.getPartnersMonthlyTurnover());
+                    tv_my_month_money.setText("￥" + creditInfoBean.getPersonalMonthlyTurnover());
                     cred_nickName.setText("亲爱的:" + creditInfoBean.getNickName() == null ? "" :
                             creditInfoBean.getNickName().toString());
                     Log.i("CreditInfoActivity", (creditInfoBean.getMemberLogo() == null ? "" :
@@ -212,6 +218,9 @@ public class CreditInfoActivity extends Activity implements View.OnClickListener
             case R.id.creditinfo_capital:
                 Intent intent2 = new Intent(CreditInfoActivity.this, CapitalActivity.class);
                 startActivity(intent2);
+                break;
+            case R.id.ll_showtitle:
+                Toast.makeText(this, "合伙人商品月营业额", Toast.LENGTH_SHORT).show();
                 break;
             default:
                 break;

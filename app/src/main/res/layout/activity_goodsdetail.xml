@@ -297,6 +297,7 @@
                         android:layout_height="wrap_content"
                         android:scrollbars="none"></WebView>
                     <com.aboluo.widget.MyGridView
+                        android:layout_marginBottom="62dp"
                         android:id="@+id/gv_goodsdetail_recommend"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
